@@ -4,4 +4,12 @@ import java.util.List;
 
 class Shelf {
     private List<Item> itemCards;
+    private Item[][] shelfGrid;
+
+    public Item[][] GetShelfGrid() {}
 }
+
+
+
+
+
