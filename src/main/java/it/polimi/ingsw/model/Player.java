@@ -26,6 +26,7 @@ class Player {
     private List<Item> pickItems() {}
 
     private void putItemInShelf() {}
+}
 
 
 
