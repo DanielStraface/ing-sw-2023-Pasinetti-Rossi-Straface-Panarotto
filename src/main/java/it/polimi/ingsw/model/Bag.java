@@ -4,4 +4,7 @@ import java.util.List;
 
 class Bag {
     private List<Item> itemCards;
+
+
+    public Item drawItem(){}
 }

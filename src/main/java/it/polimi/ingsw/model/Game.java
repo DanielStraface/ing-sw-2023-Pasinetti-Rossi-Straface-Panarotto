@@ -7,4 +7,14 @@ class Game {
     private GameBoard gameboard;
     private Bag bag;
     private CommonObjCard commonObjCard;
+    private Player currentPlayer;
+
+
+    public List<Player> getPlayers(){}
+    public GameBoard getGameboard(){}
+    public CommonObjCard getCommonObjCard(){}
+    public Bag getBag(){}
+    public Player getCurrentPlayer(){}
+
+
 }
