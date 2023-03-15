@@ -5,7 +5,8 @@ import it.polimi.ingsw.model.Shelf;
 import java.util.List;
 
 class Player {
-    private String nickname;
+    private String nickname;    /** has to be unique */
+
     private int score;
     private Shelf myShelf;
     private PersonalObjCard myPersonalObjCard;
