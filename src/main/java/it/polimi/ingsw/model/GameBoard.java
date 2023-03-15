@@ -6,6 +6,6 @@ class GameBoard {
 
     private Item[][] gameGrid;
 
-    private Item[][] getGameGrid(){}
+    private Item[][] getGameGrid(){return gameGrid;}
 
 }
