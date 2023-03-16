@@ -13,4 +13,16 @@ class PersonalObjCard {
     public String getPersonalObjCardDescription() {
         return personalObjCardDescription;
     }
+    public boolean goalReached(Shelf shelf){
+        for(int i=0;i<cardGrid.length;i++){
+            for(int j=0;j<cardGrid[i].length;j++){
+                if(cardGrid[i][j] != null){
+                    if(cardGrid[i][i].getCategoryType() != shelf.GetShelfGrid()[i][j].getCategoryType()){
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
 }

@@ -5,7 +5,7 @@ class Item {
     public Item(Category category){
         this.category=category;
     }
-    private Category getCategoryType(){
+    public Category getCategoryType(){
         return category;
     }
 

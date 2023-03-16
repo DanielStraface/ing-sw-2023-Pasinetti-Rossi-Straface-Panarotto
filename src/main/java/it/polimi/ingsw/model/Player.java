@@ -44,6 +44,11 @@ class Player {
         private void putItemInShelf(){
         }
     }
+
+    public void setPersonalObjCard(PersonalObjCard p){
+        this.myPersonalObjCard = p;
+        return;
+    }
 }
 
 
