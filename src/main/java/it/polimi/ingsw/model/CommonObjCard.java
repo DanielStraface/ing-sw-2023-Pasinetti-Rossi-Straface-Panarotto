@@ -11,20 +11,24 @@ class CommonObjCard {
      */
     public CommonObjCard(int numberOfPlayers){
         switch(numberOfPlayers){
-            case 2 : {
+            case 2 -> {
                 int[] temp = {4, 8, 0, 0};
                 this.nextPoints = 1;
                 this.objPoints = temp;
             }
-            case 3 : {
+            case 3 -> {
                 int[] temp = {4, 6, 8, 0};
                 this.nextPoints = 2;
                 this.objPoints = temp;
             }
-            case 4 : {
+            case 4 -> {
                 int[] temp = {2, 4, 6, 8};
                 this.nextPoints = 3;
                 this.objPoints = temp;
+            }
+            default -> {
+                this.nextPoints = 0;
+                this.objPoints = null;
             }
         }
     }
@@ -33,7 +37,7 @@ class CommonObjCard {
 
     /**
      * Method getCommonObjCardDescription returns a string with the description of this card
-     * -- Maybe this method must be edit in function of JSON loading strings
+     * -- Maybe this method must be edited in function of JSON loading strings
      */
     public String getCommonObjCardDescription() {
         return commonObjCardDescription;
@@ -46,5 +50,29 @@ class CommonObjCard {
         int tempPoint = objPoints[objPoints.length - 1];
         nextPoints = nextPoints - 1;
         return tempPoint;
+    }
+
+    public boolean check(Shelf shelf){return false;}
+}
+
+class ColumnChecker extends CommonObjCard {
+    public ColumnChecker(int numberOfPlayers){
+        super(numberOfPlayers);
+    }
+
+    @Override
+    public boolean check(Shelf shelf){
+        return false;
+    }
+}
+
+class RowChecker extends CommonObjCard {
+    public RowChecker(int numberOfPlayers){
+        super(numberOfPlayers);
+    }
+
+    @Override
+    public boolean check(Shelf shelf){
+        return false;
     }
 }

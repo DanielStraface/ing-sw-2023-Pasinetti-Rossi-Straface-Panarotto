@@ -45,6 +45,9 @@ class Player {
         }
     }
 
+    /**
+     * Method setPersonalObjCard recives a personalObjCard as a parameter and use it as the attribute myPersonalObjCard
+     */
     public void setPersonalObjCard(PersonalObjCard card){
         this.myPersonalObjCard = card;
         return;

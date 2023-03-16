@@ -24,11 +24,16 @@ class Game {
 
     //***********************************************
     /**
-     * How to reader and create the PersonalObjCard
+     * Method generatePersonalObjCards obtains from a cardReader instance a list of personalObj card previously store in
+     * a Json file and the distribute one of them to each player of the match.
      */
     public void generatePersonalObjCards(){
+        /* Creation of cardReader and fill the list with personalObjCard in reading order*/
         PersonalCardReader cardReader = new PersonalCardReader();
         List<PersonalObjCard> cardsList = cardReader.readFromFile();
+        /* Generation of random number to extract from the list a specific personalObjCard and use it as a parameter
+        *  for the setPersonalObjCard method of player entity.
+        *  This is done for each player in the match */
         Random rand = new Random();
         for(int i=0;i<NUMB;i++){
             int n = rand.nextInt();
