@@ -5,8 +5,5 @@ class Item {
     public Item(Category category){
         this.category=category;
     }
-    public Category getCategoryType(){
-        return category;
-    }
-
+    public Category getCategoryType(){return category;}
 }

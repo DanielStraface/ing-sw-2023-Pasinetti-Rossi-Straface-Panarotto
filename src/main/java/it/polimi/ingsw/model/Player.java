@@ -45,8 +45,8 @@ class Player {
         }
     }
 
-    public void setPersonalObjCard(PersonalObjCard p){
-        this.myPersonalObjCard = p;
+    public void setPersonalObjCard(PersonalObjCard card){
+        this.myPersonalObjCard = card;
         return;
     }
 }
