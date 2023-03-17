@@ -1,13 +1,16 @@
 package it.polimi.ingsw.model;
 
+import com.google.gson.Gson;
+
 import java.util.List;
 
 class Game {
 
+    private static final int DIM_GAMEBOARD=9;
     private int playersNumber;
     private List<Player> players;
     private GameBoard gameboard;
-    private int[][] validGrid = new int[9][9];
+    private int[][] validGrid = new int[DIM_GAMEBOARD][DIM_GAMEBOARD];
     private Bag bag;
     private CommonObjCard commonObjCard;
     private Player currentPlayer;
@@ -99,6 +102,7 @@ class Game {
     public CommonObjCard getCommonObjCard(){return commonObjCard;}
     public Bag getBag(){return bag;}
     public Player getCurrentPlayer(){return currentPlayer;}
+
 
 
 }
