@@ -2,7 +2,7 @@
   {
     "personalObjCardDescription": "First card",
     "grid": [
-      [{"category":  null}, {"category":  "Cat"}, {"category":  null}, {"category":  null}, {"category":  null}],
+      [{"category":  null}, {"category":  "CAT"}, {"category":  null}, {"category":  null}, {"category":  null}],
       [{"category":  null}, {"category":  null}, {"category":  null}, {"category":  null}, {"category":  null}],
       [{"category":  null}, {"category":  null}, {"category":  null}, {"category":  null}, {"category":  null}],
       [{"category":  null}, {"category":  null}, {"category":  null}, {"category":  null}, {"category":  null}],
