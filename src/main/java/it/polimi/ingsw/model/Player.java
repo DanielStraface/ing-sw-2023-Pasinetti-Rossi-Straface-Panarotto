@@ -2,6 +2,7 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.Shelf;
 
+import java.util.ArrayList;
 import java.util.List;
 
 class Player {
@@ -14,19 +15,35 @@ class Player {
     private int clientID;
     private List<Item> selectItems;
 
-    public String getNickname() {}
+    public Player(String nickname, int clientID, boolean isFirstPlayer) {
+        this.nickname = nickname;
+        this.clientID = clientID;
+        this.isFirstPlayer = false;
+        selectItems = new ArrayList<>();
 
-    public int getScore() {}
-
-    public PersonalObjCard getMyPersonalOBjCard() {}
-
-    public Shelf getMyShelf() {}
-
-    public boolean getFirstPlayer() {}
-
-    private List<Item> pickItems() {}
-
-    private void putItemInShelf() {}
+        public String getNickname(){
+            return this.nickname;
+        }
+        public int getClientID(){
+            return this.clientID;
+        }
+        public int getScore(){
+            return score;
+        }
+        public PersonalObjCard getMyPersonalOBjCard(){
+            return myPersonalObjCard;
+        }
+        public Shelf getMyShelf(){
+            return myShelf;
+        }
+        public boolean getFirstPlayer(){
+            return this.isFirstPlayer;
+        }
+        private List<Item> pickItems(){
+        }
+        private void putItemInShelf(){
+        }
+    }
 }
 
 
