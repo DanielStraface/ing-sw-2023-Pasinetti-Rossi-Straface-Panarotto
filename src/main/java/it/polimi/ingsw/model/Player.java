@@ -33,9 +33,7 @@ class Player {
         public PersonalObjCard getMyPersonalOBjCard(){
             return myPersonalObjCard;
         }
-        public Shelf getMyShelf(){
-            return myShelf;
-        }
+
         public boolean getFirstPlayer(){
             return this.isFirstPlayer;
         }
@@ -43,6 +41,10 @@ class Player {
         }
         private void putItemInShelf(){
         }
+    }
+
+    public Shelf getMyShelf(){
+        return myShelf;
     }
 
     /**
