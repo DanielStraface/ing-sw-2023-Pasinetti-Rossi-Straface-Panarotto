@@ -20,78 +20,91 @@ class Player {
         this.clientID = clientID;
         this.score = 0;
         this.isFirstPlayer = false;
+    }
 
-        public String getNickname(){
-            return this.nickname;
+    public String getNickname(){
+        return this.nickname;
+    }
+    public int getClientID(){
+        return this.clientID;
+    }
+    public int getScore(){
+        return this.score;
+    }
+    public PersonalObjCard getMyPersonalOBjCard(){
+        return this.myPersonalObjCard;
+    }
+    public Shelf getMyShelf(){
+        return this.myShelf;
+    }
+    public boolean getFirstPlayer(){
+        return this.isFirstPlayer;
+    }
+    private List<Item> pickItems(int[][] selectedcoords, Item[][] gameGrid) throws Exception {
+        if (selectedcoords == null || selectedcoords.length < 2 || selectedcoords[0].length != 2) {
+            return false;
         }
-        public int getClientID(){
-            return this.clientID;
-        }
-        public int getScore(){
-            return score;
-        }
-        public PersonalObjCard getMyPersonalOBjCard(){
-            return myPersonalObjCard;
-        }
-        public Shelf getMyShelf(){
-            return myShelf;
-        }
-        public boolean getFirstPlayer(){
-            return this.isFirstPlayer;
-        }
-        private List<Item> pickItems(Coordinate[] selectedcoords, Item[][] gameGrid) throws Exception {
-            if (selectedcoords== null || selectedcoords.length==0){
-                throw new Exception("No item selected");
+        boolean sameX = true;
+        boolean sameY = true;
+        int x = selectedcoords[0][0];
+        int y = selectedcoords[0][1];
+        for (int i = 1; i < selectedcoords.length; i++) {
+            if (selectedcoords[i][0] != x) {
+                sameX = false;
             }
-            int x= selectedcoords[0].getX();
-            int y= selectedcoords[0].getY();
+            if (selectedcoords[i][1] != y) {
+                sameY = false;
+            }
+        }
+        return sameX || sameY;
 
-            for(int i=1; i<selectedcoords.length; i++){
-                if(selectedcoords[i].getX()!=x && selectedcoords[i].getY()!=y) {
-                    throw new Exception("Invalid selection:different cols and rows");
-                }
-            }
-            for (int i = 0; i < selectedcoords.length; i++) {
-                Coordinate coord = selectedcoords[i];
-                int row = coord.getX();
-                int col = coord.getY();
+        for (int i = 0; i < selectedcoords.length; i++) {
+            Coordinate coord = selectedcoords[i];
+            int row = coord.getX();
+            int col = coord.getY();
 
-                if (gameGrid[row][col - 1] == null || gameGrid[row][col + 1] == null) {
-                    continue;
-                }
-                if (gameGrid[row - 1][col] == null || gameGrid[row + 1][col] == null) {
-                    continue;
-                }
-                throw new Exception("Invalid selection: no free sides");
+            if (gameGrid[row][col - 1] == null || gameGrid[row][col + 1] == null) {
+                continue;
             }
-            selectItems = new ArrayList<Item>();
-            for (int i=0; i<selectedcoords.length; i++) {
-                int row = selectedcoords[i].getX();
-                int col = selectedcoords[i].getY();
-
-                selectItems[i]= gameGrid[row][col];
-                gameGrid[row][col]=null;
+            if (gameGrid[row - 1][col] == null || gameGrid[row + 1][col] == null) {
+                continue;
             }
-            return selectItems;
+            throw new Exception("Invalid selection: no free sides");
         }
-        private void putItemInShelf(Item selectedItem, int selectedCol, Shelf[][] myShelf){
-            if (selectedCol >= 5) {
-                throw new IllegalArgumentException("selectedCol must be less than 5");
-            }
-            int lastRow = -1;
-            for (int row = 0; row<6; row++) {
-                if (myShelf[row][selectedCol] == null) {
-                    lastRow = row;
-                }
-            }
-            if (lastRow == -1) {
-                throw new IllegalStateException("Column " + selectedCol + " is full");
-            }
-            myShelf[lastRow][selectedCol] = selectedItem;
 
-            return myShelf;
+        selectItems = new ArrayList<Item>();
+        for (int i=0; i<selectedcoords.length; i++) {
+            int row = selectedcoords[i].getX();
+            int col = selectedcoords[i].getY();
+
+            selectItems[i]= gameGrid[row][col];
+            gameGrid[row][col]=null;
+        }
+        return selectItems;
+    }
+
+    private void putItemInShelf(Item[] selectedItems, int selectedCol){
+        if (selectedCol >= 5) {
+            throw new IllegalArgumentException("selectedCol must be less than 5");
+        }
+        int lastRow = -1;
+        for (int row = 0; row<6; row++) {
+            if (myShelf[row][selectedCol] == null) {
+                lastRow = row;
             }
         }
+        for (int i = 0; i < selectedItems.length; i++, lastRow--) {
+            myShelf[lastRow][selectedCol] = selectedItems[i];
+        }
+        return myShelf;
+    }
+
+    public void setPersonalObjCard(PersonalObjCard card){
+        this.myPersonalObjCard = card;
+    }
+
+    public void setMyShelf(Shelf shelf){
+        this.myShelf = shelf;
     }
 }
 
