@@ -1,12 +1,11 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.comcard;
 
-class ThreeDifferentTypes extends CommonObjCard {
-    public ThreeDifferentTypes(int numberOfPlayers, int status) {
-        super(numberOfPlayers);
-        this.status = status;
-    }
+import it.polimi.ingsw.model.Player;
 
-    public boolean checker() {
+class ThreeDifferentTypes implements StrategyCheck {
+
+    @Override
+    public boolean check(Player player, int status) {
         boolean result = false;
         switch (status) {
             case 4 -> result = rowsDifferentTypes();

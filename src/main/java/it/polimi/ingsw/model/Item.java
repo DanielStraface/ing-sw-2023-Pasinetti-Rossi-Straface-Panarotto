@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model;
 
-class Item {
-    private Category category;
+public class Item {
+    private final Category category;
     public Item(Category category){
         this.category=category;
     }

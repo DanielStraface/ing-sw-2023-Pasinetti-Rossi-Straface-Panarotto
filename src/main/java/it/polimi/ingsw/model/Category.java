@@ -1,5 +1,5 @@
 package it.polimi.ingsw.model;
 
-enum Category {
+public enum Category {
     CAT, BOOK, GAME, FRAME, TROPHY, PLANT
 }

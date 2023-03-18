@@ -1,12 +1,13 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.comcard;
 
-class GroupCards extends CommonObjCard {
-    public GroupCards(int numberOfPlayers, int status) {
-        super(numberOfPlayers);
-        this.status = status;
-    }
+import it.polimi.ingsw.model.Category;
+import it.polimi.ingsw.model.Item;
+import it.polimi.ingsw.model.Player;
 
-    public boolean check(Player player) {
+class GroupCards implements StrategyCheck {
+
+    @Override
+    public boolean check(Player player, int status) {
         boolean result = false;
         switch (status) {
             case 1 -> result = groupOfTwo();

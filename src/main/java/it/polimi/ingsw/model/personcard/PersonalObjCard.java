@@ -1,4 +1,7 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.personcard;
+
+import it.polimi.ingsw.model.Item;
+import it.polimi.ingsw.model.Shelf;
 
 public class PersonalObjCard {
 
@@ -42,11 +45,6 @@ public class PersonalObjCard {
                 if (cardGrid[i][j].getCategoryType() != null && shelf.GetShelfGrid()[i][j].getCategoryType() != null) {
                     /* If there is at least one type of item that is not equal to the item in the player shelf
                      *  the goal is not reached. The method returns false */
-                    /** ACCESSORY CODE HERE **/
-                    System.out.println(cardGrid[i][j].getCategoryType() + " =?= " +
-                                    shelf.GetShelfGrid()[i][j].getCategoryType()
-                            );
-                    /*************************/
                     if(cardGrid[i][j].getCategoryType() != shelf.GetShelfGrid()[i][j].getCategoryType()){
                         return false;
                     }
@@ -63,9 +61,9 @@ public class PersonalObjCard {
         System.out.println(this.getPersonalObjCardDescription());
         System.out.println("This card has a " + cardGrid.length + " card grid height");
         System.out.println("This card has a " + cardGrid[0].length + " card grid width");
-        for(int i=0;i<this.cardGrid.length;i++){
-            for(int j=0;j<this.cardGrid[0].length;j++){
-                System.out.print(this.cardGrid[i][j].getCategoryType() + " ");
+        for (Item[] items : this.cardGrid) {
+            for (int j = 0; j < this.cardGrid[0].length; j++) {
+                System.out.print(items[j].getCategoryType() + " ");
             }
             System.out.println();
         }
