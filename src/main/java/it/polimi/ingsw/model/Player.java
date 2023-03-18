@@ -41,44 +41,46 @@ class Player {
         return this.isFirstPlayer;
     }
     private List<Item> pickItems(int[][] selectedcoords, Item[][] gameGrid) throws Exception {
-        if (selectedcoords == null || selectedcoords.length < 2 || selectedcoords[0].length != 2) {
-            return false;
-        }
-        boolean sameX = true;
-        boolean sameY = true;
-        int x = selectedcoords[0][0];
-        int y = selectedcoords[0][1];
-        for (int i = 1; i < selectedcoords.length; i++) {
-            if (selectedcoords[i][0] != x) {
-                sameX = false;
-            }
-            if (selectedcoords[i][1] != y) {
-                sameY = false;
-            }
-        }
-        return sameX || sameY;
+        if (selectedcoords != null) {
 
-        for (int i = 0; i < selectedcoords.length; i++) {
-            Coordinate coord = selectedcoords[i];
-            int row = coord.getX();
-            int col = coord.getY();
-
-            if (gameGrid[row][col - 1] == null || gameGrid[row][col + 1] == null) {
-                continue;
+            boolean sameX = true;
+            boolean sameY = true;
+            int x = selectedcoords[0][0];
+            int y = selectedcoords[0][1];
+            for (int i = 1; i < selectedcoords.length; i++) {
+                if (selectedcoords[i][0] != x) {
+                    sameX = false;
+                    break;
+                }
+                if (selectedcoords[i][1] != y) {
+                    sameY = false;
+                    break;
+                }
             }
-            if (gameGrid[row - 1][col] == null || gameGrid[row + 1][col] == null) {
-                continue;
+            if (!sameX && !sameY) {
+                throw new Exception("Invalid selection: no same rows or cols");
             }
-            throw new Exception("Invalid selection: no free sides");
-        }
 
-        selectItems = new ArrayList<Item>();
-        for (int i=0; i<selectedcoords.length; i++) {
-            int row = selectedcoords[i].getX();
-            int col = selectedcoords[i].getY();
+            for (int i = 0; i < selectedcoords.length; i++) {
+                int row = selectedcoords[i][0];
+                int col = selectedcoords[0][i];
 
-            selectItems[i]= gameGrid[row][col];
-            gameGrid[row][col]=null;
+                if (gameGrid[row][col - 1] == null || gameGrid[row][col + 1] == null) {
+                    continue;
+                }
+                if (gameGrid[row - 1][col] == null || gameGrid[row + 1][col] == null) {
+                    continue;
+                }
+                throw new Exception("Invalid selection: no free sides");
+            }
+
+            selectItems = new ArrayList<Item>();
+            for (int i = 0; i < selectedcoords.length; i++) {
+                int row = selectedcoords[i][0];
+                int col = selectedcoords[i][1];
+                selectItems[i]=gameGrid[row][col];
+                gameGrid[row][col] = null;
+            }
         }
         return selectItems;
     }
