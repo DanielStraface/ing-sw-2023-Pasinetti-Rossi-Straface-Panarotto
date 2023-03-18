@@ -1,14 +1,15 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.comcard;
+
+import it.polimi.ingsw.model.Category;
+import it.polimi.ingsw.model.Item;
+import it.polimi.ingsw.model.Player;
 
 import java.util.HashSet;
 
-class ThreeDifferentTypes extends CommonObjCard {
-    public ThreeDifferentTypes(int numberOfPlayers, int status) {
-        super(numberOfPlayers);
-        this.status = status;
-    }
+class ThreeDifferentTypes implements StrategyCheck {
 
-    public boolean checker() {
+    @Override
+    public boolean check(Player player, int status) {
         boolean result = false;
         switch (status) {
             case 4 -> result = rowsDifferentTypes();
@@ -20,7 +21,7 @@ class ThreeDifferentTypes extends CommonObjCard {
         return true;
     }
 
-    private boolean rowsDifferentTypes() {
+    private boolean rowsDifferentTypes(Player player) {
         Item[][] grid = player.getMyShelf().GetShelfGrid();
         int rowCounter = 0;
         for(int i=0; i<6; i++) {
@@ -43,6 +44,8 @@ class ThreeDifferentTypes extends CommonObjCard {
         }
         return false;
     }
+
+
 
     private boolean columnsDifferentTypes() {
         return false;
