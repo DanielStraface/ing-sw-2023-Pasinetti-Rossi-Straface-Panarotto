@@ -1,10 +1,9 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.personcard;
 
 import com.google.gson.Gson;
 
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -19,16 +18,21 @@ public class PersonalCardReader {
      *                                          exists PersonalObjCad P2 contained in LIST) &&
      *                                          P1.equals(P2)
      */
-    public List<PersonalObjCard> readFromFile(){
+    public List<PersonalObjCard> readFromFile() {
         /* Preliminary operations: gson and reader from Json file creation */
         Gson gson = new Gson();
-        Reader input = new InputStreamReader(
-                getClass().getClassLoader().getResourceAsStream("personalObjectiveCards.json")
-        );
+        Reader input = null;
+        try {
+            input = new InputStreamReader(
+                    getClass().getClassLoader().getResourceAsStream("personalObjectiveCards.json")
+            );
+        } catch (NullPointerException e) {
+            System.err.println("ResourceAsStream is null");
+        }
+
         /* Extraction of the information store in Json file and copying into a personalObjCard array */
         PersonalObjCard[] cards = gson.fromJson(input, PersonalObjCard[].class);
         /* Conversion from personalObjCard array to list */
-        List<PersonalObjCard> list = Arrays.asList(cards);
-        return list;
+        return Arrays.asList(cards);
     }
 }

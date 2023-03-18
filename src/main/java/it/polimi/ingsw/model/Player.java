@@ -1,11 +1,11 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.Shelf;
+import it.polimi.ingsw.model.personcard.PersonalObjCard;
 
 import java.util.ArrayList;
 import java.util.List;
 
-class Player {
+public class Player {
     private String nickname;    /** has to be unique */
 
     private int score;
@@ -21,7 +21,7 @@ class Player {
         this.isFirstPlayer = false;
         selectItems = new ArrayList<>();
 
-        public String getNickname(){
+        /*public String getNickname(){
             return this.nickname;
         }
         public int getClientID(){
@@ -40,7 +40,7 @@ class Player {
         private List<Item> pickItems(){
         }
         private void putItemInShelf(){
-        }
+        }*/
     }
 
     public Shelf getMyShelf(){
@@ -48,7 +48,7 @@ class Player {
     }
 
     /**
-     * Method setPersonalObjCard recives a personalObjCard as a parameter and use it as the attribute myPersonalObjCard
+     * Method setPersonalObjCard receives a personalObjCard as a parameter and use it as the attribute myPersonalObjCard
      */
     public void setPersonalObjCard(PersonalObjCard card){
         this.myPersonalObjCard = card;
