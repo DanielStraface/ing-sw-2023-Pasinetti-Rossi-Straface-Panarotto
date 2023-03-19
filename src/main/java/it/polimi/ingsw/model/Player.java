@@ -86,7 +86,7 @@ class Player {
     }
 
     private void putItemInShelf(Item[] selectedItems, int selectedCol){
-        Item[][] grid=myShelf.GetShelfGrid();
+        Item[][] grid=myShelf.getShelfGrid();
         if (selectedCol >= 5) {
             throw new IllegalArgumentException("selectedCol must be less than 5");
         }
