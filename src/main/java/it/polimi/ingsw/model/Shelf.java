@@ -5,7 +5,7 @@ public class Shelf {
     private Item[][] shelfGrid;
 
 
-    public Item[][] GetShelfGrid() {
+    public Item[][] getShelfGrid() {
         return shelfGrid;
     }
 
