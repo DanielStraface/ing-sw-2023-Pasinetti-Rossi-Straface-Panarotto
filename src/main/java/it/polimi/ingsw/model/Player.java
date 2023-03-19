@@ -1,11 +1,11 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.Shelf;
+import it.polimi.ingsw.model.personcard.PersonalObjCard;
 
 import java.util.ArrayList;
 import java.util.List;
 
-class Player {
+public class Player {
     private String nickname;    /** has to be unique */
 
     private int score;
