@@ -10,7 +10,7 @@ class GroupCards implements StrategyCheck {
     public boolean check(Player player, int status) {
         boolean result = false;
         switch (status) {
-            case 1 -> result = groupOfTwo();
+            case 1 -> result = groupOfTwo(player);
             case 5 -> result = groupOfFour();
             case 7 -> result = groupOfSquares();
             case 11 -> result = groupOfEight(player);
@@ -21,8 +21,31 @@ class GroupCards implements StrategyCheck {
         return true;
     }
 
-    private boolean groupOfTwo() {
-        return true;
+    private boolean groupOfTwo(Player player) {
+        Item[][] grid = player.getMyShelf().GetShelfGrid();
+        boolean[][] check = new boolean[6][5];
+        int groups=0;
+
+        for(int i=0; i<6; i++){
+            for(int j=0; j<5; j++){
+                if(!check[i][j] && grid[i][j].getCategoryType()!=null && i<5 && j<4) {
+                    if (grid[i + 1][j].getCategoryType() == grid[i][j].getCategoryType() && !check[i + 1][j]) {
+                            check[i][j] = true;
+                            check[i + 1][j] = true;
+                            groups++;
+                        }
+                     else if (grid[i][j + 1].getCategoryType() == grid[i][j].getCategoryType() && !check[i][j+1]){
+                         check[i][j] = true;
+                         check[i][j+1] = true;
+                         groups++;
+                     }
+                }
+            }
+        }
+        if(groups == 6){
+            return true;
+        }
+        return false;
     }
 
     private boolean groupOfFour() {
