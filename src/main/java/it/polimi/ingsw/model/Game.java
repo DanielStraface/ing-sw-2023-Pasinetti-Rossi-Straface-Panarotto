@@ -4,9 +4,7 @@ import it.polimi.ingsw.model.comcard.CommonObjCard;
 import it.polimi.ingsw.model.personcard.PersonalCardReader;
 import it.polimi.ingsw.model.personcard.PersonalObjCard;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import com.google.gson.Gson;
 
 import java.util.List;
 import java.util.Random;
@@ -28,10 +26,7 @@ class Game {
     public Game (int playersNumber){
         this.playersNumber = playersNumber;
         switch(playersNumber){
-            case 2 : {
-                setGridForTwo(validGrid);
-            }
-            case 3 : {
+            case 3 -> {
                 setGridForTwo(validGrid);
                 validGrid[0][3] = 1;
                 validGrid[2][2] = 1;
@@ -42,7 +37,7 @@ class Game {
                 validGrid[6][6] = 1;
                 validGrid[8][5] = 1;
             }
-            case 4 : {
+            case 4 -> {
                 setGridForTwo(validGrid);
                 validGrid[0][3] = 1;
                 validGrid[0][4] = 1;
@@ -60,6 +55,9 @@ class Game {
                 validGrid[7][3] = 1;
                 validGrid[8][4] = 1;
                 validGrid[8][5] = 1;
+            }
+            default -> {
+                setGridForTwo(validGrid);
             }
         }
     }
