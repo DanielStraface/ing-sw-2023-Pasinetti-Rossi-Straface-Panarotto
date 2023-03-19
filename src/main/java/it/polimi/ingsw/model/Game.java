@@ -58,7 +58,7 @@ class Game {
         //generate the type by popping the name list
         int n = random.nextInt(name.size());
         //add to commonObjCards list the first new commonObjCard with is points array and type set
-        this.commonObjCards.add( new CommonObjCard(this.playersNumber, name.get(random.nextInt(n))));
+        this.commonObjCards.add( new CommonObjCard(this.playersNumber, name.get(n)));
         name.remove(n);
         //add to commonObjCards list the second new commonObjCard with is points array and type set.
         //this is done randomly by getting a new name list type

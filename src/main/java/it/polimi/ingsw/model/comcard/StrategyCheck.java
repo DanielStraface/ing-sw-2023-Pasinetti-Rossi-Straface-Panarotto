@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.comcard;
 
-import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.Item;
 
 public interface StrategyCheck {
-    public boolean check(Player player, int status);
+    public boolean check(Item[][] grid, int status);
 }

@@ -2,7 +2,6 @@ package it.polimi.ingsw.model.comcard;
 
 import it.polimi.ingsw.model.Category;
 import it.polimi.ingsw.model.Item;
-import it.polimi.ingsw.model.Player;
 
 class RowsColumnsCard implements StrategyCheck {
     /* METHODS SECTION */
@@ -14,23 +13,24 @@ class RowsColumnsCard implements StrategyCheck {
      * in the player shelf
      */
     @Override
-    public boolean check(Player player, int status) {
-        boolean result = false;
+    public boolean check(Item[][] grid, int status) {
         switch (status) {
-            case 6 -> result = rowsChecker(player);
-            case 8 -> result = columnsChecker(player);
+            case 6 -> {
+                return rowsChecker(grid);
+            }
+            case 8 -> {
+                return columnsChecker(grid);
+            }
             default -> {
                 return false;
             }
         }
-        return true;
     }
 
     /**
      * Method rowsChecker controls if the conditions express in the sixth common objective card subsists.
      */
-    private boolean rowsChecker(Player player) {
-        Item[][] grid = player.getMyShelf().GetShelfGrid(); //import the player's shelf grid
+    private boolean rowsChecker(Item[][] grid) {
         int[] categoryCounter = new int[6]; //this array contains a counter for each category enum type
         int rowsCounter = 0; //this is the counter of the rows needed for the goal (at least 2)
 
@@ -70,8 +70,7 @@ class RowsColumnsCard implements StrategyCheck {
         return false;
     }
 
-    private boolean columnsChecker(Player player) {
-        Item[][] grid = player.getMyShelf().GetShelfGrid(); //import the player's shelf grid
+    private boolean columnsChecker(Item[][] grid) {
         int[] categoryCounter = new int[6]; //this array contains a counter for each category enum type
         int columnsCounter = 0; //this is the counter of the columns needed for the goal (at least 2)
 

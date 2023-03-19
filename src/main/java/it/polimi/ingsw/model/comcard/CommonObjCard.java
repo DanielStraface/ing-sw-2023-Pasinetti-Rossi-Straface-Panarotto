@@ -2,7 +2,6 @@ package it.polimi.ingsw.model.comcard;
 
 import it.polimi.ingsw.model.Player;
 
-import java.util.Random;
 
 /**
  * STATUS DESCRIPTION FOR RowsColumnsCard
@@ -110,7 +109,7 @@ public class CommonObjCard {
      * @return true <==> conditions of the commonObjCard subsists for the parameter player
      */
     public void doCheck(Player player){
-        strategyCheck.check(player, this.type);
+        strategyCheck.check(player.getMyShelf().getShelfGrid(), this.type);
     }
 }
 

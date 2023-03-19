@@ -42,10 +42,10 @@ public class PersonalObjCard {
         for (int i = 0; i < cardGrid.length; i++) {
             for (int j = 0; j < cardGrid[i].length; j++) {
                 /* if the position in the template grid and player's shelf is not null there is an item type */
-                if (cardGrid[i][j].getCategoryType() != null && shelf.GetShelfGrid()[i][j].getCategoryType() != null) {
+                if (cardGrid[i][j].getCategoryType() != null && shelf.getShelfGrid()[i][j].getCategoryType() != null) {
                     /* If there is at least one type of item that is not equal to the item in the player shelf
                      *  the goal is not reached. The method returns false */
-                    if(cardGrid[i][j].getCategoryType() != shelf.GetShelfGrid()[i][j].getCategoryType()){
+                    if(cardGrid[i][j].getCategoryType() != shelf.getShelfGrid()[i][j].getCategoryType()){
                         return false;
                     }
                 }

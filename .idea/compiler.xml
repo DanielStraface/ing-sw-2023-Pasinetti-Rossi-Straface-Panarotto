@@ -6,8 +6,10 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="ProgettoIngSw-MyShelfie" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="softeng-gc48" target="19" />
+    </bytecodeTargetLevel>
   </component>
 </project>

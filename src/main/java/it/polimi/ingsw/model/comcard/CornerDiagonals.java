@@ -2,7 +2,6 @@ package it.polimi.ingsw.model.comcard;
 
 import it.polimi.ingsw.model.Category;
 import it.polimi.ingsw.model.Item;
-import it.polimi.ingsw.model.Player;
 
 class CornerDiagonals implements StrategyCheck {
     /* METHODS SECTION */
@@ -14,16 +13,16 @@ class CornerDiagonals implements StrategyCheck {
      * in the player shelf
      */
     @Override
-    public boolean check(Player player, int status) {
+    public boolean check(Item[][] grid, int status) {
         switch (status) {
             case 2 -> {
-                return diagonals(player);
+                return diagonals(grid);
             }
             case 3 -> {
-                return corners(player);
+                return corners(grid);
             }
             case 12 -> {
-                return descMatrix(player);
+                return descMatrix(grid);
             }
             default -> {
                 return false;
@@ -34,8 +33,7 @@ class CornerDiagonals implements StrategyCheck {
     /**
      * Method diagonals controls if the conditions express in the second common objective card subsists.
      */
-    public boolean diagonals(Player player) {
-        Item[][] grid = player.getMyShelf().GetShelfGrid(); //import the player's shelf grid
+    public boolean diagonals(Item[][] grid) {
         boolean diag1 = true; //first main diagonal referencer
         boolean diag2 = true; //second main diagonal referencer
         boolean diag3 = true; //first opposite diagonal referencer
@@ -88,8 +86,7 @@ class CornerDiagonals implements StrategyCheck {
     /**
      * Method corners controls if the conditions express in the third common objective card subsists.
      */
-    public boolean corners(Player player) {
-        Item[][] grid = player.getMyShelf().GetShelfGrid(); //Import the player's shelf grid
+    public boolean corners(Item[][] grid) {
         if (grid[0][0].getCategoryType() != null) {
             //In case the top left corner is not null, then must be control the other three corners
             return grid[0][0].getCategoryType() == grid[0][4].getCategoryType() && //top right corner
