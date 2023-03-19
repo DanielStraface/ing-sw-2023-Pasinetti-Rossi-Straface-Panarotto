@@ -78,7 +78,7 @@ class Player {
             for (int i = 0; i < selectedcoords.length; i++) {
                 int row = selectedcoords[i][0];
                 int col = selectedcoords[i][1];
-                selectItems[i]=gameGrid[row][col];
+                selectItems.add(gameGrid[row][col]);
                 gameGrid[row][col] = null;
             }
         }
@@ -86,19 +86,19 @@ class Player {
     }
 
     private void putItemInShelf(Item[] selectedItems, int selectedCol){
+        Item[][] grid=myShelf.GetShelfGrid();
         if (selectedCol >= 5) {
             throw new IllegalArgumentException("selectedCol must be less than 5");
         }
         int lastRow = -1;
         for (int row = 0; row<6; row++) {
-            if (myShelf[row][selectedCol] == null) {
+            if (grid[row][selectedCol] == null) {
                 lastRow = row;
             }
         }
         for (int i = 0; i < selectedItems.length; i++, lastRow--) {
-            myShelf[lastRow][selectedCol] = selectedItems[i];
+            grid[lastRow][selectedCol] = selectedItems[i];
         }
-        return myShelf;
     }
 
     public void setPersonalObjCard(PersonalObjCard card){
