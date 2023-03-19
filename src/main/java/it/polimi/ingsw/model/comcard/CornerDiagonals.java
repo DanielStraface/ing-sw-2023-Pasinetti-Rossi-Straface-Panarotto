@@ -100,8 +100,7 @@ class CornerDiagonals implements StrategyCheck {
         return false;
     }
 
-    public boolean descMatrix(Player player) {
-        Item[][] grid = player.getMyShelf().GetShelfGrid();
+    public boolean descMatrix(Item[][] grid) {
         boolean inc = true;
         boolean dec = true;
 
@@ -111,8 +110,8 @@ class CornerDiagonals implements StrategyCheck {
             }
         }
 
-        for(int i=0, j=4; i<5 && j>=0; i++, j-- ){
-            if(grid[i][j].getCategoryType() != null || grid[i+1][j].getCategoryType() == null){
+        for(int i=0; i<5; i++){
+            if(grid[i][4-i].getCategoryType() != null || grid[i+1][4-i].getCategoryType() == null){
                 inc = false;
             }
         }
