@@ -1,8 +1,6 @@
 package it.polimi.ingsw.model;
 
-import java.util.List;
-
-class Shelf {
+public class Shelf {
 
     private Item[][] shelfGrid;
 
