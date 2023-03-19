@@ -101,6 +101,25 @@ class CornerDiagonals implements StrategyCheck {
     }
 
     public boolean descMatrix(Player player) {
+        Item[][] grid = player.getMyShelf().GetShelfGrid();
+        boolean inc = true;
+        boolean dec = true;
+
+        for(int i=0; i<5; i++){
+            if(grid[i][i].getCategoryType()!=null || grid[i][i+1].getCategoryType()==null){
+                dec = false;
+            }
+        }
+
+        for(int i=0, j=4; i<5 && j>=0; i++, j-- ){
+            if(grid[i][j].getCategoryType() != null || grid[i+1][j].getCategoryType() == null){
+                inc = false;
+            }
+        }
+        if(dec == true || inc == true){
+            return true;
+        }
         return false;
+
     }
 }
