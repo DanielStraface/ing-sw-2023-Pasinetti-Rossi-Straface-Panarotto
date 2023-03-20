@@ -74,19 +74,7 @@ class Game {
             }
             default -> {}
         }
-
-        for(int i=0;i<DIM_GAMEBOARD;i++){
-            for(int j=0;j<DIM_GAMEBOARD;j++){
-                if(validGrid[i][j]==1){
-                    try {
-                        this.gameboard.getGameGrid()[i][j] = this.bag.drawItem();
-                        this.validGrid[i][j] = 2;
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-            }
-        }
+        refillGameBoard();
     }
 
     /** method to set the GameGrid for two players
@@ -176,10 +164,31 @@ class Game {
         //commonObjCard.get(0).doCheck(players.get(0));
     }
 
+    public void refillGameBoard(){
+        for(int i=0;i<DIM_GAMEBOARD;i++){
+            for(int j=0;j<DIM_GAMEBOARD;j++){
+                if(validGrid[i][j]==1){
+                    try {
+                        this.gameboard.getGameGrid()[i][j] = this.bag.drawItem();
+                        this.validGrid[i][j] = 2;
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        }
+    }
+
+    /* set methods */
+    public void setCurrentPlayer(Player player){
+        this.currentPlayer = player;
+    }
+
     /** get methods */
     public List<Player> getPlayers(){return players;}
     public GameBoard getGameboard(){return gameboard;}
     public List<CommonObjCard> getCommonObjCard(){return commonObjCards;}
     public Bag getBag(){return bag;}
     public Player getCurrentPlayer(){return currentPlayer;}
+    public int[][] getValidGrid(){return validGrid;}
 }

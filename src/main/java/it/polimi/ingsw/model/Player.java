@@ -23,27 +23,14 @@ public class Player {
         this.isFirstPlayer = false;
     }
 
-    public String getNickname(){
-        return this.nickname;
-    }
-    public int getClientID(){
-        return this.clientID;
-    }
-    public int getScore(){
-        return this.score;
-    }
-    public PersonalObjCard getMyPersonalOBjCard(){
-        return this.myPersonalObjCard;
-    }
-    public Shelf getMyShelf(){
-        return this.myShelf;
-    }
-    public boolean getFirstPlayer(){
-        return this.isFirstPlayer;
+    public void playerChoice(int[][] selectedcoords, Item[][] gameGrid, int[][] validGrid, int selectedcol)
+            throws Exception {
+        pickItems(selectedcoords, gameGrid, validGrid);
+        putItemInShelf(selectedcol);
     }
 
     /** method to pick Items from the game board*/
-    private List<Item> pickItems(int[][] selectedcoords, Item[][] gameGrid) throws Exception {
+    private void pickItems(int[][] selectedcoords, Item[][] gameGrid, int[][] validGrid) throws Exception {
         if (selectedcoords != null) {
             boolean sameX = true;
             boolean sameY = true;
@@ -89,12 +76,12 @@ public class Player {
                 int col = selectedcoords[i][1];
                 selectItems.add(gameGrid[row][col]);
                 gameGrid[row][col] = null;
+                validGrid[row][col] = 1;
             }
         }
-        return selectItems;
     }
     /** method to put Items into personal shelf*/
-    private void putItemInShelf(Item[] selectItems, int selectedCol){
+    private void putItemInShelf(int selectedCol){
         Item[][] grid=myShelf.getShelfGrid();
         if (selectedCol >= 5) {
             throw new IllegalArgumentException("selectedCol must be less than 5");
@@ -107,21 +94,41 @@ public class Player {
             }
         }
         /* For-cycle to put items into the selected column starting from the last row available*/
-        for (int i = 0; i < selectItems.length; i++, lastRow--) {
-            grid[lastRow][selectedCol] = selectItems[i];
+        for (int i = 0; i < selectItems.size(); i++, lastRow--) {
+            grid[lastRow][selectedCol] = selectItems.get(i);
         }
-    }
-
-    public void setPersonalObjCard(PersonalObjCard card){
-        this.myPersonalObjCard = card;
-    }
-
-    public void setMyShelf(Shelf shelf){
-        this.myShelf = shelf;
     }
 
     public void addPoints(int points) {
         this.score += points;
+    }
+
+    /* set methods */
+    public void setPersonalObjCard(PersonalObjCard card){
+        this.myPersonalObjCard = card;
+    }
+    public void setMyShelf(Shelf shelf){
+        this.myShelf = shelf;
+    }
+
+    /* get methods */
+    public String getNickname(){
+        return this.nickname;
+    }
+    public int getClientID(){
+        return this.clientID;
+    }
+    public int getScore(){
+        return this.score;
+    }
+    public PersonalObjCard getMyPersonalOBjCard(){
+        return this.myPersonalObjCard;
+    }
+    public Shelf getMyShelf(){
+        return this.myShelf;
+    }
+    public boolean getFirstPlayer(){
+        return this.isFirstPlayer;
     }
 }
 
