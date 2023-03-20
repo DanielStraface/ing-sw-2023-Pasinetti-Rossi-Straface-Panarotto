@@ -8,6 +8,6 @@ class GameBoard {
     private Item[][] gameGrid = new Item[DIM_GAMEBOARD][DIM_GAMEBOARD];
 
     /** get methods */
-    private Item[][] getGameGrid(){return gameGrid;}
+    public Item[][] getGameGrid(){return gameGrid;}
 
 }

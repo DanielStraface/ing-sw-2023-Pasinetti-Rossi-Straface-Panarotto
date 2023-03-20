@@ -6,6 +6,10 @@ import java.util.Random;
 class Bag {
     private List<Item> itemCards;
 
+    public void setItemCards(Item item){
+        this.itemCards.add(item);
+    }
+
     /** drawItem method picks randomly an Item in the bag and removes it, used
      * for filling the GameBoard */
     public Item drawItem() throws Exception{

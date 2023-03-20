@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.personcard.PersonalObjCard;
 
 import java.util.Arrays;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -23,21 +24,24 @@ class Game {
     private Player currentPlayer;
 
     /** constructor for Game class */
-    public Game (int playersNumber){
+    public Game (int playersNumber) throws Exception {
         this.playersNumber = playersNumber;
         createPlayers();
-        createGameBoard();
         createBag();
+        createGameBoard();
         generatePersonalObjCards();
         generateCommonObjCards();
     }
 
     //***********************************************
-    private void createPlayers() {
-        //TO IMPLEMENT
+    private void createPlayers() throws Exception {
+        for(int i=0;i<this.playersNumber;i++){
+            //nickname: "space" for each player, clientID: 0, isFirstPlayer: false;
+            players.add(new Player(" ", 0, false));
+        }
     }
 
-    private void createGameBoard(){
+    private void createGameBoard() throws Exception {
         setGridForTwo(this.validGrid);
         switch(this.playersNumber) {
             case 3 -> {
@@ -69,6 +73,19 @@ class Game {
                 validGrid[8][5] = 1;
             }
             default -> {}
+        }
+
+        for(int i=0;i<DIM_GAMEBOARD;i++){
+            for(int j=0;j<DIM_GAMEBOARD;j++){
+                if(validGrid[i][j]==1){
+                    try {
+                        this.gameboard.getGameGrid()[i][j] = this.bag.drawItem();
+                        this.validGrid[i][j] = 2;
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
         }
     }
 
@@ -114,7 +131,12 @@ class Game {
     }
 
     private void createBag() {
-        //TO IMPLEMENT
+        final int ITEM_NUM = 22;
+        for(Category c : Category.values()){
+            for(int i=0;i<ITEM_NUM;i++){
+                this.bag.setItemCards(new Item(c));
+            }
+        }
     }
 
     /**
