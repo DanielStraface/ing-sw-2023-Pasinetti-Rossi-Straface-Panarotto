@@ -25,9 +25,22 @@ class Game {
     /** constructor for Game class */
     public Game (int playersNumber){
         this.playersNumber = playersNumber;
-        switch(playersNumber){
+        createPlayers();
+        createGameBoard();
+        createBag();
+        generatePersonalObjCards();
+        generateCommonObjCards();
+    }
+
+    //***********************************************
+    private void createPlayers() {
+        //TO IMPLEMENT
+    }
+
+    private void createGameBoard(){
+        setGridForTwo(this.validGrid);
+        switch(this.playersNumber) {
             case 3 -> {
-                setGridForTwo(validGrid);
                 validGrid[0][3] = 1;
                 validGrid[2][2] = 1;
                 validGrid[2][6] = 1;
@@ -38,7 +51,6 @@ class Game {
                 validGrid[8][5] = 1;
             }
             case 4 -> {
-                setGridForTwo(validGrid);
                 validGrid[0][3] = 1;
                 validGrid[0][4] = 1;
                 validGrid[1][5] = 1;
@@ -56,9 +68,7 @@ class Game {
                 validGrid[8][4] = 1;
                 validGrid[8][5] = 1;
             }
-            default -> {
-                setGridForTwo(validGrid);
-            }
+            default -> {}
         }
     }
 
@@ -103,14 +113,10 @@ class Game {
         }
     }
 
-    /** get methods */
-    public List<Player> getPlayers(){return players;}
-    public GameBoard getGameboard(){return gameboard;}
-    public List<CommonObjCard> getCommonObjCard(){return commonObjCards;}
-    public Bag getBag(){return bag;}
-    public Player getCurrentPlayer(){return currentPlayer;}
+    private void createBag() {
+        //TO IMPLEMENT
+    }
 
-    //***********************************************
     /**
      * Method generatePersonalObjCards obtains from a cardReader instance a list of personalObj card previously store in
      * a Json file and the distribute one of them to each player of the match.
@@ -120,8 +126,8 @@ class Game {
         PersonalCardReader cardReader = new PersonalCardReader();
         List<PersonalObjCard> cardsList = cardReader.readFromFile();
         /* Generation of random number to extract from the list a specific personalObjCard and use it as a parameter
-        *  for the setPersonalObjCard method of player entity.
-        *  This is done for each player in the match */
+         *  for the setPersonalObjCard method of player entity.
+         *  This is done for each player in the match */
         Random rand = new Random();
         for(int i=0;i<NUMB;i++){
             int n = rand.nextInt();
@@ -147,4 +153,11 @@ class Game {
         this.commonObjCards.add( new CommonObjCard(this.playersNumber, name.get(random.nextInt(name.size()))));
         //commonObjCard.get(0).doCheck(players.get(0));
     }
+
+    /** get methods */
+    public List<Player> getPlayers(){return players;}
+    public GameBoard getGameboard(){return gameboard;}
+    public List<CommonObjCard> getCommonObjCard(){return commonObjCards;}
+    public Bag getBag(){return bag;}
+    public Player getCurrentPlayer(){return currentPlayer;}
 }

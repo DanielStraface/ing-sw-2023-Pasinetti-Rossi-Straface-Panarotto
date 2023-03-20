@@ -108,6 +108,10 @@ public class Player {
     public void setMyShelf(Shelf shelf){
         this.myShelf = shelf;
     }
+
+    public void addPoints(int points) {
+        this.score += points;
+    }
 }
 
 
