@@ -6,8 +6,10 @@ import it.polimi.ingsw.model.Shelf;
 public class PersonalObjCard {
 
     /* ATTRIBUTES SECTIONS */
+    private static final int SHELF_ROWS=6;
+    private static final int SHELF_COLUMS=5;
     private String personalObjCardDescription; // The name of the personalObjCard, initially store in JSON file
-    private Item[][] cardGrid; // This provides the position of item needed to score points, initially store in JSON file
+    private Item[][] cardGrid = new Item[SHELF_ROWS][SHELF_COLUMS]; // This provides the position of item needed to score points, initially store in JSON file
 
 
     /* METHODS SECTION */

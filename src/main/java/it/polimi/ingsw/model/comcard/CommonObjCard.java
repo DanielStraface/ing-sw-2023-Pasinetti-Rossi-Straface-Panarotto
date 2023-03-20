@@ -93,12 +93,12 @@ public class CommonObjCard {
      * Method getPoint returns the points for this card based on what order the players has reached the goal.
      * @return result <==> objPoints[objLength - 1]
      */
-    public int getPoint() throws NullPointerException {
+    public int getPoints() throws NullPointerException {
         if (objPoints.length - 1 < 0) throw new NullPointerException("The array length is zero");
         else {
-            int tempPoint = objPoints[objPoints.length - 1];
+            int tempPoints = objPoints[objPoints.length - 1];
             nextPoints = nextPoints - 1;
-            return tempPoint;
+            return tempPoints;
         }
     }
 
@@ -109,7 +109,10 @@ public class CommonObjCard {
      * @return true <==> conditions of the commonObjCard subsists for the parameter player
      */
     public void doCheck(Player player){
-        strategyCheck.check(player.getMyShelf().getShelfGrid(), this.type);
+        boolean isTrue = strategyCheck.check(player.getMyShelf().getShelfGrid(), this.type);
+        if(isTrue){
+            player.addPoints(this.getPoints());
+        }
     }
 }
 
