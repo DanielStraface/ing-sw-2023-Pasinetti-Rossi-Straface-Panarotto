@@ -18,7 +18,6 @@ public class Bag {
     /** drawItem method picks randomly an Item in the bag and removes it, used
      * for filling the GameBoard */
     public Item drawItem() throws Exception{
-        Item temp;
         if(itemCards.size()>0){
             Random random = new Random();
             int randomNumber = random.nextInt(itemCards.size());
@@ -29,5 +28,7 @@ public class Bag {
         }
         return null;
     }
+
+    public List<Item> getItemCards(){ return this.itemCards; }
 
 }
