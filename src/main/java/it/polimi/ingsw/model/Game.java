@@ -9,6 +9,8 @@ import java.util.*;
 public class Game {
 
     private static final int DIM_GAMEBOARD=9;
+    private static final int PLAYABLE = 1;
+    private static final int OCCUPIED = 2;
 
     private int playersNumber;
     private List<Player> players;
@@ -44,32 +46,32 @@ public class Game {
         setGridForTwo(this.validGrid);
         switch(this.playersNumber) {
             case 3 -> {
-                validGrid[0][3] = 1;
-                validGrid[2][2] = 1;
-                validGrid[2][6] = 1;
-                validGrid[3][8] = 1;
-                validGrid[5][0] = 1;
-                validGrid[6][2] = 1;
-                validGrid[6][6] = 1;
-                validGrid[8][5] = 1;
+                validGrid[0][3] = PLAYABLE;
+                validGrid[2][2] = PLAYABLE;
+                validGrid[2][6] = PLAYABLE;
+                validGrid[3][8] = PLAYABLE;
+                validGrid[5][0] = PLAYABLE;
+                validGrid[6][2] = PLAYABLE;
+                validGrid[6][6] = PLAYABLE;
+                validGrid[8][5] = PLAYABLE;
             }
             case 4 -> {
-                validGrid[0][3] = 1;
-                validGrid[0][4] = 1;
-                validGrid[1][5] = 1;
-                validGrid[2][2] = 1;
-                validGrid[2][6] = 1;
-                validGrid[3][1] = 1;
-                validGrid[3][8] = 1;
-                validGrid[4][0] = 1;
-                validGrid[4][8] = 1;
-                validGrid[5][0] = 1;
-                validGrid[5][7] = 1;
-                validGrid[6][2] = 1;
-                validGrid[6][6] = 1;
-                validGrid[7][3] = 1;
-                validGrid[8][4] = 1;
-                validGrid[8][5] = 1;
+                validGrid[0][3] = PLAYABLE;
+                validGrid[0][4] = PLAYABLE;
+                validGrid[1][5] = PLAYABLE;
+                validGrid[2][2] = PLAYABLE;
+                validGrid[2][6] = PLAYABLE;
+                validGrid[3][1] = PLAYABLE;
+                validGrid[3][8] = PLAYABLE;
+                validGrid[4][0] = PLAYABLE;
+                validGrid[4][8] = PLAYABLE;
+                validGrid[5][0] = PLAYABLE;
+                validGrid[5][7] = PLAYABLE;
+                validGrid[6][2] = PLAYABLE;
+                validGrid[6][6] = PLAYABLE;
+                validGrid[7][3] = PLAYABLE;
+                validGrid[8][4] = PLAYABLE;
+                validGrid[8][5] = PLAYABLE;
             }
             default -> {}
         }
@@ -85,32 +87,32 @@ public class Game {
             for (j = 0; j < 9; j++) {
                 if (i==1){
                     if(j>2 && j<5){
-                        Grid[i][j] = 1;
+                        Grid[i][j] = PLAYABLE;
                     }
                 }
                 if (i==2 || i==6){
                     if(j>2 && j<6){
-                        Grid[i][j] = 1;
+                        Grid[i][j] = PLAYABLE;
                     }
                 }
                 if (i==3){
                     if(j>1 && j<8){
-                        Grid[i][j] = 1;
+                        Grid[i][j] = PLAYABLE;
                     }
                 }
                 if (i==4){
                     if(j>0 && j<8){
-                        Grid[i][j] = 1;
+                        Grid[i][j] = PLAYABLE;
                     }
                 }
                 if (i==5){
                     if(j>0 && j<7){
-                        Grid[i][j] = 1;
+                        Grid[i][j] = PLAYABLE;
                     }
                 }
                 if (i==7){
                     if(j>3 && j<6){
-                        Grid[i][j] = 1;
+                        Grid[i][j] = PLAYABLE;
                     }
                 }
             }
@@ -164,10 +166,10 @@ public class Game {
     public void refillGameBoard(){
         for(int i=0;i<DIM_GAMEBOARD;i++){
             for(int j=0;j<DIM_GAMEBOARD;j++){
-                if(validGrid[i][j]==1){
+                if(validGrid[i][j]==PLAYABLE){
                     try {
                         this.gameboard.getGameGrid()[i][j] = this.bag.drawItem();
-                        this.validGrid[i][j] = 2;
+                        this.validGrid[i][j] = OCCUPIED;
                     } catch (Exception e) {
                         throw new RuntimeException(e);
                     }

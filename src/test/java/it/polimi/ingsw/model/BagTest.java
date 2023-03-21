@@ -93,4 +93,18 @@ public class BagTest {
         assertSame(Category.CAT,bag.getItemCards().get(bag.getItemCards().size()-1).getCategoryType(),
                 "The item added is not a cat");
     }
+
+    /** Method to draw Items until the bag gets empty */
+    @Test
+    public void bagEmptierTest() {
+        final int DIM = 87;
+        try {
+            game = new Game(3);  // Game created has 3 players
+            for (int i = DIM - 1; i >= 0; i--) bag.drawItem();
+            assertTrue(0 == bag.getItemCards().size());
+        } catch (Exception e) {
+            fail("Game not created successfully ");
+        }
+    }
+
 }
