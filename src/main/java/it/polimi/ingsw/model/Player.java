@@ -21,6 +21,7 @@ public class Player {
         this.clientID = clientID;
         this.score = 0;
         this.isFirstPlayer = false;
+        this.myShelf = new Shelf();
     }
 
     public void playerChoice(int[][] selectedcoords, Item[][] gameGrid, int[][] validGrid, int selectedcol)

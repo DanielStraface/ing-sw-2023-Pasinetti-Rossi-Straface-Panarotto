@@ -1,10 +1,15 @@
 package it.polimi.ingsw.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-class Bag {
+public class Bag {
     private List<Item> itemCards;
+
+    public Bag(){
+        this.itemCards = new ArrayList<Item>();
+    }
 
     public void setItemCards(Item item){
         this.itemCards.add(item);
@@ -17,9 +22,7 @@ class Bag {
         if(itemCards.size()>0){
             Random random = new Random();
             int randomNumber = random.nextInt(itemCards.size());
-            temp = itemCards.get(randomNumber);
-            itemCards.remove(randomNumber);
-            return temp;
+            return itemCards.remove(randomNumber);
         }
         else if(itemCards.size()==0){
                   throw new Exception("Cannot draw Item,the bag is empty!");

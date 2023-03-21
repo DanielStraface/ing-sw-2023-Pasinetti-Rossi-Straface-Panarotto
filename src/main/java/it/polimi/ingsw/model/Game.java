@@ -4,16 +4,11 @@ import it.polimi.ingsw.model.comcard.CommonObjCard;
 import it.polimi.ingsw.model.personcard.PersonalCardReader;
 import it.polimi.ingsw.model.personcard.PersonalObjCard;
 
-import java.util.Arrays;
+import java.util.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
-
-class Game {
+public class Game {
 
     private static final int DIM_GAMEBOARD=9;
-    public static final int NUMB = 3;
 
     private int playersNumber;
     private List<Player> players;
@@ -26,6 +21,10 @@ class Game {
     /** constructor for Game class */
     public Game (int playersNumber) throws Exception {
         this.playersNumber = playersNumber;
+        this.players = new ArrayList<Player>(playersNumber);
+        this.bag = new Bag();
+        this.gameboard = new GameBoard();
+        this.commonObjCards = new ArrayList<CommonObjCard>();
         createPlayers();
         createBag();
         createGameBoard();
@@ -37,7 +36,7 @@ class Game {
     private void createPlayers() throws Exception {
         for(int i=0;i<this.playersNumber;i++){
             //nickname: "space" for each player, clientID: 0, isFirstPlayer: false;
-            players.add(new Player(" ", 0, false));
+            players.add(new Player(" ", i, false));
         }
     }
 
@@ -134,15 +133,14 @@ class Game {
     public void generatePersonalObjCards(){
         /* Creation of cardReader and fill the list with personalObjCard in reading order*/
         PersonalCardReader cardReader = new PersonalCardReader();
-        List<PersonalObjCard> cardsList = cardReader.readFromFile();
+        List<PersonalObjCard> cardsList = new LinkedList<PersonalObjCard>(cardReader.readFromFile());
         /* Generation of random number to extract from the list a specific personalObjCard and use it as a parameter
          *  for the setPersonalObjCard method of player entity.
          *  This is done for each player in the match */
         Random rand = new Random();
-        for(int i=0;i<NUMB;i++){
-            int n = rand.nextInt();
-            this.getPlayers().get(i).setPersonalObjCard(cardsList.get(n));
-            cardsList.remove(n);
+        for(int i=0;i<this.playersNumber;i++){
+            int n = rand.nextInt(cardsList.size());
+            this.getPlayers().get(i).setPersonalObjCard(cardsList.remove(n));
         }
     }
 
@@ -152,16 +150,15 @@ class Game {
     public void generateCommonObjCards(){
         /* Randomly generate an int that will be used for pop a commonObjCard type*/
         Random random = new Random();
-        List<Integer> name = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
+        List<Integer> name = new LinkedList<Integer>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12));
         //generate the type by popping the name list
         int n = random.nextInt(name.size());
         //add to commonObjCards list the first new commonObjCard with is points array and type set
-        this.commonObjCards.add( new CommonObjCard(this.playersNumber, name.get(n)));
-        name.remove(n);
+        this.commonObjCards.add( new CommonObjCard(this.playersNumber, name.remove(n)));
+        //name.remove(n);
         //add to commonObjCards list the second new commonObjCard with is points array and type set.
         //this is done randomly by getting a new name list type
         this.commonObjCards.add( new CommonObjCard(this.playersNumber, name.get(random.nextInt(name.size()))));
-        //commonObjCard.get(0).doCheck(players.get(0));
     }
 
     public void refillGameBoard(){

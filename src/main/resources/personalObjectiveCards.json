@@ -1,7 +1,7 @@
 [
   {
     "personalObjCardDescription": "First card",
-    "grid": [
+    "cardGrid": [
       [{"category":  "PLANT"}, {"category":  null}, {"category":  "FRAME"}, {"category":  null}, {"category":  null}],
       [{"category":  null}, {"category":  null}, {"category":  null}, {"category":  null}, {"category":  "CAT"}],
       [{"category":  null}, {"category":  null}, {"category":  null}, {"category":  "BOOK"}, {"category":  null}],
@@ -12,7 +12,7 @@
   },
   {
     "personalObjCardDescription": "Second card",
-    "grid": [
+    "cardGrid": [
       [{"category":  null}, {"category":  null}, {"category":  null}, {"category":  null}, {"category":  null}],
       [{"category":  null}, {"category":  "PLANT"}, {"category":  null}, {"category":  null}, {"category":  null}],
       [{"category":  "CAT"}, {"category":  null}, {"category":  "GAME"}, {"category":  null}, {"category":  null}],
@@ -23,7 +23,7 @@
   },
   {
     "personalObjCardDescription": "Third card",
-    "grid": [
+    "cardGrid": [
       [{"category":  null}, {"category":  null}, {"category":  null}, {"category":  null}, {"category":  null}],
       [{"category":  "FRAME"}, {"category":  null}, {"category":  null}, {"category":  "GAME"}, {"category":  null}],
       [{"category":  null}, {"category":  null}, {"category":  "PLANT"}, {"category":  null}, {"category":  null}],
@@ -34,7 +34,7 @@
   },
   {
     "personalObjCardDescription": "Fourth card",
-    "grid": [
+    "cardGrid": [
       [{"category":  null}, {"category":  null}, {"category":  null}, {"category":  null}, {"category":  "GAME"}],
       [{"category":  null}, {"category":  null}, {"category":  null}, {"category":  null}, {"category":  null}],
       [{"category":  "TROPHY"}, {"category":  null}, {"category":  "FRAME"}, {"category":  null}, {"category":  null}],
@@ -45,7 +45,7 @@
   },
   {
     "personalObjCardDescription": "Fifth card",
-    "grid": [
+    "cardGrid": [
       [{"category":  null}, {"category":  null}, {"category":  null}, {"category":  null}, {"category":  null}],
       [{"category":  null}, {"category":  "TROPHY"}, {"category":  null}, {"category":  null}, {"category":  null}],
       [{"category":  null}, {"category":  null}, {"category":  null}, {"category":  null}, {"category":  null}],
@@ -56,7 +56,7 @@
   },
   {
     "personalObjCardDescription": "Sixth card",
-    "grid": [
+    "cardGrid": [
       [{"category":  null}, {"category":  null}, {"category":  "TROPHY"}, {"category":  null}, {"category":  "CAT"}],
       [{"category":  null}, {"category":  null}, {"category":  null}, {"category":  null}, {"category":  null}],
       [{"category":  null}, {"category":  null}, {"category":  null}, {"category":  "BOOK"}, {"category":  null}],
@@ -67,7 +67,7 @@
   },
   {
     "personalObjCardDescription": "Seventh card",
-    "grid": [
+    "cardGrid": [
       [{"category":  "CAT"}, {"category":  null}, {"category":  null}, {"category":  null}, {"category":  null}],
       [{"category":  null}, {"category":  null}, {"category":  null}, {"category":  "FRAME"}, {"category":  null}],
       [{"category":  null}, {"category":  "PLANT"}, {"category":  null}, {"category":  null}, {"category":  null}],
@@ -78,7 +78,7 @@
   },
   {
     "personalObjCardDescription": "Eighth card",
-    "grid": [
+    "cardGrid": [
       [{"category":  null}, {"category":  null}, {"category":  null}, {"category":  null}, {"category":  "FRAME"}],
       [{"category":  null}, {"category":  "CAT"}, {"category":  null}, {"category":  null}, {"category":  null}],
       [{"category":  null}, {"category":  null}, {"category":  "TROPHY"}, {"category":  null}, {"category":  null}],
@@ -89,7 +89,7 @@
   },
   {
     "personalObjCardDescription": "Ninth card",
-    "grid": [
+    "cardGrid": [
       [{"category":  null}, {"category":  null}, {"category":  "GAME"}, {"category":  null}, {"category":  null}],
       [{"category":  null}, {"category":  null}, {"category":  null}, {"category":  null}, {"category":  null}],
       [{"category":  null}, {"category":  null}, {"category":  "CAT"}, {"category":  null}, {"category":  null}],
@@ -100,7 +100,7 @@
   },
   {
     "personalObjCardDescription": "Tenth card",
-    "grid": [
+    "cardGrid": [
       [{"category":  null}, {"category":  null}, {"category":  null}, {"category":  null}, {"category":  "TROPHY"}],
       [{"category":  null}, {"category":  "GAME"}, {"category":  null}, {"category":  null}, {"category":  null}],
       [{"category":  "BOOK"}, {"category":  null}, {"category":  null}, {"category":  null}, {"category":  null}],
@@ -111,7 +111,7 @@
   },
   {
     "personalObjCardDescription": "Eleventh card",
-    "grid": [
+    "cardGrid": [
       [{"category":  null}, {"category":  null}, {"category":  "PLANT"}, {"category":  null}, {"category":  null}],
       [{"category":  null}, {"category":  "BOOK"}, {"category":  null}, {"category":  null}, {"category":  null}],
       [{"category":  "GAME"}, {"category":  null}, {"category":  null}, {"category":  null}, {"category":  null}],
@@ -122,7 +122,7 @@
   },
   {
     "personalObjCardDescription": "Twelfth card",
-    "grid": [
+    "cardGrid": [
       [{"category":  null}, {"category":  null}, {"category":  "BOOK"}, {"category":  null}, {"category":  null}],
       [{"category":  null}, {"category":  "PLANT"}, {"category":  null}, {"category":  null}, {"category":  null}],
       [{"category":  null}, {"category":  null}, {"category":  "FRAME"}, {"category":  null}, {"category":  null}],

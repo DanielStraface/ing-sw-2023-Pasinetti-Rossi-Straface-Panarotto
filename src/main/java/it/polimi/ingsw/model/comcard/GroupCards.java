@@ -27,7 +27,6 @@ class GroupCards implements StrategyCheck {
                 return false;
             }
         }
-        return true;
     }
 
     private boolean groupOfTwo(Item[][] grid) {
