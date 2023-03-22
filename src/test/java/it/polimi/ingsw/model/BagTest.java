@@ -31,13 +31,6 @@ public class BagTest {
         bag = game.getBag();
     }
 
-    /** Method to test if the bag is created successfully */
-    @Test
-    public void BagCreation(){
-        for(Item item: bag.getItemCards()){
-            assertNotEquals(null,item,"An item is missing");
-        }
-    }
 
     /** Method to test if an Item is successfully drawn from the bag */
     @Test

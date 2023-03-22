@@ -38,7 +38,7 @@ public class GameTest {
     }
 
 
-
+    /** Method to test if players are successfully created in a match */
     @Test
     public void playerCreationTest(){
         boolean checker = true;
@@ -47,11 +47,26 @@ public class GameTest {
                     players.get(i).getClientID() != i &&
                     players.get(i).getFirstPlayer()) {
                 checker = false;
+                break;
             }
         }
         assertTrue(checker,"Players not created successfully");
     }
 
+
+
+    /** Method to test if the bag is created successfully */
+    @Test
+    public void bagCreation(){
+        Bag bag;
+        bag = game.getBag();
+        for(Item item: bag.getItemCards()){
+            assertNotEquals(null,item,"An item is missing");
+        }
+    }
+
+
+    /** Method to test if the list of players is successfully returned */
     @Test
     public void getPlayersTest(){
         List<Player> players;
@@ -60,6 +75,7 @@ public class GameTest {
     }
 
 
+    /** Method to test if the GameBoard is refilled correctly */
     @Test
     public void gameBoardRefillTest(){
         boolean checker = true;
@@ -77,7 +93,7 @@ public class GameTest {
     }
 
 
-
+    /** Method to test if each player successfully receives its own PersonalObjectiveCard */
     @Test
     public void persObjCardGenerationTest(){
         for(int i=0; i<playersNumber; i++){
@@ -95,7 +111,7 @@ public class GameTest {
 
 
 
-
+    /** Method to test if two commonObjectiveCards are correctly extracted */
     @Test
     public void commonObjCardGenerationTest(){
         for(int i=0; i<commonObjCards.size(); i++){
@@ -111,6 +127,7 @@ public class GameTest {
     }
 
 
+    /** Method to test if the CommonObjectiveCard is successfully returned */
     @Test
     public void getCommonObjCardTest(){
         List <CommonObjCard> commonObjCard;
@@ -120,9 +137,9 @@ public class GameTest {
     }
 
 
-
+    /** Method to test if the current player is correctly changed */
     @Test
-    public void setCurrentPlayerTest() throws Exception {
+    public void setCurrentPlayerTest(){
         try {
             Player player = new Player("TestName", 0, true);
             game.setCurrentPlayer(player);
@@ -134,6 +151,18 @@ public class GameTest {
     }
 
 
+    @Test
+    public void gameCreationTest(){
+        playerCreationTest();
+        bagCreation();
+        gameBoardRefillTest();
+        persObjCardGenerationTest();
+        commonObjCardGenerationTest();
+    }
+
+
+
+    // Method to test all the other Get methods in Game
 
     @Test
     public void getCurrentPlayerTest(){
