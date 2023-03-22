@@ -1,7 +1,5 @@
 package it.polimi.ingsw.model;
 
-import java.util.List;
-
 public class GameBoard {
 
     private static final int DIM_GAMEBOARD=9;

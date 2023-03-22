@@ -56,17 +56,4 @@ public class PersonalObjCard {
         *  between the two item grid are true. The method must return true */
         return true;
     }
-
-    /** ACESSORY METHOD HERE **/
-    public void show(){
-        System.out.println(this.getPersonalObjCardDescription());
-        System.out.println("This card has a " + cardGrid.length + " card grid height");
-        System.out.println("This card has a " + cardGrid[0].length + " card grid width");
-        for (Item[] items : this.cardGrid) {
-            for (int j = 0; j < this.cardGrid[0].length; j++) {
-                System.out.print(items[j].getCategoryType() + " ");
-            }
-            System.out.println();
-        }
-    }
 }

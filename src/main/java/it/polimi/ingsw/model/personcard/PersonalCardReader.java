@@ -9,7 +9,14 @@ import java.util.List;
 
 public class PersonalCardReader {
 
+    /* ATTRIBUTES SECTIONS */
+    private final String file;
+
     /* METHOD SECTION */
+
+    /* -- constructors --*/
+    public PersonalCardReader(){this.file = "personalObjectiveCards.json";}
+    public PersonalCardReader(String file){this.file = file;}
 
     /**
      * Method readFromFile reads from a Json file the information about all the personalObjCard and returns that as list
@@ -24,7 +31,7 @@ public class PersonalCardReader {
         Reader input = null;
         try {
             input = new InputStreamReader(
-                    getClass().getClassLoader().getResourceAsStream("personalObjectiveCards.json")
+                    getClass().getClassLoader().getResourceAsStream(file)
             );
         } catch (NullPointerException e) {
             System.err.println("ResourceAsStream is null");
