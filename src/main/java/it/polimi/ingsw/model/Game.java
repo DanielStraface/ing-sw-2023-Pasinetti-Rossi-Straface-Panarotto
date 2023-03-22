@@ -135,7 +135,7 @@ public class Game {
     public void generatePersonalObjCards(){
         /* Creation of cardReader and fill the list with personalObjCard in reading order*/
         PersonalCardReader cardReader = new PersonalCardReader();
-        List<PersonalObjCard> cardsList = new LinkedList<PersonalObjCard>(cardReader.readFromFile());
+        List<PersonalObjCard> cardsList = new LinkedList<>(cardReader.readFromFile());
         /* Generation of random number to extract from the list a specific personalObjCard and use it as a parameter
          *  for the setPersonalObjCard method of player entity.
          *  This is done for each player in the match */
@@ -153,14 +153,17 @@ public class Game {
         /* Randomly generate an int that will be used for pop a commonObjCard type*/
         Random random = new Random();
         List<Integer> name = new LinkedList<Integer>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12));
-        //generate the type by popping the name list
-        int n = random.nextInt(name.size());
-        //add to commonObjCards list the first new commonObjCard with is points array and type set
-        this.commonObjCards.add( new CommonObjCard(this.playersNumber, name.remove(n)));
-        //name.remove(n);
-        //add to commonObjCards list the second new commonObjCard with is points array and type set.
-        //this is done randomly by getting a new name list type
-        this.commonObjCards.add( new CommonObjCard(this.playersNumber, name.get(random.nextInt(name.size()))));
+        try{
+            for(int i=0;i<2;i++){
+                //generate the type by popping the name list
+                int n = random.nextInt(name.size());
+                //add to commonObjCards list the first new commonObjCard with is points array and type set
+                this.commonObjCards.add( new CommonObjCard(this.playersNumber, name.remove(n)));
+            }
+        } catch (Exception e){
+            System.err.println("Error: creation of commonObjCards");
+        }
+
     }
 
     public void refillGameBoard(){

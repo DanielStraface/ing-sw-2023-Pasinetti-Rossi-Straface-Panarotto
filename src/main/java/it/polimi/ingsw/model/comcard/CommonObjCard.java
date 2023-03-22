@@ -50,7 +50,7 @@ public class CommonObjCard {
      * Constructor for CommonObjCard. It is based on how many players will play the game because the points provides by
      * CommonObjCard instance is different.
      */
-    public CommonObjCard(int numberOfPlayers, int type){
+    public CommonObjCard(int numberOfPlayers, int type) throws Exception {
         /*The switch case are chosen by the number of players of the game.
         * For each case statement, the objPoints array assume different points configuration.
         * The nextPoints variables refers to the next points that will be distributed to the player who claim it.
@@ -72,8 +72,7 @@ public class CommonObjCard {
                 this.objPoints = temp;
             }
             default -> {
-                this.nextPoints = 0;
-                this.objPoints = null;
+                throw new Exception("Error: number of players not allowed!");
             }
         }
         this.type = type;
@@ -96,7 +95,7 @@ public class CommonObjCard {
     public int getPoints() throws NullPointerException {
         if (objPoints.length - 1 < 0) throw new NullPointerException("The array length is zero");
         else {
-            int tempPoints = objPoints[objPoints.length - 1];
+            int tempPoints = objPoints[nextPoints];
             nextPoints = nextPoints - 1;
             return tempPoints;
         }
