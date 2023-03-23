@@ -66,14 +66,6 @@ public class GameTest {
     }
 
 
-    /** Method to test if the list of players is successfully returned */
-    @Test
-    public void getPlayersTest(){
-        List<Player> players;
-        players = game.getPlayers();
-        assertEquals(game.getPlayers(), players, "The Players list returned is not the same");
-    }
-
 
     /** Method to test if the GameBoard is refilled correctly */
     @Test
@@ -127,16 +119,6 @@ public class GameTest {
     }
 
 
-    /** Method to test if the CommonObjectiveCard is successfully returned */
-    @Test
-    public void getCommonObjCardTest(){
-        List <CommonObjCard> commonObjCard;
-        commonObjCard = game.getCommonObjCard();
-        assertEquals(game.getCommonObjCard(), commonObjCard,
-                    "The PersonalObjectCard list returned is not the same");
-    }
-
-
     /** Method to test if the current player is correctly changed */
     @Test
     public void setCurrentPlayerTest(){
@@ -151,50 +133,9 @@ public class GameTest {
     }
 
 
-    @Test
-    public void gameCreationTest(){
-        playerCreationTest();
-        bagCreation();
-        gameBoardRefillTest();
-        persObjCardGenerationTest();
-        commonObjCardGenerationTest();
-    }
-
-
-
-    // Method to test all the other Get methods in Game
-
-    @Test
-    public void getCurrentPlayerTest(){
-        Player player;
-        player = game.getCurrentPlayer();
-        assertEquals(game.getCurrentPlayer(), player, "The current Player returned is not the same");
-    }
-
-
-    @Test
-    public void getGameBoardTest(){
-        GameBoard gameboard;
-        gameboard = game.getGameboard();
-        assertEquals(game.getGameboard(), gameboard, "The GameBoard returned is not the same");
-    }
-
-
-
-    @Test
-    public void getValidGridTest(){
-        int[][] grid;
-        grid = game.getValidGrid();
-        assertEquals(game.getValidGrid(), grid, "The valid grid returned is not the same");
-    }
-
-
-    @Test
-    public void getBagTest(){
-        Bag bag;
-        bag = game.getBag();
-        assertEquals(game.getBag(), bag, "The bag returned is not the same");
-    }
+    /** All the getter methods are tested during the other test methods;
+     *  The exceptions not covered here are covered in other test classes.
+     */
 
 
 }
