@@ -2,6 +2,9 @@ package it.polimi.ingsw.model.comcard;
 
 import it.polimi.ingsw.model.Player;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * STATUS DESCRIPTION FOR RowsColumnsCard
@@ -40,6 +43,7 @@ public class CommonObjCard {
     private final int[] objPoints;
     private int nextPoints;
     private StrategyCheck strategyCheck;
+    private List<Player> playersDone;
 
     /* METHODS SECTION */
 
@@ -75,6 +79,7 @@ public class CommonObjCard {
             }
         }
         defineStrategy(type);
+        playersDone = new ArrayList<Player>();
     }
 
     /* -- get methods */
@@ -113,9 +118,12 @@ public class CommonObjCard {
      * @return true <==> conditions of the commonObjCard subsists for the parameter player
      */
     public void doCheck(Player player){
-        boolean isTrue = strategyCheck.check(player.getMyShelf().getShelfGrid());
-        if(isTrue){
-            player.addPoints(this.getPoints());
+        if(!this.playersDone.contains(player)){
+            boolean isTrue = strategyCheck.check(player.getMyShelf().getShelfGrid());
+            if(isTrue){
+                player.addPoints(this.getPoints());
+                playersDone.add(player);
+            }
         }
     }
 }
