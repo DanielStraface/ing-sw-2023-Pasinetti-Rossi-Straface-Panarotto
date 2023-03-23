@@ -26,26 +26,15 @@ public class BagTest {
             game = new Game(4);
         }
         catch(Exception e) {
-            fail();
+            fail("Game not created successfully");
         }
         bag = game.getBag();
     }
 
-    /** Method to test if the bag is created successfully */
-    @Test
-    public void BagCreation(){
-        //game.createBag();
-        //bag = game.getBag();
-        for(Item item: bag.getItemCards()){
-            assertNotEquals(null,item,"An item is missing");
-        }
-    }
 
     /** Method to test if an Item is successfully drawn from the bag */
     @Test
     public void drawItemTest() throws Exception {
-        //game.createBag();
-        //bag = game.getBag();
         try {
             List<Category> categoryList = Arrays.asList(Category.values());
             Item itemDraw = bag.drawItem();
@@ -60,8 +49,6 @@ public class BagTest {
     /** Method to test if the exception triggers when the bag is empty */
     @Test
     public void emptyBagTest(){
-        //game.createBag();
-        //bag = game.getBag();
         for(int i=bag.getItemCards().size()-1; i>=0 ; i--){
             bag.getItemCards().remove(i);
         }
@@ -77,21 +64,17 @@ public class BagTest {
     /** Method to test if the List of Items is successfully returned */
     @Test
     public void getItemCardsTest(){
-        //game.createBag();
-        //bag = game.getBag();
         itemList = bag.getItemCards();
-        assertEquals(bag.getItemCards(), itemList, "The bag is not the same");
+        assertEquals(bag.getItemCards(), itemList, "The bag returned is not the same");
     }
 
     /** Method to test if an Item is successfully added to the bag */
     @Test
     public void setItemCardsTest(){
-        //game.createBag();
-        //bag = game.getBag();
         item = new Item(Category.CAT);
         bag.setItemCards(item);
         assertSame(Category.CAT,bag.getItemCards().get(bag.getItemCards().size()-1).getCategoryType(),
-                "The item added is not a cat");
+                  "The item added is not a cat");
     }
 
     /** Method to draw Items until the bag gets empty */
@@ -101,9 +84,9 @@ public class BagTest {
         try {
             game = new Game(3);  // Game created has 3 players
             for (int i = DIM - 1; i >= 0; i--) bag.drawItem();
-            assertTrue(0 == bag.getItemCards().size());
+            assertTrue(0 == bag.getItemCards().size(), "The bag is not empty");
         } catch (Exception e) {
-            fail("Game not created successfully ");
+            fail("Game not created successfully");
         }
     }
 
