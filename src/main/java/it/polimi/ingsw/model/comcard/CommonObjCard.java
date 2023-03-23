@@ -40,7 +40,6 @@ public class CommonObjCard {
     private final int[] objPoints;
     private int nextPoints;
     private StrategyCheck strategyCheck;
-    private final int type;
 
     /* METHODS SECTION */
 
@@ -75,7 +74,7 @@ public class CommonObjCard {
                 throw new Exception("Error: number of players not allowed!");
             }
         }
-        this.type = type;
+        defineStrategy(type);
     }
 
     /* -- get methods */
@@ -84,9 +83,7 @@ public class CommonObjCard {
      * -- Maybe this method must be edited in function of JSON loading strings
      * @return result <==> commonObjCardDescription
      */
-    public int getType(){
-        return this.type;
-    }
+    public int getType(){return this.strategyCheck.getType();}
 
     /**
      * Method getPoint returns the points for this card based on what order the players has reached the goal.
@@ -103,12 +100,20 @@ public class CommonObjCard {
 
     /* -- logic methods */
 
+    private void defineStrategy(int type){
+        if(type == 2 || type == 3 || type == 12) strategyCheck = new CornerDiagonals(type);
+        if(type == 1 || type == 5 || type == 7 || type == 11) strategyCheck = new GroupCards(type);
+        if(type == 6 || type == 8) strategyCheck = new RowsColumnsCard(type);
+        if(type == 4 || type == 9) strategyCheck = new ThreeDifferentTypes(type);
+        if(type == 12) strategyCheck = new XCards(type);
+    }
+
     /**
      * doCheck method controls if the condition for distributes points subsist.
      * @return true <==> conditions of the commonObjCard subsists for the parameter player
      */
     public void doCheck(Player player){
-        boolean isTrue = strategyCheck.check(player.getMyShelf().getShelfGrid(), this.type);
+        boolean isTrue = strategyCheck.check(player.getMyShelf().getShelfGrid());
         if(isTrue){
             player.addPoints(this.getPoints());
         }

@@ -4,7 +4,6 @@ import it.polimi.ingsw.model.Category;
 import it.polimi.ingsw.model.Item;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Shelf;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -16,16 +15,16 @@ public class CommonObjCardTest {
     private CommonObjCard card;
     private Player player;
     private final int NUMBER_OF_PLAYERS = 3;
-    private final int BASE_TYPE = 1;
+    private final int BASE_TYPE = 3;
 
-    @BeforeAll
-    public void setupBeforeAll() throws Exception {
+    @BeforeEach
+    public void setupPlayer() throws Exception {
         player = new Player("TEST NAME", 0, false);
         Shelf shelf = new Shelf();
         shelf.getShelfGrid()[0][0] = new Item(Category.BOOK);
         shelf.getShelfGrid()[0][4] = new Item(Category.BOOK);
         shelf.getShelfGrid()[5][0] = new Item(Category.BOOK);
-        shelf.getShelfGrid()[5][4] = new Item(Category.CAT);
+        shelf.getShelfGrid()[5][4] = new Item(Category.BOOK);
         player.setMyShelf(shelf);
     }
 
@@ -96,5 +95,23 @@ public class CommonObjCardTest {
         for(int i=2; i>=0;i--){
             assertEquals(4 + 2*i, card.getPoints(), "The points returned are wrong");
         }
+    }
+
+    @Test
+    public void wrongCheckTest(){
+        Shelf shelf = new Shelf();
+        shelf.getShelfGrid()[0][0] = new Item(Category.BOOK);
+        shelf.getShelfGrid()[0][4] = new Item(Category.BOOK);
+        shelf.getShelfGrid()[5][0] = new Item(Category.BOOK);
+        shelf.getShelfGrid()[5][4] = new Item(Category.CAT);
+        player.setMyShelf(shelf);
+        card.doCheck(player);
+        assertEquals(0, player.getScore(), "The check method hints");
+    }
+
+    @Test
+    public void rightCheckTest(){
+        card.doCheck(player);
+        assertTrue(0 < player.getScore(), "The check method is wrong");
     }
 }

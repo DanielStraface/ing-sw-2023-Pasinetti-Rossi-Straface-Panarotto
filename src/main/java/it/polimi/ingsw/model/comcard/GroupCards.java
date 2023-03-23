@@ -6,11 +6,20 @@ import it.polimi.ingsw.model.Item;
 import java.util.Arrays;
 import java.util.List;
 
-class GroupCards implements StrategyCheck {
+class GroupCards extends StrategyCheck {
+    /* ATTRIBUTES SECTION */
+    //private final int type;
+
+    /* METHOD SECTION */
+
+    /* -- constructor -- */
+    public GroupCards(int type){
+        this.type = type;
+    }
 
     @Override
-    public boolean check(Item[][] grid, int status) {
-        switch (status) {
+    public boolean check(Item[][] grid) {
+        switch (this.type) {
             case 1 -> {
                 return groupOfTwo(grid);
             }

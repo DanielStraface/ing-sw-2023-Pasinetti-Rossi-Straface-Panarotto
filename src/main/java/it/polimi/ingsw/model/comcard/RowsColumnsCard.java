@@ -3,8 +3,16 @@ package it.polimi.ingsw.model.comcard;
 import it.polimi.ingsw.model.Category;
 import it.polimi.ingsw.model.Item;
 
-class RowsColumnsCard implements StrategyCheck {
+class RowsColumnsCard extends StrategyCheck {
+    /* ATTRIBUTES SECTION */
+    //private final int type;
+
     /* METHODS SECTION */
+
+    /* -- constructor -- */
+    public RowsColumnsCard(int type){
+        this.type = type;
+    }
 
     /* -- logic methods --*/
 
@@ -13,8 +21,8 @@ class RowsColumnsCard implements StrategyCheck {
      * in the player shelf
      */
     @Override
-    public boolean check(Item[][] grid, int status) {
-        switch (status) {
+    public boolean check(Item[][] grid) {
+        switch (this.type) {
             case 6 -> {
                 return rowsChecker(grid);
             }

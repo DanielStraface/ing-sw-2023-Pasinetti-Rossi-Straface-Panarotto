@@ -5,11 +5,20 @@ import it.polimi.ingsw.model.Category;
 
 import java.util.HashSet;
 
-class ThreeDifferentTypes implements StrategyCheck {
+class ThreeDifferentTypes extends StrategyCheck {
+    /* ATTRIBUTES SECTION */
+    //private final int type;
+
+    /* METHOD SECTION */
+
+    /* -- constructor --*/
+    public ThreeDifferentTypes(int type){
+        this.type = type;
+    }
 
     @Override
-    public boolean check(Item[][] grid, int status) {
-        switch (status) {
+    public boolean check(Item[][] grid) {
+        switch (this.type) {
             case 4 -> {
                 return rowsDifferentTypes(grid);
             }

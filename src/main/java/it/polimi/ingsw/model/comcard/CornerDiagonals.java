@@ -3,8 +3,15 @@ package it.polimi.ingsw.model.comcard;
 import it.polimi.ingsw.model.Category;
 import it.polimi.ingsw.model.Item;
 
-class CornerDiagonals implements StrategyCheck {
+class CornerDiagonals extends StrategyCheck {
+    /* ATTRIBUTES SECTION */
+    //private final int type;
     /* METHODS SECTION */
+
+    /* -- constructor -- */
+    public CornerDiagonals(int type){
+        this.type = type;
+    }
 
     /* -- logic methods --*/
 
@@ -13,8 +20,8 @@ class CornerDiagonals implements StrategyCheck {
      * in the player shelf
      */
     @Override
-    public boolean check(Item[][] grid, int status) {
-        switch (status) {
+    public boolean check(Item[][] grid) {
+        switch (this.type) {
             case 2 -> {
                 return diagonals(grid);
             }
@@ -38,43 +45,47 @@ class CornerDiagonals implements StrategyCheck {
         boolean diag2 = true; //second main diagonal referencer
         boolean diag3 = true; //first opposite diagonal referencer
         boolean diag4 = true; //secondo opposite diagonal referencer
-        /* Main diagonal check */
+        /* Main diagonals check */
         Category c1 = grid[0][0].getCategoryType(); //first element of diag1
         Category c2 = grid[1][0].getCategoryType(); //first element of diag2
         for (int i = 1; i < 5; i++) {
-            for (int j = 1; j < 5; j++) {
-                if (c1 != null) {
-                    //if c1 is not null, must be control the rest of the diagonal
-                    if (grid[i][j].getCategoryType() != c1) {
-                        diag1 = false;
-                    }
+            if (c1 != null) {
+                //if c1 is not null, must be control the rest of the diagonal
+                if (grid[i][i].getCategoryType() != c1 || grid[i][i].getCategoryType() == null) {
+                    diag1 = false;
                 }
-                if (c2 != null) {
-                    //if c2 is not null, must be control the rest of the diagonal
-                    if (grid[i + 1][j].getCategoryType() != c2) {
-                        diag2 = false;
-                    }
+            } else {
+                diag1 = false;
+            }
+            if (c2 != null) {
+                //if c2 is not null, must be control the rest of the diagonal
+                if (grid[i + 1][i].getCategoryType() != c2 || grid[i + 1][i].getCategoryType() == null) {
+                    diag2 = false;
                 }
+            } else {
+                diag2 = false;
             }
         }
 
-        /* Opposite diagonal check */
+        /* Opposite diagonals check */
         Category c3 = grid[0][4].getCategoryType(); //first element of diag3
         Category c4 = grid[1][4].getCategoryType(); //first element of diag4
         for (int i = 1; i < 5; i++) {
-            for (int j = 3; j >= 0; j--) {
-                if (c3 != null) {
-                    //if c4 is not null, must be control the rest of the diagonal
-                    if (grid[i][j].getCategoryType() != c3) {
-                        diag3 = false;
-                    }
+            if (c3 != null) {
+                //if c4 is not null, must be control the rest of the diagonal
+                if (grid[i][4-i].getCategoryType() != c3 || grid[i][4-i].getCategoryType() == null) {
+                    diag3 = false;
                 }
-                if (c4 != null) {
-                    //if c4 is not null, must be control the rest of the diagonal
-                    if (grid[i + 1][j].getCategoryType() != c4) {
-                        diag4 = false;
-                    }
+            } else {
+                diag3 = false;
+            }
+            if (c4 != null) {
+                //if c4 is not null, must be control the rest of the diagonal
+                if (grid[i + 1][4-i].getCategoryType() != c4 || grid[i + 1][4-i].getCategoryType() == null) {
+                    diag4 = false;
                 }
+            } else {
+                diag4 = false;
             }
         }
 
@@ -102,7 +113,7 @@ class CornerDiagonals implements StrategyCheck {
         boolean dec = true;
 
         for(int i=0; i<5; i++){
-            if(grid[i][i].getCategoryType()!=null || grid[i][i+1].getCategoryType()==null){
+            if(grid[i][i].getCategoryType()!=null || grid[i+1][i].getCategoryType()==null){
                 dec = false;
             }
         }
