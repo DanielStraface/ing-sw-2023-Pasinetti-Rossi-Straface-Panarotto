@@ -11,9 +11,6 @@ public class Bag {
         this.itemCards = new ArrayList<Item>();
     }
 
-    public void setItemCards(Item item){
-        this.itemCards.add(item);
-    }
 
     /** drawItem method picks randomly an Item in the bag and removes it, used
      * for filling the GameBoard */
@@ -29,6 +26,9 @@ public class Bag {
         return null;
     }
 
+    public void setItemCards(Item item){
+        this.itemCards.add(item);
+    }
     public List<Item> getItemCards(){ return this.itemCards; }
 
 }
