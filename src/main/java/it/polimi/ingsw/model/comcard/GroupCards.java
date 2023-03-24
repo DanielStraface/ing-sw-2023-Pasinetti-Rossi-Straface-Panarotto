@@ -59,13 +59,13 @@ class GroupCards extends StrategyCheck {
                 }
             }
         }
-        for(int i=0; i<6; i++){
+        for(int i=0; i<5; i++){
             if(!check[i][4] && grid[i][4].getCategoryType()!=null &&
-                    !check[i+1][4] && grid[i+1][4].getCategoryType() == grid[i][5].getCategoryType()){
+                    !check[i+1][4] && grid[i+1][4].getCategoryType() == grid[i][4].getCategoryType()){
                 groups++;
             }
         }
-        for(int j=0; j<5; j++){
+        for(int j=0; j<4; j++){
             if(!check[5][j] && grid[5][j].getCategoryType()!=null &&
                     !check[5][j+1] && grid[5][j+1].getCategoryType() == grid[5][j].getCategoryType()){
                 groups++;
@@ -117,7 +117,7 @@ class GroupCards extends StrategyCheck {
                 }
             }
         }
-        return groupCounter >= 4;
+        return groupCounter == 4;
     }
 
     private boolean groupOfSquares(Item[][] grid) {
@@ -125,7 +125,7 @@ class GroupCards extends StrategyCheck {
         List<Category> list = Arrays.asList(Category.CAT, Category.BOOK, Category.FRAME,
                 Category.GAME, Category.TROPHY, Category.PLANT);
         for(int i=0;i<4;i++){
-            for(int j=0;i<5;j++){
+            for(int j=0;j<5;j++){
                 //if the item in the x centre is not null
                 if(grid[i][j].getCategoryType() != null){
                     //if the x is form by element of the same category
@@ -141,7 +141,7 @@ class GroupCards extends StrategyCheck {
         }
         //if one of the occurrences is at least two return true, else return false
         for (int numberOfOccurrences : categoryReference)
-            if (numberOfOccurrences >= 2) return true;
+            if (numberOfOccurrences == 2) return true;
         return false;
     }
 
@@ -172,7 +172,7 @@ class GroupCards extends StrategyCheck {
                 if(grid[i][j].getCategoryType() == Category.PLANT){
                     plantCounter++;
                 }
-                if(catCounter==8 || bookCounter==8 || gameCounter==8 || frameCounter==8 || trophyCounter==8 || plantCounter==8){
+                if(catCounter >= 8 || bookCounter >= 8 || gameCounter >= 8 || frameCounter >= 8 || trophyCounter >= 8 || plantCounter >= 8){
                     return true;
                 }
             }
