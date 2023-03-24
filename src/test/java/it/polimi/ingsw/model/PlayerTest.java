@@ -32,6 +32,7 @@ public class PlayerTest {
     @BeforeEach
     void creationPlayerAndGame() throws Exception {
         testPlayer = new Player(nickname, clientID, firstPlayer);
+        score=0;
         game = null;
         try {
             game = new Game(4);
@@ -41,8 +42,6 @@ public class PlayerTest {
         gameBoard= game.getGameboard();
         gameGrid = gameBoard.getGameGrid();
         validGrid = game.getValidGrid();
-        myShelf = testPlayer.getMyShelf();
-        myPersonalObjCard = testPlayer.getMyPersonalOBjCard();
     }
 
 
@@ -52,7 +51,35 @@ public class PlayerTest {
         assertEquals(clientID, testPlayer.getClientID(), "Not the same clientID");
         assertEquals(firstPlayer, testPlayer.getFirstPlayer(), "Variable is not false");
     }
+    @Test
+    public void getMyShelfTest() throws Exception {
+        myShelf= new Shelf();
+        testPlayer.setMyShelf(myShelf);
+        try {
+            assertSame(myShelf,testPlayer.getMyShelf(),"Not the same Shelf");
+        } catch (Exception e) {
+            fail();
+        }
+    }
 
+    @Test
+    public void getScoreTest() throws Exception {
+                try {
+            assertSame(score,testPlayer.getScore());
+        } catch (Exception e) {
+            fail();
+        }
+    }
+
+    @Test
+    public void addPointsTest() throws Exception{
+        testPlayer.addPoints(10);
+        try {
+            assertSame(score+10,testPlayer.getScore());
+        } catch (Exception e) {
+            fail();
+        }
+    }
     @Test
     public void diffRowsAndColsTest() throws Exception {
         selectedCoords = new int[][]{{1, 2}, {2, 4}, {5, 6}};
@@ -60,7 +87,7 @@ public class PlayerTest {
         try {
             Assertions.assertThrows(Exception.class, () -> testPlayer.playerChoice(selectedCoords, gameGrid, validGrid, selectedCol), "Not same row or column Exception");
         } catch (Exception e) {
-            fail("You can take from these coordinates");
+            fail();
         }
     }
 
@@ -71,7 +98,7 @@ public class PlayerTest {
         try {
             Assertions.assertThrows(Exception.class, () -> testPlayer.playerChoice(selectedCoords, gameGrid, validGrid, selectedCol), "No consecutive coords");
         } catch (Exception e) {
-            fail("You can take from these coordinates");
+            fail();
         }
     }
 
@@ -82,7 +109,7 @@ public class PlayerTest {
         try {
             Assertions.assertThrows(Exception.class, () -> testPlayer.playerChoice(selectedCoords, gameGrid, validGrid, selectedCol), "No free sides");
         } catch (Exception e) {
-            fail("You can take from these coordinates");
+            fail();
         }
     }
 
@@ -93,7 +120,7 @@ public class PlayerTest {
         try {
             Assertions.assertThrows(Exception.class, () -> testPlayer.playerChoice(selectedCoords, gameGrid, validGrid, selectedCol), "No Available Column");
         } catch (Exception e) {
-            fail("You can take from these coordinates");
+            fail();
         }
     }
 
@@ -104,10 +131,9 @@ public class PlayerTest {
         try {
             Assertions.assertDoesNotThrow(()-> testPlayer.playerChoice(selectedCoords, gameGrid, validGrid, selectedCol), "No Available Column");
         } catch (Exception e) {
-            fail("You can take from these coordinates");
+            fail();
         }
     }
-
 }
 
 

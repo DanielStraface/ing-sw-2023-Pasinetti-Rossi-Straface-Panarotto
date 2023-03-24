@@ -119,16 +119,18 @@ public class Player {
         }
     }
 
-    public void addPoints(int points) {
+    public Object addPoints(int points) {
         this.score += points;
+        return null;
     }
 
     /* set methods */
     public void setPersonalObjCard(PersonalObjCard card){
         this.myPersonalObjCard = card;
     }
-    public void setMyShelf(Shelf shelf){
+    public Object setMyShelf(Shelf shelf){
         this.myShelf = shelf;
+        return null;
     }
 
     /* get methods */
