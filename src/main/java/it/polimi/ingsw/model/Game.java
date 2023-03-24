@@ -119,7 +119,7 @@ public class Game {
         }
     }
 
-    protected void createBag() {
+    private void createBag() {
         final int ITEM_NUM = 22;
         for(Category c : Category.values()){
             for(int i=0;i<ITEM_NUM;i++){
