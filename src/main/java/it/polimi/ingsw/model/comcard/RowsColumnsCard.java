@@ -39,13 +39,13 @@ class RowsColumnsCard extends StrategyCheck {
      * Method rowsChecker controls if the conditions express in the sixth common objective card subsists.
      */
     private boolean rowsChecker(Item[][] grid) {
-        int[] categoryCounter = new int[6]; //this array contains a counter for each category enum type
         int rowsCounter = 0; //this is the counter of the rows needed for the goal (at least 2)
 
         for(int i=0;i<6;i++){
+            int[] categoryCounter = new int[6]; //this array contains a counter for each category enum type
             int columnsCounter = 0; //this is a counter for the category types that appear in the consider row
             int zeroCounter = 0; //this is a counter for the only one category type that not appear in the consider row
-            for(int j=1;j<5;j++){
+            for(int j=0;j<5;j++){
                 //here each category type is counted for a specific row
                 if(grid[i][j].getCategoryType() == Category.CAT){categoryCounter[0]++;}
                 if(grid[i][j].getCategoryType() == Category.BOOK){categoryCounter[1]++;}
@@ -79,12 +79,12 @@ class RowsColumnsCard extends StrategyCheck {
     }
 
     private boolean columnsChecker(Item[][] grid) {
-        int[] categoryCounter = new int[6]; //this array contains a counter for each category enum type
         int columnsCounter = 0; //this is the counter of the columns needed for the goal (at least 2)
 
         for(int j=0;j<5;j++) {
+            int[] categoryCounter = new int[6]; //this array contains a counter for each category enum type
             int rowsCounter = 0; //this is a counter for the category types that appear in the consider column
-            for (int i = 1; i < 6; i++) {
+            for (int i = 0; i < 6; i++) {
                 //here each category type is counted for a specific column
                 if (grid[i][j].getCategoryType() == Category.CAT) {
                     categoryCounter[0]++;
