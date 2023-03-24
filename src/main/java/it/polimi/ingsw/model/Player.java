@@ -79,7 +79,10 @@ public class Player {
                 if (gameGrid[row - 1][col] == null || gameGrid[row + 1][col] == null) {
                     continue;
                 }
-                throw new Exception("Invalid selection: no free sides");
+                if(gameGrid[row][col - 1] != null && gameGrid[row][col + 1] != null &&
+                        gameGrid[row - 1][col] != null || gameGrid[row + 1][col] != null){
+                    throw new Exception("Invalid selection: no free sides");
+                }
             }
 
             selectItems = new ArrayList<Item>();
