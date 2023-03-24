@@ -12,6 +12,13 @@ public class Bag {
     }
 
 
+    // setter and getter methods
+    public void setItemCards(Item item){
+        this.itemCards.add(item);
+    }
+    public List<Item> getItemCards(){ return this.itemCards; }
+
+
     /** drawItem method picks randomly an Item in the bag and removes it, used
      * for filling the GameBoard */
     public Item drawItem() throws Exception{
@@ -21,14 +28,9 @@ public class Bag {
             return itemCards.remove(randomNumber);
         }
         else if(itemCards.size()==0){
-                  throw new Exception("Cannot draw Item,the bag is empty!");
+            throw new Exception("Cannot draw Item,the bag is empty!");
         }
         return null;
     }
-
-    public void setItemCards(Item item){
-        this.itemCards.add(item);
-    }
-    public List<Item> getItemCards(){ return this.itemCards; }
 
 }
