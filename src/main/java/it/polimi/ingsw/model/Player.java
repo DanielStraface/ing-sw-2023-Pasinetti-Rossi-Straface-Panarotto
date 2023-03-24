@@ -24,40 +24,52 @@ public class Player {
         this.myShelf = new Shelf();
     }
 
-    public void playerChoice(int[][] selectedcoords, Item[][] gameGrid, int[][] validGrid, int selectedcol)
+    public void playerChoice(int[][] selectedCoords, Item[][] gameGrid, int[][] validGrid, int selectedCol)
             throws Exception {
-        pickItems(selectedcoords, gameGrid, validGrid);
-        putItemInShelf(selectedcol);
+        pickItems(selectedCoords, gameGrid, validGrid);
+        putItemInShelf(selectedCol);
     }
 
     /** method to pick Items from the game board*/
-    private void pickItems(int[][] selectedcoords, Item[][] gameGrid, int[][] validGrid) throws Exception {
-        if (selectedcoords != null) {
+    private void pickItems(int[][] selectedCoords, Item[][] gameGrid, int[][] validGrid) throws Exception {
+        if (selectedCoords != null) {
             boolean sameX = true;
             boolean sameY = true;
-            int x = selectedcoords[0][0];
-            int y = selectedcoords[0][1];
+            boolean consecutiveX = true;
+            boolean consecutiveY = true;
+            int x = selectedCoords[0][0];
+            int y = selectedCoords[0][1];
             /* For-cycle to analyse values of coordinates: first bond: Items from the same row or column*/
-            for (int i = 1; i < selectedcoords.length; i++) {
+            for (int i = 1; i < selectedCoords.length; i++) {
                 /* If all coordinates haven't the same x: items will not be picked from the same row */
-                if (selectedcoords[i][0] != x) {
+                if (selectedCoords[i][0] != x) {
                     sameX = false;
-                    break;
                 }
                 /* If all coordinates haven't the same y: items will not be picked from the same column */
-                if (selectedcoords[i][1] != y) {
+                if (selectedCoords[i][1] != y) {
                     sameY = false;
-                    break;
                 }
             }
             /* If all coordinates haven't the same x or the same y: items can not be picked from the game board */
             if (!sameX && !sameY) {
                 throw new Exception("Invalid selection: no same rows or cols");
             }
+            for (int i = 1; i < selectedCoords.length; i++) {
+                if (selectedCoords[i][0] != selectedCoords[i - 1][0] + 1) {
+                    consecutiveX = false;
+                }
+                if (selectedCoords[i][1] != selectedCoords[i - 1][1] + 1) {
+                    consecutiveY = false;
+                }
+            }
+            if (!consecutiveX && !consecutiveY) {
+                throw new Exception("Invalid selection: No consecutive selection");
+            }
+
             /* For-cycle to analyse values of coordinates: second bond: Items with almost a free side on game board*/
-            for (int i = 0; i < selectedcoords.length; i++) {
-                int row = selectedcoords[i][0];
-                int col = selectedcoords[0][i];
+            for (int i = 0; i < selectedCoords.length; i++) {
+                int row = selectedCoords[i][0];
+                int col = selectedCoords[0][i];
 
                 /* if there are no items in the previous or following column, the second constraint is respected */
                 if (gameGrid[row][col - 1] == null || gameGrid[row][col + 1] == null) {
@@ -72,9 +84,9 @@ public class Player {
 
             selectItems = new ArrayList<Item>();
             /* For-cycle to pick items from the game board and put them in the selectItems list*/
-            for (int i = 0; i < selectedcoords.length; i++) {
-                int row = selectedcoords[i][0];
-                int col = selectedcoords[i][1];
+            for (int i = 0; i < selectedCoords.length; i++) {
+                int row = selectedCoords[i][0];
+                int col = selectedCoords[i][1];
                 selectItems.add(gameGrid[row][col]);
                 gameGrid[row][col] = null;
                 validGrid[row][col] = 1;
