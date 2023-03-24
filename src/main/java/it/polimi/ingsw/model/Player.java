@@ -68,22 +68,26 @@ public class Player {
 
             /* For-cycle to analyse values of coordinates: second bond: Items with almost a free side on game board*/
             for (int i = 0; i < selectedCoords.length; i++) {
-                int row = selectedCoords[i][0];
-                int col = selectedCoords[0][i];
+                    int row = selectedCoords[i][0];
+                    int col = selectedCoords[i][1];
 
-                /* if there are no items in the previous or following column, the second constraint is respected */
-                if (gameGrid[row][col - 1] == null || gameGrid[row][col + 1] == null) {
-                    continue;
+                    if(col==0||col==8||row==0||row==8){
+                        continue;
+                    }
+                    /* if there are no items in the previous or following column, the second constraint is respected */
+                    if (gameGrid[row][col - 1] == null || gameGrid[row][col + 1] == null) {
+                        continue;
+                    }
+                    /* if there are no items in the previous or following row, the second constraint is respected */
+                    if (gameGrid[row - 1][col] == null || gameGrid[row + 1][col] == null) {
+                        continue;
+                    }
+                    if (gameGrid[row][col - 1] != null && gameGrid[row][col + 1] != null &&
+                            gameGrid[row - 1][col] != null || gameGrid[row + 1][col] != null) {
+                        throw new Exception("Invalid selection: no free sides");
+                    }
                 }
-                /* if there are no items in the previous or following row, the second constraint is respected */
-                if (gameGrid[row - 1][col] == null || gameGrid[row + 1][col] == null) {
-                    continue;
-                }
-                if(gameGrid[row][col - 1] != null && gameGrid[row][col + 1] != null &&
-                        gameGrid[row - 1][col] != null || gameGrid[row + 1][col] != null){
-                    throw new Exception("Invalid selection: no free sides");
-                }
-            }
+        }
 
             selectItems = new ArrayList<Item>();
             /* For-cycle to pick items from the game board and put them in the selectItems list*/
@@ -94,8 +98,8 @@ public class Player {
                 gameGrid[row][col] = null;
                 validGrid[row][col] = 1;
             }
-        }
     }
+
     /** method to put Items into personal shelf*/
     private void putItemInShelf(int selectedCol){
         Item[][] grid=myShelf.getShelfGrid();
