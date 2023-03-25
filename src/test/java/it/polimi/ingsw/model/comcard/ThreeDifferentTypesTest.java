@@ -4,10 +4,12 @@ import it.polimi.ingsw.model.Category;
 import it.polimi.ingsw.model.Item;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class ThreeDifferentTypesTest {
 
     private static final int R0 = 0, R1 = 1, R3 = 3, R5= 5;
