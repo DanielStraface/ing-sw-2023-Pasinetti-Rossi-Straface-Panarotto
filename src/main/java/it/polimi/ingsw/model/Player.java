@@ -92,7 +92,7 @@ public class Player {
     }
 
     /** method to put Items into personal shelf*/
-    public void putItemInShelf(int selectedCol,Item[] sortedItems) throws Exception{
+    public void putItemInShelf(int selectedCol,List<Item> sortedItems) throws Exception{
         Item[][] grid=myShelf.getShelfGrid();
         if (selectedCol >= 5) {
             throw new Exception("selectedCol must be less than 5");
@@ -105,8 +105,8 @@ public class Player {
             }
         }
         /* For-cycle to put items into the selected column starting from the last row available*/
-        for (int i = 0; i < sortedItems.length; i++, lastRow--) {
-            grid[lastRow][selectedCol] = sortedItems[i];
+        for (int i = 0; i < sortedItems.size(); i++, lastRow--) {
+            grid[lastRow][selectedCol] = sortedItems.get(i);
         }
     }
 
