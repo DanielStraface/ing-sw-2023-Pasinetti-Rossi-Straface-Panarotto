@@ -9,29 +9,24 @@ public class Player {
     private String nickname;    /** has to be unique */
 
     private int score;
+    private int clientID;
     private Shelf myShelf;
     private PersonalObjCard myPersonalObjCard;
-    private boolean isFirstPlayer;
-    private int clientID;
     private List<Item> selectItems;
+    private boolean isFirstPlayer;
 
     /** constructor for Player class */
-    public Player(String nickname, int clientID, boolean isFirstPlayer) throws Exception {
+    public Player(String nickname, int clientID) throws Exception {
         this.nickname = nickname;
         this.clientID = clientID;
         this.score = 0;
         this.isFirstPlayer = false;
         this.myShelf = new Shelf();
-    }
-
-    public void playerChoice(int[][] selectedCoords, Item[][] gameGrid, int[][] validGrid, int selectedCol)
-            throws Exception {
-        pickItems(selectedCoords, gameGrid, validGrid);
-        putItemInShelf(selectedCol);
+        this.selectItems=new ArrayList<Item>();
     }
 
     /** method to pick Items from the game board*/
-    private void pickItems(int[][] selectedCoords, Item[][] gameGrid, int[][] validGrid) throws Exception {
+    public void pickItems(int[][] selectedCoords,Item[][] gameGrid, int[][] validGrid) throws Exception {
         if (selectedCoords != null) {
             boolean sameX = true;
             boolean sameY = true;
@@ -88,23 +83,21 @@ public class Player {
                     }
                 }
         }
-
-            selectItems = new ArrayList<Item>();
-            /* For-cycle to pick items from the game board and put them in the selectItems list*/
-            for (int i = 0; i < selectedCoords.length; i++) {
-                int row = selectedCoords[i][0];
-                int col = selectedCoords[i][1];
-                selectItems.add(gameGrid[row][col]);
-                gameGrid[row][col] = null;
-                validGrid[row][col] = 1;
-            }
+        /* For-cycle to pick items from the game board and put them in the selectItems list*/
+        for (int i = 0; i < selectedCoords.length; i++) {
+            int row = selectedCoords[i][0];
+            int col = selectedCoords[i][1];
+            selectItems.add(gameGrid[row][col]);
+            gameGrid[row][col] = null;
+            validGrid[row][col] = 1;
+        }
     }
 
     /** method to put Items into personal shelf*/
-    private void putItemInShelf(int selectedCol){
+    public void putItemInShelf(int selectedCol,Item[] sortedItems) throws Exception{
         Item[][] grid=myShelf.getShelfGrid();
         if (selectedCol >= 5) {
-            throw new IllegalArgumentException("selectedCol must be less than 5");
+            throw new Exception("selectedCol must be less than 5");
         }
         /* For-cycle to search the last row available*/
         int lastRow = -1;
@@ -114,24 +107,20 @@ public class Player {
             }
         }
         /* For-cycle to put items into the selected column starting from the last row available*/
-        for (int i = 0; i < selectItems.size(); i++, lastRow--) {
-            grid[lastRow][selectedCol] = selectItems.get(i);
+        for (int i = 0; i < sortedItems.length; i++, lastRow--) {
+            grid[lastRow][selectedCol] = sortedItems[i];
         }
     }
 
-    public Object addPoints(int points) {
+    public void addPoints(int points) {
         this.score += points;
-        return null;
     }
 
     /* set methods */
     public void setPersonalObjCard(PersonalObjCard card){
         this.myPersonalObjCard = card;
     }
-    public Object setMyShelf(Shelf shelf){
-        this.myShelf = shelf;
-        return null;
-    }
+    public void setMyShelf(Shelf shelf){this.myShelf = shelf;}
 
     /* get methods */
     public String getNickname(){
@@ -149,10 +138,10 @@ public class Player {
     public Shelf getMyShelf(){
         return this.myShelf;
     }
-    public boolean getFirstPlayer(){
-        return this.isFirstPlayer;
-    }
+    public boolean getIsFirstPlayer(){return this.isFirstPlayer;}
+    public boolean setIsFirstPlayer() {return this.isFirstPlayer=true;}
 }
+
 
 
 
