@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -12,17 +13,14 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class PlayerTest {
     Player testPlayer;
-    private String nickname;
-    private int score;
-    private int clientID;
     private Shelf myShelf;
     private PersonalObjCard myPersonalObjCard;
     private List<Item> selectItems;
     private boolean isFirstPlayer;
     private Game testGame;
     private int[][] selectedCoords;
-    private int[] selectedCol;
-    private Item[] sortedItems;
+    private int selectedCol;
+    private List<Item> sortedItems;
     private Item[][] gameBoard;
     private int[][] validGrid;
 
@@ -203,6 +201,29 @@ public class PlayerTest {
             else System.out.println("null");
         }
         System.out.println();
+    }
+
+    @Test
+    public void noAvailableColumnTest() throws Exception{
+        final int INVALID_COLUMN=6;
+        selectedCol=INVALID_COLUMN;
+        sortedItems= new ArrayList<>();
+        sortedItems.add(new Item(Category.TROPHY));
+        sortedItems.add(new Item(Category.CAT));
+
+        Exception e=assertThrows(Exception.class,()-> testPlayer.putItemInShelf(selectedCol,sortedItems));
+        assertEquals("selectedCol must be less than 5", e.getMessage());
+
+    }
+
+    @Test
+    public void rightPositionsOfItemsInMyShelfTest() throws Exception{
+        final int VALID_COLUMN=3;
+        selectedCol=VALID_COLUMN;
+        sortedItems= new ArrayList<>();
+        sortedItems.add(new Item(Category.TROPHY));
+        sortedItems.add(new Item(Category.CAT));
+        assertDoesNotThrow(() -> testPlayer.putItemInShelf(selectedCol,sortedItems));
     }
 }
 
