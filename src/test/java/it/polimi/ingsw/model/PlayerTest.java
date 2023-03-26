@@ -14,126 +14,110 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class PlayerTest {
     Player testPlayer;
-    private static String nickname = "player0";
-    private static int clientID = 0;
-    private static boolean firstPlayer = false;
+    private String nickname;
     private int score;
+    private int clientID;
     private Shelf myShelf;
     private PersonalObjCard myPersonalObjCard;
     private List<Item> selectItems;
-
-    private Game game;
-    private GameBoard gameBoard;
-    private Item[][] gameGrid;
+    private boolean isFirstPlayer;
+    private Game testGame;
+    private int[][] selectedCoords;
+    private int[] selectedCol;
+    private Item[] sortedItems;
+    private Item[][] gameBoard;
     private int[][] validGrid;
-    public int[][] selectedCoords;
-    public int selectedCol;
 
     @BeforeEach
     void creationPlayerAndGame() throws Exception {
-        testPlayer = new Player(nickname, clientID, firstPlayer);
-        score=0;
-        game = null;
-        try {
-            game = new Game(4);
-        } catch (Exception e) {
-            fail("Game not created successfully");
-        }
-        gameBoard= game.getGameboard();
-        gameGrid = gameBoard.getGameGrid();
-        validGrid = game.getValidGrid();
-    }
+        final int NUM_OF_PLAYER = 4;
+        testGame = new Game(NUM_OF_PLAYER);
+        testPlayer = new Player("Player1", 1);
+        myShelf=testPlayer.getMyShelf();
+        gameBoard= testGame.getGameboard().getGameGrid();
+        validGrid=testGame.getValidGrid();
 
-
-    @Test
-    public void setTestPlayer() {
-        assertEquals(nickname, testPlayer.getNickname(), "Not the same nickname");
-        assertEquals(clientID, testPlayer.getClientID(), "Not the same clientID");
-        assertEquals(firstPlayer, testPlayer.getFirstPlayer(), "Variable is not false");
-    }
-    @Test
-    public void getMyShelfTest() throws Exception {
-        myShelf= new Shelf();
-        testPlayer.setMyShelf(myShelf);
-        try {
-            assertSame(myShelf,testPlayer.getMyShelf(),"Not the same Shelf");
-        } catch (Exception e) {
-            fail();
-        }
     }
 
     @Test
-    public void getScoreTest() throws Exception {
-                try {
-            assertSame(score,testPlayer.getScore());
-        } catch (Exception e) {
-            fail();
-        }
+    public void setTestPlayer() throws Exception {
+        assertEquals("Player1", testPlayer.getNickname());
+        assertEquals(1, testPlayer.getClientID());
+        System.out.println("Nickname: " + testPlayer.getNickname());
+        System.out.println("ClientID: " + testPlayer.getClientID());
     }
 
     @Test
-    public void addPointsTest() throws Exception{
-        testPlayer.addPoints(10);
-        try {
-            assertSame(score+10,testPlayer.getScore());
-        } catch (Exception e) {
-            fail();
+    public void setAttributesTestPlayer() throws Exception {
+        final int SHELF_ROWS=6;
+        final int SHELF_COLUMNS=5;
+        Item[][] expectedShelf= new Item[SHELF_ROWS][SHELF_COLUMNS];
+        for (int i = 0; i < SHELF_ROWS; i++) {
+            for (int j = 0; j < SHELF_COLUMNS; j++) {
+                expectedShelf[i][j] =new Item(null);
+            }
         }
-    }
-    @Test
-    public void diffRowsAndColsTest() throws Exception {
-        selectedCoords = new int[][]{{1, 2}, {2, 4}, {5, 6}};
-        selectedCol = 0;
-        try {
-            Assertions.assertThrows(Exception.class, () -> testPlayer.playerChoice(selectedCoords, gameGrid, validGrid, selectedCol), "Not same row or column Exception");
-        } catch (Exception e) {
-            fail();
+        assertEquals(false, testPlayer.getIsFirstPlayer());
+        assertEquals(0, testPlayer.getScore());
+        for (int i = 0; i < SHELF_ROWS; i++) {
+            for (int j = 0; j < SHELF_COLUMNS; j++) {
+                assertEquals(expectedShelf[i][j].getCategoryType(), myShelf.getShelfGrid()[i][j].getCategoryType());
+            }
         }
+        System.out.println("FirstPlayer: " + testPlayer.getIsFirstPlayer());
+        System.out.println("Score: " + testPlayer.getScore());
+        for (int i = 0; i < myShelf.getShelfGrid().length; i++) {
+            for (int j = 0; j < myShelf.getShelfGrid()[i].length; j++) {
+                System.out.print(myShelf.getShelfGrid()[i][j].getCategoryType() + " ");
+            }
+            System.out.println();
+        }
+
     }
 
     @Test
-    public void noConsecutiveCoordsTest() throws Exception {
-        selectedCoords = new int[][]{{1, 2}, {1, 3}, {1, 5}};
-        selectedCol = 0;
-        try {
-            Assertions.assertThrows(Exception.class, () -> testPlayer.playerChoice(selectedCoords, gameGrid, validGrid, selectedCol), "No consecutive coords");
-        } catch (Exception e) {
-            fail();
-        }
+    public void diffRowsAndColumnsTest() throws Exception{
+        selectedCoords=new int[][]{{1,2},{2,3},{3,4}};
+        Exception e=assertThrows(Exception.class,()-> testPlayer.pickItems(selectedCoords,gameBoard,validGrid));
+        assertEquals("Invalid selection: no same rows or cols", e.getMessage());
     }
 
     @Test
-    public void noFreeSidesTest() throws Exception {
-        selectedCoords = new int[][]{{1, 2}, {1, 3}, {1, 4}};
-        selectedCol = 0;
-        try {
-            Assertions.assertThrows(Exception.class, () -> testPlayer.playerChoice(selectedCoords, gameGrid, validGrid, selectedCol), "No free sides");
-        } catch (Exception e) {
-            fail();
-        }
+    public void NoConsecutiveRowsTest() throws Exception{
+        final int COLUMN=2;
+        selectedCoords=new int[][]{{1,COLUMN},{2,COLUMN},{4,COLUMN}};
+        Exception e=assertThrows(Exception.class,()-> testPlayer.pickItems(selectedCoords,gameBoard,validGrid));
+        assertEquals("Invalid selection: No consecutive selection", e.getMessage());
     }
 
     @Test
-    public void noAvailableColTest() throws Exception {
-        selectedCoords = new int[][]{{0, 0}, {0, 1}, {0, 2}};
-        selectedCol = 6;
-        try {
-            Assertions.assertThrows(Exception.class, () -> testPlayer.playerChoice(selectedCoords, gameGrid, validGrid, selectedCol), "No Available Column");
-        } catch (Exception e) {
-            fail();
-        }
+    public void NoConsecutiveColumnsTest() throws Exception{
+        final int ROW=2;
+        selectedCoords=new int[][]{{ROW,1},{ROW,2},{ROW,4}};
+        Exception e=assertThrows(Exception.class,()-> testPlayer.pickItems(selectedCoords,gameBoard,validGrid));
+        assertEquals("Invalid selection: No consecutive selection", e.getMessage());
     }
 
     @Test
-    public void correctParamsTest() throws Exception {
-        selectedCoords = new int[][]{{0, 0}, {0, 1}, {0, 2}};
-        selectedCol = 3;
-        try {
-            Assertions.assertDoesNotThrow(()-> testPlayer.playerChoice(selectedCoords, gameGrid, validGrid, selectedCol), "No Available Column");
-        } catch (Exception e) {
-            fail();
+    public void FreeSideTest() throws Exception{
+        final int ROW=2;
+        for (int i = 0; i < validGrid.length; i++) {
+            for (int j = 0; j < validGrid[i].length; j++) {
+                System.out.print(validGrid[i][j] + " ");
+            }
+            System.out.println();
         }
+        System.out.println(gameBoard[0][0].getCategoryType());
+        /*for (int i = 0; i < gameBoard.length; i++) {
+            for (int j = 0; j < gameBoard[i].length; j++) {
+                System.out.print(gameBoard[i][j].getCategoryType() + " ");
+            }
+            System.out.println();
+        }*/
+        selectedCoords=new int[][]{{ROW,1},{ROW,2},{ROW,3}};
+        Exception e=assertThrows(Exception.class,()-> testPlayer.pickItems(selectedCoords,gameBoard,validGrid));
+        assertEquals("Invalid selection: No Free Side", e.getMessage());
     }
+
 }
-
 

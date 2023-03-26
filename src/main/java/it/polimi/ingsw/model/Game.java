@@ -38,7 +38,7 @@ public class Game {
     private void createPlayers() throws Exception {
         for(int i=0;i<this.playersNumber;i++){
             //nickname: "space" for each player, clientID: 0, isFirstPlayer: false;
-            players.add(new Player(" ", i, false));
+            players.add(new Player(" ", i));
         }
     }
 

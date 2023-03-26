@@ -44,7 +44,7 @@ public class GameTest {
         for(int i=0;i<players.size();i++) {
             if (!Objects.equals(players.get(i).getNickname(), " ") &&
                     players.get(i).getClientID() != i &&
-                    players.get(i).getFirstPlayer()) {
+                    players.get(i).getIsFirstPlayer()) {
                 checker = false;
                 break;
             }
@@ -122,7 +122,7 @@ public class GameTest {
     @Test
     public void setCurrentPlayerTest(){
         try {
-            Player player = new Player("TestName", 0, true);
+            Player player = new Player("TestName", 0);
             game.setCurrentPlayer(player);
             assertSame(game.getCurrentPlayer(), player, "The current Player set is not the same");
         }

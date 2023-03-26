@@ -19,7 +19,7 @@ public class CommonObjCardTest {
 
     @BeforeEach
     public void setupPlayer() throws Exception {
-        player = new Player("TEST NAME", 0, false);
+        player = new Player("TEST NAME", 0);
         Shelf shelf = new Shelf();
         shelf.getShelfGrid()[0][0] = new Item(Category.BOOK);
         shelf.getShelfGrid()[0][4] = new Item(Category.BOOK);
