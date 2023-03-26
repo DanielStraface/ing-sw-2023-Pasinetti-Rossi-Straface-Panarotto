@@ -27,6 +27,7 @@ public class PlayerTest {
     private Item[] sortedItems;
     private Item[][] gameBoard;
     private int[][] validGrid;
+    private GameBoard gb;
 
     @BeforeEach
     void creationPlayerAndGame() throws Exception {
@@ -34,9 +35,9 @@ public class PlayerTest {
         testGame = new Game(NUM_OF_PLAYER);
         testPlayer = new Player("Player1", 1);
         myShelf=testPlayer.getMyShelf();
-        gameBoard= testGame.getGameboard().getGameGrid();
+        gameBoard = testGame.getGameboard().getGameGrid();
         validGrid=testGame.getValidGrid();
-
+        gb = testGame.getGameboard();
     }
 
     @Test
@@ -108,16 +109,17 @@ public class PlayerTest {
             System.out.println();
         }
         System.out.println(gameBoard[0][0].getCategoryType());
-        /*for (int i = 0; i < gameBoard.length; i++) {
+        for (int i = 0; i < gameBoard.length; i++) {
             for (int j = 0; j < gameBoard[i].length; j++) {
-                System.out.print(gameBoard[i][j].getCategoryType() + " ");
+                if(gameBoard[i][j] != null)
+                    System.out.print(gameBoard[i][j].getCategoryType() + " ");
+                else System.out.println("null");
             }
             System.out.println();
-        }*/
+        }
         selectedCoords=new int[][]{{ROW,1},{ROW,2},{ROW,3}};
         Exception e=assertThrows(Exception.class,()-> testPlayer.pickItems(selectedCoords,gameBoard,validGrid));
-        assertEquals("Invalid selection: No Free Side", e.getMessage());
+        assertEquals("Invalid selection: no free sides", e.getMessage());
     }
-
 }
 

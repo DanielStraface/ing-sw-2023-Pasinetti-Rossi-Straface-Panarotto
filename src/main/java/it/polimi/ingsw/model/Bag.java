@@ -30,7 +30,7 @@ public class Bag {
         else if(itemCards.size()==0){
             throw new Exception("Cannot draw Item,the bag is empty!");
         }
-        return null;
+        return new Item(null);
     }
 
 }

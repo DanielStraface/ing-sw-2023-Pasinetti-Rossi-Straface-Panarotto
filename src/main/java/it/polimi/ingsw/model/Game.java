@@ -176,6 +176,8 @@ public class Game {
                     } catch (Exception e) {
                         throw new RuntimeException(e);
                     }
+                } else if(validGrid[i][j]==0) {
+                    this.gameboard.getGameGrid()[i][j] = new Item(null);
                 }
             }
         }
