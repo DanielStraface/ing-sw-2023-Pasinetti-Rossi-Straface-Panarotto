@@ -22,7 +22,7 @@ public class Player {
         this.score = 0;
         this.isFirstPlayer = false;
         this.myShelf = new Shelf();
-        this.selectItems=new ArrayList<Item>();
+        this.selectItems=new ArrayList<>();
     }
 
     /** method to pick Items from the game board*/
@@ -86,7 +86,7 @@ public class Player {
             int row = selectedCoords[i][0];
             int col = selectedCoords[i][1];
             selectItems.add(gameGrid[row][col]);
-            gameGrid[row][col] = null;
+            gameGrid[row][col] = new Item(null);
             validGrid[row][col] = 1;
         }
     }
@@ -142,6 +142,7 @@ public class Player {
     public boolean setIsFirstPlayer() {
         return this.isFirstPlayer=true;
     }
+    public List<Item> getSelectItems(){return this.selectItems;}
 }
 
 

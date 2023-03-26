@@ -1,12 +1,10 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.personcard.PersonalObjCard;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -27,7 +25,6 @@ public class PlayerTest {
     private Item[] sortedItems;
     private Item[][] gameBoard;
     private int[][] validGrid;
-    private GameBoard gb;
 
     @BeforeEach
     void creationPlayerAndGame() throws Exception {
@@ -37,7 +34,7 @@ public class PlayerTest {
         myShelf=testPlayer.getMyShelf();
         gameBoard = testGame.getGameboard().getGameGrid();
         validGrid=testGame.getValidGrid();
-        gb = testGame.getGameboard();
+        selectItems=testPlayer.getSelectItems();
     }
 
     @Test
@@ -108,7 +105,6 @@ public class PlayerTest {
             }
             System.out.println();
         }
-        System.out.println(gameBoard[0][0].getCategoryType());
         for (int i = 0; i < gameBoard.length; i++) {
             for (int j = 0; j < gameBoard[i].length; j++) {
                 if(gameBoard[i][j] != null)
@@ -121,5 +117,93 @@ public class PlayerTest {
         Exception e=assertThrows(Exception.class,()-> testPlayer.pickItems(selectedCoords,gameBoard,validGrid));
         assertEquals("Invalid selection: no free sides", e.getMessage());
     }
+
+    @Test
+    public void rightValuesInValidAndGameGridTest() throws Exception{
+        final int ROW=0;
+        for (int[] ints : validGrid) {
+            for (int j = 0; j < ints.length; j++) {
+                System.out.print(ints[j] + " ");
+            }
+            System.out.println();
+        }
+        for (Item[] items : gameBoard) {
+            for (int j = 0; j < items.length; j++) {
+                if (items[j] != null)
+                    System.out.print(items[j].getCategoryType() + " ");
+                else System.out.println("null");
+            }
+            System.out.println();
+        }
+        selectedCoords=new int[][]{{ROW,3},{ROW,4}};
+        assertDoesNotThrow(()->testPlayer.pickItems(selectedCoords,gameBoard,validGrid));
+        assertNull(gameBoard[ROW][3].getCategoryType());
+        assertNull(gameBoard[ROW][4].getCategoryType());
+        assertEquals(1,validGrid[ROW][3]);
+        assertEquals(1,validGrid[ROW][4]);
+
+        for (int i = 0; i < validGrid.length; i++) {
+            for (int j = 0; j < validGrid[i].length; j++) {
+                System.out.print(validGrid[i][j] + " ");
+            }
+            System.out.println();
+        }
+        for (int i = 0; i < gameBoard.length; i++) {
+            for (int j = 0; j < gameBoard[i].length; j++) {
+                if(gameBoard[i][j] != null)
+                    System.out.print(gameBoard[i][j].getCategoryType() + " ");
+                else System.out.println("null");
+            }
+            System.out.println();
+        }
+    }
+
+    @Test
+    public void rightItemsInSelectItemsTest() throws Exception {
+        final int ROW = 0;
+        for (int i = 0; i < validGrid.length; i++) {
+            for (int j = 0; j < validGrid[i].length; j++) {
+                System.out.print(validGrid[i][j] + " ");
+            }
+            System.out.println();
+        }
+        for (int i = 0; i < gameBoard.length; i++) {
+            for (int j = 0; j < gameBoard[i].length; j++) {
+                if (gameBoard[i][j] != null)
+                    System.out.print(gameBoard[i][j].getCategoryType() + " ");
+                else System.out.println("null");
+            }
+            System.out.println();
+        }
+        selectedCoords = new int[][]{{ROW, 3}, {ROW, 4}};
+        Item[] expectedItems = new Item[]{gameBoard[ROW][3], gameBoard[ROW][4]};
+
+        assertDoesNotThrow(() -> testPlayer.pickItems(selectedCoords, gameBoard, validGrid));
+        for (int i = 0; i < selectItems.size(); i++) {
+            assertEquals(expectedItems[i].getCategoryType(), selectItems.get(i).getCategoryType());
+        }
+
+        for (int i = 0; i < validGrid.length; i++) {
+            for (int j = 0; j < validGrid[i].length; j++) {
+                System.out.print(validGrid[i][j] + " ");
+            }
+            System.out.println();
+        }
+        for (int i = 0; i < gameBoard.length; i++) {
+            for (int j = 0; j < gameBoard[i].length; j++) {
+                if (gameBoard[i][j] != null)
+                    System.out.print(gameBoard[i][j].getCategoryType() + " ");
+                else System.out.println("null");
+            }
+            System.out.println();
+        }
+        for (int i = 0; i < selectItems.size(); i++) {
+            if (selectItems.get(i) != null)
+                System.out.print(selectItems.get(i).getCategoryType() + " ");
+            else System.out.println("null");
+        }
+        System.out.println();
+    }
 }
+
 
