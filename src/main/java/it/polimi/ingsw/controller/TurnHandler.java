@@ -24,7 +24,7 @@ public class TurnHandler {
         Player player = game.getCurrentPlayer();
         playerAction.playerGameActionExecutor(game);
         //if this is the last turn, the following operations will be different
-        if(turnChecker.manageCheck(player)){
+        if(turnChecker.manageCheck(player, game)){
             //if this player seats before the "isFirstPlayer" player the match ends after this turn
         } else {
             //the turn passes until the next player is the first one

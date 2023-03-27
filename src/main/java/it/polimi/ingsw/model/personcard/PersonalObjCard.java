@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.personcard;
 
 import it.polimi.ingsw.model.Item;
+import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Shelf;
 
 public class PersonalObjCard {
@@ -38,22 +39,44 @@ public class PersonalObjCard {
      *                      exists Item I2 in the (x,y) position in cardGrid template) &&
      *                      I1.getCategoryType() == I2.getCategoryType()
      */
-    public boolean goalReached(Shelf shelf) {
+    public void shelfCheck(Shelf shelf, Player player) throws Exception {
+        int matches = 0;
+        int scoreAdded = 0;
         /* Two for-cycle to analyse both matrix in player shelf and template grid */
         for (int i = 0; i < cardGrid.length; i++) {
             for (int j = 0; j < cardGrid[i].length; j++) {
-                /* if the position in the template grid and player's shelf is not null there is an item type */
-                if (cardGrid[i][j].getCategoryType() != null && shelf.getShelfGrid()[i][j].getCategoryType() != null) {
-                    /* If there is at least one type of item that is not equal to the item in the player shelf
-                     *  the goal is not reached. The method returns false */
-                    if(cardGrid[i][j].getCategoryType() != shelf.getShelfGrid()[i][j].getCategoryType()){
-                        return false;
-                    }
+                /* if the position in the template grid and player's shelf is not null and the item categories
+                *  are matching the "match" integer is increased */
+                if (cardGrid[i][j].getCategoryType() != null && shelf.getShelfGrid()[i][j].getCategoryType() != null
+                    && cardGrid[i][j].getCategoryType() == shelf.getShelfGrid()[i][j].getCategoryType()) {
+                    matches++;
                 }
             }
         }
-        /* If during the cardGrid scanning the condition of @IF1 is always false it means that all the matches
-        *  between the two item grid are true. The method must return true */
-        return true;
+        switch (matches){
+            case 1 -> {
+                scoreAdded = 1;
+            }
+            case 2 -> {
+                scoreAdded = 2;
+            }
+            case 3 -> {
+                scoreAdded = 4;
+            }
+            case 4 -> {
+                scoreAdded = 6;
+            }
+            case 5 -> {
+                scoreAdded = 9;
+            }
+            case 6 -> {
+                scoreAdded = 12;
+            }
+        }
+        if(matches > 6){
+            throw new Exception("There can't be more than 6 matches!");
+        }
+        player.addPoints(scoreAdded);
     }
+
 }
