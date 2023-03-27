@@ -62,22 +62,26 @@ public class Player {
 
         /* For-cycle to analyse values of coordinates: second bond: Items with almost a free side on game board*/
         for (int i = 0; i < selectedCoords.length; i++) {
+            final int FIRST_ROW=0;
+            final int LAST_ROW=8;
+            final int FIRST_COLUMN=0;
+            final int LAST_COLUMN=8;
             int row = selectedCoords[i][0];
             int col = selectedCoords[i][1];
 
-            if (col == 0 || col == 8 || row == 0 || row == 8) {
+            if (col == FIRST_COLUMN || col == LAST_COLUMN || row == FIRST_ROW || row == LAST_ROW) {
                 continue;
             }
             /* if there are no items in the previous or following column, the second constraint is respected */
-            if (gameGrid[row][col - 1] == null || gameGrid[row][col + 1] == null) {
+            if (gameGrid[row][col - 1].getCategoryType() == null || gameGrid[row][col + 1].getCategoryType() == null) {
                 continue;
             }
             /* if there are no items in the previous or following row, the second constraint is respected */
-            if (gameGrid[row - 1][col] == null || gameGrid[row + 1][col] == null) {
+            if (gameGrid[row - 1][col].getCategoryType() == null || gameGrid[row + 1][col].getCategoryType() == null) {
                 continue;
             }
-            if (gameGrid[row][col - 1] != null && gameGrid[row][col + 1] != null &&
-                    gameGrid[row - 1][col] != null || gameGrid[row + 1][col] != null) {
+            if (gameGrid[row][col - 1].getCategoryType() != null && gameGrid[row][col + 1].getCategoryType() != null &&
+                    gameGrid[row - 1][col].getCategoryType() != null || gameGrid[row + 1][col].getCategoryType() != null) {
                 throw new Exception("Invalid selection: no free sides");
             }
         }
@@ -98,13 +102,16 @@ public class Player {
             throw new Exception("selectedCol must be less than 5");
         }
         /* For-cycle to search the last row available*/
-        int lastRow = -1;
+        int lastRow = 0;
         for (int row = 0; row<6; row++) {
-            if (grid[row][selectedCol] == null) {
+            if (grid[row][selectedCol].getCategoryType() ==null ) {
                 lastRow = row;
             }
         }
         /* For-cycle to put items into the selected column starting from the last row available*/
+        if(sortedItems.size()>3){
+            throw new Exception("Invalid number of Items");
+        }
         for (int i = 0; i < sortedItems.size(); i++, lastRow--) {
             grid[lastRow][selectedCol] = sortedItems.get(i);
         }
