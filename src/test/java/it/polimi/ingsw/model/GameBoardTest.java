@@ -50,9 +50,9 @@ public class GameBoardTest {
                     "The item in this position is null"); //item in the position
             assertNotSame(null, gameboard.getGameGrid()[ROW][COL],
                     "The category of this position is null"); //category of that item
-            assertNull(gameboard.getGameGrid()[ROW + 4][COL + 1]); //for 3 players
-            assertNull(gameboard.getGameGrid()[ROW - 4][COL]); //for 4 player
-            assertNull(gameboard.getGameGrid()[ROW + 4][COL + 4]); //always null
+            assertNull(gameboard.getGameGrid()[ROW + 4][COL + 1].getCategoryType()); //for 3 players
+            assertNull(gameboard.getGameGrid()[ROW - 4][COL].getCategoryType()); //for 4 player
+            assertNull(gameboard.getGameGrid()[ROW + 4][COL + 4].getCategoryType()); //always null
         } catch (Exception e) {fail();}
     }
 
@@ -74,8 +74,8 @@ public class GameBoardTest {
                     "The category of this position is null");
             assertNotEquals(null, gameboard.getGameGrid()[ROW+4][COL+1]); //for 3 players
             assertNotSame(null, gameboard.getGameGrid()[ROW+4][COL+1].getCategoryType());
-            assertNull(gameboard.getGameGrid()[ROW - 4][COL]); //for 4 player
-            assertNull(gameboard.getGameGrid()[ROW + 4][COL + 4]); //always null
+            assertNull(gameboard.getGameGrid()[ROW - 4][COL].getCategoryType()); //for 4 player
+            assertNull(gameboard.getGameGrid()[ROW + 4][COL + 4].getCategoryType()); //always null
         } catch (Exception e) {fail();}
     }
 
@@ -99,7 +99,7 @@ public class GameBoardTest {
             assertNotSame(null, gameboard.getGameGrid()[ROW+4][COL+1].getCategoryType());
             assertNotEquals(null, gameboard.getGameGrid()[ROW-4][COL]); //for 4 player
             assertNotSame(null, gameboard.getGameGrid()[ROW+4][COL].getCategoryType());
-            assertNull(gameboard.getGameGrid()[ROW + 4][COL + 4]); //always null
+            assertNull(gameboard.getGameGrid()[ROW + 4][COL + 4].getCategoryType()); //always null
         } catch (Exception e) {fail();}
     }
 }

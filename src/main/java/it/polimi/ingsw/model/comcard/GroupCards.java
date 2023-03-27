@@ -179,5 +179,4 @@ class GroupCards extends StrategyCheck {
         }
         return false;
     }
-
 }
