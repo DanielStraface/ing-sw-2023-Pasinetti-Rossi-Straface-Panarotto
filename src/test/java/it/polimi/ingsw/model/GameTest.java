@@ -72,7 +72,7 @@ public class GameTest {
         boolean checker = true;
         for(int i=0; i<gameBoard.getGameGrid().length; i++){
             for(int j=0; j<gameBoard.getGameGrid()[i].length; j++){
-                if(game.getValidGrid()[i][j] == 0 && gameBoard.getGameGrid()[i][j] != null){
+                if(game.getValidGrid()[i][j] == 0 && gameBoard.getGameGrid()[i][j].getCategoryType() != null){
                     checker = false;
                 }
                 if(game.getValidGrid()[i][j] == OCCUPIED && gameBoard.getGameGrid()[i][j] == null){
