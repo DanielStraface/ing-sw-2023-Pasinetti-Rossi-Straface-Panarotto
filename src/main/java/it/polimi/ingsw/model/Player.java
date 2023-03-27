@@ -149,6 +149,7 @@ public class Player {
     public boolean getIsFirstPlayer(){
         return this.isFirstPlayer;
     }
+    //Test PlayerTest method
     public List<Item> getSelectItems(){return this.selectItems;}
 }
 

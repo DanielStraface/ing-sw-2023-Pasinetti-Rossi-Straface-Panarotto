@@ -312,7 +312,13 @@ public class PlayerTest {
         final int POINTS=10;
         testPlayer.addPoints(POINTS);
 
-        assertEquals(POINTS,testPlayer.getScore());
+        assertEquals(POINTS,testPlayer.getScore(), "Score is not updated");
+    }
+
+    @Test
+    public void setFirstPlayerTest(){
+        testPlayer.setIsFirstPlayer();
+        assertTrue(testPlayer.getIsFirstPlayer(),"isFirstPlayer is not true");
     }
 
     @Test
