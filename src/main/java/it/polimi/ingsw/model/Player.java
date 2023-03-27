@@ -126,6 +126,7 @@ public class Player {
         this.myPersonalObjCard = card;
     }
     public void setMyShelf(Shelf shelf){this.myShelf = shelf;}
+    public void setIsFirstPlayer() {this.isFirstPlayer=true;}
 
     /* get methods */
     public String getNickname(){
@@ -147,10 +148,6 @@ public class Player {
         return this.isFirstPlayer;
     }
     public List<Item> getSelectItems(){return this.selectItems;}
-    public boolean setIsFirstPlayer() {
-        return this.isFirstPlayer=true;
-    }
-
 }
 
 
