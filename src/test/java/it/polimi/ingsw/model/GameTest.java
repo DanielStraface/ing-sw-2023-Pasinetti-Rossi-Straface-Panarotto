@@ -42,9 +42,9 @@ public class GameTest {
     public void playerCreationTest(){
         boolean checker = true;
         for(int i=0;i<players.size();i++) {
-            if (!Objects.equals(players.get(i).getNickname(), " ") &&
-                    players.get(i).getClientID() != i &&
-                    players.get(i).getIsFirstPlayer()) {
+            if (!Objects.equals(players.get(i).getNickname(), null) &&
+                    players.get(i).getClientID() != 0 &&
+                    !players.get(i).getIsFirstPlayer()) {
                 checker = false;
                 break;
             }
@@ -75,7 +75,7 @@ public class GameTest {
                 if(game.getValidGrid()[i][j] == 0 && gameBoard.getGameGrid()[i][j].getCategoryType() != null){
                     checker = false;
                 }
-                if(game.getValidGrid()[i][j] == OCCUPIED && gameBoard.getGameGrid()[i][j] == null){
+                if(game.getValidGrid()[i][j] == OCCUPIED && gameBoard.getGameGrid()[i][j].getCategoryType() == null){
                     checker = false;
                 }
             }
@@ -122,7 +122,7 @@ public class GameTest {
     @Test
     public void setCurrentPlayerTest(){
         try {
-            Player player = new Player("TestName", 0);
+            Player player = new Player();
             game.setCurrentPlayer(player);
             assertSame(game.getCurrentPlayer(), player, "The current Player set is not the same");
         }

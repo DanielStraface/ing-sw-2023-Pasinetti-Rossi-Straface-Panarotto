@@ -28,7 +28,7 @@ public class PlayerTest {
     void creationPlayerAndGame() throws Exception {
         final int NUM_OF_PLAYER = 4;
         testGame = new Game(NUM_OF_PLAYER);
-        testPlayer = new Player("Player1", 1);
+        testPlayer = new Player();
         myShelf=testPlayer.getMyShelf();
         gameBoard = testGame.getGameboard().getGameGrid();
         validGrid=testGame.getValidGrid();
@@ -37,8 +37,8 @@ public class PlayerTest {
 
     @Test
     public void setTestPlayer() throws Exception {
-        assertEquals("Player1", testPlayer.getNickname());
-        assertEquals(1, testPlayer.getClientID());
+        assertNull(testPlayer.getNickname());
+        assertEquals(0, testPlayer.getClientID());
         System.out.println("Nickname: " + testPlayer.getNickname());
         System.out.println("ClientID: " + testPlayer.getClientID());
     }
@@ -313,6 +313,18 @@ public class PlayerTest {
         testPlayer.addPoints(POINTS);
 
         assertEquals(POINTS,testPlayer.getScore());
+    }
+
+    @Test
+    public void setNicknameAndClientIDTest(){
+        final String NICKNAME = "Player0";
+        final int CLIENTID = 10;
+        assertNull(testPlayer.getNickname(), "The player name is not null");
+        assertSame(0, testPlayer.getClientID(), "The player's clientID is not zero");
+
+        testPlayer.setNicknameAndClientID(NICKNAME, CLIENTID);
+        assertEquals(NICKNAME, testPlayer.getNickname(), "The player name is not set correctly");
+        assertSame(CLIENTID, testPlayer.getClientID(), "The player's clientID is not set correctly");
     }
 }
 

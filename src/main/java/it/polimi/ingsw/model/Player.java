@@ -16,9 +16,7 @@ public class Player {
     private boolean isFirstPlayer;
 
     /** constructor for Player class */
-    public Player(String nickname, int clientID) throws Exception {
-        this.nickname = nickname;
-        this.clientID = clientID;
+    public Player() throws Exception {
         this.score = 0;
         this.isFirstPlayer = false;
         this.myShelf = new Shelf();
@@ -127,6 +125,10 @@ public class Player {
     }
     public void setMyShelf(Shelf shelf){this.myShelf = shelf;}
     public void setIsFirstPlayer() {this.isFirstPlayer=true;}
+    public void setNicknameAndClientID(String nickname, int clientID){
+        this.nickname = nickname;
+        this.clientID = clientID;
+    }
 
     /* get methods */
     public String getNickname(){
