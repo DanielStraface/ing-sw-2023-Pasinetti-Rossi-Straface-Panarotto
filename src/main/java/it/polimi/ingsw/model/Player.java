@@ -146,10 +146,11 @@ public class Player {
     public boolean getIsFirstPlayer(){
         return this.isFirstPlayer;
     }
+    public List<Item> getSelectItems(){return this.selectItems;}
     public boolean setIsFirstPlayer() {
         return this.isFirstPlayer=true;
     }
-    public List<Item> getSelectItems(){return this.selectItems;}
+
 }
 
 
