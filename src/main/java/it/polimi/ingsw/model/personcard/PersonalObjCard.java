@@ -53,6 +53,7 @@ public class PersonalObjCard {
                 }
             }
         }
+        // the score added to the player is set depending on the number of matches
         switch (matches){
             case 1 -> {
                 scoreAdded = 1;
