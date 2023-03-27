@@ -94,7 +94,7 @@
       [{"category":  null}, {"category":  null}, {"category":  null}, {"category":  null}, {"category":  null}],
       [{"category":  null}, {"category":  null}, {"category":  "CAT"}, {"category":  null}, {"category":  null}],
       [{"category":  null}, {"category":  null}, {"category":  null}, {"category":  null}, {"category":  "BOOK"}],
-      [{"category":  null}, {"category":  "BOOK"}, {"category":  null}, {"category":  null}, {"category":  "PLANT"}],
+      [{"category":  null}, {"category":  "TROPHY"}, {"category":  null}, {"category":  null}, {"category":  "PLANT"}],
       [{"category":  "FRAME"}, {"category":  null}, {"category":  null}, {"category":  null}, {"category":  null}]
     ]
   },
