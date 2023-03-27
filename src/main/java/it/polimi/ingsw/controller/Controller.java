@@ -14,7 +14,7 @@ public class Controller {
     /* -- constructor --*/
     public Controller(Game game){ //must be edited by View
         this.game = game;
-        turnHandler = new TurnHandler();
+        turnHandler = new TurnHandler(game);
     }
 
     /* -- logic methods --*/
@@ -33,8 +33,11 @@ public class Controller {
      * gameActions method launch the turnHandler operations.
      */
     public void gameActions(){
-        //Must be modified
-        turnHandler.manageTurn();
+        //Add set nickname and clientID by view notifications
+        //Must be modified, true may not appear
+        while(true){
+            turnHandler.manageTurn();
+        }
     }
 
     /**

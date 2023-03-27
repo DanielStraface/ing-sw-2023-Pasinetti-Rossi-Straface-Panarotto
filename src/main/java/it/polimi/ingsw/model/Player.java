@@ -150,7 +150,13 @@ public class Player {
         return this.isFirstPlayer;
     }
     //Test PlayerTest method
-    public List<Item> getSelectItems(){return this.selectItems;}
+    public List<Item> getSelectItems(){
+        List<Item> temp = new ArrayList<Item>();
+        for(int i=0;i<selectItems.size();i++){
+            temp.add(selectItems.remove(i));
+        }
+        return temp;
+    }
 }
 
 
