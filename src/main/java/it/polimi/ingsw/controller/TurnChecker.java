@@ -14,7 +14,7 @@ public class TurnChecker {
 
 
 
-
+    // all checks that have to be done before ending a player's turn
     public boolean manageCheck(Player player, Game game){
         boolean isLastTurn;
         commonObjCardCheck(player, game);
