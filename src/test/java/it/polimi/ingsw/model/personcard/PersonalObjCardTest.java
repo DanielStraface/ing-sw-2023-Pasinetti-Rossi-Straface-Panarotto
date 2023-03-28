@@ -1,9 +1,6 @@
 package it.polimi.ingsw.model.personcard;
 
-import it.polimi.ingsw.model.Category;
-import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.Item;
-import it.polimi.ingsw.model.Shelf;
+import it.polimi.ingsw.model.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,7 +33,7 @@ public class PersonalObjCardTest {
         shelf.getShelfGrid()[1][4] = new Item(Category.CAT);
         shelf.getShelfGrid()[2][3] = new Item(Category.BOOK);
         shelf.getShelfGrid()[3][1] = new Item(Category.GAME);
-        shelf.getShelfGrid()[4][2] = new Item(Category.TROPHY);
+        shelf.getShelfGrid()[5][2] = new Item(Category.TROPHY);
         reader = new PersonalCardReader();
     }
     @BeforeEach
@@ -87,19 +84,23 @@ public class PersonalObjCardTest {
     }
 
     @Test
-    public void goalReachedPositiveTest(){
+    public void goalReachedPositiveTest() throws Exception {
         final int FIRST_CARD = 0;
         List<PersonalObjCard> cardsList = new LinkedList<>(reader.readFromFile());
+        Player player = new Player();
         card = cardsList.remove(FIRST_CARD);
-        assertTrue(card.goalReached(shelf), "The goal reach method is failed, must be true");
+        player.addPoints(card.shelfCheck(shelf));
+        assertEquals(12, player.getScore(), "The goal reach method is failed, must be true");
     }
 
     @Test
-    public void goalReachedNegativeTest(){
+    public void goalReachedNegativeTest() throws Exception {
         final int FIRST_CARD = 0;
         shelf.getShelfGrid()[0][0] = new Item(Category.BOOK);
         List<PersonalObjCard> cardsList = new LinkedList<>(reader.readFromFile());
+        Player player = new Player();
         card = cardsList.remove(FIRST_CARD);
-        assertFalse(card.goalReached(shelf), "The goal reach method is failed, must be false");
+        player.addPoints(card.shelfCheck(shelf));
+        assertEquals(9, player.getScore(), "The goal reach method is failed, must be 9 pts");
     }
 }

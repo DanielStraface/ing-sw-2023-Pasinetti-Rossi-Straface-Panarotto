@@ -26,6 +26,8 @@ public class TurnHandler {
         //if this is the last turn, the following operations will be different
         if(turnChecker.manageCheck(player, game)){
             //if this player seats before the "isFirstPlayer" player the match ends after this turn
+            //during this must be updated the players score by personalObjCard
+            //
         } else {
             //the turn passes until the next player is the first one
             this.nextTurn(player);

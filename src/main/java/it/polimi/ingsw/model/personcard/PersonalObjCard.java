@@ -39,7 +39,7 @@ public class PersonalObjCard {
      *                      exists Item I2 in the (x,y) position in cardGrid template) &&
      *                      I1.getCategoryType() == I2.getCategoryType()
      */
-    public void shelfCheck(Shelf shelf, Player player) throws Exception {
+    public int shelfCheck(Shelf shelf) throws Exception {
         int matches = 0;
         int scoreAdded = 0;
         /* Two for-cycle to analyse both matrix in player shelf and template grid */
@@ -77,7 +77,7 @@ public class PersonalObjCard {
         if(matches > 6){
             throw new Exception("There can't be more than 6 matches!");
         }
-        player.addPoints(scoreAdded);
+        return scoreAdded;
     }
 
 }
