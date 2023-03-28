@@ -37,7 +37,7 @@ public class TurnChecker {
         boolean check = true;
         int[][] validGrid = game.getValidGrid();
 
-        /** check for every row and column (except first and last): if the slot is occupied by an Item,
+        /* check for every row and column (except first and last): if the slot is occupied by an Item,
          *  check if any of its adjacent places are occupied by an Item as well.
          *  If there's a single adjacent item, there's no need to refill the GameBoard and the check is
          *  set to false. */
@@ -54,7 +54,7 @@ public class TurnChecker {
             }
         }
 
-        /** these last two for cycles are used to check slots 3 and 4 for the first row and last column,
+        /* these last two for cycles are used to check slots 3 and 4 for the first row and last column,
          *  slots 4 and 5 for the first column and last row */
         for(int i=3; i<5; i++){
             if(validGrid[0][i] == OCCUPIED){
@@ -90,7 +90,7 @@ public class TurnChecker {
         }
 
         //if no Item has adjacent Items, the GameBoard needs to be refilled
-        if(check == true){
+        if(check){
             game.refillGameBoard();
         }
     }
@@ -98,7 +98,7 @@ public class TurnChecker {
     private boolean lastTurnCheck(Player player){
         Shelf playerShelf = player.getMyShelf();
 
-        /** if the current player's shelf is full, the last turn is triggered by this method
+        /* if the current player's shelf is full, the last turn is triggered by this method
          *  returning a true boolean */
         for(int i=0; i<SHELF_ROWS; i++){
             for(int j=0; j<SHELF_COLUMNS; j++){
