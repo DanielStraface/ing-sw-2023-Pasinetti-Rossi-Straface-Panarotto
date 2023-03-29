@@ -32,7 +32,7 @@ public class Controller {
     /**
      * gameActions method launch the turnHandler operations.
      */
-    public void gameActions(){
+    public void gameActions() throws Exception{
         //Add set nickname and clientID by view notifications
         //Must be modified, true may not appear
         while(true){
