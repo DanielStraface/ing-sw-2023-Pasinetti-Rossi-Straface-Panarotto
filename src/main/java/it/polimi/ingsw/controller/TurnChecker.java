@@ -18,7 +18,7 @@ public class TurnChecker {
     public boolean manageCheck(Player player, Game game){
         boolean isLastTurn;
         commonObjCardCheck(player, game);
-        isLastTurn = lastTurnCheck(player);
+        isLastTurn = player.getMyShelf().isFull();
         refillGameBoardCheck(game);
         return isLastTurn;
     }
@@ -95,19 +95,5 @@ public class TurnChecker {
         }
     }
 
-    private boolean lastTurnCheck(Player player){
-        Shelf playerShelf = player.getMyShelf();
-
-        /* if the current player's shelf is full, the last turn is triggered by this method
-         *  returning a true boolean */
-        for(int i=0; i<SHELF_ROWS; i++){
-            for(int j=0; j<SHELF_COLUMNS; j++){
-                if(playerShelf.getShelfGrid()[i][j].getCategoryType() == null){
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
 
 }
