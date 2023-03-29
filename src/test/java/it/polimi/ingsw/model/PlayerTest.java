@@ -18,7 +18,7 @@ public class PlayerTest {
     private List<Item> selectItems;
     private boolean isFirstPlayer;
     private Game testGame;
-    private int[][] selectedCoords;
+    private List<int[]> selectedCoords;
     private int selectedCol;
     private List<Item> sortedItems;
     private Item[][] gameBoard;
@@ -72,8 +72,21 @@ public class PlayerTest {
     }
 
     @Test
+    public void emptyListOfCoordinates() throws Exception{
+        selectedCoords=new ArrayList<>();
+        Exception e=assertThrows(Exception.class,()-> testPlayer.pickItems(selectedCoords,gameBoard,validGrid));
+        assertEquals("selectedCoords is empty", e.getMessage());
+    }
+
+    @Test
     public void diffRowsAndColumnsTest() throws Exception{
-        selectedCoords=new int[][]{{1,2},{2,3},{3,4}};
+        selectedCoords=new ArrayList<>();
+        int[] coord1 = {1, 2};
+        int[] coord2 = {2, 3};
+        int[] coord3 = {3, 4};
+        selectedCoords.add(coord1);
+        selectedCoords.add(coord2);
+        selectedCoords.add(coord3);
         Exception e=assertThrows(Exception.class,()-> testPlayer.pickItems(selectedCoords,gameBoard,validGrid));
         assertEquals("Invalid selection: no same rows or cols", e.getMessage());
     }
@@ -81,7 +94,13 @@ public class PlayerTest {
     @Test
     public void NoConsecutiveRowsTest() throws Exception{
         final int COLUMN=2;
-        selectedCoords=new int[][]{{1,COLUMN},{2,COLUMN},{4,COLUMN}};
+        selectedCoords=new ArrayList<>();
+        int[] coord1 = {2, COLUMN};
+        int[] coord2 = {3, COLUMN};
+        int[] coord3 = {5, COLUMN};
+        selectedCoords.add(coord1);
+        selectedCoords.add(coord2);
+        selectedCoords.add(coord3);
         Exception e=assertThrows(Exception.class,()-> testPlayer.pickItems(selectedCoords,gameBoard,validGrid));
         assertEquals("Invalid selection: No consecutive selection", e.getMessage());
     }
@@ -89,7 +108,13 @@ public class PlayerTest {
     @Test
     public void NoConsecutiveColumnsTest() throws Exception{
         final int ROW=2;
-        selectedCoords=new int[][]{{ROW,1},{ROW,2},{ROW,4}};
+        selectedCoords=new ArrayList<>();
+        int[] coord1 = {ROW, 2};
+        int[] coord2 = {ROW, 3};
+        int[] coord3 = {ROW, 5};
+        selectedCoords.add(coord1);
+        selectedCoords.add(coord2);
+        selectedCoords.add(coord3);
         Exception e=assertThrows(Exception.class,()-> testPlayer.pickItems(selectedCoords,gameBoard,validGrid));
         assertEquals("Invalid selection: No consecutive selection", e.getMessage());
     }
@@ -109,7 +134,13 @@ public class PlayerTest {
             }
             System.out.println();
         }
-        selectedCoords=new int[][]{{ROW,1},{ROW,2},{ROW,3}};
+        selectedCoords=new ArrayList<>();
+        int[] coord1 = {ROW, 1};
+        int[] coord2 = {ROW, 2};
+        int[] coord3 = {ROW, 3};
+        selectedCoords.add(coord1);
+        selectedCoords.add(coord2);
+        selectedCoords.add(coord3);
         Exception e=assertThrows(Exception.class,()-> testPlayer.pickItems(selectedCoords,gameBoard,validGrid));
         assertEquals("Invalid selection: no free sides", e.getMessage());
     }
@@ -129,8 +160,25 @@ public class PlayerTest {
             }
             System.out.println();
         }
-        selectedCoords=new int[][]{{ROW,3}};
+        selectedCoords=new ArrayList<>();
+        int[] coord1 = {ROW, 3};
+        int[] coord2 = {ROW, 4};
+        selectedCoords.add(coord1);
+        selectedCoords.add(coord2);
         assertDoesNotThrow(()->testPlayer.pickItems(selectedCoords,gameBoard,validGrid));
+
+        for (int i = 0; i < validGrid.length; i++) {
+            for (int j = 0; j < validGrid[i].length; j++) {
+                System.out.print(validGrid[i][j] + " ");
+            }
+            System.out.println();
+        }
+        for (int i = 0; i < gameBoard.length; i++) {
+            for (int j = 0; j < gameBoard[i].length; j++) {
+                System.out.print(gameBoard[i][j].getCategoryType() + " ");
+            }
+            System.out.println();
+        }
     }
     @Test
     public void FreeSideNextColIsFreeTest() throws Exception{
@@ -150,12 +198,14 @@ public class PlayerTest {
             }
             System.out.println();
         }
-        selectedCoords=new int[][]{{ROW,COL}};
+        selectedCoords=new ArrayList<>();
+        int[] coord1 = {ROW, COL};
+        selectedCoords.add(coord1);
         assertDoesNotThrow(()->testPlayer.pickItems(selectedCoords,gameBoard,validGrid));
     }
 
     @Test
-    public void FreeSideNexTRowIsFreeTest() throws Exception{
+    public void FreeSideNexTrowIsFreeTest() throws Exception{
         final int ROW=3;
         final int COL=3;
         validGrid[ROW+1][COL]=1;
@@ -172,7 +222,9 @@ public class PlayerTest {
             }
             System.out.println();
         }
-        selectedCoords=new int[][]{{ROW,COL}};
+        selectedCoords=new ArrayList<>();
+        int[] coord1 = {ROW, COL};
+        selectedCoords.add(coord1);
         assertDoesNotThrow(()->testPlayer.pickItems(selectedCoords,gameBoard,validGrid));
     }
 
@@ -193,12 +245,16 @@ public class PlayerTest {
             }
             System.out.println();
         }
-        selectedCoords=new int[][]{{ROW,3},{ROW,4}};
+        selectedCoords=new ArrayList<>();
+        int[] coord1 = {ROW, 3};
+        int[] coord2 = {ROW, 4};
+        selectedCoords.add(coord1);
+        selectedCoords.add(coord2);
         assertDoesNotThrow(()->testPlayer.pickItems(selectedCoords,gameBoard,validGrid));
-        assertNull(gameBoard[ROW][3].getCategoryType());
-        assertNull(gameBoard[ROW][4].getCategoryType());
-        assertEquals(1,validGrid[ROW][3]);
-        assertEquals(1,validGrid[ROW][4]);
+        assertNull(gameBoard[ROW][3].getCategoryType(),"Item is not replaced by null");
+        assertNull(gameBoard[ROW][4].getCategoryType(),"Item is not replaced by null");
+        assertEquals(1,validGrid[ROW][3],"Value in validGrid is not 1");
+        assertEquals(1,validGrid[ROW][4], "Value in validGrid is not 1");
 
         for (int i = 0; i < validGrid.length; i++) {
             for (int j = 0; j < validGrid[i].length; j++) {
@@ -229,12 +285,17 @@ public class PlayerTest {
             }
             System.out.println();
         }
-        selectedCoords = new int[][]{{ROW, 3}, {ROW, 4}};
+        selectedCoords=new ArrayList<>();
+        int[] coord1 = {ROW, 3};
+        int[] coord2 = {ROW, 4};
+        selectedCoords.add(coord1);
+        selectedCoords.add(coord2);
         Item[] expectedItems = new Item[]{gameBoard[ROW][3], gameBoard[ROW][4]};
 
         assertDoesNotThrow(() -> testPlayer.pickItems(selectedCoords, gameBoard, validGrid));
         for (int i = 0; i < selectItems.size(); i++) {
-            assertEquals(expectedItems[i].getCategoryType(), selectItems.get(i).getCategoryType());
+            assertEquals(expectedItems[i].getCategoryType(), selectItems.get(i).getCategoryType(),
+                    "Items in selectItems and in game Board are different");
         }
 
         for (int i = 0; i < validGrid.length; i++) {
@@ -249,6 +310,36 @@ public class PlayerTest {
             }
             System.out.println();
         }
+        for (int i = 0; i < selectItems.size(); i++) {
+            System.out.print(selectItems.get(i).getCategoryType() + " ");
+        }
+        System.out.println();
+    }
+
+    @Test
+    public void copiedItemsTest() throws Exception{
+        selectItems.add(new Item(Category.TROPHY));
+        selectItems.add(new Item(Category.CAT));
+
+        List<Item> expectedCopiedItems=new ArrayList<>();
+        expectedCopiedItems.add(new Item(Category.TROPHY));
+        expectedCopiedItems.add(new Item(Category.CAT));
+
+        for (int i = 0; i < expectedCopiedItems.size(); i++) {
+            System.out.print(expectedCopiedItems.get(i).getCategoryType() + " ");
+        }
+        System.out.println();
+
+        List<Item> copiedItems= testPlayer.getCopiedItems();
+        assertTrue(selectItems.isEmpty(), "SelectItems is not empty");
+        for(int i=0;i<copiedItems.size();i++){
+            assertEquals(expectedCopiedItems.get(i).getCategoryType(),copiedItems.get(i).getCategoryType(),
+                    "Items in selectItems and copiedItems are diffrent");
+        }
+        for (int i = 0; i < copiedItems.size(); i++) {
+            System.out.print(copiedItems.get(i).getCategoryType() + " ");
+        }
+        System.out.println();
         for (int i = 0; i < selectItems.size(); i++) {
             System.out.print(selectItems.get(i).getCategoryType() + " ");
         }
@@ -296,8 +387,10 @@ public class PlayerTest {
         }
 
         assertDoesNotThrow(() -> testPlayer.putItemInShelf(selectedCol,sortedItems));
-        assertEquals(sortedItems.get(0).getCategoryType(),myShelf.getShelfGrid()[LAST_ROW][VALID_COLUMN].getCategoryType());
-        assertEquals(sortedItems.get(1).getCategoryType(),myShelf.getShelfGrid()[LAST_ROW-1][VALID_COLUMN].getCategoryType());
+        assertEquals(sortedItems.get(0).getCategoryType(),myShelf.getShelfGrid()[LAST_ROW][VALID_COLUMN].getCategoryType(),
+                "Item in sortedItems and in myShelf are different");
+        assertEquals(sortedItems.get(1).getCategoryType(),myShelf.getShelfGrid()[LAST_ROW-1][VALID_COLUMN].getCategoryType(),
+                "Item in sortedItems and in myShelf are different");
 
         for (int i = 0; i < myShelf.getShelfGrid().length; i++) {
             for (int j = 0; j < myShelf.getShelfGrid()[i].length; j++) {

@@ -24,33 +24,36 @@ public class Player {
     }
 
     /** method to pick Items from the game board*/
-    public void pickItems(int[][] selectedCoords,Item[][] gameGrid, int[][] validGrid) throws Exception {
+    public void pickItems(List<int[]> selectedCoords,Item[][] gameGrid, int[][] validGrid) throws Exception {
+        if(selectedCoords.isEmpty()){
+            throw new Exception("selectedCoords is empty");
+        }
         boolean sameX = true;
         boolean sameY = true;
         boolean consecutiveX = true;
         boolean consecutiveY = true;
-        int x = selectedCoords[0][0];
-        int y = selectedCoords[0][1];
+        int XOfFirstCoordinate= selectedCoords.get(0)[0];
+        int YOfFirstCoordinate= selectedCoords.get(0)[1];
         /* For-cycle to analyse values of coordinates: first bond: Items from the same row or column*/
-        for (int i = 1; i < selectedCoords.length; i++) {
-            /* If all coordinates haven't the same x: items will not be picked from the same row */
-            if (selectedCoords[i][0] != x) {
-                sameX = false;
-                        }
+        for(int i=1;i<selectedCoords.size();i++) {
+            /*If all coordinates haven't the same x: items will not be picked from the same row */
+            if(selectedCoords.get(i)[0]!= XOfFirstCoordinate){
+                sameX=false;
+            }
             /* If all coordinates haven't the same y: items will not be picked from the same column */
-            if (selectedCoords[i][1] != y) {
-                sameY = false;
+            if(selectedCoords.get(i)[1]!= YOfFirstCoordinate){
+                sameY=false;
             }
         }
         /* If all coordinates haven't the same x or the same y: items can not be picked from the game board */
         if (!sameX && !sameY) {
             throw new Exception("Invalid selection: no same rows or cols");
         }
-        for (int i = 1; i < selectedCoords.length; i++) {
-            if (selectedCoords[i][0] != selectedCoords[i - 1][0] + 1) {
+        for (int i=1;i<selectedCoords.size();i++) {
+            if (selectedCoords.get(i)[0] != selectedCoords.get(i-1)[0]+1) {
                 consecutiveX = false;
             }
-            if (selectedCoords[i][1] != selectedCoords[i - 1][1] + 1) {
+            if (selectedCoords.get(i)[1] != selectedCoords.get(i-1)[1]+1) {
                 consecutiveY = false;
             }
         }
@@ -59,14 +62,15 @@ public class Player {
         }
 
         /* For-cycle to analyse values of coordinates: second bond: Items with almost a free side on game board*/
-        for (int i = 0; i < selectedCoords.length; i++) {
+        for (int i = 0; i < selectedCoords.size(); i++) {
             final int FIRST_ROW=0;
             final int LAST_ROW=8;
             final int FIRST_COLUMN=0;
             final int LAST_COLUMN=8;
-            int row = selectedCoords[i][0];
-            int col = selectedCoords[i][1];
+            int row = selectedCoords.get(i)[0];
+            int col = selectedCoords.get(i)[1];
 
+            /* if items are on the edge of the game board they have always almost a free side  */
             if (col == FIRST_COLUMN || col == LAST_COLUMN || row == FIRST_ROW || row == LAST_ROW) {
                 continue;
             }
@@ -84,9 +88,9 @@ public class Player {
             }
         }
         /* For-cycle to pick items from the game board and put them in the selectItems list*/
-        for (int i = 0; i < selectedCoords.length; i++) {
-            int row = selectedCoords[i][0];
-            int col = selectedCoords[i][1];
+        for (int i = 0; i < selectedCoords.size(); i++) {
+            int row = selectedCoords.get(i)[0];
+            int col = selectedCoords.get(i)[1];
             selectItems.add(gameGrid[row][col]);
             gameGrid[row][col] = new Item(null);
             validGrid[row][col] = 1;
@@ -149,16 +153,19 @@ public class Player {
     public boolean getIsFirstPlayer(){
         return this.isFirstPlayer;
     }
-    //Test PlayerTest method
-    public List<Item> getSelectItems(){
-        List<Item> temp = new ArrayList<Item>();
+    public List<Item> getCopiedItems(){
+        List<Item> copiedItems = new ArrayList<>();
         for(int i=0;i<selectItems.size();i++){
-            temp.add(selectItems.remove(i));
+            copiedItems.add(selectItems.get(i));
         }
-        return temp;
+        while(!selectItems.isEmpty()){
+            selectItems.remove(0);
+        }
+        return copiedItems;
     }
+//Used only for tests
+    public List<Item> getSelectItems(){return this.selectItems;}
 }
-
 
 
 
