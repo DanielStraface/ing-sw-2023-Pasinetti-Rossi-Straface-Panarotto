@@ -41,7 +41,7 @@ public class PersonalObjCard {
      */
     public int shelfCheck(Shelf shelf) throws Exception {
         int matches = 0;
-        int scoreAdded = 0;
+        int scoreAdded;
         /* Two for-cycle to analyse both matrix in player shelf and template grid */
         for (int i = 0; i < cardGrid.length; i++) {
             for (int j = 0; j < cardGrid[i].length; j++) {
@@ -72,6 +72,9 @@ public class PersonalObjCard {
             }
             case 6 -> {
                 scoreAdded = 12;
+            }
+            default -> {
+                scoreAdded = 0;
             }
         }
         if(matches > 6){
