@@ -2,16 +2,12 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.Shelf;
 import it.polimi.ingsw.model.comcard.CommonObjCard;
 
 
 public class TurnChecker {
 
-    private static final int SHELF_ROWS=6;
-    private static final int SHELF_COLUMNS=5;
     private static final int OCCUPIED = 2;
-
 
 
     // all checks that have to be done before ending a player's turn
