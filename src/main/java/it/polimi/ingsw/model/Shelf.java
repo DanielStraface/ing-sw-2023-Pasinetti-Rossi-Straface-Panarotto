@@ -4,6 +4,7 @@ public class Shelf {
 
     private static final int SHELF_ROWS=6;
     private static final int SHELF_COLUMNS=5;
+    private static final int TOP_ROW=0;
     private Item[][] shelfGrid;
 
     public Shelf() {
@@ -15,10 +16,9 @@ public class Shelf {
         }
     }
 
-        public boolean isFull() {
-        for(int i=0;i<SHELF_ROWS;i++){
-            for(int j=0;j<SHELF_COLUMNS;j++)
-                if (this.getShelfGrid()[i][j].getCategoryType() == null) return false;
+    public boolean isFull() {
+        for(int i=0;i<SHELF_COLUMNS;i++){
+            if (this.getShelfGrid()[TOP_ROW][i].getCategoryType() == null) return false;
         }
         return true;
     }
