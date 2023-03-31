@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.comcard;
 
+import it.polimi.ingsw.exceptions.InvalidNumberOfPlayersException;
 import it.polimi.ingsw.model.Player;
 
 import java.util.ArrayList;
@@ -53,7 +54,7 @@ public class CommonObjCard {
      * Constructor for CommonObjCard. It is based on how many players will play the game because the points provides by
      * CommonObjCard instance is different.
      */
-    public CommonObjCard(int numberOfPlayers, int type) throws Exception {
+    public CommonObjCard(int numberOfPlayers, int type) throws InvalidNumberOfPlayersException {
         /*The switch case are chosen by the number of players of the game.
         * For each case statement, the objPoints array assume different points configuration.
         * The nextPoints variables refers to the next points that will be distributed to the player who claim it.
@@ -75,7 +76,7 @@ public class CommonObjCard {
                 this.objPoints = temp;
             }
             default -> {
-                throw new Exception("Error: number of players not allowed!");
+                throw new InvalidNumberOfPlayersException();
             }
         }
         defineStrategy(type);
