@@ -184,9 +184,10 @@ public class Game {
     }
 
     /* set methods */
-    public void setCurrentPlayer(Player player){
-        this.currentPlayer = player;
-    }
+    public void setCurrentPlayer(Player player){ this.currentPlayer = player; }
+    public void setGameBoard (GameBoard gameboard) { this.gameboard = gameboard; }
+    public void setValidGrid (int[][] validGrid) { this.validGrid = validGrid; }
+
 
     /** get methods */
     public List<Player> getPlayers(){return players;}

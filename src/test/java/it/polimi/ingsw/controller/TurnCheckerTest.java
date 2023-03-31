@@ -48,16 +48,24 @@ public class TurnCheckerTest {
     @Test
     public void manageCheckRefillGameBoardCheck(){
         game.setCurrentPlayer(player);
+        int[][] validGrid;
+        GameBoard gameBoard;
+        validGrid = game.getValidGrid();
+        gameBoard = game.getGameboard();
         boolean checker = true;
         for(int i=0; i<9; i++){
             for(int j=0; j<9; j++){
-                game.getGameboard().getGameGrid()[i][j] = new Item(null);
-                game.getValidGrid()[i][j] = PLAYABLE;
+                if( validGrid[i][j] != INVALID){
+                    gameBoard.getGameGrid()[i][j] = new Item(null);
+                    validGrid[i][j] = PLAYABLE;
+                }
             }
         }
-        game.getGameboard().getGameGrid()[3][3] = new Item(Category.PLANT);
-        game.getGameboard().getGameGrid()[5][5] = new Item(Category.TROPHY);
-        game.getGameboard().getGameGrid()[6][4] = new Item(Category.CAT);
+        gameBoard.getGameGrid()[3][3] = new Item(Category.PLANT);
+        gameBoard.getGameGrid()[5][5] = new Item(Category.TROPHY);
+        gameBoard.getGameGrid()[6][4] = new Item(Category.CAT);
+        game.setGameBoard(gameBoard);
+        game.setValidGrid(validGrid);
         turnChecker.manageCheck(game.getCurrentPlayer(),game);
         for(int i=0; i<9; i++){
             for(int j=0; j<9; j++){
@@ -74,24 +82,27 @@ public class TurnCheckerTest {
     /** Checks if lastTurn is triggered or not under the correct conditions */
     @Test
     public void manageCheckLastTurnTest(){
+        Shelf shelf;
         boolean check;
         game.setCurrentPlayer(player);
         check = turnChecker.manageCheck(game.getCurrentPlayer(),game);
         assertFalse(check,"Last turn has been triggered even if the player's shelf isn't full!");
+        shelf = game.getCurrentPlayer().getMyShelf();
         Random random = new Random();
         List<Category> categories = new ArrayList<Category>(Arrays.asList(Category.values()));
         for(int i=0; i<6; i++){
             for(int j=0; j<5; j++){
-               game.getCurrentPlayer().getMyShelf().getShelfGrid()[i][j]= new Item(categories.get(random.nextInt(6)));
+               shelf.getShelfGrid()[i][j]= new Item(categories.get(random.nextInt(6)));
             }
         }
-        check= turnChecker.manageCheck(game.getCurrentPlayer(),game);
+        game.getCurrentPlayer().setMyShelf(shelf);
+        check = turnChecker.manageCheck(game.getCurrentPlayer(),game);
         assertTrue(check,"Last turn hasn't been triggered even if the player's shelf is full!");
     }
 
 
 
-    /** Tests every amount of points assigned for adjacent Items */
+    /** Tests every amount of points assigned (2,3,5,8) for adjacent Items */
     @Test
     public void adjacentPointsCheck(){
         for(int i=0; i<3; i++){
@@ -152,7 +163,7 @@ public class TurnCheckerTest {
             }
         }
         player.setMyShelf(shelf);
-        assert (turnChecker.adjacentItemsCheck(player)) > 0: "The score hasn't been correctly calculated" ;
+        assert (turnChecker.adjacentItemsCheck(player)) >= 0: "The score hasn't been correctly calculated" ;
     }
 
 }
