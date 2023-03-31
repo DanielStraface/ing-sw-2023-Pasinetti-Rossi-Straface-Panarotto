@@ -6,8 +6,9 @@ import it.polimi.ingsw.model.personcard.PersonalObjCard;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
 
-public class Player {
+public class Player extends Observable {
     private String nickname;    /** has to be unique */
 
     private int score;
@@ -97,6 +98,8 @@ public class Player {
             gameGrid[row][col] = new Item(null);
             validGrid[row][col] = 1;
         }
+        setChanged();
+        notifyObservers(gameGrid);
     }
 
     /** method to put Items into personal shelf*/
@@ -119,6 +122,8 @@ public class Player {
         for (int i = 0; i < sortedItems.size(); i++, lastRow--) {
             grid[lastRow][selectedCol] = sortedItems.get(i);
         }
+        setChanged();
+        notifyObservers(this.myShelf);
     }
 
     public void addPoints(int points) {

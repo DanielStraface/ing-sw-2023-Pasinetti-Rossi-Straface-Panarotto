@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.exceptions.InvalidNumberOfItemsException;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.view.TextualUI;
 
@@ -19,6 +20,7 @@ public class Controller implements Observer {
     /* -- constructor --*/
     public Controller(Game game, TextualUI view){ //must be edited by View
         this.game = game;
+        game.setCurrentPlayer(game.getPlayers().get(0));
         turnHandler = new TurnHandler(game);
         this.view = view;
     }
@@ -69,6 +71,14 @@ public class Controller implements Observer {
             try {
                 game.getCurrentPlayer().pickItems(list, game.getGameboard().getGameGrid(), game.getValidGrid());
             } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        } else if(arg instanceof Integer){
+            Integer integer = (Integer) arg;
+            int column = integer.intValue();
+            try {
+                game.getCurrentPlayer().putItemInShelf(column, game.getCurrentPlayer().getSelectItems());
+            } catch (InvalidNumberOfItemsException e) {
                 throw new RuntimeException(e);
             }
         }

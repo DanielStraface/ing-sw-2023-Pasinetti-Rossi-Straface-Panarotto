@@ -7,7 +7,7 @@ import it.polimi.ingsw.model.personcard.PersonalObjCard;
 
 import java.util.*;
 
-public class Game {
+public class Game extends Observable{
 
     private static final int DIM_GAMEBOARD=9;
     private static final int PLAYABLE = 1;
@@ -23,6 +23,7 @@ public class Game {
 
     /** constructor for Game class */
     public Game (int playersNumber) throws InvalidNumberOfPlayersException{
+        if(playersNumber <= 1 || playersNumber >= 5) throw new InvalidNumberOfPlayersException();
         this.playersNumber = playersNumber;
         this.players = new ArrayList<Player>(playersNumber);
         this.bag = new Bag();
@@ -43,7 +44,7 @@ public class Game {
         }
     }
 
-    private void createGameBoard() throws InvalidNumberOfPlayersException {
+    private void createGameBoard() {
         setGridForTwo(this.validGrid);
         switch(this.playersNumber) {
             case 3 -> {
@@ -74,7 +75,7 @@ public class Game {
                 validGrid[8][4] = PLAYABLE;
                 validGrid[8][5] = PLAYABLE;
             }
-            default -> { throw new InvalidNumberOfPlayersException();}
+            default -> {}
         }
         refillGameBoard();
     }
@@ -182,6 +183,8 @@ public class Game {
                 }
             }
         }
+        setChanged();
+        notifyObservers(this.gameboard);
     }
 
     /* set methods */
