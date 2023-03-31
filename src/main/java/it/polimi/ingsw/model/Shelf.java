@@ -8,13 +8,12 @@ public class Shelf {
     private Item[][] shelfGrid;
 
     public Shelf() {
-        /*this.shelfGrid = new Item[SHELF_ROWS][SHELF_COLUMNS];
+        this.shelfGrid = new Item[SHELF_ROWS][SHELF_COLUMNS];
         for (int row = 0; row < SHELF_ROWS; row++) {
             for (int col = 0; col < SHELF_COLUMNS; col++) {
                 shelfGrid[row][col] = new Item(null);
             }
-        }*/
-        System.out.println("Hello");
+        }
     }
 
     public boolean isFull() {
