@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.exceptions.InvalidNumberOfPlayersException;
 import it.polimi.ingsw.model.comcard.CommonObjCard;
 import it.polimi.ingsw.model.personcard.PersonalCardReader;
 import it.polimi.ingsw.model.personcard.PersonalObjCard;
@@ -21,7 +22,7 @@ public class Game {
     private Player currentPlayer;
 
     /** constructor for Game class */
-    public Game (int playersNumber) throws Exception {
+    public Game (int playersNumber) throws InvalidNumberOfPlayersException{
         this.playersNumber = playersNumber;
         this.players = new ArrayList<Player>(playersNumber);
         this.bag = new Bag();
@@ -35,14 +36,14 @@ public class Game {
     }
 
     //***********************************************
-    private void createPlayers() throws Exception {
+    private void createPlayers(){
         for(int i=0;i<this.playersNumber;i++){
             //nickname: "space" for each player, clientID: 0, isFirstPlayer: false;
             players.add(new Player());
         }
     }
 
-    private void createGameBoard() throws Exception {
+    private void createGameBoard() throws InvalidNumberOfPlayersException {
         setGridForTwo(this.validGrid);
         switch(this.playersNumber) {
             case 3 -> {
@@ -73,7 +74,7 @@ public class Game {
                 validGrid[8][4] = PLAYABLE;
                 validGrid[8][5] = PLAYABLE;
             }
-            default -> {}
+            default -> { throw new InvalidNumberOfPlayersException();}
         }
         refillGameBoard();
     }

@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.exceptions.InvalidNumberOfItemsException;
+import it.polimi.ingsw.exceptions.InvalidSelectionException;
 import it.polimi.ingsw.model.personcard.PersonalObjCard;
 
 import java.util.ArrayList;
@@ -16,7 +18,7 @@ public class Player {
     private boolean isFirstPlayer;
 
     /** constructor for Player class */
-    public Player() throws Exception {
+    public Player() {
         this.score = 0;
         this.isFirstPlayer = false;
         this.myShelf = new Shelf();
@@ -24,9 +26,9 @@ public class Player {
     }
 
     /** method to pick Items from the game board*/
-    public void pickItems(List<int[]> selectedCoords,Item[][] gameGrid, int[][] validGrid) throws Exception {
+    public void pickItems(List<int[]> selectedCoords,Item[][] gameGrid, int[][] validGrid) throws InvalidSelectionException,IllegalStateException {
         if(selectedCoords.isEmpty()){
-            throw new Exception("selectedCoords is empty");
+            throw new IllegalStateException("selectedCoords is empty");
         }
         boolean sameX = true;
         boolean sameY = true;
@@ -47,7 +49,7 @@ public class Player {
         }
         /* If all coordinates haven't the same x or the same y: items can not be picked from the game board */
         if (!sameX && !sameY) {
-            throw new Exception("Invalid selection: no same rows or cols");
+            throw new InvalidSelectionException("Invalid selection: no same rows or cols");
         }
         for (int i=1;i<selectedCoords.size();i++) {
             if (selectedCoords.get(i)[0] != selectedCoords.get(i-1)[0]+1) {
@@ -58,7 +60,7 @@ public class Player {
             }
         }
         if (!consecutiveX && !consecutiveY) {
-            throw new Exception("Invalid selection: No consecutive selection");
+            throw new InvalidSelectionException("Invalid selection: No consecutive selection");
         }
 
         /* For-cycle to analyse values of coordinates: second bond: Items with almost a free side on game board*/
@@ -84,7 +86,7 @@ public class Player {
             }
             if (gameGrid[row][col - 1].getCategoryType() != null && gameGrid[row][col + 1].getCategoryType() != null &&
                     gameGrid[row - 1][col].getCategoryType() != null || gameGrid[row + 1][col].getCategoryType() != null) {
-                throw new Exception("Invalid selection: no free sides");
+                throw new InvalidSelectionException("Invalid selection: no free sides");
             }
         }
         /* For-cycle to pick items from the game board and put them in the selectItems list*/
@@ -98,10 +100,10 @@ public class Player {
     }
 
     /** method to put Items into personal shelf*/
-    public void putItemInShelf(int selectedCol,List<Item> sortedItems) throws Exception{
+    public void putItemInShelf(int selectedCol,List<Item> sortedItems) throws ArrayIndexOutOfBoundsException, InvalidNumberOfItemsException{
         Item[][] grid=myShelf.getShelfGrid();
         if (selectedCol >= 5) {
-            throw new Exception("selectedCol must be less than 5");
+            throw new ArrayIndexOutOfBoundsException("selectedCol must be less than 5");
         }
         /* For-cycle to search the last row available*/
         int lastRow = 0;
@@ -112,7 +114,7 @@ public class Player {
         }
         /* For-cycle to put items into the selected column starting from the last row available*/
         if(sortedItems.size()>3){
-            throw new Exception("Invalid number of Items");
+            throw new InvalidNumberOfItemsException();
         }
         for (int i = 0; i < sortedItems.size(); i++, lastRow--) {
             grid[lastRow][selectedCol] = sortedItems.get(i);

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.personcard;
 
+import it.polimi.ingsw.exceptions.InvalidMatchesException;
 import it.polimi.ingsw.model.Item;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Shelf;
@@ -39,7 +40,7 @@ public class PersonalObjCard {
      *                      exists Item I2 in the (x,y) position in cardGrid template) &&
      *                      I1.getCategoryType() == I2.getCategoryType()
      */
-    public int shelfCheck(Shelf shelf) throws Exception {
+    public int shelfCheck(Shelf shelf) throws InvalidMatchesException {
         int matches = 0;
         int scoreAdded;
         /* Two for-cycle to analyse both matrix in player shelf and template grid */
@@ -78,7 +79,7 @@ public class PersonalObjCard {
             }
         }
         if(matches > 6){
-            throw new Exception("There can't be more than 6 matches!");
+            throw new InvalidMatchesException();
         }
         return scoreAdded;
     }
