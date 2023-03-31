@@ -23,6 +23,7 @@ public class TurnCheckerTest {
     private Game game;
     private static final int INVALID=0;
     private static final int PLAYABLE=1;
+    private static final int OCCUPIED=2;
 
 
 
@@ -62,8 +63,11 @@ public class TurnCheckerTest {
             }
         }
         gameBoard.getGameGrid()[3][3] = new Item(Category.PLANT);
+        validGrid[3][3] = OCCUPIED;
         gameBoard.getGameGrid()[5][5] = new Item(Category.TROPHY);
+        validGrid[5][5] = OCCUPIED;
         gameBoard.getGameGrid()[6][4] = new Item(Category.CAT);
+        validGrid[6][4] = OCCUPIED;
         game.setGameBoard(gameBoard);
         game.setValidGrid(validGrid);
         turnChecker.manageCheck(game.getCurrentPlayer(),game);

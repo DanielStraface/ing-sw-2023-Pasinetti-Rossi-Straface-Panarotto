@@ -33,15 +33,13 @@ public class ShelfTest {
 
     @Test
     public void isNotAllFull() {
-        final int ROWS = 6;
         final int COLUMS = 5;
         shelf = new Shelf();
-        for (int i = 0; i < ROWS; i++) {
-            for (int j = 0; j < COLUMS; j++) {
-                shelf.getShelfGrid()[i][j] = new Item(Category.BOOK);
-            }
+        for (int i = 0; i < COLUMS; i++) {
+            shelf.getShelfGrid()[0][i] = new Item(Category.BOOK);
+
         }
-        shelf.getShelfGrid()[3][4] = new Item(null);
+        shelf.getShelfGrid()[0][3] = new Item(null);
 
         assertSame(false, shelf.isFull(), "The shelf is full");
     }

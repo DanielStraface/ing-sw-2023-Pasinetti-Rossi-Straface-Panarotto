@@ -110,7 +110,7 @@ public class CommonObjCard {
         if(type == 1 || type == 5 || type == 7 || type == 11) strategyCheck = new GroupCards(type);
         if(type == 6 || type == 8) strategyCheck = new RowsColumnsCard(type);
         if(type == 4 || type == 9) strategyCheck = new ThreeDifferentTypes(type);
-        if(type == 12) strategyCheck = new XCards(type);
+        if(type == 10) strategyCheck = new XCards(type);
     }
 
     /**
