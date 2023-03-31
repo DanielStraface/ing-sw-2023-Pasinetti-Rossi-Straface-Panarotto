@@ -27,6 +27,7 @@ public class Controller {
         int n = random.nextInt(game.getPlayers().size());
         //set isFirstPlayer = true for that player
         game.getPlayers().get(n).setIsFirstPlayer();
+        game.setCurrentPlayer(game.getPlayers().get(n));
     }
 
     /**
