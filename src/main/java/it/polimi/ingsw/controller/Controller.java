@@ -1,20 +1,26 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.view.TextualUI;
 
+import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Random;
 
-public class Controller {
+public class Controller implements Observer {
     /* ATTRIBUES SECTION */
     private final Game game;
+    private final TextualUI view;
     private final TurnHandler turnHandler;
 
     /* METHOD SECTION */
 
     /* -- constructor --*/
-    public Controller(Game game){ //must be edited by View
+    public Controller(Game game, TextualUI view){ //must be edited by View
         this.game = game;
         turnHandler = new TurnHandler(game);
+        this.view = view;
     }
 
     /* -- logic methods --*/
@@ -48,5 +54,23 @@ public class Controller {
      */
     public synchronized Game getGame(){
         return this.game;
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        if(o != view){
+            System.err.println("Discarding notification from " + o);
+        }
+        if(arg instanceof String){
+            String nickname = (String) arg;
+            game.getCurrentPlayer().setNicknameAndClientID(nickname, 0);
+        } else if(arg instanceof List<?>){
+            List<int[]> list = (List<int[]>) arg;
+            try {
+                game.getCurrentPlayer().pickItems(list, game.getGameboard().getGameGrid(), game.getValidGrid());
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 }
