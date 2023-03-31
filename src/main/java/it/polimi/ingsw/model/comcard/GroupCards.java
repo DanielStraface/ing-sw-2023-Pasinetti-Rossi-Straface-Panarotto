@@ -124,8 +124,8 @@ class GroupCards extends StrategyCheck {
         int[] categoryReference = new int[6]; //category reference for comparison
         List<Category> list = Arrays.asList(Category.CAT, Category.BOOK, Category.FRAME,
                 Category.GAME, Category.TROPHY, Category.PLANT);
-        for(int i=0;i<4;i++){
-            for(int j=0;j<5;j++){
+        for(int i=0;i<5;i++){
+            for(int j=0;j<4;j++){
                 //if the item in the x centre is not null
                 if(grid[i][j].getCategoryType() != null){
                     //if the x is form by element of the same category

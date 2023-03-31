@@ -1,13 +1,17 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.comcard.CommonObjCard;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class TurnChecker {
 
     private static final int OCCUPIED = 2;
+    private static final int SHELF_ROWS=6;
+    private static final int SHELF_COLUMNS=5;
 
 
     // all checks that have to be done before ending a player's turn
@@ -91,5 +95,60 @@ public class TurnChecker {
         }
     }
 
+    /** Returns point to assign to the player based on the number of adjacent items */
+    public int adjacentItemsCheck(Player player) {
+        Item[][] shelf = player.getMyShelf().getShelfGrid();
+        Category scanned;
+        List<Integer> counter = new ArrayList<>();
+        counter.add(0);   // counts the number of adjacent items
+        int score = 0;
+        List<Integer> groups = new ArrayList<>();
+        // boolean matrix in order to not revisit already checked Items
+        boolean[][] visited = new boolean[SHELF_ROWS][SHELF_COLUMNS];
+        for(int i=0; i<SHELF_ROWS; i++){
+            for(int j=0; j<SHELF_COLUMNS; j++){
+                if(!visited[i][j] && shelf[i][j].getCategoryType() != null){
+                    scanned = shelf[i][j].getCategoryType();
+                    // recursive method that checks adjacent tiles in the Shelf
+                    adjacentCategoryCheck(shelf, visited, scanned, i, j, counter);
+                    groups.add(counter.get(0));  // adds dimension of found group to list
+                    // counter resets
+                    counter.remove(0);
+                    counter.add(0);
+                }
+            }
+        }
+        // for every slot in the list, points are added based on the dimensions found
+        for(int i=0; i<groups.size(); i++){
+            if(groups.get(i) == 3) { score += 2; }
+            if(groups.get(i) == 4) { score += 3; }
+            if(groups.get(i) == 5) { score += 5; }
+            if(groups.get(i) >= 6) { score += 8; }
+        }
+        return score;
+    }
+
+
+
+    private void adjacentCategoryCheck(Item[][] shelf, boolean[][] visited, Category category, int i, int j, List<Integer> counter){
+        Integer temp;
+        // stops the method if the item checked is out of the Shelf's bounds, has already been visited
+        // or isn't of the same category as the previous one checked
+        if     (i<0 || i>=SHELF_ROWS ||
+                j<0|| j>=SHELF_COLUMNS ||
+                visited[i][j] ||
+                shelf[i][j].getCategoryType() != category){
+            return;
+        }
+        visited[i][j] = true;  //
+        // counter is incremented by 1
+        temp = counter.remove(0);
+        counter.add(temp.intValue()+1);
+        // calls the same method on the adjacent tiles
+        adjacentCategoryCheck(shelf,visited,category,i-1,j,counter);
+        adjacentCategoryCheck(shelf,visited,category,i+1,j,counter);
+        adjacentCategoryCheck(shelf,visited,category,i,j-1,counter);
+        adjacentCategoryCheck(shelf,visited,category,i,j+1,counter);
+    }
 
 }
