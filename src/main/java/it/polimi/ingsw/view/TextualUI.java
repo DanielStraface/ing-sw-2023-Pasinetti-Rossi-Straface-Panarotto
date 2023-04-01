@@ -202,7 +202,7 @@ public class TextualUI extends Observable implements Observer, Runnable{
                     System.out.print("B ");
                 }
                 if(gameGrid[i][j].getCategoryType() == null){
-                    System.out.print(" ");
+                    System.out.print("  ");
                 }
             }
             System.out.print("\n");
