@@ -36,6 +36,7 @@ public class TurnHandler {
         Player player = game.getCurrentPlayer();
 
         if(turnChecker.manageCheck(player, game) || endGame) {
+            System.err.println("HERE1");
             if(!endGame) player.addPoints(ENDGAME_POINTS);
             endGame = true;
             Player firstPlayer = null;
@@ -43,10 +44,13 @@ public class TurnHandler {
                 if (p.getIsFirstPlayer()) firstPlayer = p;
             }
             if (game.getPlayers().indexOf(player) == game.getPlayers().size() - 1) {
+                System.err.print("HERE2");
                 if (game.getPlayers().indexOf(firstPlayer) == 0) {
+                    System.err.println("HERE3");
                     gameOver = true;
                 }
             } else if (game.getPlayers().indexOf(player) == game.getPlayers().indexOf(firstPlayer) - 1) {
+                System.err.println("HERE4");
                 gameOver = true;
             }
         }
@@ -54,16 +58,22 @@ public class TurnHandler {
     }
 
     private void gameOverHandler() {
+        System.out.print("GAME OVER");
+        int counter = 1;
         for(Player p : game.getPlayers()){
             PersonalObjCard personalObjCard = p.getMyPersonalOBjCard();
             try {
                 p.addPoints(personalObjCard.shelfCheck(p.getMyShelf()));
                 p.addPoints(turnChecker.adjacentItemsCheck(p));
+                System.out.println("Player " + counter + ":");
+                System.out.println("Your points: " + p.getScore());
+                counter++;
             } catch (InvalidMatchesException e) {
                 throw new RuntimeException(e);
             }
         }
-        System.out.print("GAME OVER");
+        System.out.println("Thank! See you soon.");
+        System.exit(10);
     }
 }
 
