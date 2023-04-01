@@ -79,6 +79,7 @@ public class TextualUI extends Observable implements Observer, Runnable{
             temp.add(this.coords.remove(selectedItems.indexOf(cardIndex-1)));
             selectedItems.remove(selectedItems.indexOf(cardIndex-1));
             numOfItems--;
+            counter++;
         }
         this.coords = temp;
     }
@@ -120,18 +121,92 @@ public class TextualUI extends Observable implements Observer, Runnable{
     }
 
     private void displayShelf(Shelf shelf) {
-        //print shelf
+        for(int i=0; i<6; i++){
+            for(int j=0; j<5; j++){
+                if(shelf.getShelfGrid()[i][j].getCategoryType()==Category.CAT){
+                    System.out.print("C ");
+                }
+                if(shelf.getShelfGrid()[i][j].getCategoryType()==Category.PLANT){
+                    System.out.print("P ");
+                }
+                if(shelf.getShelfGrid()[i][j].getCategoryType()==Category.FRAME){
+                    System.out.print("F ");
+                }
+                if(shelf.getShelfGrid()[i][j].getCategoryType()==Category.BOOK){
+                    System.out.print("B ");
+                }
+                if(shelf.getShelfGrid()[i][j].getCategoryType()==Category.TROPHY){
+                    System.out.print("T ");
+                }
+                if(shelf.getShelfGrid()[i][j].getCategoryType()==Category.GAME){
+                    System.out.print("G ");
+                }
+                if(shelf.getShelfGrid()[i][j].getCategoryType()==null){
+                    System.out.print(" ");
+                }
+            }
+            System.out.print("\n");
+        }
+        System.out.print("\n");
     }
 
     private void displayGameBoard(GameBoard gameBoard) {
         for(int i=0;i<gameBoard.getGameGrid().length;i++){
             for(int j=0;j<gameBoard.getGameGrid()[i].length;j++){
-
+                if(gameBoard.getGameGrid()[i][j].getCategoryType() == Category.CAT){
+                    System.out.print("C ");
+                }
+                if(gameBoard.getGameGrid()[i][j].getCategoryType() == Category.GAME){
+                    System.out.print("G ");
+                }
+                if(gameBoard.getGameGrid()[i][j].getCategoryType() == Category.PLANT){
+                    System.out.print("P ");
+                }
+                if(gameBoard.getGameGrid()[i][j].getCategoryType() == Category.FRAME){
+                    System.out.print("F ");
+                }
+                if(gameBoard.getGameGrid()[i][j].getCategoryType() == Category.TROPHY){
+                    System.out.print("T ");
+                }
+                if(gameBoard.getGameGrid()[i][j].getCategoryType() == Category.BOOK){
+                    System.out.print("B ");
+                }
+                if(gameBoard.getGameGrid()[i][j].getCategoryType() == null){
+                    System.out.print(" ");
+                }
             }
+            System.out.print("\n");
         }
+        System.out.print("\n");
     }
 
     private void displayGameBoard(Item[][] gameGrid){
-        //print the GameBoard gameGrid
+        for(int i=0;i<gameGrid.length;i++){
+            for(int j=0;j<gameGrid[i].length;j++){
+                if(gameGrid[i][j].getCategoryType() == Category.CAT){
+                    System.out.print("C ");
+                }
+                if(gameGrid[i][j].getCategoryType() == Category.GAME){
+                    System.out.print("G ");
+                }
+                if(gameGrid[i][j].getCategoryType() == Category.PLANT){
+                    System.out.print("P ");
+                }
+                if(gameGrid[i][j].getCategoryType() == Category.FRAME){
+                    System.out.print("F ");
+                }
+                if(gameGrid[i][j].getCategoryType() == Category.TROPHY){
+                    System.out.print("T ");
+                }
+                if(gameGrid[i][j].getCategoryType() == Category.BOOK){
+                    System.out.print("B ");
+                }
+                if(gameGrid[i][j].getCategoryType() == null){
+                    System.out.print(" ");
+                }
+            }
+            System.out.print("\n");
+        }
+        System.out.print("\n");
     }
 }
