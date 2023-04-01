@@ -142,12 +142,12 @@ public class TextualUI extends Observable implements Observer, Runnable{
                     System.out.print("G ");
                 }
                 if(shelf.getShelfGrid()[i][j].getCategoryType()==null){
-                    System.out.print(" ");
+                    System.out.print("  ");
                 }
             }
             System.out.print("\n");
         }
-        System.out.print("\n");
+        System.out.print("\n\n");
     }
 
     private void displayGameBoard(GameBoard gameBoard) {
@@ -172,12 +172,12 @@ public class TextualUI extends Observable implements Observer, Runnable{
                     System.out.print("B ");
                 }
                 if(gameBoard.getGameGrid()[i][j].getCategoryType() == null){
-                    System.out.print(" ");
+                    System.out.print("  ");
                 }
             }
             System.out.print("\n");
         }
-        System.out.print("\n");
+        System.out.print("\n\n");
     }
 
     private void displayGameBoard(Item[][] gameGrid){
@@ -207,6 +207,6 @@ public class TextualUI extends Observable implements Observer, Runnable{
             }
             System.out.print("\n");
         }
-        System.out.print("\n");
+        System.out.print("\n\n");
     }
 }
