@@ -16,11 +16,12 @@ public class TurnChecker {
 
     // all checks that have to be done before ending a player's turn
     public boolean manageCheck(Player player, Game game){
-        boolean isLastTurn;
+        boolean shelfFull;
         commonObjCardCheck(player, game);
-        isLastTurn = player.getMyShelf().isFull();
+        shelfFull = player.getMyShelf().isFull();
+        //if(shelfFull) player.addPoints(1);
         refillGameBoardCheck(game);
-        return isLastTurn;
+        return shelfFull;
     }
 
     private void commonObjCardCheck(Player player,Game game){

@@ -11,7 +11,7 @@ public class TextualUI extends Observable implements Observer, Runnable{
 
     @Override
     public void run() {
-        askNickname();
+        //askNickname();
         askAction();
     }
 
@@ -20,6 +20,7 @@ public class TextualUI extends Observable implements Observer, Runnable{
         Scanner scanner = new Scanner(System.in);
         int maxNum = 0;
         String input = null;
+        System.out.println("Hey, is your turn");
         System.out.println("How many items do you want to pick up?");
         while(maxNum <=0 || maxNum > 3){
             maxNum = scanner.nextInt();
@@ -46,6 +47,7 @@ public class TextualUI extends Observable implements Observer, Runnable{
         askColumn();
         setChanged();
         notifyObservers(coords);
+        setChanged();
         notifyObservers(Integer.valueOf(column));
     }
 
@@ -97,17 +99,16 @@ public class TextualUI extends Observable implements Observer, Runnable{
 
     @Override
     public void update(Observable o, Object arg) {
-        if(!(o instanceof Game)){
-            System.err.println("Discarding notification from " + o);
-        } else {
+        if(o instanceof Game){
             if(arg instanceof GameBoard){
                 GameBoard gameBoard = (GameBoard) arg;
                 displayGameBoard(gameBoard);
+            } else if(arg instanceof Player) {
+                this.run();
             } else {
                 System.err.println("Discarding notification from " + o + ": " + arg);
             }
-        }
-        if(!(o instanceof Player)){
+        } else if(o instanceof Player) {
             if(arg instanceof Item[][]){
                 Item[][] gameGrid = (Item[][]) arg;
                 displayGameBoard(gameGrid);
@@ -117,11 +118,14 @@ public class TextualUI extends Observable implements Observer, Runnable{
             } else {
                 System.err.println("Discarding notification from " + o + ": " + arg);
             }
+        } else {
+            System.err.println("Discarding notification from " + o);
         }
     }
 
     private void displayShelf(Shelf shelf) {
         for(int i=0; i<6; i++){
+            System.out.print(i+1 + " ");
             for(int j=0; j<5; j++){
                 if(shelf.getShelfGrid()[i][j].getCategoryType()==Category.CAT){
                     System.out.print("C ");
@@ -147,11 +151,14 @@ public class TextualUI extends Observable implements Observer, Runnable{
             }
             System.out.print("\n");
         }
+        System.out.print("  ");
+        for(int j=0;j<shelf.getShelfGrid()[0].length;j++) System.out.print(j+1 + " ");
         System.out.print("\n\n");
     }
 
     private void displayGameBoard(GameBoard gameBoard) {
         for(int i=0;i<gameBoard.getGameGrid().length;i++){
+            System.out.print(i + " ");
             for(int j=0;j<gameBoard.getGameGrid()[i].length;j++){
                 if(gameBoard.getGameGrid()[i][j].getCategoryType() == Category.CAT){
                     System.out.print("C ");
@@ -177,11 +184,14 @@ public class TextualUI extends Observable implements Observer, Runnable{
             }
             System.out.print("\n");
         }
+        System.out.print("  ");
+        for(int j=0;j<gameBoard.getGameGrid().length;j++) System.out.print(j + " ");
         System.out.print("\n\n");
     }
 
     private void displayGameBoard(Item[][] gameGrid){
         for(int i=0;i<gameGrid.length;i++){
+            System.out.print(i + " ");
             for(int j=0;j<gameGrid[i].length;j++){
                 if(gameGrid[i][j].getCategoryType() == Category.CAT){
                     System.out.print("C ");
@@ -207,6 +217,8 @@ public class TextualUI extends Observable implements Observer, Runnable{
             }
             System.out.print("\n");
         }
+        System.out.print("  ");
+        for(int j=0;j<gameGrid.length;j++) System.out.print(j + " ");
         System.out.print("\n\n");
     }
 }

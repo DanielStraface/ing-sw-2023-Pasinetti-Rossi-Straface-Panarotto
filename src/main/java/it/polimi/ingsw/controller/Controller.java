@@ -78,6 +78,11 @@ public class Controller implements Observer {
             int column = integer.intValue();
             try {
                 game.getCurrentPlayer().putItemInShelf(column, game.getCurrentPlayer().getSelectItems());
+                try {
+                    this.turnHandler.manageTurn();
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
             } catch (InvalidNumberOfItemsException e) {
                 throw new RuntimeException(e);
             }

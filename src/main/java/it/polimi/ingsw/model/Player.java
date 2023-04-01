@@ -17,6 +17,7 @@ public class Player extends Observable {
     private PersonalObjCard myPersonalObjCard;
     private List<Item> selectItems;
     private boolean isFirstPlayer;
+    private static final int INVALID = 0;
 
     /** constructor for Player class */
     public Player() {
@@ -30,6 +31,10 @@ public class Player extends Observable {
     public void pickItems(List<int[]> selectedCoords,Item[][] gameGrid, int[][] validGrid) throws InvalidSelectionException,IllegalStateException {
         if(selectedCoords.isEmpty()){
             throw new IllegalStateException("selectedCoords is empty");
+        }
+        for(int i=0;i<selectedCoords.size();i++){
+            if(validGrid[selectedCoords.get(i)[0]][selectedCoords.get(i)[1]] == INVALID)
+                throw new InvalidSelectionException("Selected item in invalid slot");
         }
         boolean sameX = true;
         boolean sameY = true;
@@ -122,6 +127,8 @@ public class Player extends Observable {
         for (int i = 0; i < sortedItems.size(); i++, lastRow--) {
             grid[lastRow][selectedCol] = sortedItems.get(i);
         }
+        sortedItems = null;
+        this.selectItems = new ArrayList<>();
         setChanged();
         notifyObservers(this.myShelf);
     }
