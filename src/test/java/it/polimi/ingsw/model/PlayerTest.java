@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.exceptions.InvalidSelectionException;
 import it.polimi.ingsw.model.personcard.PersonalObjCard;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -74,7 +75,7 @@ public class PlayerTest {
     @Test
     public void emptyListOfCoordinates() throws Exception{
         selectedCoords=new ArrayList<>();
-        Exception e = assertThrows(Exception.class, ()-> testPlayer.pickItems(selectedCoords,gameBoard,validGrid));
+        Exception e= assertThrows(IllegalStateException.class, ()-> testPlayer.pickItems(selectedCoords,gameBoard,validGrid));
         assertEquals("selectedCoords is empty", e.getMessage());
     }
 
@@ -87,7 +88,7 @@ public class PlayerTest {
         selectedCoords.add(coord1);
         selectedCoords.add(coord2);
         selectedCoords.add(coord3);
-        Exception e=assertThrows(Exception.class,()-> testPlayer.pickItems(selectedCoords,gameBoard,validGrid));
+        Exception e=assertThrows(InvalidSelectionException.class,()-> testPlayer.pickItems(selectedCoords,gameBoard,validGrid));
         assertEquals("Invalid selection: no same rows or cols", e.getMessage());
     }
 
@@ -101,7 +102,7 @@ public class PlayerTest {
         selectedCoords.add(coord1);
         selectedCoords.add(coord2);
         selectedCoords.add(coord3);
-        Exception e=assertThrows(Exception.class,()-> testPlayer.pickItems(selectedCoords,gameBoard,validGrid));
+        Exception e=assertThrows(InvalidSelectionException.class,()-> testPlayer.pickItems(selectedCoords,gameBoard,validGrid));
         assertEquals("Invalid selection: No consecutive selection", e.getMessage());
     }
 
@@ -115,7 +116,7 @@ public class PlayerTest {
         selectedCoords.add(coord1);
         selectedCoords.add(coord2);
         selectedCoords.add(coord3);
-        Exception e=assertThrows(Exception.class,()-> testPlayer.pickItems(selectedCoords,gameBoard,validGrid));
+        Exception e=assertThrows(InvalidSelectionException.class,()-> testPlayer.pickItems(selectedCoords,gameBoard,validGrid));
         assertEquals("Invalid selection: No consecutive selection", e.getMessage());
     }
 
@@ -141,7 +142,7 @@ public class PlayerTest {
         selectedCoords.add(coord1);
         selectedCoords.add(coord2);
         selectedCoords.add(coord3);
-        Exception e=assertThrows(Exception.class,()-> testPlayer.pickItems(selectedCoords,gameBoard,validGrid));
+        Exception e=assertThrows(InvalidSelectionException.class,()-> testPlayer.pickItems(selectedCoords,gameBoard,validGrid));
         assertEquals("Invalid selection: no free sides", e.getMessage());
     }
 
@@ -354,7 +355,7 @@ public class PlayerTest {
         sortedItems.add(new Item(Category.TROPHY));
         sortedItems.add(new Item(Category.CAT));
 
-        Exception e=assertThrows(Exception.class,()-> testPlayer.putItemInShelf(selectedCol,sortedItems));
+        Exception e=assertThrows(IndexOutOfBoundsException.class,()-> testPlayer.putItemInShelf(selectedCol,sortedItems));
         assertEquals("selectedCol must be less than 5", e.getMessage());
 
     }

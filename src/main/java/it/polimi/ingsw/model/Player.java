@@ -83,7 +83,7 @@ public class Player extends Observable {
                 }
             }
             if(!consecutiveY){
-                throw new Exception("Invalid selection: No consecutive selection");
+                throw new InvalidSelectionException("Invalid selection: No consecutive selection");
             }
         }
 
@@ -112,7 +112,7 @@ public class Player extends Observable {
                 }
             }
             if(!consecutiveX){
-                throw new Exception("Invalid selection: No consecutive selection");
+                throw new InvalidSelectionException("Invalid selection: No consecutive selection");
             }
         }
 
