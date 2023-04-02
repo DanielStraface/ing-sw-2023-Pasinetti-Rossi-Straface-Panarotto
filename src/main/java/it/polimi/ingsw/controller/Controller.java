@@ -1,6 +1,7 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.exceptions.InvalidNumberOfItemsException;
+import it.polimi.ingsw.exceptions.InvalidSelectionException;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.view.TextualUI;
 
@@ -29,7 +30,7 @@ public class Controller implements Observer {
     /**
      * chooseFirstPlayer method decides the first player of the match
      */
-    private void chooseFirstPlayer(){
+    public void chooseFirstPlayer(){
         //extract a random number between zero and numberOfPlayers
         Random random = new Random();
         int n = random.nextInt(game.getPlayers().size());

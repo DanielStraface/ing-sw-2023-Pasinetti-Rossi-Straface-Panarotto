@@ -27,6 +27,8 @@ public class App
             player.addObserver(view);
         }
 
+        controller.chooseFirstPlayer();
+
         view.run();
     }
 }

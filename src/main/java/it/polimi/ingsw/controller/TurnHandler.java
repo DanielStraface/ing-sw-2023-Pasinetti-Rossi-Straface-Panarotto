@@ -58,7 +58,7 @@ public class TurnHandler {
     }
 
     private void gameOverHandler() {
-        System.out.print("GAME OVER");
+        System.out.println("GAME OVER");
         int counter = 1;
         for(Player p : game.getPlayers()){
             PersonalObjCard personalObjCard = p.getMyPersonalOBjCard();
@@ -72,9 +72,12 @@ public class TurnHandler {
                 throw new RuntimeException(e);
             }
         }
-        System.out.println("Thank! See you soon.");
+        game.getPlayers().get(0).setNicknameAndClientID("London", 0);
+        game.getPlayers().get(1).setNicknameAndClientID("Paris", 1);
+        Player winner = game.getPlayers().get(0);
+        if(winner.getScore() < game.getPlayers().get(1).getScore()) winner = game.getPlayers().get(1);
+        System.out.println(winner.getNickname() + " wins with a score of " + winner.getScore() + " points");
+        System.out.println("The game ends here. THank you for playing this game!\nBYE");
         System.exit(10);
     }
 }
-
-

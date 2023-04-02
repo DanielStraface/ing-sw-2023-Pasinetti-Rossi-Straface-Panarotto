@@ -19,7 +19,7 @@ public class TextualUI extends Observable implements Observer, Runnable{
         coords = new ArrayList<>();
         Scanner scanner = new Scanner(System.in);
         int maxNum = 0;
-        String input = null;
+        System.out.println("-----------------------------------------------------------------------------------------");
         System.out.println("Hey, is your turn");
         System.out.println("How many items do you want to pick up?");
         while(maxNum <=0 || maxNum > 3){
@@ -40,8 +40,12 @@ public class TextualUI extends Observable implements Observer, Runnable{
                 coordsInput = scanner.nextInt();
             }
             coordsArray[1] = coordsInput;
-            coords.add(coordsArray);
-            maxNum--;
+            if(coords.size() > 0 && coords.get(0)[0] == coordsArray[0] && coords.get(0)[1] == coordsArray[1]){
+                System.out.println("Error: this item was already selected. Try another selection");
+            } else {
+                coords.add(coordsArray);
+                maxNum--;
+            }
         }
         askOrder();
         askColumn();
@@ -104,6 +108,14 @@ public class TextualUI extends Observable implements Observer, Runnable{
                 GameBoard gameBoard = (GameBoard) arg;
                 displayGameBoard(gameBoard);
             } else if(arg instanceof Player) {
+                Game game = (Game) o;
+                Player player = (Player) arg;
+                System.out.println("=================================================================================");
+                System.out.println("Your points: " + player.getScore());
+                displayCommonObjCard(game);
+                displayPersonalObjCard(player);
+                displayGameBoard(((Game) o).getGameboard());
+                displayShelf(player.getMyShelf());
                 this.run();
             } else {
                 System.err.println("Discarding notification from " + o + ": " + arg);
@@ -115,6 +127,12 @@ public class TextualUI extends Observable implements Observer, Runnable{
             } else if(arg instanceof Shelf){
                 Shelf shelf = (Shelf) arg;
                 displayShelf(shelf);
+            } else if(arg instanceof Integer){
+                Integer i = (Integer) arg;
+                System.out.println("Invalid column selection! Try again");
+                askColumn();
+                setChanged();
+                notifyObservers(this.column);
             } else {
                 System.err.println("Discarding notification from " + o + ": " + arg);
             }
@@ -123,7 +141,24 @@ public class TextualUI extends Observable implements Observer, Runnable{
         }
     }
 
+    private void displayPersonalObjCard(Player player) {
+        System.out.println("Your personal objective card:");
+        for(int i=0;i<player.getMyPersonalOBjCard().getCardGrid().length;i++){
+            for(int j=0;j<player.getMyPersonalOBjCard().getCardGrid()[i].length;j++){
+                System.out.print(player.getMyPersonalOBjCard().getCardGrid()[i][j].getCategoryType() + " ");
+            }
+            System.out.println();
+        }
+        System.out.print("\n\n");
+    }
+
+    private void displayCommonObjCard(Game game) {
+        System.out.println("The first common obj card is " + game.getCommonObjCard().get(0).getType());
+        System.out.println("The second common obj card is " + game.getCommonObjCard().get(1).getType());
+    }
+
     private void displayShelf(Shelf shelf) {
+        System.out.println("Your shelf: ");
         for(int i=0; i<6; i++){
             System.out.print(i+1 + " ");
             for(int j=0; j<5; j++){
@@ -157,6 +192,7 @@ public class TextualUI extends Observable implements Observer, Runnable{
     }
 
     private void displayGameBoard(GameBoard gameBoard) {
+        System.out.println("The gameboard is ");
         for(int i=0;i<gameBoard.getGameGrid().length;i++){
             System.out.print(i + " ");
             for(int j=0;j<gameBoard.getGameGrid()[i].length;j++){
@@ -190,6 +226,7 @@ public class TextualUI extends Observable implements Observer, Runnable{
     }
 
     private void displayGameBoard(Item[][] gameGrid){
+        System.out.println("The gameboard is ");
         for(int i=0;i<gameGrid.length;i++){
             System.out.print(i + " ");
             for(int j=0;j<gameGrid[i].length;j++){

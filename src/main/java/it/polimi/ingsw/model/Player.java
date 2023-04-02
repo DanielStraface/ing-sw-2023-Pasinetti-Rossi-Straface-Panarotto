@@ -155,7 +155,7 @@ public class Player extends Observable {
     }
 
     /** method to put Items into personal shelf*/
-    public void putItemInShelf(int selectedCol,List<Item> sortedItems) throws ArrayIndexOutOfBoundsException, InvalidNumberOfItemsException{
+    public void putItemInShelf(int selectedCol,List<Item> sortedItems) throws ArrayIndexOutOfBoundsException, InvalidNumberOfItemsException {
         Item[][] grid=myShelf.getShelfGrid();
         if (selectedCol >= 5) {
             throw new ArrayIndexOutOfBoundsException("selectedCol must be less than 5");
@@ -170,6 +170,10 @@ public class Player extends Observable {
         /* For-cycle to put items into the selected column starting from the last row available*/
         if(sortedItems.size()>3){
             throw new InvalidNumberOfItemsException();
+        }
+        if(lastRow == 0){
+            setChanged();
+            notifyObservers(Integer.valueOf(selectedCol));
         }
         for (int i = 0; i < sortedItems.size(); i++, lastRow--) {
             grid[lastRow][selectedCol] = sortedItems.get(i);
