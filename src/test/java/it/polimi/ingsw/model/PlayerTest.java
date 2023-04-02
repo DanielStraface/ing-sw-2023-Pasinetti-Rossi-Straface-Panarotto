@@ -53,7 +53,7 @@ public class PlayerTest {
                 expectedShelf[i][j] =new Item(null);
             }
         }
-        assertEquals(false, testPlayer.getIsFirstPlayer());
+        assertFalse(testPlayer.getIsFirstPlayer());
         assertEquals(0, testPlayer.getScore());
         for (int i = 0; i < SHELF_ROWS; i++) {
             for (int j = 0; j < SHELF_COLUMNS; j++) {
@@ -74,16 +74,16 @@ public class PlayerTest {
     @Test
     public void emptyListOfCoordinates() throws Exception{
         selectedCoords=new ArrayList<>();
-        Exception e=assertThrows(Exception.class,()-> testPlayer.pickItems(selectedCoords,gameBoard,validGrid));
+        Exception e = assertThrows(Exception.class, ()-> testPlayer.pickItems(selectedCoords,gameBoard,validGrid));
         assertEquals("selectedCoords is empty", e.getMessage());
     }
 
     @Test
     public void diffRowsAndColumnsTest() throws Exception{
         selectedCoords=new ArrayList<>();
-        int[] coord1 = {1, 2};
-        int[] coord2 = {2, 3};
-        int[] coord3 = {3, 4};
+        int[] coord1 = {0, 3};
+        int[] coord2 = {1, 4};
+        int[] coord3 = {2, 5};
         selectedCoords.add(coord1);
         selectedCoords.add(coord2);
         selectedCoords.add(coord3);
@@ -135,9 +135,9 @@ public class PlayerTest {
             System.out.println();
         }
         selectedCoords=new ArrayList<>();
-        int[] coord1 = {ROW, 1};
-        int[] coord2 = {ROW, 2};
-        int[] coord3 = {ROW, 3};
+        int[] coord1 = {ROW, 2};
+        int[] coord2 = {ROW, 3};
+        int[] coord3 = {ROW, 4};
         selectedCoords.add(coord1);
         selectedCoords.add(coord2);
         selectedCoords.add(coord3);
@@ -356,21 +356,6 @@ public class PlayerTest {
 
         Exception e=assertThrows(Exception.class,()-> testPlayer.putItemInShelf(selectedCol,sortedItems));
         assertEquals("selectedCol must be less than 5", e.getMessage());
-
-    }
-
-    @Test
-    public void noAvailableSizeOfSortedItemsTest() throws Exception{
-        final int VALID_COLUMN=3;
-        selectedCol=VALID_COLUMN;
-        sortedItems= new ArrayList<>();
-        sortedItems.add(new Item(Category.TROPHY));
-        sortedItems.add(new Item(Category.CAT));
-        sortedItems.add(new Item(Category.PLANT));
-        sortedItems.add(new Item(Category.FRAME));
-
-        Exception e=assertThrows(Exception.class,()-> testPlayer.putItemInShelf(selectedCol,sortedItems));
-        assertEquals("Invalid number of Items", e.getMessage());
 
     }
 

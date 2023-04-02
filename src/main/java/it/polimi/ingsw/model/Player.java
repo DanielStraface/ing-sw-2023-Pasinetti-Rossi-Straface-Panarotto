@@ -28,7 +28,7 @@ public class Player extends Observable {
     }
 
     /** method to pick Items from the game board*/
-    public void pickItems(List<int[]> selectedCoords,Item[][] gameGrid, int[][] validGrid) throws InvalidSelectionException,IllegalStateException {
+    public void pickItems(List<int[]> selectedCoords,Item[][] gameGrid, int[][] validGrid) throws Exception {
         if(selectedCoords.isEmpty()){
             throw new IllegalStateException("selectedCoords is empty");
         }
@@ -38,8 +38,6 @@ public class Player extends Observable {
         }
         boolean sameX = true;
         boolean sameY = true;
-        boolean consecutiveX = true;
-        boolean consecutiveY = true;
         int XOfFirstCoordinate= selectedCoords.get(0)[0];
         int YOfFirstCoordinate= selectedCoords.get(0)[1];
         /* For-cycle to analyse values of coordinates: first bond: Items from the same row or column*/
@@ -57,16 +55,65 @@ public class Player extends Observable {
         if (!sameX && !sameY) {
             throw new InvalidSelectionException("Invalid selection: no same rows or cols");
         }
-        for (int i=1;i<selectedCoords.size();i++) {
-            if (selectedCoords.get(i)[0] != selectedCoords.get(i-1)[0]+1) {
-                consecutiveX = false;
+
+        boolean consecutiveX=true;
+        boolean consecutiveY=true;
+        if(sameX){
+            int minY=selectedCoords.get(0)[1];
+            int maxY=selectedCoords.get(0)[1];
+
+            for(int i=1;i<selectedCoords.size();i++){
+                if(selectedCoords.get(i)[1]<minY){
+                    minY=selectedCoords.get(i)[1];
+                }
             }
-            if (selectedCoords.get(i)[1] != selectedCoords.get(i-1)[1]+1) {
-                consecutiveY = false;
+            for(int i=1;i<selectedCoords.size();i++) {
+                if (selectedCoords.get(i)[1] > maxY) {
+                    maxY = selectedCoords.get(i)[1];
+                }
+            }
+            if (selectedCoords.size() == 3) {
+                if (maxY - minY != 2) {
+                    consecutiveY = false;
+                }
+            }
+            if (selectedCoords.size() == 2) {
+                if (maxY - minY != 1) {
+                    consecutiveY = false;
+                }
+            }
+            if(!consecutiveY){
+                throw new Exception("Invalid selection: No consecutive selection");
             }
         }
-        if (!consecutiveX && !consecutiveY) {
-            throw new InvalidSelectionException("Invalid selection: No consecutive selection");
+
+        if(sameY){
+            int minX=selectedCoords.get(0)[0];
+            int maxX=selectedCoords.get(0)[0];
+
+            for(int i=1;i<selectedCoords.size();i++){
+                if(selectedCoords.get(i)[1]<minX){
+                    minX=selectedCoords.get(i)[1];
+                }
+            }
+            for(int i=1;i<selectedCoords.size();i++) {
+                if (selectedCoords.get(i)[1] > maxX) {
+                    maxX = selectedCoords.get(i)[1];
+                }
+            }
+            if (selectedCoords.size() == 3) {
+                if (maxX - minX != 2) {
+                    consecutiveX = false;
+                }
+            }
+            if (selectedCoords.size() == 2) {
+                if (maxX - minX != 1) {
+                    consecutiveX = false;
+                }
+            }
+            if(!consecutiveX){
+                throw new Exception("Invalid selection: No consecutive selection");
+            }
         }
 
         /* For-cycle to analyse values of coordinates: second bond: Items with almost a free side on game board*/
@@ -127,7 +174,6 @@ public class Player extends Observable {
         for (int i = 0; i < sortedItems.size(); i++, lastRow--) {
             grid[lastRow][selectedCol] = sortedItems.get(i);
         }
-        sortedItems = null;
         this.selectItems = new ArrayList<>();
         setChanged();
         notifyObservers(this.myShelf);
@@ -177,7 +223,6 @@ public class Player extends Observable {
         }
         return copiedItems;
     }
-//Used only for tests
     public List<Item> getSelectItems(){return this.selectItems;}
 }
 
