@@ -92,13 +92,13 @@ public class Player extends Observable {
             int maxX=selectedCoords.get(0)[0];
 
             for(int i=1;i<selectedCoords.size();i++){
-                if(selectedCoords.get(i)[1]<minX){
-                    minX=selectedCoords.get(i)[1];
+                if(selectedCoords.get(i)[0]<minX){
+                    minX=selectedCoords.get(i)[0];
                 }
             }
             for(int i=1;i<selectedCoords.size();i++) {
-                if (selectedCoords.get(i)[1] > maxX) {
-                    maxX = selectedCoords.get(i)[1];
+                if (selectedCoords.get(i)[0] > maxX) {
+                    maxX = selectedCoords.get(i)[0];
                 }
             }
             if (selectedCoords.size() == 3) {
@@ -116,7 +116,7 @@ public class Player extends Observable {
             }
         }
 
-        /* For-cycle to analyse values of coordinates: second bond: Items with almost a free side on game board*/
+        /* For-cycle to analyse values of coordinates: third bond: Items with almost a free side on game board*/
         for (int i = 0; i < selectedCoords.size(); i++) {
             final int FIRST_ROW=0;
             final int LAST_ROW=8;
@@ -155,10 +155,13 @@ public class Player extends Observable {
     }
 
     /** method to put Items into personal shelf*/
-    public void putItemInShelf(int selectedCol,List<Item> sortedItems) throws ArrayIndexOutOfBoundsException, InvalidNumberOfItemsException {
+    public void putItemInShelf(int selectedCol) throws ArrayIndexOutOfBoundsException, InvalidNumberOfItemsException {
         Item[][] grid=myShelf.getShelfGrid();
         if (selectedCol >= 5) {
             throw new ArrayIndexOutOfBoundsException("selectedCol must be less than 5");
+        }
+        if(selectItems.size()>3){
+            throw new InvalidNumberOfItemsException();
         }
         /* For-cycle to search the last row available*/
         int lastRow = 0;
@@ -168,17 +171,16 @@ public class Player extends Observable {
             }
         }
         /* For-cycle to put items into the selected column starting from the last row available*/
-        if(sortedItems.size()>3){
-            throw new InvalidNumberOfItemsException();
-        }
         if(lastRow == 0){
             setChanged();
             notifyObservers(Integer.valueOf(selectedCol));
         }
-        for (int i = 0; i < sortedItems.size(); i++, lastRow--) {
-            grid[lastRow][selectedCol] = sortedItems.get(i);
+        for (int i = 0; i < selectItems.size(); i++, lastRow--) {
+            grid[lastRow][selectedCol] = selectItems.get(i);
         }
-        this.selectItems = new ArrayList<>();
+        while(!selectItems.isEmpty()){
+            selectItems.remove(0);
+        }
         setChanged();
         notifyObservers(this.myShelf);
     }
@@ -216,16 +218,6 @@ public class Player extends Observable {
     }
     public boolean getIsFirstPlayer(){
         return this.isFirstPlayer;
-    }
-    public List<Item> getCopiedItems(){
-        List<Item> copiedItems = new ArrayList<>();
-        for(int i=0;i<selectItems.size();i++){
-            copiedItems.add(selectItems.get(i));
-        }
-        while(!selectItems.isEmpty()){
-            selectItems.remove(0);
-        }
-        return copiedItems;
     }
     public List<Item> getSelectItems(){return this.selectItems;}
 }

@@ -78,7 +78,7 @@ public class Controller implements Observer {
             Integer integer = (Integer) arg;
             int column = integer.intValue();
             try {
-                game.getCurrentPlayer().putItemInShelf(column, game.getCurrentPlayer().getSelectItems());
+                game.getCurrentPlayer().putItemInShelf(column);
                 try {
                     this.turnHandler.manageTurn();
                 } catch (Exception e) {

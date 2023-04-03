@@ -15,7 +15,7 @@ public class PlayerAction {
             List<Item> selectedItems = game.getCurrentPlayer().getSelectItems();
             //selectedItems send to view for resorted. Receive selectedItems resorted from view
             //There will be from view a method that sorts the items picked by the player choice
-            game.getCurrentPlayer().putItemInShelf(0, selectedItems);
+            game.getCurrentPlayer().putItemInShelf(0);
         } catch (Exception e) {
             System.err.println("Error: invalid selection of items");
         }

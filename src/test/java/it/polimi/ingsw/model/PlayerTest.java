@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.exceptions.InvalidNumberOfItemsException;
 import it.polimi.ingsw.exceptions.InvalidSelectionException;
 import it.polimi.ingsw.model.personcard.PersonalObjCard;
 import org.junit.jupiter.api.BeforeEach;
@@ -80,6 +81,17 @@ public class PlayerTest {
     }
 
     @Test
+    public void invalidCoordsSelectionTest() throws Exception{
+        selectedCoords=new ArrayList<>();
+        int[] coord1 = {0, 0};
+        int[] coord2 = {0, 1};
+        selectedCoords.add(coord1);
+        selectedCoords.add(coord2);
+        Exception e=assertThrows(InvalidSelectionException.class,()-> testPlayer.pickItems(selectedCoords,gameBoard,validGrid));
+        assertEquals("Selected item in invalid slot", e.getMessage());
+    }
+
+    @Test
     public void diffRowsAndColumnsTest() throws Exception{
         selectedCoords=new ArrayList<>();
         int[] coord1 = {0, 3};
@@ -93,7 +105,7 @@ public class PlayerTest {
     }
 
     @Test
-    public void NoConsecutiveRowsTest() throws Exception{
+    public void NoConsecutive3RowsTest() throws Exception{
         final int COLUMN=2;
         selectedCoords=new ArrayList<>();
         int[] coord1 = {2, COLUMN};
@@ -107,7 +119,20 @@ public class PlayerTest {
     }
 
     @Test
-    public void NoConsecutiveColumnsTest() throws Exception{
+    public void NoConsecutive2RowsTest() throws Exception{
+        final int COLUMN=2;
+        selectedCoords=new ArrayList<>();
+        int[] coord1 = {4, COLUMN};
+        int[] coord2 = {2, COLUMN};
+        selectedCoords.add(coord1);
+        selectedCoords.add(coord2);
+
+        Exception e=assertThrows(InvalidSelectionException.class,()-> testPlayer.pickItems(selectedCoords,gameBoard,validGrid));
+        assertEquals("Invalid selection: No consecutive selection", e.getMessage());
+    }
+
+    @Test
+    public void NoConsecutive3ColumnsTest() throws Exception{
         final int ROW=2;
         selectedCoords=new ArrayList<>();
         int[] coord1 = {ROW, 2};
@@ -116,6 +141,19 @@ public class PlayerTest {
         selectedCoords.add(coord1);
         selectedCoords.add(coord2);
         selectedCoords.add(coord3);
+        Exception e=assertThrows(InvalidSelectionException.class,()-> testPlayer.pickItems(selectedCoords,gameBoard,validGrid));
+        assertEquals("Invalid selection: No consecutive selection", e.getMessage());
+    }
+
+    @Test
+    public void NoConsecutive2ColumnsTest() throws Exception{
+        final int ROW=2;
+        selectedCoords=new ArrayList<>();
+        int[] coord1 = {ROW, 2};
+        int[] coord2 = {ROW, 4};
+        selectedCoords.add(coord1);
+        selectedCoords.add(coord2);
+
         Exception e=assertThrows(InvalidSelectionException.class,()-> testPlayer.pickItems(selectedCoords,gameBoard,validGrid));
         assertEquals("Invalid selection: No consecutive selection", e.getMessage());
     }
@@ -247,13 +285,13 @@ public class PlayerTest {
             System.out.println();
         }
         selectedCoords=new ArrayList<>();
-        int[] coord1 = {ROW, 3};
-        int[] coord2 = {ROW, 4};
+        int[] coord1 = {ROW, 4};
+        int[] coord2 = {ROW, 3};
         selectedCoords.add(coord1);
         selectedCoords.add(coord2);
         assertDoesNotThrow(()->testPlayer.pickItems(selectedCoords,gameBoard,validGrid));
-        assertNull(gameBoard[ROW][3].getCategoryType(),"Item is not replaced by null");
         assertNull(gameBoard[ROW][4].getCategoryType(),"Item is not replaced by null");
+        assertNull(gameBoard[ROW][3].getCategoryType(),"Item is not replaced by null");
         assertEquals(1,validGrid[ROW][3],"Value in validGrid is not 1");
         assertEquals(1,validGrid[ROW][4], "Value in validGrid is not 1");
 
@@ -318,46 +356,26 @@ public class PlayerTest {
     }
 
     @Test
-    public void copiedItemsTest() throws Exception{
-        selectItems.add(new Item(Category.TROPHY));
-        selectItems.add(new Item(Category.CAT));
-
-        List<Item> expectedCopiedItems=new ArrayList<>();
-        expectedCopiedItems.add(new Item(Category.TROPHY));
-        expectedCopiedItems.add(new Item(Category.CAT));
-
-        for (int i = 0; i < expectedCopiedItems.size(); i++) {
-            System.out.print(expectedCopiedItems.get(i).getCategoryType() + " ");
-        }
-        System.out.println();
-
-        List<Item> copiedItems= testPlayer.getCopiedItems();
-        assertTrue(selectItems.isEmpty(), "SelectItems is not empty");
-        for(int i=0;i<copiedItems.size();i++){
-            assertEquals(expectedCopiedItems.get(i).getCategoryType(),copiedItems.get(i).getCategoryType(),
-                    "Items in selectItems and copiedItems are diffrent");
-        }
-        for (int i = 0; i < copiedItems.size(); i++) {
-            System.out.print(copiedItems.get(i).getCategoryType() + " ");
-        }
-        System.out.println();
-        for (int i = 0; i < selectItems.size(); i++) {
-            System.out.print(selectItems.get(i).getCategoryType() + " ");
-        }
-        System.out.println();
-    }
-
-    @Test
     public void noAvailableColumnTest() throws Exception{
         final int INVALID_COLUMN=6;
         selectedCol=INVALID_COLUMN;
-        sortedItems= new ArrayList<>();
-        sortedItems.add(new Item(Category.TROPHY));
-        sortedItems.add(new Item(Category.CAT));
+        selectItems.add(new Item(Category.TROPHY));
+        selectItems.add(new Item(Category.CAT));
 
-        Exception e=assertThrows(IndexOutOfBoundsException.class,()-> testPlayer.putItemInShelf(selectedCol,sortedItems));
+        Exception e=assertThrows(IndexOutOfBoundsException.class,()-> testPlayer.putItemInShelf(selectedCol));
         assertEquals("selectedCol must be less than 5", e.getMessage());
 
+    }
+
+    @Test
+    public void noAvailableDimensionOfSelectItems() throws Exception{
+        selectedCol=3;
+        selectItems.add(new Item(Category.TROPHY));
+        selectItems.add(new Item(Category.CAT));
+        selectItems.add(new Item(Category.PLANT));
+        selectItems.add(new Item(Category.FRAME));
+
+        Exception e=assertThrows(InvalidNumberOfItemsException.class,()-> testPlayer.putItemInShelf(selectedCol));
     }
 
     @Test
@@ -365,18 +383,20 @@ public class PlayerTest {
         final int VALID_COLUMN=3;
         final int LAST_ROW=5;
         selectedCol=VALID_COLUMN;
-        sortedItems= new ArrayList<>();
-        sortedItems.add(new Item(Category.TROPHY));
-        sortedItems.add(new Item(Category.CAT));
-        for(int i=0;i<sortedItems.size();i++) {
-            System.out.println(sortedItems.get(i).getCategoryType() + " ");
+        selectItems.add(new Item(Category.TROPHY));
+        selectItems.add(new Item(Category.CAT));
+        List<Item> expectedItems=new ArrayList<>();
+        expectedItems.add(new Item(Category.TROPHY));
+        expectedItems.add(new Item(Category.CAT));
+        for(int i=0;i<selectItems.size();i++) {
+            System.out.println(selectItems.get(i).getCategoryType() + " ");
         }
 
-        assertDoesNotThrow(() -> testPlayer.putItemInShelf(selectedCol,sortedItems));
-        assertEquals(sortedItems.get(0).getCategoryType(),myShelf.getShelfGrid()[LAST_ROW][VALID_COLUMN].getCategoryType(),
-                "Item in sortedItems and in myShelf are different");
-        assertEquals(sortedItems.get(1).getCategoryType(),myShelf.getShelfGrid()[LAST_ROW-1][VALID_COLUMN].getCategoryType(),
-                "Item in sortedItems and in myShelf are different");
+        assertDoesNotThrow(() -> testPlayer.putItemInShelf(selectedCol));
+        assertEquals(expectedItems.get(0).getCategoryType(),myShelf.getShelfGrid()[LAST_ROW][VALID_COLUMN].getCategoryType(),
+                "Item in selectItems and in myShelf are different");
+        assertEquals(expectedItems.get(1).getCategoryType(),myShelf.getShelfGrid()[LAST_ROW-1][VALID_COLUMN].getCategoryType(),
+                "Item in selectItems and in myShelf are different");
 
         for (int i = 0; i < myShelf.getShelfGrid().length; i++) {
             for (int j = 0; j < myShelf.getShelfGrid()[i].length; j++) {
