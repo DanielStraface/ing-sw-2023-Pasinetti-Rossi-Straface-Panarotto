@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.comcard;
 
+import it.polimi.ingsw.exceptions.InvalidNumberOfPlayersException;
 import it.polimi.ingsw.model.Category;
 import it.polimi.ingsw.model.Item;
 import it.polimi.ingsw.model.Player;
@@ -84,10 +85,10 @@ public class CommonObjCardTest {
 
     @Test
     public void invalidNumberOfPlayers(){
-        Exception exception = assertThrows(Exception.class, () -> {
+        InvalidNumberOfPlayersException exception = assertThrows(InvalidNumberOfPlayersException.class, () -> {
             card = new CommonObjCard(5, BASE_TYPE);
         });
-        assertEquals("Error: number of players not allowed!", exception.getMessage());
+        assertEquals("Error: the number of players is not allowed!", exception.getMessage());
     }
 
     @Test
