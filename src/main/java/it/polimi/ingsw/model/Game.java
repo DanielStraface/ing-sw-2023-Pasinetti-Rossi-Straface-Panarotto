@@ -3,13 +3,14 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.exceptions.InvalidNumberOfItemsException;
 import it.polimi.ingsw.exceptions.InvalidNumberOfPlayersException;
 import it.polimi.ingsw.exceptions.NoElementException;
+import it.polimi.ingsw.listeners.ModelSubject;
 import it.polimi.ingsw.model.comcard.CommonObjCard;
 import it.polimi.ingsw.model.personcard.PersonalCardReader;
 import it.polimi.ingsw.model.personcard.PersonalObjCard;
 
 import java.util.*;
 
-public class Game extends Observable{
+public class Game extends ModelSubject {
 
     private static final int DIM_GAMEBOARD=9;
     private static final int PLAYABLE = 1;
@@ -185,15 +186,13 @@ public class Game extends Observable{
                 }
             }
         }
-        setChanged();
-        notifyObservers(this.gameboard);
+        setChangedAndNotifyListeners(this.gameboard);
     }
 
     /* set methods */
     public void setCurrentPlayer(Player player){
         this.currentPlayer = player;
-        setChanged();
-        notifyObservers(player);
+        setChangedAndNotifyListeners(this);
     }
     public void setGameBoard (GameBoard gameboard) { this.gameboard = gameboard; }
     public void setValidGrid (int[][] validGrid) { this.validGrid = validGrid; }
@@ -206,4 +205,12 @@ public class Game extends Observable{
     public Bag getBag(){return bag;}
     public Player getCurrentPlayer(){return currentPlayer;}
     public int[][] getValidGrid(){return validGrid;}
+    private void setChangedAndNotifyListeners(GameBoard gb){
+        setChanged();
+        notifyObservers(gb);
+    }
+    private void setChangedAndNotifyListeners(Game gm){
+        setChanged();
+        notifyObservers(gm);
+    }
 }

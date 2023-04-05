@@ -4,13 +4,14 @@ import it.polimi.ingsw.exceptions.InvalidNumberOfItemsException;
 import it.polimi.ingsw.exceptions.InvalidSelectionException;
 import it.polimi.ingsw.exceptions.InvalidStateException;
 import it.polimi.ingsw.exceptions.OutOfBoundsException;
+import it.polimi.ingsw.listeners.ModelSubject;
 import it.polimi.ingsw.model.personcard.PersonalObjCard;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 
-public class Player extends Observable {
+public class Player extends ModelSubject {
     private String nickname;    /** has to be unique */
 
     private int score;
@@ -152,8 +153,7 @@ public class Player extends Observable {
             gameGrid[row][col] = new Item(null);
             validGrid[row][col] = 1;
         }
-        setChanged();
-        notifyObservers(gameGrid);
+        setChangedAndNotifyListener(gameGrid);
     }
 
     /** method to put Items into personal shelf*/
@@ -183,8 +183,7 @@ public class Player extends Observable {
         while(!selectItems.isEmpty()){
             selectItems.remove(0);
         }
-        setChanged();
-        notifyObservers(this.myShelf);
+        setChangedAndNotifyListener(this.myShelf);
     }
 
     public void addPoints(int points) {
@@ -222,6 +221,15 @@ public class Player extends Observable {
         return this.isFirstPlayer;
     }
     public List<Item> getSelectItems(){return this.selectItems;}
+
+    private void setChangedAndNotifyListener(Item[][] gg){
+        setChanged();
+        notifyObservers(gg);
+    }
+    private void setChangedAndNotifyListener(Shelf sh){
+        setChanged();
+        notifyObservers(sh);
+    }
 }
 
 
