@@ -82,7 +82,8 @@ public class CommonObjCardTest {
         OutOfBoundsException exception = assertThrows(OutOfBoundsException.class, () ->{
             card.getPoints();
         });
-        assertEquals("Index -1 out of bounds for length 4", exception.getMessage());
+        System.err.println(exception.getMessage());
+        assertEquals(" ", exception);
     }
 
     @Test

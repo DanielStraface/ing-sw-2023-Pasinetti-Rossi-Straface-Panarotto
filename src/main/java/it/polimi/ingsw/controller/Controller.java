@@ -2,7 +2,9 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.exceptions.InvalidNumberOfItemsException;
 import it.polimi.ingsw.exceptions.InvalidSelectionException;
+import it.polimi.ingsw.exceptions.InvalidStateException;
 import it.polimi.ingsw.exceptions.OutOfBoundsException;
+import it.polimi.ingsw.listeners.ControllerListener;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.view.TextualUI;
 
@@ -12,7 +14,7 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Random;
 
-public class Controller implements Observer {
+public class Controller implements ControllerListener {
     /* ATTRIBUES SECTION */
     private final Game game;
     private final TextualUI view;
@@ -90,34 +92,30 @@ public class Controller implements Observer {
     }
 
     @Override
-    public void update(Observable o, Object arg) {
-        if(o != view){
-            System.err.println("Discarding notification from " + o);
+    public void update(TextualUI o, Integer column) {
+        int col = column.intValue();
+        try {
+            game.getCurrentPlayer().putItemInShelf(col);
+            this.turnHandler.manageTurn();
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
         }
-        if(arg instanceof String){
-            String nickname = (String) arg;
-            game.getCurrentPlayer().setNicknameAndClientID(nickname, 0);
-        } else if(arg instanceof List<?>){
-            List<int[]> list = (List<int[]>) arg;
+    }
+
+    @Override
+    public void update(TextualUI o, String nickname){
+        game.getCurrentPlayer().setNicknameAndClientID(nickname, 0);
+    }
+
+    @Override
+    public void update(TextualUI o, List<int[]> coords) {
+        if( o != this.view){
+            System.err.println("Discarding notification from " + o);
+        } else {
             try {
-                game.getCurrentPlayer().pickItems(list, game.getGameboard().getGameGrid(), game.getValidGrid());
+                game.getCurrentPlayer().pickItems(coords, game.getGameboard().getGameGrid(), game.getValidGrid());
             } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        } else if(arg instanceof Integer){
-            Integer integer = (Integer) arg;
-            int column = integer.intValue();
-            try {
-                game.getCurrentPlayer().putItemInShelf(column);
-                try {
-                    this.turnHandler.manageTurn();
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            } catch (InvalidNumberOfItemsException e) {
-                throw new RuntimeException(e);
-            } catch (OutOfBoundsException e) {
-                throw new RuntimeException(e);
+                System.err.println(e.getMessage());
             }
         }
         saveGame(getGame(),"savedGame.ser");

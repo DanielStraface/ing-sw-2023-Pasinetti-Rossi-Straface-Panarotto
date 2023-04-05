@@ -1,10 +1,12 @@
 package it.polimi.ingsw.view;
 
+import it.polimi.ingsw.listeners.ViewListener;
+import it.polimi.ingsw.listeners.ViewSubject;
 import it.polimi.ingsw.model.*;
 
 import java.util.*;
 
-public class TextualUI extends Observable implements Observer, Runnable{
+public class TextualUI extends ViewSubject implements ViewListener, Runnable{
     private String name;
     private List<int[]> coords;
     private int column;
@@ -49,10 +51,8 @@ public class TextualUI extends Observable implements Observer, Runnable{
         }
         askOrder();
         askColumn();
-        setChanged();
-        notifyObservers(coords);
-        setChanged();
-        notifyObservers(Integer.valueOf(column));
+        setChangedAndNotifyListener(this.coords);
+        setChangedAndNotifyListener(Integer.valueOf(this.column));
     }
 
     private void askColumn() {
@@ -97,48 +97,7 @@ public class TextualUI extends Observable implements Observer, Runnable{
         while(input == null){
             input = scanner.nextLine();
         }
-        setChanged();
-        notifyObservers(name);
-    }
-
-    @Override
-    public void update(Observable o, Object arg) {
-        if(o instanceof Game){
-            if(arg instanceof GameBoard){
-                GameBoard gameBoard = (GameBoard) arg;
-                displayGameBoard(gameBoard);
-            } else if(arg instanceof Player) {
-                Game game = (Game) o;
-                Player player = (Player) arg;
-                System.out.println("=================================================================================");
-                System.out.println("Your points: " + player.getScore());
-                displayCommonObjCard(game);
-                displayPersonalObjCard(player);
-                displayGameBoard(((Game) o).getGameboard());
-                displayShelf(player.getMyShelf());
-                this.run();
-            } else {
-                System.err.println("Discarding notification from " + o + ": " + arg);
-            }
-        } else if(o instanceof Player) {
-            if(arg instanceof Item[][]){
-                Item[][] gameGrid = (Item[][]) arg;
-                displayGameBoard(gameGrid);
-            } else if(arg instanceof Shelf){
-                Shelf shelf = (Shelf) arg;
-                displayShelf(shelf);
-            } else if(arg instanceof Integer){
-                Integer i = (Integer) arg;
-                System.out.println("Invalid column selection! Try again");
-                askColumn();
-                setChanged();
-                notifyObservers(this.column);
-            } else {
-                System.err.println("Discarding notification from " + o + ": " + arg);
-            }
-        } else {
-            System.err.println("Discarding notification from " + o);
-        }
+        setChangedAndNotifyListener(this.name);
     }
 
     private void displayPersonalObjCard(Player player) {
@@ -294,5 +253,55 @@ public class TextualUI extends Observable implements Observer, Runnable{
 
     private int startNewGame() {
         return 0;
+    }
+
+    private void displayNewTurn(Game game){
+        System.out.println("=================================================================================");
+        System.out.println("Your points: " + game.getCurrentPlayer().getScore());
+        displayCommonObjCard(game);
+        displayPersonalObjCard(game.getCurrentPlayer());
+        displayGameBoard(game.getGameboard());
+        displayShelf(game.getCurrentPlayer().getMyShelf());
+        this.run();
+    }
+
+    @Override
+    public void update(Game game, GameBoard gb) {
+        displayGameBoard(gb);
+    }
+
+    @Override
+    public void update(Game game) {
+        displayNewTurn(game);
+    }
+
+    @Override
+    public void update(Player player, Item[][] gameGrid) {
+        displayGameBoard(gameGrid);
+    }
+
+    @Override
+    public void update(Player player, Shelf shelf) {
+        displayShelf(shelf);
+    }
+
+    @Override
+    public void update(Player player, Integer column) {
+        System.out.println("Invalid column selection. Try again!");
+        askColumn();
+        setChangedAndNotifyListener(this.column);
+    }
+
+    private void setChangedAndNotifyListener(String nm){
+        setChanged();
+        notifyObservers(nm);
+    }
+    private void setChangedAndNotifyListener(List<int[]> coords){
+        setChanged();
+        notifyObservers(coords);
+    }
+    private void setChangedAndNotifyListener(Integer column){
+        setChanged();
+        notifyObservers(column);
     }
 }

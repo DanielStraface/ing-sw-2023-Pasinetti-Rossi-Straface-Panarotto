@@ -21,10 +21,10 @@ public class App
         TextualUI view = new TextualUI();
         Controller controller = new Controller(game, view);
 
-        view.addObserver(controller);
-        game.addObserver(view);
+        view.addListener(controller);
+        game.addListener(view);
         for(Player player : game.getPlayers()){
-            player.addObserver(view);
+            player.addListener(view);
         }
 
         controller.chooseFirstPlayer();
