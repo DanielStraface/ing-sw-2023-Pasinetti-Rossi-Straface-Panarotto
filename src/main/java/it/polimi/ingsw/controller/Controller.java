@@ -1,17 +1,11 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.exceptions.InvalidNumberOfItemsException;
-import it.polimi.ingsw.exceptions.InvalidSelectionException;
-import it.polimi.ingsw.exceptions.InvalidStateException;
-import it.polimi.ingsw.exceptions.OutOfBoundsException;
 import it.polimi.ingsw.listeners.ControllerListener;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.view.TextualUI;
 
 import java.io.*;
 import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.Random;
 
 public class Controller implements ControllerListener {

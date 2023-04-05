@@ -5,7 +5,6 @@ import it.polimi.ingsw.exceptions.InvalidSelectionException;
 import it.polimi.ingsw.exceptions.InvalidStateException;
 import it.polimi.ingsw.exceptions.OutOfBoundsException;
 import it.polimi.ingsw.listeners.ModelSubject;
-import it.polimi.ingsw.listeners.ModelSubject;
 import it.polimi.ingsw.model.personcard.PersonalObjCard;
 
 import java.io.Serializable;

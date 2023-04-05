@@ -3,10 +3,8 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.exceptions.NoElementException;
 
 import java.io.Serializable;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Random;
 
 public class Bag implements Serializable {
