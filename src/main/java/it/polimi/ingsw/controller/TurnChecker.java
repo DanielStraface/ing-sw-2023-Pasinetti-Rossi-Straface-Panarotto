@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.exceptions.InvalidPointerException;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.comcard.CommonObjCard;
 
@@ -15,7 +16,7 @@ public class TurnChecker {
 
 
     // all checks that have to be done before ending a player's turn
-    public boolean manageCheck(Player player, Game game){
+    public boolean manageCheck(Player player, Game game) throws InvalidPointerException {
         boolean shelfFull;
         commonObjCardCheck(player, game);
         shelfFull = player.getMyShelf().isFull();
@@ -24,7 +25,7 @@ public class TurnChecker {
         return shelfFull;
     }
 
-    private void commonObjCardCheck(Player player,Game game){
+    private void commonObjCardCheck(Player player,Game game) throws InvalidPointerException {
         CommonObjCard commonObjCard;
 
         // check if the current player has reached the goal for both CommonObjectiveCards in Game

@@ -2,6 +2,7 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.exceptions.InvalidNumberOfItemsException;
 import it.polimi.ingsw.exceptions.InvalidSelectionException;
+import it.polimi.ingsw.exceptions.OutOfBoundsException;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.view.TextualUI;
 
@@ -85,6 +86,8 @@ public class Controller implements Observer {
                     throw new RuntimeException(e);
                 }
             } catch (InvalidNumberOfItemsException e) {
+                throw new RuntimeException(e);
+            } catch (OutOfBoundsException e) {
                 throw new RuntimeException(e);
             }
         }

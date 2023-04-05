@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.exceptions.InvalidNumberOfItemsException;
 import it.polimi.ingsw.exceptions.InvalidNumberOfPlayersException;
+import it.polimi.ingsw.exceptions.NoElementException;
 import it.polimi.ingsw.model.comcard.CommonObjCard;
 import it.polimi.ingsw.model.personcard.PersonalCardReader;
 import it.polimi.ingsw.model.personcard.PersonalObjCard;
@@ -151,7 +153,7 @@ public class Game extends Observable{
     /**
      * Method generateCommonObjCards create the two commonObjCards of the match.
      */
-    public void generateCommonObjCards(){
+    public void generateCommonObjCards() {
         /* Randomly generate an int that will be used for pop a commonObjCard type*/
         Random random = new Random();
         List<Integer> name = new LinkedList<Integer>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12));
@@ -162,7 +164,7 @@ public class Game extends Observable{
                 //add to commonObjCards list the first new commonObjCard with is points array and type set
                 this.commonObjCards.add( new CommonObjCard(this.playersNumber, name.remove(n)));
             }
-        } catch (Exception e){
+        } catch (InvalidNumberOfPlayersException e){
             System.err.println("Error: creation of commonObjCards");
         }
 

@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.exceptions.NoElementException;
+
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,14 +25,14 @@ public class Bag {
 
     /** drawItem method picks randomly an Item in the bag and removes it, used
      * for filling the GameBoard */
-    public Item drawItem() throws NoSuchElementException {
+    public Item drawItem() throws NoElementException {
         if(itemCards.size()>0){
             Random random = new Random();
             int randomNumber = random.nextInt(itemCards.size());
             return itemCards.remove(randomNumber);
         }
         else if(itemCards.size()==0){
-            throw new NoSuchElementException("Cannot draw Item,the bag is empty!");
+            throw new NoElementException("Cannot draw Item,the bag is empty!");
         }
         return new Item(null);
     }

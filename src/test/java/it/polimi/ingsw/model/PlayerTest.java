@@ -2,6 +2,8 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.exceptions.InvalidNumberOfItemsException;
 import it.polimi.ingsw.exceptions.InvalidSelectionException;
+import it.polimi.ingsw.exceptions.InvalidStateException;
+import it.polimi.ingsw.exceptions.OutOfBoundsException;
 import it.polimi.ingsw.model.personcard.PersonalObjCard;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -76,7 +78,7 @@ public class PlayerTest {
     @Test
     public void emptyListOfCoordinates() throws Exception{
         selectedCoords=new ArrayList<>();
-        Exception e= assertThrows(IllegalStateException.class, ()-> testPlayer.pickItems(selectedCoords,gameBoard,validGrid));
+        Exception e= assertThrows(InvalidStateException.class, ()-> testPlayer.pickItems(selectedCoords,gameBoard,validGrid));
         assertEquals("selectedCoords is empty", e.getMessage());
     }
 
@@ -362,7 +364,7 @@ public class PlayerTest {
         selectItems.add(new Item(Category.TROPHY));
         selectItems.add(new Item(Category.CAT));
 
-        Exception e=assertThrows(IndexOutOfBoundsException.class,()-> testPlayer.putItemInShelf(selectedCol));
+        Exception e=assertThrows(OutOfBoundsException.class,()-> testPlayer.putItemInShelf(selectedCol));
         assertEquals("selectedCol must be less than 5", e.getMessage());
 
     }

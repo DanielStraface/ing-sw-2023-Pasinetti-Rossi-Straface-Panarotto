@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.comcard;
 
 import it.polimi.ingsw.exceptions.InvalidNumberOfPlayersException;
+import it.polimi.ingsw.exceptions.InvalidPointerException;
 import it.polimi.ingsw.model.Player;
 
 import java.util.ArrayList;
@@ -95,8 +96,8 @@ public class CommonObjCard {
      * Method getPoint returns the points for this card based on what order the players has reached the goal.
      * @return result <==> objPoints[objLength - 1]
      */
-    public int getPoints() throws NullPointerException {
-        if (objPoints.length - 1 < 0) throw new NullPointerException("The array length is zero");
+    public int getPoints() throws InvalidPointerException {
+        if (objPoints.length - 1 < 0) throw new InvalidPointerException("The array length is zero");
         else {
             int tempPoints = objPoints[nextPoints];
             nextPoints = nextPoints - 1;
@@ -118,7 +119,7 @@ public class CommonObjCard {
      * doCheck method controls if the condition for distributes points subsist.
      * @return true <==> conditions of the commonObjCard subsists for the parameter player
      */
-    public void doCheck(Player player){
+    public void doCheck(Player player) throws InvalidPointerException {
         if(!this.playersDone.contains(player)){
             boolean isTrue = strategyCheck.check(player.getMyShelf().getShelfGrid());
             if(isTrue){

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.controller;
 
 
+import it.polimi.ingsw.exceptions.InvalidPointerException;
 import it.polimi.ingsw.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -38,7 +39,7 @@ public class TurnCheckerTest {
 
     /** Tests if the commonObjCard check doesn't assign points to the current player */
     @Test
-    public void manageCheckCommonObjCardTest(){
+    public void manageCheckCommonObjCardTest() throws InvalidPointerException {
         game.setCurrentPlayer(player);
         turnChecker.manageCheck(game.getCurrentPlayer(),game);
         assertEquals(0,game.getCurrentPlayer().getScore(),"Points have been wrongly added!");
@@ -47,7 +48,7 @@ public class TurnCheckerTest {
 
     /** Tests if the gameBoard is refilled under the correct conditions */
     @Test
-    public void manageCheckRefillGameBoardCheck(){
+    public void manageCheckRefillGameBoardCheck() throws InvalidPointerException {
         game.setCurrentPlayer(player);
         int[][] validGrid;
         GameBoard gameBoard;
@@ -85,7 +86,7 @@ public class TurnCheckerTest {
 
     /** Checks if lastTurn is triggered or not under the correct conditions */
     @Test
-    public void manageCheckLastTurnTest(){
+    public void manageCheckLastTurnTest() throws InvalidPointerException {
         Shelf shelf;
         boolean check;
         game.setCurrentPlayer(player);

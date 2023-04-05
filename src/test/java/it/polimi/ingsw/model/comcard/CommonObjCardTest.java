@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model.comcard;
 
 import it.polimi.ingsw.exceptions.InvalidNumberOfPlayersException;
+import it.polimi.ingsw.exceptions.InvalidPointerException;
+import it.polimi.ingsw.exceptions.OutOfBoundsException;
 import it.polimi.ingsw.model.Category;
 import it.polimi.ingsw.model.Item;
 import it.polimi.ingsw.model.Player;
@@ -40,19 +42,19 @@ public class CommonObjCardTest {
     }
 
     @Test
-    public void gameOfThreePlayersTest(){
+    public void gameOfThreePlayersTest() throws InvalidPointerException {
         assertEquals(BASE_TYPE, card.getType(), "The type of the card is wrong");
         for(int i=0; i<NUMBER_OF_PLAYERS;i++){
             assertTrue(0 < card.getPoints(), "The points of the card is wrong");
         }
-        ArrayIndexOutOfBoundsException exception = assertThrows(ArrayIndexOutOfBoundsException.class, () ->{
+        OutOfBoundsException exception = assertThrows(OutOfBoundsException.class, () ->{
             card.getPoints();
         });
         assertEquals("Index -1 out of bounds for length 4", exception.getMessage());
     }
 
     @Test
-    public void gameOfTwoTest(){
+    public void gameOfTwoTest() throws InvalidPointerException {
         try{
             card = new CommonObjCard(2, BASE_TYPE);
         } catch (Exception e){
@@ -61,14 +63,14 @@ public class CommonObjCardTest {
         for(int i=0;i<2;i++){
             assertTrue(0 < card.getPoints(), "The points of the card is wrong");
         }
-        ArrayIndexOutOfBoundsException exception = assertThrows(ArrayIndexOutOfBoundsException.class, () ->{
+        OutOfBoundsException exception = assertThrows(OutOfBoundsException.class, () ->{
             card.getPoints();
         });
         assertEquals("Index -1 out of bounds for length 4", exception.getMessage());
     }
 
     @Test
-    public void gameOfFour(){
+    public void gameOfFour() throws InvalidPointerException {
         try{
             card = new CommonObjCard(4, BASE_TYPE);
         } catch (Exception e){
@@ -77,7 +79,7 @@ public class CommonObjCardTest {
         for(int i=0;i<4;i++){
             assertTrue(0 < card.getPoints(), "The points of the card is wrong");
         }
-        ArrayIndexOutOfBoundsException exception = assertThrows(ArrayIndexOutOfBoundsException.class, () ->{
+        OutOfBoundsException exception = assertThrows(OutOfBoundsException.class, () ->{
             card.getPoints();
         });
         assertEquals("Index -1 out of bounds for length 4", exception.getMessage());
@@ -92,14 +94,14 @@ public class CommonObjCardTest {
     }
 
     @Test
-    public void getPointsTest(){
+    public void getPointsTest() throws InvalidPointerException {
         for(int i=2; i>=0;i--){
             assertEquals(4 + 2*i, card.getPoints(), "The points returned are wrong");
         }
     }
 
     @Test
-    public void wrongCheckTest(){
+    public void wrongCheckTest() throws InvalidPointerException {
         Shelf shelf = new Shelf();
         shelf.getShelfGrid()[0][0] = new Item(Category.BOOK);
         shelf.getShelfGrid()[0][4] = new Item(Category.BOOK);
@@ -111,7 +113,7 @@ public class CommonObjCardTest {
     }
 
     @Test
-    public void rightCheckTest(){
+    public void rightCheckTest() throws InvalidPointerException {
         card.doCheck(player);
         assertTrue(0 < player.getScore(), "The check method is wrong");
     }

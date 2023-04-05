@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.personcard;
 
+import it.polimi.ingsw.exceptions.InvalidPointerException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -20,7 +21,7 @@ public class PersonalObjCardReaderTest {
 
     @Test
     public void invalidResourceAsStreamTest(){
-        NullPointerException exception = Assertions.assertThrows(NullPointerException.class, () ->{
+        InvalidPointerException exception = Assertions.assertThrows(InvalidPointerException.class, () ->{
             personalCardReader.readFromFile();
         });
         assertEquals("in == null", exception.getMessage());

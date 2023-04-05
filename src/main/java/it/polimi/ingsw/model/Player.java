@@ -2,6 +2,8 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.exceptions.InvalidNumberOfItemsException;
 import it.polimi.ingsw.exceptions.InvalidSelectionException;
+import it.polimi.ingsw.exceptions.InvalidStateException;
+import it.polimi.ingsw.exceptions.OutOfBoundsException;
 import it.polimi.ingsw.model.personcard.PersonalObjCard;
 
 import java.util.ArrayList;
@@ -20,7 +22,7 @@ public class Player extends Observable {
     private static final int INVALID = 0;
 
     /** constructor for Player class */
-    public Player() {
+    public Player(){
         this.score = 0;
         this.isFirstPlayer = false;
         this.myShelf = new Shelf();
@@ -28,9 +30,9 @@ public class Player extends Observable {
     }
 
     /** method to pick Items from the game board*/
-    public void pickItems(List<int[]> selectedCoords,Item[][] gameGrid, int[][] validGrid) throws Exception {
+    public void pickItems(List<int[]> selectedCoords,Item[][] gameGrid, int[][] validGrid) throws InvalidStateException, InvalidSelectionException {
         if(selectedCoords.isEmpty()){
-            throw new IllegalStateException("selectedCoords is empty");
+            throw new InvalidStateException("selectedCoords is empty");
         }
         for(int i=0;i<selectedCoords.size();i++){
             if(validGrid[selectedCoords.get(i)[0]][selectedCoords.get(i)[1]] == INVALID)
@@ -155,10 +157,10 @@ public class Player extends Observable {
     }
 
     /** method to put Items into personal shelf*/
-    public void putItemInShelf(int selectedCol) throws ArrayIndexOutOfBoundsException, InvalidNumberOfItemsException {
+    public void putItemInShelf(int selectedCol) throws OutOfBoundsException, InvalidNumberOfItemsException {
         Item[][] grid=myShelf.getShelfGrid();
         if (selectedCol >= 5) {
-            throw new ArrayIndexOutOfBoundsException("selectedCol must be less than 5");
+            throw new OutOfBoundsException("selectedCol must be less than 5");
         }
         if(selectItems.size()>3){
             throw new InvalidNumberOfItemsException();
