@@ -1,14 +1,18 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.exceptions.InvalidNumberOfPlayersException;
+import it.polimi.ingsw.listeners.ModelSubject;
 import it.polimi.ingsw.model.comcard.CommonObjCard;
 import it.polimi.ingsw.model.personcard.PersonalCardReader;
 import it.polimi.ingsw.model.personcard.PersonalObjCard;
 
 import java.util.*;
 
-public class Game {
+public class Game extends ModelSubject {
 
     private static final int DIM_GAMEBOARD=9;
+    private static final int PLAYABLE = 1;
+    private static final int OCCUPIED = 2;
 
     private int playersNumber;
     private List<Player> players;
@@ -19,7 +23,8 @@ public class Game {
     private Player currentPlayer;
 
     /** constructor for Game class */
-    public Game (int playersNumber) throws Exception {
+    public Game (int playersNumber) throws InvalidNumberOfPlayersException{
+        if(playersNumber <= 1 || playersNumber >= 5) throw new InvalidNumberOfPlayersException();
         this.playersNumber = playersNumber;
         this.players = new ArrayList<Player>(playersNumber);
         this.bag = new Bag();
@@ -33,43 +38,43 @@ public class Game {
     }
 
     //***********************************************
-    private void createPlayers() throws Exception {
+    private void createPlayers(){
         for(int i=0;i<this.playersNumber;i++){
             //nickname: "space" for each player, clientID: 0, isFirstPlayer: false;
-            players.add(new Player(" ", i, false));
+            players.add(new Player());
         }
     }
 
-    private void createGameBoard() throws Exception {
+    private void createGameBoard() {
         setGridForTwo(this.validGrid);
         switch(this.playersNumber) {
             case 3 -> {
-                validGrid[0][3] = 1;
-                validGrid[2][2] = 1;
-                validGrid[2][6] = 1;
-                validGrid[3][8] = 1;
-                validGrid[5][0] = 1;
-                validGrid[6][2] = 1;
-                validGrid[6][6] = 1;
-                validGrid[8][5] = 1;
+                validGrid[0][3] = PLAYABLE;
+                validGrid[2][2] = PLAYABLE;
+                validGrid[2][6] = PLAYABLE;
+                validGrid[3][8] = PLAYABLE;
+                validGrid[5][0] = PLAYABLE;
+                validGrid[6][2] = PLAYABLE;
+                validGrid[6][6] = PLAYABLE;
+                validGrid[8][5] = PLAYABLE;
             }
             case 4 -> {
-                validGrid[0][3] = 1;
-                validGrid[0][4] = 1;
-                validGrid[1][5] = 1;
-                validGrid[2][2] = 1;
-                validGrid[2][6] = 1;
-                validGrid[3][1] = 1;
-                validGrid[3][8] = 1;
-                validGrid[4][0] = 1;
-                validGrid[4][8] = 1;
-                validGrid[5][0] = 1;
-                validGrid[5][7] = 1;
-                validGrid[6][2] = 1;
-                validGrid[6][6] = 1;
-                validGrid[7][3] = 1;
-                validGrid[8][4] = 1;
-                validGrid[8][5] = 1;
+                validGrid[0][3] = PLAYABLE;
+                validGrid[0][4] = PLAYABLE;
+                validGrid[1][5] = PLAYABLE;
+                validGrid[2][2] = PLAYABLE;
+                validGrid[2][6] = PLAYABLE;
+                validGrid[3][1] = PLAYABLE;
+                validGrid[3][8] = PLAYABLE;
+                validGrid[4][0] = PLAYABLE;
+                validGrid[4][8] = PLAYABLE;
+                validGrid[5][0] = PLAYABLE;
+                validGrid[5][7] = PLAYABLE;
+                validGrid[6][2] = PLAYABLE;
+                validGrid[6][6] = PLAYABLE;
+                validGrid[7][3] = PLAYABLE;
+                validGrid[8][4] = PLAYABLE;
+                validGrid[8][5] = PLAYABLE;
             }
             default -> {}
         }
@@ -85,32 +90,32 @@ public class Game {
             for (j = 0; j < 9; j++) {
                 if (i==1){
                     if(j>2 && j<5){
-                        Grid[i][j] = 1;
+                        Grid[i][j] = PLAYABLE;
                     }
                 }
                 if (i==2 || i==6){
                     if(j>2 && j<6){
-                        Grid[i][j] = 1;
+                        Grid[i][j] = PLAYABLE;
                     }
                 }
                 if (i==3){
                     if(j>1 && j<8){
-                        Grid[i][j] = 1;
+                        Grid[i][j] = PLAYABLE;
                     }
                 }
                 if (i==4){
                     if(j>0 && j<8){
-                        Grid[i][j] = 1;
+                        Grid[i][j] = PLAYABLE;
                     }
                 }
                 if (i==5){
                     if(j>0 && j<7){
-                        Grid[i][j] = 1;
+                        Grid[i][j] = PLAYABLE;
                     }
                 }
                 if (i==7){
                     if(j>3 && j<6){
-                        Grid[i][j] = 1;
+                        Grid[i][j] = PLAYABLE;
                     }
                 }
             }
@@ -133,7 +138,7 @@ public class Game {
     public void generatePersonalObjCards(){
         /* Creation of cardReader and fill the list with personalObjCard in reading order*/
         PersonalCardReader cardReader = new PersonalCardReader();
-        List<PersonalObjCard> cardsList = new LinkedList<PersonalObjCard>(cardReader.readFromFile());
+        List<PersonalObjCard> cardsList = new LinkedList<>(cardReader.readFromFile());
         /* Generation of random number to extract from the list a specific personalObjCard and use it as a parameter
          *  for the setPersonalObjCard method of player entity.
          *  This is done for each player in the match */
@@ -147,39 +152,49 @@ public class Game {
     /**
      * Method generateCommonObjCards create the two commonObjCards of the match.
      */
-    public void generateCommonObjCards(){
+    public void generateCommonObjCards() {
         /* Randomly generate an int that will be used for pop a commonObjCard type*/
         Random random = new Random();
         List<Integer> name = new LinkedList<Integer>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12));
-        //generate the type by popping the name list
-        int n = random.nextInt(name.size());
-        //add to commonObjCards list the first new commonObjCard with is points array and type set
-        this.commonObjCards.add( new CommonObjCard(this.playersNumber, name.remove(n)));
-        //name.remove(n);
-        //add to commonObjCards list the second new commonObjCard with is points array and type set.
-        //this is done randomly by getting a new name list type
-        this.commonObjCards.add( new CommonObjCard(this.playersNumber, name.get(random.nextInt(name.size()))));
+        try{
+            for(int i=0;i<2;i++){
+                //generate the type by popping the name list
+                int n = random.nextInt(name.size());
+                //add to commonObjCards list the first new commonObjCard with is points array and type set
+                this.commonObjCards.add( new CommonObjCard(this.playersNumber, name.remove(n)));
+            }
+        } catch (InvalidNumberOfPlayersException e){
+            System.err.println("Error: creation of commonObjCards");
+        }
+
     }
 
     public void refillGameBoard(){
         for(int i=0;i<DIM_GAMEBOARD;i++){
             for(int j=0;j<DIM_GAMEBOARD;j++){
-                if(validGrid[i][j]==1){
+                if(validGrid[i][j]==PLAYABLE){
                     try {
                         this.gameboard.getGameGrid()[i][j] = this.bag.drawItem();
-                        this.validGrid[i][j] = 2;
+                        this.validGrid[i][j] = OCCUPIED;
                     } catch (Exception e) {
                         throw new RuntimeException(e);
                     }
+                } else if(validGrid[i][j]==0) {
+                    this.gameboard.getGameGrid()[i][j] = new Item(null);
                 }
             }
         }
+        setChangedAndNotifyListeners(this.gameboard);
     }
 
     /* set methods */
     public void setCurrentPlayer(Player player){
         this.currentPlayer = player;
+        setChangedAndNotifyListeners(this);
     }
+    public void setGameBoard (GameBoard gameboard) { this.gameboard = gameboard; }
+    public void setValidGrid (int[][] validGrid) { this.validGrid = validGrid; }
+
 
     /** get methods */
     public List<Player> getPlayers(){return players;}
@@ -188,4 +203,12 @@ public class Game {
     public Bag getBag(){return bag;}
     public Player getCurrentPlayer(){return currentPlayer;}
     public int[][] getValidGrid(){return validGrid;}
+    private void setChangedAndNotifyListeners(GameBoard gb){
+        setChanged();
+        notifyObservers(gb);
+    }
+    private void setChangedAndNotifyListeners(Game gm){
+        setChanged();
+        notifyObservers(gm);
+    }
 }

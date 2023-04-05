@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model.personcard;
 
+import it.polimi.ingsw.exceptions.InvalidMatchesException;
 import it.polimi.ingsw.model.Item;
+import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Shelf;
 
 public class PersonalObjCard {
@@ -38,35 +40,48 @@ public class PersonalObjCard {
      *                      exists Item I2 in the (x,y) position in cardGrid template) &&
      *                      I1.getCategoryType() == I2.getCategoryType()
      */
-    public boolean goalReached(Shelf shelf) {
+    public int shelfCheck(Shelf shelf) throws InvalidMatchesException {
+        int matches = 0;
+        int scoreAdded;
         /* Two for-cycle to analyse both matrix in player shelf and template grid */
         for (int i = 0; i < cardGrid.length; i++) {
             for (int j = 0; j < cardGrid[i].length; j++) {
-                /* if the position in the template grid and player's shelf is not null there is an item type */
-                if (cardGrid[i][j].getCategoryType() != null && shelf.getShelfGrid()[i][j].getCategoryType() != null) {
-                    /* If there is at least one type of item that is not equal to the item in the player shelf
-                     *  the goal is not reached. The method returns false */
-                    if(cardGrid[i][j].getCategoryType() != shelf.getShelfGrid()[i][j].getCategoryType()){
-                        return false;
-                    }
+                /* if the position in the template grid and player's shelf is not null and the item categories
+                *  are matching the "match" integer is increased */
+                if (cardGrid[i][j].getCategoryType() != null && shelf.getShelfGrid()[i][j].getCategoryType() != null
+                    && cardGrid[i][j].getCategoryType() == shelf.getShelfGrid()[i][j].getCategoryType()) {
+                    matches++;
                 }
             }
         }
-        /* If during the cardGrid scanning the condition of @IF1 is always false it means that all the matches
-        *  between the two item grid are true. The method must return true */
-        return true;
+        // the score added to the player is set depending on the number of matches
+        switch (matches){
+            case 1 -> {
+                scoreAdded = 1;
+            }
+            case 2 -> {
+                scoreAdded = 2;
+            }
+            case 3 -> {
+                scoreAdded = 4;
+            }
+            case 4 -> {
+                scoreAdded = 6;
+            }
+            case 5 -> {
+                scoreAdded = 9;
+            }
+            case 6 -> {
+                scoreAdded = 12;
+            }
+            default -> {
+                scoreAdded = 0;
+            }
+        }
+        if(matches > 6){
+            throw new InvalidMatchesException();
+        }
+        return scoreAdded;
     }
 
-    /** ACESSORY METHOD HERE **/
-    public void show(){
-        System.out.println(this.getPersonalObjCardDescription());
-        System.out.println("This card has a " + cardGrid.length + " card grid height");
-        System.out.println("This card has a " + cardGrid[0].length + " card grid width");
-        for (Item[] items : this.cardGrid) {
-            for (int j = 0; j < this.cardGrid[0].length; j++) {
-                System.out.print(items[j].getCategoryType() + " ");
-            }
-            System.out.println();
-        }
-    }
 }

@@ -3,11 +3,20 @@ package it.polimi.ingsw.model.comcard;
 import it.polimi.ingsw.model.Category;
 import it.polimi.ingsw.model.Item;
 
-class XCards implements StrategyCheck {
+class XCards extends StrategyCheck {
+    /* ATTRIBUTES SECTION */
+    //private final int type;
+
+    /* METHOD SECTION */
+
+    /* -- constructor -- */
+    public XCards(int type){
+        this.type = type;
+    }
 
     @Override
-    public boolean check(Item[][] grid, int status) {
-        assert status == 12;
+    public boolean check(Item[][] grid) {
+        //assert this.type == 12;
         for(int i=1;i<5;i++){
             for(int j=1;j<4;j++){
                 Category scanned = grid[i][j].getCategoryType();

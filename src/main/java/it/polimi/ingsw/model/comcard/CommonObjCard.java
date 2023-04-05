@@ -1,6 +1,11 @@
 package it.polimi.ingsw.model.comcard;
 
+import it.polimi.ingsw.exceptions.InvalidNumberOfPlayersException;
+import it.polimi.ingsw.exceptions.InvalidPointerException;
 import it.polimi.ingsw.model.Player;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -40,7 +45,7 @@ public class CommonObjCard {
     private final int[] objPoints;
     private int nextPoints;
     private StrategyCheck strategyCheck;
-    private final int type;
+    private List<Player> playersDone;
 
     /* METHODS SECTION */
 
@@ -50,7 +55,7 @@ public class CommonObjCard {
      * Constructor for CommonObjCard. It is based on how many players will play the game because the points provides by
      * CommonObjCard instance is different.
      */
-    public CommonObjCard(int numberOfPlayers, int type){
+    public CommonObjCard(int numberOfPlayers, int type) throws InvalidNumberOfPlayersException {
         /*The switch case are chosen by the number of players of the game.
         * For each case statement, the objPoints array assume different points configuration.
         * The nextPoints variables refers to the next points that will be distributed to the player who claim it.
@@ -72,11 +77,11 @@ public class CommonObjCard {
                 this.objPoints = temp;
             }
             default -> {
-                this.nextPoints = 0;
-                this.objPoints = null;
+                throw new InvalidNumberOfPlayersException();
             }
         }
-        this.type = type;
+        defineStrategy(type);
+        playersDone = new ArrayList<Player>();
     }
 
     /* -- get methods */
@@ -85,18 +90,16 @@ public class CommonObjCard {
      * -- Maybe this method must be edited in function of JSON loading strings
      * @return result <==> commonObjCardDescription
      */
-    public int getType(){
-        return this.type;
-    }
+    public int getType(){return this.strategyCheck.getType();}
 
     /**
      * Method getPoint returns the points for this card based on what order the players has reached the goal.
      * @return result <==> objPoints[objLength - 1]
      */
-    public int getPoints() throws NullPointerException {
-        if (objPoints.length - 1 < 0) throw new NullPointerException("The array length is zero");
+    public int getPoints() throws InvalidPointerException {
+        if (objPoints.length - 1 < 0) throw new InvalidPointerException("The array length is zero");
         else {
-            int tempPoints = objPoints[objPoints.length - 1];
+            int tempPoints = objPoints[nextPoints];
             nextPoints = nextPoints - 1;
             return tempPoints;
         }
@@ -104,14 +107,25 @@ public class CommonObjCard {
 
     /* -- logic methods */
 
+    private void defineStrategy(int type){
+        if(type == 2 || type == 3 || type == 12) strategyCheck = new CornerDiagonals(type);
+        if(type == 1 || type == 5 || type == 7 || type == 11) strategyCheck = new GroupCards(type);
+        if(type == 6 || type == 8) strategyCheck = new RowsColumnsCard(type);
+        if(type == 4 || type == 9) strategyCheck = new ThreeDifferentTypes(type);
+        if(type == 10) strategyCheck = new XCards(type);
+    }
+
     /**
      * doCheck method controls if the condition for distributes points subsist.
      * @return true <==> conditions of the commonObjCard subsists for the parameter player
      */
-    public void doCheck(Player player){
-        boolean isTrue = strategyCheck.check(player.getMyShelf().getShelfGrid(), this.type);
-        if(isTrue){
-            player.addPoints(this.getPoints());
+    public void doCheck(Player player) throws InvalidPointerException {
+        if(!this.playersDone.contains(player)){
+            boolean isTrue = strategyCheck.check(player.getMyShelf().getShelfGrid());
+            if(isTrue){
+                player.addPoints(this.getPoints());
+                playersDone.add(player);
+            }
         }
     }
 }
