@@ -8,6 +8,7 @@ import it.polimi.ingsw.listeners.ControllerListener;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.view.TextualUI;
 
+import java.io.*;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -53,6 +54,34 @@ public class Controller implements ControllerListener {
         }
     }
 
+    public void saveGame(Game game, String fileName) {
+        try{
+            FileOutputStream fileOutputStream=new FileOutputStream(fileName);
+            ObjectOutputStream objectOutputStream=new ObjectOutputStream(fileOutputStream);
+            objectOutputStream.writeObject(game);
+            objectOutputStream.close();
+            fileOutputStream.close();
+        }
+        catch(IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static Game loadGame(String fileName) {
+        try {
+            FileInputStream fileInputStream = new FileInputStream(fileName);
+            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+            Game game = (Game)objectInputStream.readObject();
+            objectInputStream.close();
+            fileInputStream.close();
+
+            return game;
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     /**
      * getGame method return the game reference in controller. It is synchronized due to view interactions,
      * TurnChecker and PlayerAction operations
@@ -89,5 +118,7 @@ public class Controller implements ControllerListener {
                 System.err.println(e.getMessage());
             }
         }
+        saveGame(getGame(),"savedGame.ser");
     }
+
 }

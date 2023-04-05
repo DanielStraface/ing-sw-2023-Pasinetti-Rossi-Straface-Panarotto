@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Random;
 
-public class Bag {
+public class Bag implements Serializable {
     private List<Item> itemCards;
 
     public Bag(){
