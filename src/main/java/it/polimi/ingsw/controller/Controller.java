@@ -96,11 +96,12 @@ public class Controller implements ControllerListener {
         int col = column.intValue();
         try {
             game.getCurrentPlayer().putItemInShelf(col);
+            System.err.println("HERE");
+            saveGame(getGame(),"savedGame.ser");
             this.turnHandler.manageTurn();
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
-        saveGame(getGame(),"savedGame.ser");
     }
 
     @Override
