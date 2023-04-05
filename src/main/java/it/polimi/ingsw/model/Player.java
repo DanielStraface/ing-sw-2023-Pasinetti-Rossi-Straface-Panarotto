@@ -6,11 +6,12 @@ import it.polimi.ingsw.exceptions.InvalidStateException;
 import it.polimi.ingsw.exceptions.OutOfBoundsException;
 import it.polimi.ingsw.model.personcard.PersonalObjCard;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 
-public class Player extends Observable {
+public class Player extends Observable implements Serializable{
     private String nickname;    /** has to be unique */
 
     private int score;

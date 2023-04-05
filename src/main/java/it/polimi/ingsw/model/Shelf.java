@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model;
 
-public class Shelf {
+import java.io.Serializable;
+
+public class Shelf implements Serializable {
 
     private static final int SHELF_ROWS=6;
     private static final int SHELF_COLUMNS=5;

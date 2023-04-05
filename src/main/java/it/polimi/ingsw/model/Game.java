@@ -7,9 +7,10 @@ import it.polimi.ingsw.model.comcard.CommonObjCard;
 import it.polimi.ingsw.model.personcard.PersonalCardReader;
 import it.polimi.ingsw.model.personcard.PersonalObjCard;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class Game extends Observable{
+public class Game extends Observable implements Serializable {
 
     private static final int DIM_GAMEBOARD=9;
     private static final int PLAYABLE = 1;
