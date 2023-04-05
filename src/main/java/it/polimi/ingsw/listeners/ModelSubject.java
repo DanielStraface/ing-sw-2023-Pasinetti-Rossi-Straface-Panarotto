@@ -7,12 +7,14 @@ import java.util.Vector;
 
 public class ModelSubject {
     private boolean changed = false;
-    private Vector<ViewListener> obs;
+    private Vector<GameViewListener> obs;
+    private Vector<PlayerViewListener> listeners;
 
     public ModelSubject(){
-        obs = new Vector<>();
+        this.obs = new Vector<>();
+        this.listeners = new Vector<>();
     }
-    public synchronized void addListener(ViewListener o){
+    public synchronized void addListener(GameViewListener o){
         if (o == null)
             throw new NullPointerException();
         if (!obs.contains(o)) {
@@ -20,8 +22,19 @@ public class ModelSubject {
         }
     }
 
-    public synchronized void deleteListener(ViewListener o) {
+    public synchronized void addListener(PlayerViewListener o){
+        if (o == null)
+            throw new NullPointerException();
+        if (!listeners.contains(o)) {
+            listeners.addElement(o);
+        }
+    }
+
+    public synchronized void deleteListener(GameViewListener o) {
         obs.removeElement(o);
+    }
+    public synchronized void deleteListener(PlayerViewListener o) {
+        listeners.removeElement(o);
     }
 
     /*public void notifyObservers() {
@@ -55,7 +68,7 @@ public class ModelSubject {
         }
 
         for (int i = arrLocal.length-1; i>=0; i--){
-            ViewListener vl = (ViewListener)arrLocal[i];
+            GameViewListener vl = (GameViewListener)arrLocal[i];
             vl.update((Game) this, arg);
         }
     }
@@ -87,7 +100,7 @@ public class ModelSubject {
         }
 
         for (int i = arrLocal.length-1; i>=0; i--){
-            ViewListener vl = (ViewListener)arrLocal[i];
+            GameViewListener vl = (GameViewListener)arrLocal[i];
             vl.update(arg);
         }
     }
@@ -114,12 +127,12 @@ public class ModelSubject {
              */
             if (!changed)
                 return;
-            arrLocal = obs.toArray();
+            arrLocal = listeners.toArray();
             clearChanged();
         }
 
         for (int i = arrLocal.length-1; i>=0; i--){
-            ViewListener vl = (ViewListener)arrLocal[i];
+            PlayerViewListener vl = (PlayerViewListener) arrLocal[i];
             vl.update((Player) this, arg);
         }
     }
@@ -151,7 +164,7 @@ public class ModelSubject {
         }
 
         for (int i = arrLocal.length-1; i>=0; i--){
-            ViewListener vl = (ViewListener)arrLocal[i];
+            GameViewListener vl = (GameViewListener)arrLocal[i];
             vl.update((Player) this, arg);
         }
     }
@@ -178,12 +191,12 @@ public class ModelSubject {
              */
             if (!changed)
                 return;
-            arrLocal = obs.toArray();
+            arrLocal = listeners.toArray();
             clearChanged();
         }
 
         for (int i = arrLocal.length-1; i>=0; i--){
-            ViewListener vl = (ViewListener)arrLocal[i];
+            PlayerViewListener vl = (PlayerViewListener)arrLocal[i];
             vl.update((Player) this, arg);
         }
     }
@@ -208,8 +221,3 @@ public class ModelSubject {
         return obs.size();
     }
 }
-
-// LISTENER             SOURCE
-// Controller           view
-// view                 game
-// view                 player

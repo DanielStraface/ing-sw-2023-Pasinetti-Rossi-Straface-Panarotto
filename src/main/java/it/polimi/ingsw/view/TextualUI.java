@@ -1,8 +1,13 @@
 package it.polimi.ingsw.view;
 
+import it.polimi.ingsw.listeners.GameViewSubject;
 import it.polimi.ingsw.listeners.ViewListener;
 import it.polimi.ingsw.listeners.ViewSubject;
 import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.modelview.GameBoardView;
+import it.polimi.ingsw.modelview.GameView;
+import it.polimi.ingsw.modelview.PlayerView;
+import it.polimi.ingsw.modelview.ShelfView;
 
 import java.util.*;
 
@@ -100,7 +105,7 @@ public class TextualUI extends ViewSubject implements ViewListener, Runnable{
         setChangedAndNotifyListener(this.name);
     }
 
-    private void displayPersonalObjCard(Player player) {
+    private void displayPersonalObjCard(PlayerView player) {
         System.out.println("Your personal objective card:");
         for(int i=0;i<player.getMyPersonalOBjCard().getCardGrid().length;i++){
             for(int j=0;j<player.getMyPersonalOBjCard().getCardGrid()[i].length;j++){
@@ -111,12 +116,12 @@ public class TextualUI extends ViewSubject implements ViewListener, Runnable{
         System.out.print("\n\n");
     }
 
-    private void displayCommonObjCard(Game game) {
+    private void displayCommonObjCard(GameView game) {
         System.out.println("The first common obj card is " + game.getCommonObjCard().get(0).getType());
         System.out.println("The second common obj card is " + game.getCommonObjCard().get(1).getType());
     }
 
-    private void displayShelf(Shelf shelf) {
+    private void displayShelf(ShelfView shelf) {
         System.out.println("Your shelf: ");
         for(int i=0; i<6; i++){
             System.out.print(i+1 + " ");
@@ -150,7 +155,7 @@ public class TextualUI extends ViewSubject implements ViewListener, Runnable{
         System.out.print("\n\n");
     }
 
-    private void displayGameBoard(GameBoard gameBoard) {
+    private void displayGameBoard(GameBoardView gameBoard) {
         System.out.println("The gameboard is ");
         for(int i=0;i<gameBoard.getGameGrid().length;i++){
             System.out.print(i + " ");
@@ -255,38 +260,38 @@ public class TextualUI extends ViewSubject implements ViewListener, Runnable{
         return 0;
     }
 
-    private void displayNewTurn(Game game){
+    private void displayNewTurn(GameView game){
         System.out.println("=================================================================================");
         System.out.println("Your points: " + game.getCurrentPlayer().getScore());
         displayCommonObjCard(game);
         displayPersonalObjCard(game.getCurrentPlayer());
-        displayGameBoard(game.getGameboard());
+        displayGameBoard(game.getGameBoard());
         displayShelf(game.getCurrentPlayer().getMyShelf());
         this.run();
     }
 
     @Override
-    public void update(Game game, GameBoard gb) {
+    public void update(GameView game, GameBoardView gb) {
         displayGameBoard(gb);
     }
 
     @Override
-    public void update(Game game) {
+    public void update(GameView game) {
         displayNewTurn(game);
     }
 
     @Override
-    public void update(Player player, Item[][] gameGrid) {
+    public void update(PlayerView player, Item[][] gameGrid) {
         displayGameBoard(gameGrid);
     }
 
     @Override
-    public void update(Player player, Shelf shelf) {
+    public void update(PlayerView player, ShelfView shelf) {
         displayShelf(shelf);
     }
 
     @Override
-    public void update(Player player, Integer column) {
+    public void update(PlayerView player, Integer column) {
         System.out.println("Invalid column selection. Try again!");
         askColumn();
         setChangedAndNotifyListener(this.column);

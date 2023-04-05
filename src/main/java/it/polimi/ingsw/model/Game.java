@@ -2,7 +2,6 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.exceptions.InvalidNumberOfPlayersException;
 import it.polimi.ingsw.listeners.ModelSubject;
-import it.polimi.ingsw.listeners.ModelSubject;
 import it.polimi.ingsw.model.comcard.CommonObjCard;
 import it.polimi.ingsw.model.personcard.PersonalCardReader;
 import it.polimi.ingsw.model.personcard.PersonalObjCard;

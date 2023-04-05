@@ -1,13 +1,17 @@
 package it.polimi.ingsw.listeners;
 
 import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.modelview.GameBoardView;
+import it.polimi.ingsw.modelview.GameView;
+import it.polimi.ingsw.modelview.PlayerView;
+import it.polimi.ingsw.modelview.ShelfView;
 
 public interface ViewListener {
-    void update(Game game, GameBoard gb);
-    void update(Game game);
-    void update(Player player, Item[][] gameGrid);
-    void update(Player player, Shelf shelf);
-    void update(Player player, Integer column);
+    void update(GameView game, GameBoardView gb);
+    void update(GameView game);
+    void update(PlayerView player, Item[][] gameGrid);
+    void update(PlayerView player, ShelfView shelf);
+    void update(PlayerView player, Integer column);
 }
 
 /**
