@@ -3,9 +3,10 @@ package it.polimi.ingsw.model.comcard;
 import it.polimi.ingsw.model.Item;
 import it.polimi.ingsw.model.Category;
 
+import java.io.Serializable;
 import java.util.HashSet;
 
-class ThreeDifferentTypes extends StrategyCheck {
+class ThreeDifferentTypes extends StrategyCheck implements Serializable {
     /* ATTRIBUTES SECTION */
     //private final int type;
 

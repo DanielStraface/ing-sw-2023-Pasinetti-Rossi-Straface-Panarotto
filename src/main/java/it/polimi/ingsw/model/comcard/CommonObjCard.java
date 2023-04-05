@@ -4,6 +4,7 @@ import it.polimi.ingsw.exceptions.InvalidNumberOfPlayersException;
 import it.polimi.ingsw.exceptions.InvalidPointerException;
 import it.polimi.ingsw.model.Player;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +40,7 @@ import java.util.List;
  * 10 -->
  */
 
-public class CommonObjCard {
+public class CommonObjCard implements Serializable {
 
     /* ATTRIBUTES SECTION */
     private final int[] objPoints;

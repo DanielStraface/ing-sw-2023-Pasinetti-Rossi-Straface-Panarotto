@@ -3,10 +3,11 @@ package it.polimi.ingsw.model.comcard;
 import it.polimi.ingsw.model.Category;
 import it.polimi.ingsw.model.Item;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
-class GroupCards extends StrategyCheck {
+class GroupCards extends StrategyCheck implements Serializable {
     /* ATTRIBUTES SECTION */
     //private final int type;
 

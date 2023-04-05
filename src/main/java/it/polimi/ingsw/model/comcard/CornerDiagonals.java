@@ -3,7 +3,9 @@ package it.polimi.ingsw.model.comcard;
 import it.polimi.ingsw.model.Category;
 import it.polimi.ingsw.model.Item;
 
-class CornerDiagonals extends StrategyCheck {
+import java.io.Serializable;
+
+class CornerDiagonals extends StrategyCheck implements Serializable {
     /* ATTRIBUTES SECTION */
     //private final int type;
     /* METHODS SECTION */

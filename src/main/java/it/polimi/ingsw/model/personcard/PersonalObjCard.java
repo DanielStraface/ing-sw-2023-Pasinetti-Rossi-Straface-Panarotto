@@ -5,7 +5,9 @@ import it.polimi.ingsw.model.Item;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Shelf;
 
-public class PersonalObjCard {
+import java.io.Serializable;
+
+public class PersonalObjCard implements Serializable {
 
     /* ATTRIBUTES SECTIONS */
     private static final int SHELF_ROWS=6;

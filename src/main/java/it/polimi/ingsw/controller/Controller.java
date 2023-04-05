@@ -100,6 +100,7 @@ public class Controller implements ControllerListener {
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
+        saveGame(getGame(),"savedGame.ser");
     }
 
     @Override
@@ -118,7 +119,5 @@ public class Controller implements ControllerListener {
                 System.err.println(e.getMessage());
             }
         }
-        saveGame(getGame(),"savedGame.ser");
     }
-
 }
