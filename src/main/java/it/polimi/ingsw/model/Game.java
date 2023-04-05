@@ -40,6 +40,7 @@ public class Game extends ModelSubject implements Serializable {
     }
 
     //***********************************************
+
     private void createPlayers(){
         for(int i=0;i<this.playersNumber;i++){
             //nickname: "space" for each player, clientID: 0, isFirstPlayer: false;
@@ -47,6 +48,7 @@ public class Game extends ModelSubject implements Serializable {
         }
     }
 
+    /** Fills GameBoard slots with Items with random Categories depending on the number of players */
     private void createGameBoard() {
         setGridForTwo(this.validGrid);
         switch(this.playersNumber) {
@@ -198,7 +200,7 @@ public class Game extends ModelSubject implements Serializable {
     public void setValidGrid (int[][] validGrid) { this.validGrid = validGrid; }
 
 
-    /** get methods */
+    /* get methods */
     public List<Player> getPlayers(){return players;}
     public GameBoard getGameboard(){return gameboard;}
     public List<CommonObjCard> getCommonObjCard(){return commonObjCards;}

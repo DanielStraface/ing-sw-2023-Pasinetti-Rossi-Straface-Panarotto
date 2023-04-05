@@ -25,7 +25,7 @@ public class Bag implements Serializable {
 
 
     /** drawItem method picks randomly an Item in the bag and removes it, used
-     * for filling the GameBoard */
+     * to fill the GameBoard, throws a NoElementException if the bag is empty */
     public Item drawItem() throws NoElementException {
         if(itemCards.size()>0){
             Random random = new Random();
