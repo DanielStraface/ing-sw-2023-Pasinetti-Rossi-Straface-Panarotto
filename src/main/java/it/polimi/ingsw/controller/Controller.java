@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Random;
 
 public class Controller implements ControllerListener {
-    /* ATTRIBUES SECTION */
+    /* ATTRIBUTES SECTION */
     private final Game game;
     private final TextualUI view;
     private final TurnHandler turnHandler;
