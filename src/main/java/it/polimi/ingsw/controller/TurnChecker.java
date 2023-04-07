@@ -20,7 +20,6 @@ public class TurnChecker {
         boolean shelfFull;
         commonObjCardCheck(player, game);
         shelfFull = player.getMyShelf().isFull();
-        //if(shelfFull) player.addPoints(1);
         refillGameBoardCheck(game);
         return shelfFull;
     }
