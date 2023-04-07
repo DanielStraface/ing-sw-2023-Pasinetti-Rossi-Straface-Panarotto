@@ -1,8 +1,6 @@
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.listeners.GameViewSubject;
 import it.polimi.ingsw.listeners.ModelViewListener;
-import it.polimi.ingsw.listeners.ViewListener;
 import it.polimi.ingsw.listeners.ViewSubject;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.modelview.GameBoardView;
@@ -118,8 +116,10 @@ public class TextualUI extends ViewSubject implements ModelViewListener, Runnabl
     }
 
     private void displayCommonObjCard(GameView game) {
-        System.out.println("The first common obj card is " + game.getCommonObjCard().get(0).getType());
-        System.out.println("The second common obj card is " + game.getCommonObjCard().get(1).getType());
+        System.out.println("The first common obj card is " + game.getCommonObjCard().get(0).getType() +
+                "\nCard description: " + game.getCommonObjCard().get(0).getDescription());
+        System.out.println("The second common obj card is " + game.getCommonObjCard().get(1).getType() +
+                "\nCard description: " + game.getCommonObjCard().get(1).getDescription());
     }
 
     private void displayShelf(ShelfView shelf) {

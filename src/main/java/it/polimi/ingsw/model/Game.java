@@ -3,6 +3,7 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.exceptions.InvalidNumberOfPlayersException;
 import it.polimi.ingsw.listeners.ModelSubject;
 import it.polimi.ingsw.model.comcard.CommonObjCard;
+import it.polimi.ingsw.model.comcard.CommonObjCardReader;
 import it.polimi.ingsw.model.personcard.PersonalCardReader;
 import it.polimi.ingsw.model.personcard.PersonalObjCard;
 
@@ -158,15 +159,18 @@ public class Game extends ModelSubject implements Serializable {
      * Method generateCommonObjCards create the two commonObjCards of the match.
      */
     public void generateCommonObjCards() {
+        //CommonObjCardReader descrReader = new CommonObjCardReader();
+        //List<String> descriptions = new LinkedList<>(descrReader.readFromFile());
         /* Randomly generate an int that will be used for pop a commonObjCard type*/
         Random random = new Random();
-        List<Integer> name = new LinkedList<Integer>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12));
+        List<Integer> type = new LinkedList<Integer>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12));
         try{
             for(int i=0;i<2;i++){
                 //generate the type by popping the name list
-                int n = random.nextInt(name.size());
+                int n = random.nextInt(type.size());
                 //add to commonObjCards list the first new commonObjCard with is points array and type set
-                this.commonObjCards.add( new CommonObjCard(this.playersNumber, name.remove(n)));
+                //this.commonObjCards.add( new CommonObjCard(this.playersNumber, type.remove(n), descriptions.remove(n)));
+                this.commonObjCards.add( new CommonObjCard(this.playersNumber, type.remove(n)));
             }
         } catch (InvalidNumberOfPlayersException e){
             System.err.println("Error: creation of commonObjCards");

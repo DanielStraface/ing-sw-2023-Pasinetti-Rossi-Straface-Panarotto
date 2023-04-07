@@ -16,11 +16,11 @@ public class GroupCardsTest {
     private Item[][] grid0, grid1, grid2, grid3, grid4, grid5, grid6, grid7, grid8, grid9, grid10;
     private static final int ROWS = 6;
     private static final int COLS = 5;
-    private static final int TYPE_GROUP_OF_TWO = 1;
-    private static final int TYPE_GROUP_OF_FOUR = 5;
-    private static final int TYPE_GROUP_OF_SQUARES = 7;
-    private static final int TYPE_GROUP_OF_EIGHT = 11;
-    private static final int TYPE_CORNERS = 3;
+    private static final int TYPE_GROUP_OF_TWO = 4;
+    private static final int TYPE_GROUP_OF_FOUR = 3;
+    private static final int TYPE_GROUP_OF_SQUARES = 1;
+    private static final int TYPE_GROUP_OF_EIGHT = 9;
+    private static final int TYPE_CORNERS = 8;
 
 
     @BeforeAll

@@ -7,7 +7,6 @@ import java.io.Serializable;
 
 class XCards extends StrategyCheck implements Serializable {
     /* ATTRIBUTES SECTION */
-    //private final int type;
 
     /* METHOD SECTION */
 

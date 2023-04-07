@@ -18,7 +18,7 @@ public class CommonObjCardTest {
     private CommonObjCard card;
     private Player player;
     private final int NUMBER_OF_PLAYERS = 3;
-    private final int BASE_TYPE = 3;
+    private final int BASE_TYPE = 8;
 
     @BeforeEach
     public void setupPlayer() throws Exception {

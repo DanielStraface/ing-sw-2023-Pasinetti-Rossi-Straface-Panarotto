@@ -15,8 +15,8 @@ import static org.junit.jupiter.api.Assertions.*;
 public class RowsColumnsCardTest {
     private static final int ROWS = 6;
     private static final int COLS = 5;
-    private static final int TYPE_ROWS = 6;
-    private static final int TYPE_COLS = 8;
+    private static final int TYPE_ROWS = 2;
+    private static final int TYPE_COLS = 6;
     private RowsColumnsCard card;
     private Item[][] grid;
 

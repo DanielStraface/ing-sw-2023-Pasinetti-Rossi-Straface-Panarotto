@@ -1,7 +1,6 @@
 package it.polimi.ingsw.listeners;
 
 import it.polimi.ingsw.model.*;
-
 import java.util.Vector;
 
 public class ModelSubject {

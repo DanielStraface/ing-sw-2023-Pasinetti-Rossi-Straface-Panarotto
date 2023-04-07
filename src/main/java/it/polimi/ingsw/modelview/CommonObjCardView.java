@@ -11,4 +11,8 @@ public class CommonObjCardView {
     public int getType(){
         return this.card.getType();
     }
+
+    public String getDescription(){
+        return this.card.getDescription();
+    }
 }

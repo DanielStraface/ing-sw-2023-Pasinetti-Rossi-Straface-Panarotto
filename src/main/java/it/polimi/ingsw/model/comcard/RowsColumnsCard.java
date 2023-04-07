@@ -7,7 +7,6 @@ import java.io.Serializable;
 
 class RowsColumnsCard extends StrategyCheck implements Serializable {
     /* ATTRIBUTES SECTION */
-    //private final int type;
 
     /* METHODS SECTION */
 
@@ -25,10 +24,10 @@ class RowsColumnsCard extends StrategyCheck implements Serializable {
     @Override
     public boolean check(Item[][] grid) {
         switch (this.type) {
-            case 6 -> {
+            case 2 -> {
                 return rowsChecker(grid);
             }
-            case 8 -> {
+            case 6 -> {
                 return columnsChecker(grid);
             }
             default -> {

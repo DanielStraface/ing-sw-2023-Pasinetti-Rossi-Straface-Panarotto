@@ -8,7 +8,6 @@ import java.util.HashSet;
 
 class ThreeDifferentTypes extends StrategyCheck implements Serializable {
     /* ATTRIBUTES SECTION */
-    //private final int type;
 
     /* METHOD SECTION */
 
@@ -20,10 +19,10 @@ class ThreeDifferentTypes extends StrategyCheck implements Serializable {
     @Override
     public boolean check(Item[][] grid) {
         switch (this.type) {
-            case 4 -> {
+            case 7 -> {
                 return rowsDifferentTypes(grid);
             }
-            case 9 -> {
+            case 5 -> {
                 return columnsDifferentTypes(grid);
             }
             default -> {

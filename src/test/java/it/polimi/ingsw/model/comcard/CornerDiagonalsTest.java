@@ -12,10 +12,10 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class CornerDiagonalsTest {
     private static final int TYPE_X = 10;
-    private static final int TYPE_CORNERS = 3;
+    private static final int TYPE_CORNERS = 8;
     private static final int ROWS = 6;
     private static final int COLS = 5;
-    private static final int TYPE_DIAGONALS = 2;
+    private static final int TYPE_DIAGONALS = 11;
     private static final int TYPE_DESC_MATRIX = 12;
     private CornerDiagonals card;
     private Item[][] grid0, grid1, grid2, grid3, grid4, grid5;

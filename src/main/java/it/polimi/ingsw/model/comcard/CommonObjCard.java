@@ -9,41 +9,16 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-
-/**
- * STATUS DESCRIPTION FOR RowsColumnsCard
- * 6 --> Row checker
- * 8 --> Column checker
- */
-
-/**
- * STATUS DESCRIPTION FOR GroupCards
- *  1 ->
- *  5 ->
- *  7 ->
- *  11 ->
- */
-
-/** STATUS DESCRIPTION FOR ThreeDifferentTypes
- * 4 --> RowsDifferentTypes
- * 9 --> ColumnsDifferentTypes
- */
-
-/**
- * STATUS DESCRIPTION FOR CornerDiagonals
- * 2 -->
- * 3 -->
- * 12 -->
- */
-
-/**
- * STATUS DESCRIPTION FOR XCard
- * 10 -->
- */
+// ONE --> Quadrati2x2
+// TWO --> Columns6Element
+// THREE --> nostra 5
+// FOUR --> nostra 1
+// FIVE
 
 public class CommonObjCard implements Serializable {
 
     /* ATTRIBUTES SECTION */
+    private final String description;
     private final int[] objPoints;
     private int nextPoints;
     private StrategyCheck strategyCheck;
@@ -62,6 +37,37 @@ public class CommonObjCard implements Serializable {
         * For each case statement, the objPoints array assume different points configuration.
         * The nextPoints variables refers to the next points that will be distributed to the player who claim it.
         */
+        this.description = null;
+        switch(numberOfPlayers){
+            case 2 -> {
+                int[] temp = {4, 8, 0, 0};
+                this.nextPoints = 1;
+                this.objPoints = temp;
+            }
+            case 3 -> {
+                int[] temp = {4, 6, 8, 0};
+                this.nextPoints = 2;
+                this.objPoints = temp;
+            }
+            case 4 -> {
+                int[] temp = {2, 4, 6, 8};
+                this.nextPoints = 3;
+                this.objPoints = temp;
+            }
+            default -> {
+                throw new InvalidNumberOfPlayersException();
+            }
+        }
+        defineStrategy(type);
+        playersDone = new ArrayList<Player>();
+    }
+
+    public CommonObjCard(int numberOfPlayers, int type, String description) throws InvalidNumberOfPlayersException {
+        /*The switch case are chosen by the number of players of the game.
+         * For each case statement, the objPoints array assume different points configuration.
+         * The nextPoints variables refers to the next points that will be distributed to the player who claim it.
+         */
+        this.description = description;
         switch(numberOfPlayers){
             case 2 -> {
                 int[] temp = {4, 8, 0, 0};
@@ -106,13 +112,16 @@ public class CommonObjCard implements Serializable {
             return tempPoints;
     }
 
+    public String getDescription() {
+        return description;
+    }
     /* -- logic methods */
 
     private void defineStrategy(int type){
-        if(type == 2 || type == 3 || type == 12) strategyCheck = new CornerDiagonals(type);
-        if(type == 1 || type == 5 || type == 7 || type == 11) strategyCheck = new GroupCards(type);
-        if(type == 6 || type == 8) strategyCheck = new RowsColumnsCard(type);
-        if(type == 4 || type == 9) strategyCheck = new ThreeDifferentTypes(type);
+        if(type == 2 || type == 6) strategyCheck = new RowsColumnsCard(type);
+        if(type == 7 || type == 5) strategyCheck = new ThreeDifferentTypes(type);
+        if(type == 11 || type == 8 || type == 12) strategyCheck = new CornerDiagonals(type);
+        if(type == 4 || type == 3 || type == 1 || type == 9) strategyCheck = new GroupCards(type);
         if(type == 10) strategyCheck = new XCards(type);
     }
 

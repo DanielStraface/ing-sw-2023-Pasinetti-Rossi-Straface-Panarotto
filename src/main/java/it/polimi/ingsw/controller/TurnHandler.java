@@ -7,14 +7,12 @@ import it.polimi.ingsw.model.personcard.PersonalObjCard;
 
 public class TurnHandler {
     private TurnChecker turnChecker;
-    private PlayerAction playerAction;
     private Game game;
     private boolean endGame;
     private boolean gameOver;
     private static final int ENDGAME_POINTS = 1;
     public TurnHandler(Game game){
         this.turnChecker= new TurnChecker();
-        this.playerAction = new PlayerAction();
         this.game = game;
         this.endGame= false;
         this.gameOver = false;

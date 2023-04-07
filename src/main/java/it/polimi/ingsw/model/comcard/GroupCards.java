@@ -9,7 +9,6 @@ import java.util.List;
 
 class GroupCards extends StrategyCheck implements Serializable {
     /* ATTRIBUTES SECTION */
-    //private final int type;
 
     /* METHOD SECTION */
 
@@ -21,16 +20,16 @@ class GroupCards extends StrategyCheck implements Serializable {
     @Override
     public boolean check(Item[][] grid) {
         switch (this.type) {
-            case 1 -> {
+            case 4 -> {
                 return groupOfTwo(grid);
             }
-            case 5 -> {
+            case 3 -> {
                 return groupOfFour(grid);
             }
-            case 7 -> {
+            case 1 -> {
                 return groupOfSquares(grid);
             }
-            case 11 -> {
+            case 9 -> {
                 return groupOfEight(grid);
             }
             default -> {

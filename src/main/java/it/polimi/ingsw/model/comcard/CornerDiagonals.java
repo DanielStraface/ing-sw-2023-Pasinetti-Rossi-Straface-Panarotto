@@ -7,7 +7,6 @@ import java.io.Serializable;
 
 class CornerDiagonals extends StrategyCheck implements Serializable {
     /* ATTRIBUTES SECTION */
-    //private final int type;
     /* METHODS SECTION */
 
     /* -- constructor -- */
@@ -24,10 +23,10 @@ class CornerDiagonals extends StrategyCheck implements Serializable {
     @Override
     public boolean check(Item[][] grid) {
         switch (this.type) {
-            case 2 -> {
+            case 11 -> {
                 return diagonals(grid);
             }
-            case 3 -> {
+            case 8 -> {
                 return corners(grid);
             }
             case 12 -> {

@@ -14,8 +14,8 @@ public class ThreeDifferentTypesTest {
 
     private static final int R0 = 0, R1 = 1, R3 = 3, R5= 5;
     private static final int C0 = 0, C2 = 2, C4 = 4;
-    private static final int DIFFERENT_ROWS = 4;
-    private static final int DIFFERENT_COLS = 9;
+    private static final int DIFFERENT_ROWS = 7;
+    private static final int DIFFERENT_COLS = 5;
     private static final int ROWS = 6;
     private static final int COLS = 5;
     private Item[][] grid;
@@ -33,24 +33,24 @@ public class ThreeDifferentTypesTest {
     }
 
 
-    /** Checks CommonObjectiveCard n.4 conditions on an empty GameBoard */
+    /** Checks CommonObjectiveCard n.7 conditions on an empty GameBoard */
     @Test
     public void gridNullRowsTest(){
         card = new ThreeDifferentTypes(DIFFERENT_ROWS);
-        assertFalse(card.check(grid), "The grid satisfies the CommonObjectiveCard n.4");
+        assertFalse(card.check(grid), "The grid satisfies the CommonObjectiveCard n.7");
     }
 
 
-    /** Checks CommonObjectiveCard n.9 conditions on an empty GameBoard */
+    /** Checks CommonObjectiveCard n.5 conditions on an empty GameBoard */
     @Test
     public void gridNullColumnsTest(){
         card = new ThreeDifferentTypes(DIFFERENT_COLS);
-        assertFalse(card.check(grid), "The grid satisfies the CommonObjectiveCard n.9");
+        assertFalse(card.check(grid), "The grid satisfies the CommonObjectiveCard n.5");
     }
 
 
     /** Verifies that the check method returns a true boolean when the
-     * CommonObjectiveCard n.4's condition is met */
+     * CommonObjectiveCard n.7's condition is met */
     @Test
     public void checkDifferentRowsOkTest(){
         card = new ThreeDifferentTypes(DIFFERENT_ROWS);
@@ -81,12 +81,12 @@ public class ThreeDifferentTypesTest {
         grid[R5][3] = new Item(Category.BOOK);
         grid[R5][4] = new Item(Category.CAT);
 
-        assertTrue(card.check(grid),"The grid doesn't satisfy the CommonObjectiveCard n.4");
+        assertTrue(card.check(grid),"The grid doesn't satisfy the CommonObjectiveCard n.7");
     }
 
 
     /** Various test methods to verify that the check method returns a false boolean when the
-     * CommonObjectiveCard n.4's conditions aren't met */
+     * CommonObjectiveCard n.7's conditions aren't met */
     @Test
     public void checkDifferentRowsFailTest1(){
         card = new ThreeDifferentTypes(DIFFERENT_ROWS);
@@ -116,7 +116,7 @@ public class ThreeDifferentTypesTest {
         grid[R5][3] = new Item(Category.BOOK);
         grid[R5][4] = new Item(Category.CAT);
 
-        assertFalse(card.check(grid),"The grid satisfies the CommonObjectiveCard n.4");
+        assertFalse(card.check(grid),"The grid satisfies the CommonObjectiveCard n.7");
     }
 
 
@@ -144,7 +144,7 @@ public class ThreeDifferentTypesTest {
         grid[R5][3] = new Item(Category.BOOK);
         grid[R5][4] = new Item(Category.CAT);
 
-        assertFalse(card.check(grid),"The grid satisfies the CommonObjectiveCard n.4");
+        assertFalse(card.check(grid),"The grid satisfies the CommonObjectiveCard n.7");
     }
 
 
@@ -176,7 +176,7 @@ public class ThreeDifferentTypesTest {
         grid[R5][3] = new Item(Category.BOOK);
         grid[R5][4] = new Item(Category.CAT);
 
-        assertFalse(card.check(grid),"The grid satisfies the CommonObjectiveCard n.4");
+        assertFalse(card.check(grid),"The grid satisfies the CommonObjectiveCard n.7");
     }
 
 
@@ -184,7 +184,7 @@ public class ThreeDifferentTypesTest {
 
 
     /** Verifies that the check method returns a true boolean when the
-     * CommonObjectiveCard n.9's condition is met */
+     * CommonObjectiveCard n.5's condition is met */
     @Test
     public void checkDifferentColumnsOkTest(){
         card = new ThreeDifferentTypes(DIFFERENT_COLS);
@@ -212,13 +212,13 @@ public class ThreeDifferentTypesTest {
         grid[4][C4] = new Item(Category.BOOK);
         grid[5][C4] = new Item(Category.BOOK);
 
-        assertTrue(card.check(grid),"The grid doesn't satisfy the CommonObjectiveCard n.9");
+        assertTrue(card.check(grid),"The grid doesn't satisfy the CommonObjectiveCard n.5");
     }
 
 
 
     /** Various test methods to verify that the check method returns a false boolean when the
-     * CommonObjectiveCard n.9's conditions aren't met */
+     * CommonObjectiveCard n.5's conditions aren't met */
     @Test
     public void checkDifferentColumnsFailTest1(){
         card = new ThreeDifferentTypes(DIFFERENT_COLS);
@@ -245,7 +245,7 @@ public class ThreeDifferentTypesTest {
         grid[4][C4] = new Item(Category.BOOK);
         grid[5][C4] = new Item(Category.BOOK);
 
-        assertFalse(card.check(grid),"The grid satisfies the CommonObjectiveCard n.9");
+        assertFalse(card.check(grid),"The grid satisfies the CommonObjectiveCard n.5");
 
     }
 
@@ -270,7 +270,7 @@ public class ThreeDifferentTypesTest {
         grid[4][C4] = new Item(Category.BOOK);
         grid[5][C4] = new Item(Category.BOOK);
 
-        assertFalse(card.check(grid),"The grid satisfies the CommonObjectiveCard n.9");
+        assertFalse(card.check(grid),"The grid satisfies the CommonObjectiveCard n.5");
     }
 
 
@@ -299,6 +299,6 @@ public class ThreeDifferentTypesTest {
         grid[4][C4] = new Item(Category.BOOK);
         grid[5][C4] = new Item(Category.BOOK);
 
-        assertFalse(card.check(grid),"The grid satisfies the CommonObjectiveCard n.9");
+        assertFalse(card.check(grid),"The grid satisfies the CommonObjectiveCard n.5");
     }
 }
