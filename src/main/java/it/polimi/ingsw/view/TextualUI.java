@@ -298,6 +298,11 @@ public class TextualUI extends ViewSubject implements ModelViewListener, Runnabl
         setChangedAndNotifyListener(this.column);
     }
 
+    @Override
+    public void update(String commonObjCardReached) {
+        System.out.println(commonObjCardReached);
+    }
+
     private void setChangedAndNotifyListener(String nm){
         setChanged();
         notifyObservers(nm);

@@ -37,4 +37,10 @@ public class PlayerView extends GameViewSubject implements PlayerListener {
         setChanged();
         notifyObservers(new ShelfView(shelf.getShelfGrid()));
     }
+
+    @Override
+    public void update(String commonObjCardReached) {
+        setChanged();
+        notifyObservers(commonObjCardReached);
+    }
 }
