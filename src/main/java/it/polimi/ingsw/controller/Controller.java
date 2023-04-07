@@ -48,6 +48,7 @@ public class Controller implements ControllerListener {
         }
     }
 
+    /** saveGame method saves the state of the game in a file*/
     public void saveGame(Game game, String fileName) {
         try{
             FileOutputStream fileOutputStream=new FileOutputStream(fileName);
@@ -61,6 +62,7 @@ public class Controller implements ControllerListener {
         }
     }
 
+    /** loadGame method loads a saved game from a file*/
     public static Game loadGame(String fileName) {
         try {
             FileInputStream fileInputStream = new FileInputStream(fileName);

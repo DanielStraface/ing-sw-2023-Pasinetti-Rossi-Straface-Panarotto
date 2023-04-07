@@ -30,7 +30,7 @@ public class Player extends ModelSubject implements Serializable {
         this.selectItems=new ArrayList<>();
     }
 
-    /** method to pick Items from the game board*/
+    /** method to pick Items from the game board and put them in the selectItems list*/
     public void pickItems(List<int[]> selectedCoords,Item[][] gameGrid, int[][] validGrid) throws InvalidStateException, InvalidSelectionException {
         if(selectedCoords.isEmpty()){
             throw new InvalidStateException("selectedCoords is empty");
@@ -156,7 +156,7 @@ public class Player extends ModelSubject implements Serializable {
         setChangedAndNotifyListener(gameGrid);
     }
 
-    /** method to put Items into personal shelf*/
+    /** method to put Items into personal shelf and remove them from the selectItems list*/
     public void putItemInShelf(int selectedCol) throws OutOfBoundsException, InvalidNumberOfItemsException {
         Item[][] grid=myShelf.getShelfGrid();
         if (selectedCol >= 5) {
@@ -185,7 +185,7 @@ public class Player extends ModelSubject implements Serializable {
         }
         setChangedAndNotifyListener(this.myShelf);
     }
-
+/** Method for adding points to the score*/
     public void addPoints(int points) {
         this.score += points;
     }
