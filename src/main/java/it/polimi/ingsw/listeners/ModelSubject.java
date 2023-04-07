@@ -1,7 +1,6 @@
 package it.polimi.ingsw.listeners;
 
 import it.polimi.ingsw.model.*;
-import it.polimi.ingsw.view.TextualUI;
 
 import java.util.Vector;
 

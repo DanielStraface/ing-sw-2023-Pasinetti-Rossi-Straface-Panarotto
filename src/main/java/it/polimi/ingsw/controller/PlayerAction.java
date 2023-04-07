@@ -2,7 +2,7 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Item;
-import it.polimi.ingsw.model.Player;
+
 
 import java.util.List;
 

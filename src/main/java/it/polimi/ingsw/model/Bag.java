@@ -3,10 +3,8 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.exceptions.NoElementException;
 
 import java.io.Serializable;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Random;
 
 public class Bag implements Serializable {
@@ -25,7 +23,7 @@ public class Bag implements Serializable {
 
 
     /** drawItem method picks randomly an Item in the bag and removes it, used
-     * for filling the GameBoard */
+     * to fill the GameBoard, throws a NoElementException if the bag is empty */
     public Item drawItem() throws NoElementException {
         if(itemCards.size()>0){
             Random random = new Random();
