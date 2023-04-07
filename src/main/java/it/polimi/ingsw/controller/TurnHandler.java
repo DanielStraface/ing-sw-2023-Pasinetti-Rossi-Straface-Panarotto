@@ -77,7 +77,7 @@ public class TurnHandler {
         Player winner = game.getPlayers().get(0);
         if(winner.getScore() < game.getPlayers().get(1).getScore()) winner = game.getPlayers().get(1);
         System.out.println(winner.getNickname() + " wins with a score of " + winner.getScore() + " points");
-        System.out.println("The game ends here. THank you for playing this game!\nBYE");
+        System.out.println("The game ends here. Thank you for playing this game!\nBYE");
         System.exit(10);
     }
 }
