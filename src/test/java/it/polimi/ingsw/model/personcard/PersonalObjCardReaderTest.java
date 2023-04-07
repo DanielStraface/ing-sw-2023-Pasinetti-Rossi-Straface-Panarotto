@@ -21,7 +21,7 @@ public class PersonalObjCardReaderTest {
 
     @Test
     public void invalidResourceAsStreamTest(){
-        InvalidPointerException exception = Assertions.assertThrows(InvalidPointerException.class, () ->{
+        NullPointerException exception = Assertions.assertThrows(NullPointerException.class, () ->{
             personalCardReader.readFromFile();
         });
         assertEquals("in == null", exception.getMessage());

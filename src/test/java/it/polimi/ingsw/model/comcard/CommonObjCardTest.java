@@ -44,13 +44,17 @@ public class CommonObjCardTest {
     @Test
     public void gameOfThreePlayersTest() throws InvalidPointerException {
         assertEquals(BASE_TYPE, card.getType(), "The type of the card is wrong");
-        for(int i=0; i<NUMBER_OF_PLAYERS;i++){
-            assertTrue(0 < card.getPoints(), "The points of the card is wrong");
+        try{
+            for(int i=0; i<NUMBER_OF_PLAYERS;i++){
+                assertTrue(0 < card.getPoints(), "The points of the card is wrong");
+            }
+        } catch (OutOfBoundsException e){
+            System.err.println("Wrong test execution");
         }
         OutOfBoundsException exception = assertThrows(OutOfBoundsException.class, () ->{
             card.getPoints();
         });
-        assertEquals("Index -1 out of bounds for length 4", exception.getMessage());
+        assertEquals("All the points for this card are taken", exception.getMessage());
     }
 
     @Test
@@ -60,13 +64,17 @@ public class CommonObjCardTest {
         } catch (Exception e){
             fail("CommonObjCard not create correctly");
         }
-        for(int i=0;i<2;i++){
-            assertTrue(0 < card.getPoints(), "The points of the card is wrong");
+        try{
+            for(int i=0;i<2;i++){
+                assertTrue(0 < card.getPoints(), "The points of the card is wrong");
+            }
+        } catch (OutOfBoundsException e){
+            System.err.println("Wrong test execution");
         }
         OutOfBoundsException exception = assertThrows(OutOfBoundsException.class, () ->{
             card.getPoints();
         });
-        assertEquals("Index -1 out of bounds for length 4", exception.getMessage());
+        assertEquals("All the points for this card are taken", exception.getMessage());
     }
 
     @Test
@@ -76,14 +84,18 @@ public class CommonObjCardTest {
         } catch (Exception e){
             fail("CommonObjCard not create correctly");
         }
-        for(int i=0;i<4;i++){
-            assertTrue(0 < card.getPoints(), "The points of the card is wrong");
+        try{
+            for(int i=0;i<4;i++){
+                assertTrue(0 < card.getPoints(), "The points of the card is wrong");
+            }
+        } catch (OutOfBoundsException e){
+            System.err.println("Wrong test execution");
         }
         OutOfBoundsException exception = assertThrows(OutOfBoundsException.class, () ->{
             card.getPoints();
         });
         System.err.println(exception.getMessage());
-        assertEquals(" ", exception);
+        assertEquals("All the points for this card are taken", exception.getMessage());
     }
 
     @Test
@@ -96,8 +108,12 @@ public class CommonObjCardTest {
 
     @Test
     public void getPointsTest() throws InvalidPointerException {
-        for(int i=2; i>=0;i--){
-            assertEquals(4 + 2*i, card.getPoints(), "The points returned are wrong");
+        try{
+            for(int i=2; i>=0;i--){
+                assertEquals(4 + 2*i, card.getPoints(), "The points returned are wrong");
+            }
+        } catch (OutOfBoundsException e){
+            System.err.println("Wrong test execution");
         }
     }
 

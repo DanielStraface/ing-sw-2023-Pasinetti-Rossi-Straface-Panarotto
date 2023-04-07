@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.comcard;
 
 import it.polimi.ingsw.exceptions.InvalidNumberOfPlayersException;
 import it.polimi.ingsw.exceptions.InvalidPointerException;
+import it.polimi.ingsw.exceptions.OutOfBoundsException;
 import it.polimi.ingsw.model.Player;
 
 import java.io.Serializable;
@@ -97,13 +98,12 @@ public class CommonObjCard implements Serializable {
      * Method getPoint returns the points for this card based on what order the players has reached the goal.
      * @return result <==> objPoints[objLength - 1]
      */
-    public int getPoints() throws InvalidPointerException {
+    public int getPoints() throws InvalidPointerException, OutOfBoundsException {
         if (objPoints.length - 1 < 0) throw new InvalidPointerException("The array length is zero");
-        else {
+        if(nextPoints < 0) throw new OutOfBoundsException("All the points for this card are taken");
             int tempPoints = objPoints[nextPoints];
             nextPoints = nextPoints - 1;
             return tempPoints;
-        }
     }
 
     /* -- logic methods */
@@ -124,8 +124,13 @@ public class CommonObjCard implements Serializable {
         if(!this.playersDone.contains(player)){
             boolean isTrue = strategyCheck.check(player.getMyShelf().getShelfGrid());
             if(isTrue){
-                player.addPoints(this.getPoints());
-                playersDone.add(player);
+                try{
+                    player.addPoints(this.getPoints());
+                    playersDone.add(player);
+                } catch (OutOfBoundsException e){
+                    System.err.println("Throw an OutOfBoundException in " + this + ".getPoints()");
+                }
+
             }
         }
     }
