@@ -11,6 +11,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -133,5 +136,27 @@ public class CommonObjCardTest {
     public void rightCheckTest() throws InvalidPointerException {
         card.doCheck(player);
         assertTrue(0 < player.getScore(), "The check method is wrong");
+    }
+
+    @Test
+    public void getDescriptionTest(){
+        final int SEVENTH_TYPE = 7 ;
+        final String descriptionToCompare = "EIGHT";
+        CommonObjCardReader reader = new CommonObjCardReader();
+        List<String> descriptions = new LinkedList<>(reader.readFromFile());
+        try{
+            card = new CommonObjCard(NUMBER_OF_PLAYERS, SEVENTH_TYPE, descriptions.remove(SEVENTH_TYPE));
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+        assertEquals(descriptionToCompare, card.getDescription());
+    }
+
+    @Test
+    public void exceptionCommonObjCardReader(){
+        final String file = "kek.json";
+        CommonObjCardReader reader = new CommonObjCardReader(file);
+        NullPointerException exception = assertThrows(NullPointerException.class, () -> reader.readFromFile());
+        assertEquals("in == null", exception.getMessage());
     }
 }
