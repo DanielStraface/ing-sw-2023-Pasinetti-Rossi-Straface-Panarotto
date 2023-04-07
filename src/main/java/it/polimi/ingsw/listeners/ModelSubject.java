@@ -6,14 +6,14 @@ import java.util.Vector;
 
 public class ModelSubject {
     private boolean changed = false;
-    private Vector<GameViewListener> obs;
-    private Vector<PlayerViewListener> listeners;
+    private Vector<GameListener> obs;
+    private Vector<PlayerListener> listeners;
 
     public ModelSubject(){
         this.obs = new Vector<>();
         this.listeners = new Vector<>();
     }
-    public synchronized void addListener(GameViewListener o){
+    public synchronized void addListener(GameListener o){
         if (o == null)
             throw new NullPointerException();
         if (!obs.contains(o)) {
@@ -21,7 +21,7 @@ public class ModelSubject {
         }
     }
 
-    public synchronized void addListener(PlayerViewListener o){
+    public synchronized void addListener(PlayerListener o){
         if (o == null)
             throw new NullPointerException();
         if (!listeners.contains(o)) {
@@ -29,10 +29,10 @@ public class ModelSubject {
         }
     }
 
-    public synchronized void deleteListener(GameViewListener o) {
+    public synchronized void deleteListener(GameListener o) {
         obs.removeElement(o);
     }
-    public synchronized void deleteListener(PlayerViewListener o) {
+    public synchronized void deleteListener(PlayerListener o) {
         listeners.removeElement(o);
     }
 
@@ -67,7 +67,7 @@ public class ModelSubject {
         }
 
         for (int i = arrLocal.length-1; i>=0; i--){
-            GameViewListener vl = (GameViewListener)arrLocal[i];
+            GameListener vl = (GameListener)arrLocal[i];
             vl.update((Game) this, arg);
         }
     }
@@ -99,7 +99,7 @@ public class ModelSubject {
         }
 
         for (int i = arrLocal.length-1; i>=0; i--){
-            GameViewListener vl = (GameViewListener)arrLocal[i];
+            GameListener vl = (GameListener) arrLocal[i];
             vl.update(arg);
         }
     }
@@ -131,7 +131,7 @@ public class ModelSubject {
         }
 
         for (int i = arrLocal.length-1; i>=0; i--){
-            PlayerViewListener vl = (PlayerViewListener) arrLocal[i];
+            PlayerListener vl = (PlayerListener) arrLocal[i];
             vl.update((Player) this, arg);
         }
     }
@@ -163,7 +163,7 @@ public class ModelSubject {
         }
 
         for (int i = arrLocal.length-1; i>=0; i--){
-            GameViewListener vl = (GameViewListener)arrLocal[i];
+            GameListener vl = (GameListener) arrLocal[i];
             vl.update((Player) this, arg);
         }
     }
@@ -195,7 +195,7 @@ public class ModelSubject {
         }
 
         for (int i = arrLocal.length-1; i>=0; i--){
-            PlayerViewListener vl = (PlayerViewListener)arrLocal[i];
+            PlayerListener vl = (PlayerListener) arrLocal[i];
             vl.update((Player) this, arg);
         }
     }

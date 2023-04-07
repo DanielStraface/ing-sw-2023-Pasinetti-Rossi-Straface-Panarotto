@@ -10,12 +10,12 @@ import java.util.Vector;
 
 public class GameViewSubject {
     private boolean changed = false;
-    private Vector<ViewListener> obs;
+    private Vector<ModelViewListener> obs;
 
     public GameViewSubject(){
         obs = new Vector<>();
     }
-    public synchronized void addListener(ViewListener o){
+    public synchronized void addListener(ModelViewListener o){
         if (o == null)
             throw new NullPointerException();
         if (!obs.contains(o)) {
@@ -23,7 +23,7 @@ public class GameViewSubject {
         }
     }
 
-    public synchronized void deleteListener(ViewListener o) {
+    public synchronized void deleteListener(ModelViewListener o) {
         obs.removeElement(o);
     }
 
@@ -58,7 +58,7 @@ public class GameViewSubject {
         }
 
         for (int i = arrLocal.length-1; i>=0; i--){
-            ViewListener vl = (ViewListener)arrLocal[i];
+            ModelViewListener vl = (ModelViewListener) arrLocal[i];
             vl.update((GameView) this, arg);
         }
     }
@@ -90,7 +90,7 @@ public class GameViewSubject {
         }
 
         for (int i = arrLocal.length-1; i>=0; i--){
-            ViewListener vl = (ViewListener)arrLocal[i];
+            ModelViewListener vl = (ModelViewListener)arrLocal[i];
             vl.update(arg);
         }
     }
@@ -121,7 +121,7 @@ public class GameViewSubject {
             clearChanged();
         }
         for (int i = arrLocal.length-1; i>=0; i--){
-            ViewListener vl = (ViewListener)arrLocal[i];
+            ModelViewListener vl = (ModelViewListener)arrLocal[i];
             vl.update((PlayerView) this, arg);
         }
     }
@@ -153,7 +153,7 @@ public class GameViewSubject {
         }
 
         for (int i = arrLocal.length-1; i>=0; i--){
-            ViewListener vl = (ViewListener)arrLocal[i];
+            ModelViewListener vl = (ModelViewListener)arrLocal[i];
             vl.update((PlayerView) this, arg);
         }
     }
@@ -185,7 +185,7 @@ public class GameViewSubject {
         }
 
         for (int i = arrLocal.length-1; i>=0; i--){
-            ViewListener vl = (ViewListener)arrLocal[i];
+            ModelViewListener vl = (ModelViewListener)arrLocal[i];
             vl.update((PlayerView) this, arg);
         }
     }

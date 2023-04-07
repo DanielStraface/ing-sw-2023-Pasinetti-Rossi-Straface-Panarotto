@@ -1,6 +1,6 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.listeners.ControllerListener;
+import it.polimi.ingsw.listeners.ViewListener;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.view.TextualUI;
 
@@ -8,7 +8,7 @@ import java.io.*;
 import java.util.List;
 import java.util.Random;
 
-public class Controller implements ControllerListener {
+public class Controller implements ViewListener {
     /* ATTRIBUTES SECTION */
     private final Game game;
     private final TextualUI view;

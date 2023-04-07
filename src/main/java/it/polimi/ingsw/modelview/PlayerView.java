@@ -1,16 +1,12 @@
 package it.polimi.ingsw.modelview;
 
-import it.polimi.ingsw.listeners.GameViewListener;
 import it.polimi.ingsw.listeners.GameViewSubject;
-import it.polimi.ingsw.listeners.PlayerViewListener;
+import it.polimi.ingsw.listeners.PlayerListener;
 import it.polimi.ingsw.model.Item;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Shelf;
-import it.polimi.ingsw.model.personcard.PersonalObjCard;
 
-import java.util.List;
-
-public class PlayerView extends GameViewSubject implements PlayerViewListener {
+public class PlayerView extends GameViewSubject implements PlayerListener {
     private final int score;
     private final ShelfView myShelf;
     private final PersonalObjCardView myPersonalObjCard;

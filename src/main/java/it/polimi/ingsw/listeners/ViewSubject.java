@@ -8,12 +8,12 @@ import java.util.Vector;
 
 public class ViewSubject {
     private boolean changed = false;
-    private Vector<ControllerListener> obs;
+    private Vector<ViewListener> obs;
 
     public ViewSubject(){
         obs = new Vector<>();
     }
-    public synchronized void addListener(ControllerListener o){
+    public synchronized void addListener(ViewListener o){
         if (o == null)
             throw new NullPointerException();
         if (!obs.contains(o)) {
@@ -21,7 +21,7 @@ public class ViewSubject {
         }
     }
 
-    public synchronized void deleteListener(ControllerListener o) {
+    public synchronized void deleteListener(ViewListener o) {
         obs.removeElement(o);
     }
 
@@ -52,7 +52,7 @@ public class ViewSubject {
         }
 
         for (int i = arrLocal.length-1; i>=0; i--){
-            ControllerListener vl = (ControllerListener)arrLocal[i];
+            ViewListener vl = (ViewListener) arrLocal[i];
             vl.update((TextualUI) this, arg);
         }
     }
@@ -84,7 +84,7 @@ public class ViewSubject {
         }
 
         for (int i = arrLocal.length-1; i>=0; i--){
-            ControllerListener vl = (ControllerListener)arrLocal[i];
+            ViewListener vl = (ViewListener)arrLocal[i];
             vl.update((TextualUI) this, arg);
         }
     }
@@ -116,7 +116,7 @@ public class ViewSubject {
         }
 
         for (int i = arrLocal.length-1; i>=0; i--){
-            ControllerListener vl = (ControllerListener)arrLocal[i];
+            ViewListener vl = (ViewListener)arrLocal[i];
             vl.update((TextualUI) this, arg);
         }
     }

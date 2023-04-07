@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.listeners.GameViewSubject;
+import it.polimi.ingsw.listeners.ModelViewListener;
 import it.polimi.ingsw.listeners.ViewListener;
 import it.polimi.ingsw.listeners.ViewSubject;
 import it.polimi.ingsw.model.*;
@@ -11,7 +12,7 @@ import it.polimi.ingsw.modelview.ShelfView;
 
 import java.util.*;
 
-public class TextualUI extends ViewSubject implements ViewListener, Runnable{
+public class TextualUI extends ViewSubject implements ModelViewListener, Runnable{
     private String name;
     private List<int[]> coords;
     private int column;

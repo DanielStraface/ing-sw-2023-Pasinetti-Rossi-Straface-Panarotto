@@ -1,13 +1,13 @@
 package it.polimi.ingsw.modelview;
 
-import it.polimi.ingsw.listeners.GameViewListener;
+import it.polimi.ingsw.listeners.GameListener;
 import it.polimi.ingsw.listeners.GameViewSubject;
 import it.polimi.ingsw.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameView extends GameViewSubject implements GameViewListener {
+public class GameView extends GameViewSubject implements GameListener {
     private final GameBoardView gameboard;
     private final List<CommonObjCardView> commonObjCards;
     private final PlayerView currentPlayer;
