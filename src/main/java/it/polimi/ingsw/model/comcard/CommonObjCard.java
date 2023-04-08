@@ -142,10 +142,10 @@ public class CommonObjCard implements Serializable {
                 } catch (OutOfBoundsException e){
                     System.err.println("Throw an OutOfBoundException in " + this + ".getPoints()");
                 }
-
             }
         }
     }
+
 }
 
 
