@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.comcard;
 
 import com.google.gson.Gson;
-import it.polimi.ingsw.model.personcard.PersonalObjCard;
+
 
 import java.io.InputStreamReader;
 import java.io.Reader;

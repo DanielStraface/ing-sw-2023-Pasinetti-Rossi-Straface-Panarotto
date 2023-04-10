@@ -141,7 +141,7 @@ public class CommonObjCardTest {
     @Test
     public void getDescriptionTest(){
         final int SEVENTH_TYPE = 7 ;
-        final String descriptionToCompare = "EIGHT";
+        final String descriptionToCompare = "Four tiles of the same type in the four corners of the bookshelf.";
         CommonObjCardReader reader = new CommonObjCardReader();
         List<String> descriptions = new LinkedList<>(reader.readFromFile());
         try{
