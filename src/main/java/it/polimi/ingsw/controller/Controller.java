@@ -8,16 +8,24 @@ import java.io.*;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * This class represent the top of the controller section (the CONTROLLER in MVC). It has got three references:
+ * one to the model (attribute game), one to the view (attribute view) and one to the turnHandler, that defines the
+ * correct action, explicit by the player or implicit such as various check, for a specific player turn.
+ * @see TurnHandler
+ * @method chooseFirstPlayer(), saveGame(), loadGame(), update(UI, Integer), update(UI, String), update(UI, List<int[]>)
+ * @author Matteo Panarotto
+ */
 public class Controller implements ViewListener {
     /* ATTRIBUTES SECTION */
     private final Game game;
     private final TextualUI view;
     private final TurnHandler turnHandler;
 
-    /* METHOD SECTION */
+    /* METHODS SECTION */
 
     /* -- constructor --*/
-    public Controller(Game game, TextualUI view){ //must be edited by View
+    public Controller(Game game, TextualUI view){
         this.game = game;
         game.setCurrentPlayer(game.getPlayers().get(0));
         turnHandler = new TurnHandler(game);
@@ -27,6 +35,7 @@ public class Controller implements ViewListener {
     /* -- logic methods --*/
     /**
      * chooseFirstPlayer method decides the first player of the match
+     * @author Matteo Panarotto
      */
     public void chooseFirstPlayer(){
         //extract a random number between zero and numberOfPlayers
@@ -38,17 +47,11 @@ public class Controller implements ViewListener {
     }
 
     /**
-     * gameActions method launch the turnHandler operations.
+     * saveGame method saves the state of the game in a file
+     * @param game - the current model of the match
+     * @param fileName - the name of the saving file
+     * @author Christian Pasinetti
      */
-    public void gameActions() throws Exception{
-        //Add set nickname and clientID by view notifications
-        //Must be modified, true may not appear
-        while(true){
-            turnHandler.manageTurn();
-        }
-    }
-
-    /** saveGame method saves the state of the game in a file*/
     public void saveGame(Game game, String fileName) {
         try{
             FileOutputStream fileOutputStream=new FileOutputStream(fileName);
@@ -62,7 +65,12 @@ public class Controller implements ViewListener {
         }
     }
 
-    /** loadGame method loads a saved game from a file*/
+    /**
+     * loadGame method loads a saved game from a file
+     * @param fileName - the name of the file in which the game was saved
+     * @return the game instance that represent the model stored in the fileName
+     * @author Christian Pasinetti
+     */
     public static Game loadGame(String fileName) {
         try {
             FileInputStream fileInputStream = new FileInputStream(fileName);
@@ -70,7 +78,6 @@ public class Controller implements ViewListener {
             Game game = (Game)objectInputStream.readObject();
             objectInputStream.close();
             fileInputStream.close();
-
             return game;
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -78,15 +85,25 @@ public class Controller implements ViewListener {
         }
     }
 
+    /* get methods */
     /**
      * getGame method return the game reference in controller. It is synchronized due to view interactions,
      * TurnChecker and PlayerAction operations
      * @return this.game
+     * @author Matteo Panarotto
      */
     public synchronized Game getGame(){
         return this.game;
     }
 
+    /* update methods */
+    /**
+     * This method is a custom implementation of the observer-observable pattern. In particular, it is the update that
+     * manage the column choice of the player's shelf.
+     * @param o - the UI that notify this event
+     * @param column - the chosen column by the player
+     * @author Matteo Panarotto
+     */
     @Override
     public void update(TextualUI o, Integer column) {
         int col = column.intValue();
@@ -96,14 +113,29 @@ public class Controller implements ViewListener {
             this.turnHandler.manageTurn();
         } catch (Exception e) {
             System.err.println(e.getMessage());
+            System.err.println("Skipping this selection, the turn passes");
         }
     }
 
+    /**
+     * This method is a custom implementation of the observer-observable pattern. In particular, it is the update that
+     * manage the nickname of the player.
+     * @param o - the UI that notify this event
+     * @param nickname - the nickname chosen by the player
+     * @author Matteo Panarotto
+     */
     @Override
     public void update(TextualUI o, String nickname){
         game.getCurrentPlayer().setNicknameAndClientID(nickname, 0);
     }
 
+    /**
+     * This method is a custom implementation of the observer-observable pattern. In particular, it is the update that
+     * manage the item selection choice by the player.
+     * @param o - the UI that notify this event
+     * @param coords - the list of coordinates of the item selected by the player
+     * @author Matteo Panarotto
+     */
     @Override
     public void update(TextualUI o, List<int[]> coords) {
         if( o != this.view){
@@ -113,6 +145,8 @@ public class Controller implements ViewListener {
                 game.getCurrentPlayer().pickItems(coords, game.getGameboard().getGameGrid(), game.getValidGrid());
             } catch (Exception e) {
                 System.err.println(e.getMessage());
+                System.err.println("Skipping this selection, repeat the turn");
+                game.setCurrentPlayer(game.getCurrentPlayer());
             }
         }
     }

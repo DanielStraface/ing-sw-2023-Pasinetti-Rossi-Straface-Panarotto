@@ -47,6 +47,7 @@ public class PersonalObjCard implements Serializable {
     /**
      * Method goalReached returns true if there is a match between the item position in the player shelf and in the
      * template grid of the card. This grid was loaded from a Json file.
+     * @param shelf - the shelf that must be checked
      * @return The corresponding points of i, and i.equals( the count of :
      *                              ((Item I1 in the (x,y) position in cardGrid template && I1 != null) ==>
      *                              (exists Item I2 in the (w,z) position in player's shelf with
@@ -96,5 +97,4 @@ public class PersonalObjCard implements Serializable {
         }
         return scoreAdded;
     }
-
 }
