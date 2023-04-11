@@ -58,6 +58,7 @@ public class GroupCardsTest {
         card = null;
     }
 
+    /** verifies that the method returns true when the commonObjCard n.4 is met*/
     @Test
     public void checkSixGroupOfTwo() {
         /* The grid contains six groups of two items of the same type. check() to return true. */
@@ -81,6 +82,7 @@ public class GroupCardsTest {
         assertTrue(card.check(grid0), "The grid doesn't contain six groups of two items of the same type!");
     }
 
+    /** verifies that the method returns false when the conditions of the commonObjCard n.4 aren't met*/
     @Test
     public void checkNotSixGroupsOfTwo() {
         /* The grid contains less than six groups of two items of the same type. check() to return false. */
@@ -122,12 +124,15 @@ public class GroupCardsTest {
         assertFalse(card.check(grid1), "The grid contains six groups of two items of the same type!");
 
     }
+
+    /** verifies that the method returns false when the grid is empty */
     @Test
     public void checkNullGroupOfTwo() {
         card = new GroupCards(TYPE_GROUP_OF_TWO);
         assertFalse(card.check(grid2));
     }
 
+    /** verifies that the method returns true when the commonObjCard n.8 is met*/
     @Test
     public void checkGroupOfSquares() {
         /* The grid contains two different groups of squares of the same type. check() to return true*/
@@ -141,6 +146,7 @@ public class GroupCardsTest {
         assertTrue(card.check(grid3), "The grid doesn't contain two squares of items of the same type!");
     }
 
+    /** verifies that the method returns false when the conditions of the commonObjCard n.8 aren't met*/
     @Test
     public void checkNotTwoSquares() {
         /* The grid contains less than two squares of four items of the same type. check() to return false. */
@@ -166,6 +172,7 @@ public class GroupCardsTest {
         assertFalse(card.check(grid4), "The grid contains two squares of four items of the same type, not more than two");
     }
 
+    /** verifies that the method returns false when the conditions of the commonObjCard n.8 aren't met*/
     @Test
     public void checkDifferentSquares() {
         /* The grid has two squares of four items of the same type, but the two squares has different types.
@@ -180,10 +187,10 @@ public class GroupCardsTest {
         assertFalse(card.check(grid5), "The grid contains two squares of four items of the same type");
     }
 
-
+    /** verifies that the method returns true when the commonObjCard n.3 is met*/
     @Test
     public void checkGroupOfFour() {
-        /* The grid contains four groups of four items of the same type. check() to return false. */
+        /* The grid contains four groups of four items of the same type. check() to return true. */
         card = new GroupCards(TYPE_GROUP_OF_FOUR);
         for (int j = 0; j < 4; j++) {
             grid6[0][j] = new Item(Category.CAT);
@@ -194,6 +201,7 @@ public class GroupCardsTest {
         assertTrue(card.check(grid6), "The grid doesn't contain four groups four item of the same type");
     }
 
+    /** verifies that the method returns false when the conditions of the commonObjCard n.3 aren't met*/
     @Test
     public void checkNotGroupOFour() {
         /* The grid contains less than four groups of four items of the same time. check() to return false.*/
@@ -218,12 +226,14 @@ public class GroupCardsTest {
         assertFalse(card.check(grid7), "The grid contains four groups of four items of the same type, not more than four");
     }
 
+    /** verifies that the method returns false when the grid is empty */
     @Test
     public void checkNullGroupOfFour(){
         card = new GroupCards(TYPE_GROUP_OF_FOUR);
         assertFalse(card.check(grid8));
     }
 
+    /** verifies that the method returns true when the commonObjCard n.9 is met*/
     @Test
     public void CheckGroupOfEight(){
         /* The grid contains eight items of the same type. check() to return true */
@@ -240,6 +250,7 @@ public class GroupCardsTest {
         assertTrue(card.check(grid9), "The grid doesn't contain eight items of the same type");
     }
 
+    /** verifies that the method returns false when the conditions of the commonObjCard n.9 aren't met*/
     @Test
     public void checkLessThanGroupOfEight() {
         /* The grid contains less than eight items of the same type. check() to return false */
@@ -264,6 +275,8 @@ public class GroupCardsTest {
             }
         }
     }
+
+    /** verifies that the method returns false when the conditions of the commonObjCard n.9 aren't met*/
     @Test
     public void checkMoreThanGroupOfEight(){
          /*The grid contains more than eight items of the same type. check() to return false */
@@ -281,12 +294,14 @@ public class GroupCardsTest {
         assertTrue(card.check(grid9), "The grid contains eight items of the same type, not more than eight");
     }
 
+    /** verifies that the method returns false when the grid is empty */
     @Test
     public void checkNullGroupOfEight(){
         card = new GroupCards(TYPE_GROUP_OF_EIGHT);
         assertFalse(card.check(grid10));
     }
 
+    /** the method checks if the type is allowed in the card*/
     @Test
     public void NotAllowedType(){
         /* The implementation can't support this.type. check() to return false. */

@@ -18,6 +18,7 @@ public class ShelfTest {
         shelf = null;
     }
 
+    /** method to test if the Shelf is full */
     @Test
     public void isRealFull() {
         final int ROWS = 6;
@@ -31,6 +32,7 @@ public class ShelfTest {
         assertSame(true, shelf.isFull(), "The shelf is empty");
     }
 
+    /** method to test if the shelf is empty */
     @Test
     public void isNotAllFull() {
         final int COLUMS = 5;
@@ -44,6 +46,7 @@ public class ShelfTest {
         assertSame(false, shelf.isFull(), "The shelf is full");
     }
 
+   /** method to test if all items are null */
     @Test
     public void isEmpty() {
         final int ROWS = 6;
