@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.distributed.Client;
+import it.polimi.ingsw.distributed.local.ClientImpl;
 import it.polimi.ingsw.listeners.ViewSubject;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.modelview.GameBoardView;
@@ -10,15 +11,18 @@ import it.polimi.ingsw.modelview.ShelfView;
 
 import java.util.*;
 
-public class TextualUI extends ViewSubject implements Runnable{
+public class TextualUI extends ViewSubject{
     private String name;
     private List<int[]> coords;
     private int column;
+    private Client refClient;
 
-    @Override
-    public void run() {
+    public void run(Client client) {
+        this.refClient = client;
         //askNickname();
         askAction();
+        setChangedAndNotifyListener(this.coords);
+        askColumn();
     }
 
     private void askAction() {
@@ -54,9 +58,6 @@ public class TextualUI extends ViewSubject implements Runnable{
             }
         }
         askOrder();
-        askColumn();
-        setChangedAndNotifyListener(this.coords);
-        setChangedAndNotifyListener(Integer.valueOf(this.column));
     }
 
     private void askColumn() {
@@ -67,6 +68,7 @@ public class TextualUI extends ViewSubject implements Runnable{
             col = scanner.nextInt();
         }
         this.column = col - 1;
+        setChangedAndNotifyListener(Integer.valueOf(this.column));
     }
 
     private void askOrder() {
@@ -258,6 +260,7 @@ public class TextualUI extends ViewSubject implements Runnable{
     }
 
     private int startNewGame() {
+        System.out.println("Insert the number of players of the match: ");
         return 0;
     }
 
@@ -268,7 +271,6 @@ public class TextualUI extends ViewSubject implements Runnable{
         displayPersonalObjCard(game.getCurrentPlayer());
         displayGameBoard(game.getGameBoard());
         displayShelf(game.getCurrentPlayer().getMyShelf());
-        //this.run();
     }
 
     public void update(GameBoardView gb) {
@@ -290,7 +292,6 @@ public class TextualUI extends ViewSubject implements Runnable{
     public void update(Integer column) {
         System.out.println("Invalid column selection. Try again!");
         askColumn();
-        setChangedAndNotifyListener(this.column);
     }
 
     public void update(String commonObjCardReached) {
@@ -303,10 +304,10 @@ public class TextualUI extends ViewSubject implements Runnable{
     }
     private void setChangedAndNotifyListener(List<int[]> coords){
         setChanged();
-        notifyObservers(coords);
+        notifyObservers(this.refClient, coords);
     }
     private void setChangedAndNotifyListener(Integer column){
         setChanged();
-        notifyObservers(column);
+        notifyObservers(this.refClient, column);
     }
 }

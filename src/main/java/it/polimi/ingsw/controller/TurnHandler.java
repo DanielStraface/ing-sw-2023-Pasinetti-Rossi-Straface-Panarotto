@@ -19,6 +19,7 @@ public class TurnHandler {
     }
 
     public void nextTurn(Player player){
+        System.err.println("THERE");
         if(!gameOver) {
             if (game.getPlayers().indexOf(player) == (game.getPlayers().size() - 1)) {
                 game.setCurrentPlayer(game.getPlayers().get(0));

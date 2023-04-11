@@ -35,7 +35,7 @@ public class ViewSubject {
         obs.removeElement(o);
     }
 
-    public void notifyObservers(Integer arg) {
+    public void notifyObservers(Client o,Integer arg) {
         /*
          * a temporary array buffer, used as a snapshot of the state of
          * current Observers.
@@ -63,7 +63,7 @@ public class ViewSubject {
 
         for (int i = arrLocal.length-1; i>=0; i--){
             Server vl = (Server) arrLocal[i];
-            vl.update((Client) this, arg);
+            vl.update((Client) o, arg);
         }
     }
 
@@ -99,7 +99,7 @@ public class ViewSubject {
         }
     }
 
-    public void notifyObservers(List<int[]> arg) {
+    public void notifyObservers(Client o, List<int[]> arg) {
         /*
          * a temporary array buffer, used as a snapshot of the state of
          * current Observers.
@@ -127,7 +127,7 @@ public class ViewSubject {
 
         for (int i = arrLocal.length-1; i>=0; i--){
             Server vl = (Server)arrLocal[i];
-            vl.update((Client) this, arg);
+            vl.update(o, arg);
         }
     }
 

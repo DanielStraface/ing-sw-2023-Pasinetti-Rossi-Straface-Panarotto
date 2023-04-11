@@ -11,6 +11,7 @@ public class App
         ClientImpl client1 = new ClientImpl(server);
         //ClientImpl client2 = new ClientImpl(server);
 
+        server.startGame();
         client1.run();
     }
 }

@@ -26,6 +26,8 @@ public class ClientImpl implements Client, Runnable {
     @Override
     public void update(GameView game) {
         this.view.update(game);
+        this.view.run(this);
+        //this.view.run(this);
     }
 
     @Override
@@ -45,6 +47,7 @@ public class ClientImpl implements Client, Runnable {
 
     @Override
     public void run() {
-        this.view.run();
+        //this.view.welcome();
+        //this.view.run(this);
     }
 }
