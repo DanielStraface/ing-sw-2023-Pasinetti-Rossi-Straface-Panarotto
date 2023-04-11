@@ -59,7 +59,7 @@ public class GameViewSubject {
 
         for (int i = arrLocal.length-1; i>=0; i--){
             ModelViewListener vl = (ModelViewListener) arrLocal[i];
-            vl.update((GameView) this, arg);
+            //vl.update(this, arg);
         }
     }
 

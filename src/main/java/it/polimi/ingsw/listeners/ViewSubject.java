@@ -1,6 +1,8 @@
 package it.polimi.ingsw.listeners;
 
 
+import it.polimi.ingsw.distributed.Client;
+import it.polimi.ingsw.distributed.Server;
 import it.polimi.ingsw.view.TextualUI;
 
 import java.util.List;
@@ -8,12 +10,20 @@ import java.util.Vector;
 
 public class ViewSubject {
     private boolean changed = false;
-    private Vector<ViewListener> obs;
+    private Vector<Server> obs;
 
     public ViewSubject(){
         obs = new Vector<>();
     }
-    public synchronized void addListener(ViewListener o){
+    /*public synchronized void addListener(ViewListener o){
+        if (o == null)
+            throw new NullPointerException();
+        if (!obs.contains(o)) {
+            obs.addElement(o);
+        }
+    }*/
+
+    public synchronized void addListener(Server o){
         if (o == null)
             throw new NullPointerException();
         if (!obs.contains(o)) {
@@ -52,8 +62,8 @@ public class ViewSubject {
         }
 
         for (int i = arrLocal.length-1; i>=0; i--){
-            ViewListener vl = (ViewListener) arrLocal[i];
-            vl.update((TextualUI) this, arg);
+            Server vl = (Server) arrLocal[i];
+            vl.update((Client) this, arg);
         }
     }
 
@@ -84,8 +94,8 @@ public class ViewSubject {
         }
 
         for (int i = arrLocal.length-1; i>=0; i--){
-            ViewListener vl = (ViewListener)arrLocal[i];
-            vl.update((TextualUI) this, arg);
+            Server vl = (Server)arrLocal[i];
+            vl.update((Client) this, arg);
         }
     }
 
@@ -116,8 +126,8 @@ public class ViewSubject {
         }
 
         for (int i = arrLocal.length-1; i>=0; i--){
-            ViewListener vl = (ViewListener)arrLocal[i];
-            vl.update((TextualUI) this, arg);
+            Server vl = (Server)arrLocal[i];
+            vl.update((Client) this, arg);
         }
     }
 

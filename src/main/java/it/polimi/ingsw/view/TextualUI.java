@@ -1,6 +1,6 @@
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.listeners.ModelViewListener;
+import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.listeners.ViewSubject;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.modelview.GameBoardView;
@@ -10,7 +10,7 @@ import it.polimi.ingsw.modelview.ShelfView;
 
 import java.util.*;
 
-public class TextualUI extends ViewSubject implements ModelViewListener, Runnable{
+public class TextualUI extends ViewSubject implements Runnable{
     private String name;
     private List<int[]> coords;
     private int column;
@@ -268,37 +268,31 @@ public class TextualUI extends ViewSubject implements ModelViewListener, Runnabl
         displayPersonalObjCard(game.getCurrentPlayer());
         displayGameBoard(game.getGameBoard());
         displayShelf(game.getCurrentPlayer().getMyShelf());
-        this.run();
+        //this.run();
     }
 
-    @Override
-    public void update(GameView game, GameBoardView gb) {
+    public void update(GameBoardView gb) {
         displayGameBoard(gb);
     }
 
-    @Override
     public void update(GameView game) {
         displayNewTurn(game);
     }
 
-    @Override
-    public void update(PlayerView player, Item[][] gameGrid) {
+    public void update(Item[][] gameGrid) {
         displayGameBoard(gameGrid);
     }
 
-    @Override
-    public void update(PlayerView player, ShelfView shelf) {
+    public void update(ShelfView shelf) {
         displayShelf(shelf);
     }
 
-    @Override
-    public void update(PlayerView player, Integer column) {
+    public void update(Integer column) {
         System.out.println("Invalid column selection. Try again!");
         askColumn();
         setChangedAndNotifyListener(this.column);
     }
 
-    @Override
     public void update(String commonObjCardReached) {
         System.out.println(commonObjCardReached);
     }

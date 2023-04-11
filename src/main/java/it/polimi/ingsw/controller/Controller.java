@@ -1,8 +1,7 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.listeners.ViewListener;
+import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.view.TextualUI;
 
 import java.io.*;
 import java.util.List;
@@ -16,16 +15,16 @@ import java.util.Random;
  * @method chooseFirstPlayer(), saveGame(), loadGame(), update(UI, Integer), update(UI, String), update(UI, List<int[]>)
  * @author Matteo Panarotto
  */
-public class Controller implements ViewListener {
+public class Controller {
     /* ATTRIBUTES SECTION */
     private final Game game;
-    private final TextualUI view;
+    private final Client view;
     private final TurnHandler turnHandler;
 
     /* METHODS SECTION */
 
     /* -- constructor --*/
-    public Controller(Game game, TextualUI view){
+    public Controller(Game game, Client view){
         this.game = game;
         game.setCurrentPlayer(game.getPlayers().get(0));
         turnHandler = new TurnHandler(game);
@@ -104,8 +103,7 @@ public class Controller implements ViewListener {
      * @param column - the chosen column by the player
      * @author Matteo Panarotto
      */
-    @Override
-    public void update(TextualUI o, Integer column) {
+    public void update(Client o, Integer column) {
         int col = column.intValue();
         try {
             game.getCurrentPlayer().putItemInShelf(col);
@@ -124,8 +122,7 @@ public class Controller implements ViewListener {
      * @param nickname - the nickname chosen by the player
      * @author Matteo Panarotto
      */
-    @Override
-    public void update(TextualUI o, String nickname){
+    public void update(Client o, String nickname){
         game.getCurrentPlayer().setNicknameAndClientID(nickname, 0);
     }
 
@@ -136,8 +133,7 @@ public class Controller implements ViewListener {
      * @param coords - the list of coordinates of the item selected by the player
      * @author Matteo Panarotto
      */
-    @Override
-    public void update(TextualUI o, List<int[]> coords) {
+    public void update(Client o, List<int[]> coords) {
         if( o != this.view){
             System.err.println("Discarding notification from " + o);
         } else {
