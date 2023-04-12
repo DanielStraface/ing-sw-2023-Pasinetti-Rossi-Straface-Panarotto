@@ -22,6 +22,12 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable 
         initialize(server);
     }
 
+    public ClientImpl(Server server, Integer decision) throws RemoteException {
+        super();
+        server.register(this, decision.intValue());
+        initialize(server);
+    }
+
     public ClientImpl(Server server, int port) throws RemoteException {
         super(port);
         initialize(server);
@@ -66,7 +72,6 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable 
 
     @Override
     public void run() {
-        //this.view.welcome();
         try{
             this.view.run(this);
         } catch (RemoteException e) {

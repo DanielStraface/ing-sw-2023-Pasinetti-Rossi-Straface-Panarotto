@@ -48,6 +48,19 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
         }
     }
 
+    public void register(Client client, int numOfPlayers) throws RemoteException {
+        try{
+            this.game = new Game(numOfPlayers);
+        } catch (Exception e){
+            System.err.println(e.getMessage());
+        }
+        this.controller = new Controller(game, client);
+        this.game.addListener(client);
+        for(Player player : this.game.getPlayers()){
+            player.addListenerForPlayer(client);
+        }
+    }
+
     @Override
     public void update(Client client, Integer column) throws RemoteException {
         this.controller.update(client, column);

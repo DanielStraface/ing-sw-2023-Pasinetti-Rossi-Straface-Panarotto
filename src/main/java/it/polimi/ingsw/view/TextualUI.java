@@ -228,43 +228,6 @@ public class TextualUI extends ViewSubject{
     }
 
     /* UNUSED METHOD THAT RUNS AT THE START OF APLICATION*/
-    public List<Integer> welcome() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Hello, welcome to MyShelfie!");
-        System.out.println("1) Start a new game");
-        System.out.println("2) Join an existing game");
-        System.out.println("3) Quit from MyShelfie");
-        int decision = scanner.nextInt();
-        int numbOfPlayers = 0;
-        switch(decision){
-            case 1 -> numbOfPlayers = startNewGame();
-            case 2 -> numbOfPlayers = joinNewGame();
-            case 3 -> {
-                System.out.println("Goodbye player! See you soon");
-                System.err.println("Termination of MyShelie");
-                System.exit(1);
-            }
-            default -> {
-                System.err.println("Wrong selection, app termination...");
-                System.exit(2);
-            }
-        }
-        System.err.println("Decide CLI or GUI have not implemented yet");
-        List<Integer> playersDecision = new ArrayList<Integer>();
-        playersDecision.add(Integer.valueOf(decision));
-        playersDecision.add(Integer.valueOf(numbOfPlayers));
-        return playersDecision;
-    }
-
-    private int joinNewGame() {
-        return 0;
-    }
-
-    private int startNewGame() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Insert the number of players of the match: ");
-        return scanner.nextInt();
-    }
 
     private void displayNewTurn(GameView game){
         System.out.println("=================================================================================");
