@@ -4,14 +4,14 @@ import it.polimi.ingsw.model.Item;
 import it.polimi.ingsw.modelview.GameBoardView;
 import it.polimi.ingsw.modelview.GameView;
 import it.polimi.ingsw.modelview.ShelfView;
-import it.polimi.ingsw.view.TextualUI;
 
-import java.util.List;
+import java.rmi.Remote;
+import java.rmi.RemoteException;
 
-public interface Client {
-    void update(GameBoardView gb);
-    void update(GameView game);
-    void update(Item[][] gameGrid);
-    void update(ShelfView shelf);
-    void update(Integer column);
+public interface Client extends Remote {
+    void update(GameBoardView gb) throws RemoteException;
+    void update(GameView game) throws RemoteException;
+    void update(Item[][] gameGrid) throws RemoteException;
+    void update(ShelfView shelf) throws RemoteException;
+    void update(Integer column) throws RemoteException;
 }

@@ -1,7 +1,6 @@
 package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.distributed.Client;
-import it.polimi.ingsw.distributed.local.ClientImpl;
 import it.polimi.ingsw.listeners.ViewSubject;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.modelview.GameBoardView;
@@ -9,6 +8,7 @@ import it.polimi.ingsw.modelview.GameView;
 import it.polimi.ingsw.modelview.PlayerView;
 import it.polimi.ingsw.modelview.ShelfView;
 
+import java.rmi.RemoteException;
 import java.util.*;
 
 public class TextualUI extends ViewSubject{
@@ -17,12 +17,13 @@ public class TextualUI extends ViewSubject{
     private int column;
     private Client refClient;
 
-    public void run(Client client) {
+    public void run(Client client) throws RemoteException{
         this.refClient = client;
         //askNickname();
         askAction();
-        setChangedAndNotifyListener(this.coords);
         askColumn();
+        setChangedAndNotifyListener(this.coords);
+        setChangedAndNotifyListener(Integer.valueOf(this.column));
     }
 
     private void askAction() {
@@ -68,7 +69,7 @@ public class TextualUI extends ViewSubject{
             col = scanner.nextInt();
         }
         this.column = col - 1;
-        setChangedAndNotifyListener(Integer.valueOf(this.column));
+        //setChangedAndNotifyListener(Integer.valueOf(this.column));
     }
 
     private void askOrder() {
@@ -96,7 +97,7 @@ public class TextualUI extends ViewSubject{
         this.coords = temp;
     }
 
-    private void askNickname() {
+    private void askNickname() throws RemoteException{
         String input = null;
         Scanner scanner = new Scanner(System.in);
         System.out.println("Insert your nickname");
@@ -260,8 +261,9 @@ public class TextualUI extends ViewSubject{
     }
 
     private int startNewGame() {
+        Scanner scanner = new Scanner(System.in);
         System.out.println("Insert the number of players of the match: ");
-        return 0;
+        return scanner.nextInt();
     }
 
     private void displayNewTurn(GameView game){
@@ -298,15 +300,15 @@ public class TextualUI extends ViewSubject{
         System.out.println(commonObjCardReached);
     }
 
-    private void setChangedAndNotifyListener(String nm){
+    private void setChangedAndNotifyListener(String nm) throws RemoteException {
         setChanged();
         notifyObservers(nm);
     }
-    private void setChangedAndNotifyListener(List<int[]> coords){
+    private void setChangedAndNotifyListener(List<int[]> coords) throws RemoteException{
         setChanged();
         notifyObservers(this.refClient, coords);
     }
-    private void setChangedAndNotifyListener(Integer column){
+    private void setChangedAndNotifyListener(Integer column) throws RemoteException{
         setChanged();
         notifyObservers(this.refClient, column);
     }

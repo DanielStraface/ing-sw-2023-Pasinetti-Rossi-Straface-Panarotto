@@ -6,7 +6,9 @@ import it.polimi.ingsw.model.Item;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Shelf;
 
-public class PlayerView extends GameViewSubject implements PlayerListener {
+import java.io.Serializable;
+
+public class PlayerView extends GameViewSubject implements PlayerListener, Serializable {
     private final int score;
     private final ShelfView myShelf;
     private final PersonalObjCardView myPersonalObjCard;

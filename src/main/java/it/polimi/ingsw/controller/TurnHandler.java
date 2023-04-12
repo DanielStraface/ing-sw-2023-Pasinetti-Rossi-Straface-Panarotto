@@ -5,6 +5,8 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.personcard.PersonalObjCard;
 
+import java.rmi.RemoteException;
+
 public class TurnHandler {
     private TurnChecker turnChecker;
     private Game game;
@@ -18,7 +20,7 @@ public class TurnHandler {
         this.gameOver = false;
     }
 
-    public void nextTurn(Player player){
+    public void nextTurn(Player player) throws RemoteException {
         System.err.println("THERE");
         if(!gameOver) {
             if (game.getPlayers().indexOf(player) == (game.getPlayers().size() - 1)) {

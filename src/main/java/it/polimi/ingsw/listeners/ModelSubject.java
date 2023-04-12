@@ -6,6 +6,7 @@ import it.polimi.ingsw.modelview.GameBoardView;
 import it.polimi.ingsw.modelview.GameView;
 import it.polimi.ingsw.modelview.ShelfView;
 
+import java.rmi.RemoteException;
 import java.util.Vector;
 
 public class ModelSubject {
@@ -44,7 +45,7 @@ public class ModelSubject {
         notifyObservers(null);
     }*/
 
-    public void notifyObservers(GameBoard arg) {
+    public void notifyObservers(GameBoard arg) throws RemoteException {
         /*
          * a temporary array buffer, used as a snapshot of the state of
          * current Observers.
@@ -76,7 +77,7 @@ public class ModelSubject {
         }
     }
 
-    public void notifyObservers(Game arg) {
+    public void notifyObservers(Game arg) throws RemoteException{
         /*
          * a temporary array buffer, used as a snapshot of the state of
          * current Observers.
@@ -108,7 +109,7 @@ public class ModelSubject {
         }
     }
 
-    public void notifyObservers(Item[][] arg) {
+    public void notifyObservers(Item[][] arg) throws RemoteException{
         /*
          * a temporary array buffer, used as a snapshot of the state of
          * current Observers.
@@ -140,7 +141,7 @@ public class ModelSubject {
         }
     }
 
-    public void notifyObservers(Integer arg) {
+    public void notifyObservers(Integer arg) throws RemoteException{
         /*
          * a temporary array buffer, used as a snapshot of the state of
          * current Observers.
@@ -172,7 +173,7 @@ public class ModelSubject {
         }
     }
 
-    public void notifyObservers(Shelf arg) {
+    public void notifyObservers(Shelf arg) throws RemoteException{
         /*
          * a temporary array buffer, used as a snapshot of the state of
          * current Observers.
@@ -271,6 +272,5 @@ public class ModelSubject {
         if (!listeners.contains(o)) {
             listeners.addElement(o);
         }
-        System.err.println(listeners.size());
     }
 }

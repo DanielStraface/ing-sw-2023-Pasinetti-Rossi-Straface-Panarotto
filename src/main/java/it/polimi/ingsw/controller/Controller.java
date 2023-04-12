@@ -4,6 +4,7 @@ import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.model.Game;
 
 import java.io.*;
+import java.rmi.RemoteException;
 import java.util.List;
 import java.util.Random;
 
@@ -24,7 +25,7 @@ public class Controller {
     /* METHODS SECTION */
 
     /* -- constructor --*/
-    public Controller(Game game, Client view){
+    public Controller(Game game, Client view) throws RemoteException {
         this.game = game;
         game.setCurrentPlayer(game.getPlayers().get(0));
         turnHandler = new TurnHandler(game);
@@ -36,7 +37,7 @@ public class Controller {
      * chooseFirstPlayer method decides the first player of the match
      * @author Matteo Panarotto
      */
-    public void chooseFirstPlayer(){
+    public void chooseFirstPlayer() throws RemoteException{
         //extract a random number between zero and numberOfPlayers
         Random random = new Random();
         int n = random.nextInt(game.getPlayers().size());
@@ -104,14 +105,18 @@ public class Controller {
      * @author Matteo Panarotto
      */
     public void update(Client o, Integer column) {
-        int col = column.intValue();
-        try {
-            game.getCurrentPlayer().putItemInShelf(col);
-            saveGame(getGame(),"savedGame.ser");
-            this.turnHandler.manageTurn();
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            System.err.println("Skipping this selection, the turn passes");
+        if( !o.equals(this.view) ){
+            System.err.println("Discarding notification from " + o);
+        } else {
+            int col = column.intValue();
+            try {
+                game.getCurrentPlayer().putItemInShelf(col);
+                saveGame(getGame(),"savedGame.ser");
+                this.turnHandler.manageTurn();
+            } catch (Exception e) {
+                System.err.println(e.getMessage());
+                System.err.println("Skipping this selection, the turn passes");
+            }
         }
     }
 
@@ -133,8 +138,8 @@ public class Controller {
      * @param coords - the list of coordinates of the item selected by the player
      * @author Matteo Panarotto
      */
-    public void update(Client o, List<int[]> coords) {
-        if( o != this.view){
+    public void update(Client o, List<int[]> coords) throws RemoteException{
+        if( !o.equals(this.view) ){
             System.err.println("Discarding notification from " + o);
         } else {
             try {

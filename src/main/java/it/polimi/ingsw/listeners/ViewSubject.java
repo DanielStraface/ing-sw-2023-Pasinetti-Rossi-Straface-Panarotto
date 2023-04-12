@@ -5,6 +5,8 @@ import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.distributed.Server;
 import it.polimi.ingsw.view.TextualUI;
 
+import java.rmi.Remote;
+import java.rmi.RemoteException;
 import java.util.List;
 import java.util.Vector;
 
@@ -35,7 +37,7 @@ public class ViewSubject {
         obs.removeElement(o);
     }
 
-    public void notifyObservers(Client o,Integer arg) {
+    public void notifyObservers(Client o,Integer arg) throws RemoteException {
         /*
          * a temporary array buffer, used as a snapshot of the state of
          * current Observers.
@@ -67,7 +69,7 @@ public class ViewSubject {
         }
     }
 
-    public void notifyObservers(String arg) {
+    public void notifyObservers(String arg) throws RemoteException {
         /*
          * a temporary array buffer, used as a snapshot of the state of
          * current Observers.
@@ -99,7 +101,7 @@ public class ViewSubject {
         }
     }
 
-    public void notifyObservers(Client o, List<int[]> arg) {
+    public void notifyObservers(Client o, List<int[]> arg) throws RemoteException {
         /*
          * a temporary array buffer, used as a snapshot of the state of
          * current Observers.

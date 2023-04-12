@@ -2,7 +2,9 @@ package it.polimi.ingsw.modelview;
 
 import it.polimi.ingsw.model.comcard.CommonObjCard;
 
-public class CommonObjCardView {
+import java.io.Serializable;
+
+public class CommonObjCardView implements Serializable {
     private final CommonObjCard card;
 
     public CommonObjCardView(CommonObjCard card) {

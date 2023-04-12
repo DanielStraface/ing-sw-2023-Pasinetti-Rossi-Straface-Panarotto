@@ -1,11 +1,13 @@
 package it.polimi.ingsw.distributed;
 
+import java.rmi.Remote;
+import java.rmi.RemoteException;
 import java.util.List;
 
-public interface Server {
-    void startGame();
-    void register(Client client);
-    void update(Client client, Integer column);
-    void update(Client client, String nickname);
-    void update(Client client, List<int[]> coords);
+public interface Server extends Remote {
+    void startGame() throws RemoteException;
+    void register(Client client) throws RemoteException;
+    void update(Client client, Integer column) throws RemoteException;
+    void update(Client client, String nickname) throws RemoteException;
+    void update(Client client, List<int[]> coords) throws RemoteException;
 }

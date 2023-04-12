@@ -2,7 +2,9 @@ package it.polimi.ingsw.modelview;
 
 import it.polimi.ingsw.model.Item;
 
-public class PersonalObjCardView {
+import java.io.Serializable;
+
+public class PersonalObjCardView implements Serializable {
     private final Item[][] cardGrid;
 
     public PersonalObjCardView(Item[][] cardGrid) {
