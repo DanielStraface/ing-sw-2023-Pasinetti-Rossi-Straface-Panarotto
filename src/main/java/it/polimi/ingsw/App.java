@@ -9,10 +9,10 @@ import java.rmi.RemoteException;
 public class App
 {
     public static void main( String[] args ) throws RemoteException {
-        Server server = new ServerImpl();
+        /*Server server = new ServerImpl();
         ClientImpl client1 = new ClientImpl(server);
 
         server.startGame();
-        client1.run();
+        client1.run();*/
     }
 }

@@ -12,17 +12,18 @@ import java.util.List;
 import java.util.Scanner;
 
 public class AppClientRMI {
+    private static String nickname;
     public static void main(String[] args) throws RemoteException, NotBoundException {
         List<Integer> decision = welcome();
         Registry registry = LocateRegistry.getRegistry();
         Server server = (Server) registry.lookup("server");
         switch (decision.get(0)){
             case 1 -> {
-                ClientImpl client = new ClientImpl(server, decision.get(1));
-                client.run();
+                ClientImpl client = new ClientImpl(server, decision.get(1), nickname);
+                //client.run();
             }
             case 2 -> {
-                ClientImpl client = new ClientImpl(server);
+                ClientImpl client = new ClientImpl(server, nickname);
                 client.run();
             }
             default -> {
@@ -38,6 +39,7 @@ public class AppClientRMI {
         System.out.println("2) Join an existing game");
         System.out.println("3) Quit from MyShelfie");
         int decision = scanner.nextInt();
+        askNickname();
         int numbOfPlayers = 0;
         switch(decision){
             case 1 -> numbOfPlayers = startNewGame();
@@ -67,5 +69,15 @@ public class AppClientRMI {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Insert the number of players of the match: ");
         return scanner.nextInt();
+    }
+
+    private static void askNickname(){
+        String input = null;
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Insert your nickname");
+        while(input == null){
+            input = scanner.nextLine();
+        }
+        nickname = input;
     }
 }

@@ -14,4 +14,5 @@ public interface Client extends Remote {
     void update(Item[][] gameGrid) throws RemoteException;
     void update(ShelfView shelf) throws RemoteException;
     void update(Integer column) throws RemoteException;
+    String getNickname() throws RemoteException;
 }

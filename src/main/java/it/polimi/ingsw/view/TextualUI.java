@@ -20,6 +20,7 @@ public class TextualUI extends ViewSubject{
     public void run(Client client) throws RemoteException{
         this.refClient = client;
         //askNickname();
+        System.out.println(client.getNickname());
         askAction();
         askColumn();
         setChangedAndNotifyListener(this.coords);
@@ -95,16 +96,6 @@ public class TextualUI extends ViewSubject{
             counter++;
         }
         this.coords = temp;
-    }
-
-    private void askNickname() throws RemoteException{
-        String input = null;
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Insert your nickname");
-        while(input == null){
-            input = scanner.nextLine();
-        }
-        setChangedAndNotifyListener(this.name);
     }
 
     private void displayPersonalObjCard(PlayerView player) {

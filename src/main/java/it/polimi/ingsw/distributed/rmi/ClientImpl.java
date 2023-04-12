@@ -15,17 +15,20 @@ import java.rmi.server.UnicastRemoteObject;
 
 public class ClientImpl extends UnicastRemoteObject implements Client, Runnable {
     TextualUI view = new TextualUI();
+    String nickname = "VERSTAPPEN";
 
-    public ClientImpl(Server server) throws RemoteException {
+    public ClientImpl(Server server, String nickname) throws RemoteException {
         super();
-        server.register(this);
+        this.nickname = nickname;
+        server.register(this, nickname);
         initialize(server);
     }
 
-    public ClientImpl(Server server, Integer decision) throws RemoteException {
+    public ClientImpl(Server server, Integer decision, String nickname) throws RemoteException {
         super();
-        server.register(this, decision.intValue());
+        server.register(this, decision.intValue(), nickname);
         initialize(server);
+        server.startGame();
     }
 
     public ClientImpl(Server server, int port) throws RemoteException {
@@ -78,4 +81,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable 
             System.err.println(e.getMessage());
         }
     }
+
+    @Override
+    public String getNickname(){return this.nickname;}
 }

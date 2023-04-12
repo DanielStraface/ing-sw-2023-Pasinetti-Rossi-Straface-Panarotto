@@ -14,8 +14,9 @@ import java.util.List;
 
 public class ServerImpl extends UnicastRemoteObject implements Server {
     private Controller controller;
-    private Game game;
-    private static final int PLAYERS_NUMB = 3;
+    private Game game = null;
+    private static final int PLAYERS_NUMB = 2;
+    private boolean[] toConnect;
 
     public ServerImpl() throws RemoteException {
         super();
@@ -35,20 +36,35 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
     }
 
     @Override
-    public void register(Client client) throws RemoteException {
-        try{
-            this.game = new Game(PLAYERS_NUMB);
-        } catch (Exception e){
-            System.err.println(e.getMessage());
+    public void register(Client client, String nickname) throws RemoteException {
+        if(this.game == null){
+            System.err.println("No match found\nClosing...");
+            System.exit(3);
         }
-        this.controller = new Controller(game, client);
+        if(this.controller.getViews().size() == this.game.getPlayers().size()){
+            System.err.println("The lobby is full...");
+            return;
+        }
+        //this.controller = new Controller(game, client);
+        this.controller.addClientView(client);
         this.game.addListener(client);
-        for(Player player : this.game.getPlayers()){
-            player.addListenerForPlayer(client);
+        for(int i=0;i<toConnect.length;i++){
+            if(this.toConnect[i] == false){
+                this.toConnect[i] = true;
+                this.game.getPlayers().get(i).addListenerForPlayer(client);
+                this.game.getPlayers().get(i).setNicknameAndClientID(nickname, i*10);
+                break;
+            }
         }
+        /*for(int i=0;i<this.toConnect.length;i++){
+            if(this.toConnect[i] == false)
+                return false;
+        }
+        notifyAll();
+        return true;*/
     }
 
-    public void register(Client client, int numOfPlayers) throws RemoteException {
+    public void register(Client client, int numOfPlayers, String nickname) throws RemoteException {
         try{
             this.game = new Game(numOfPlayers);
         } catch (Exception e){
@@ -56,9 +72,23 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
         }
         this.controller = new Controller(game, client);
         this.game.addListener(client);
+        this.toConnect = new boolean[this.game.getPlayers().size()];
+        /*for(int i=0;i<toConnect.length;i++){
+            if(this.toConnect[i] == false){
+                this.toConnect[i] = true;
+                this.game.getPlayers().get(i).addListenerForPlayer(client);
+                this.game.getPlayers().get(i).setNicknameAndClientID(nickname, i*10);
+                break;
+            }
+        }*/
         for(Player player : this.game.getPlayers()){
             player.addListenerForPlayer(client);
         }
+        /*for(int i=0;i<this.toConnect.length;i++){
+            if(this.toConnect[i] == false)
+                return false;
+        }
+        return true;*/
     }
 
     @Override

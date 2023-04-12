@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.Game;
 
 import java.io.*;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -19,7 +20,8 @@ import java.util.Random;
 public class Controller {
     /* ATTRIBUTES SECTION */
     private final Game game;
-    private final Client view;
+    //private final Client view;
+    private final List<Client> views = new ArrayList<>();
     private final TurnHandler turnHandler;
 
     /* METHODS SECTION */
@@ -29,10 +31,14 @@ public class Controller {
         this.game = game;
         game.setCurrentPlayer(game.getPlayers().get(0));
         turnHandler = new TurnHandler(game);
-        this.view = view;
+        this.views.add(view);
+        //this.view = view;
     }
 
     /* -- logic methods --*/
+    public void addClientView(Client view){
+        this.views.add(view);
+    }
     /**
      * chooseFirstPlayer method decides the first player of the match
      * @author Matteo Panarotto
@@ -95,6 +101,7 @@ public class Controller {
     public synchronized Game getGame(){
         return this.game;
     }
+    public List<Client> getViews(){return this.views;}
 
     /* update methods */
     /**
@@ -105,7 +112,7 @@ public class Controller {
      * @author Matteo Panarotto
      */
     public void update(Client o, Integer column) {
-        if( !o.equals(this.view) ){
+        if( !this.views.contains(o) ){
             System.err.println("Discarding notification from " + o);
         } else {
             int col = column.intValue();
@@ -129,6 +136,11 @@ public class Controller {
      */
     public void update(Client o, String nickname){
         game.getCurrentPlayer().setNicknameAndClientID(nickname, 0);
+        try {
+            this.chooseFirstPlayer();
+        } catch (RemoteException e) {
+            System.err.println(e.getMessage());
+        }
     }
 
     /**
@@ -139,7 +151,7 @@ public class Controller {
      * @author Matteo Panarotto
      */
     public void update(Client o, List<int[]> coords) throws RemoteException{
-        if( !o.equals(this.view) ){
+        if( !this.views.contains(o) ){
             System.err.println("Discarding notification from " + o);
         } else {
             try {
