@@ -29,7 +29,7 @@ public class Controller {
     /* -- constructor --*/
     public Controller(Game game, Client view) throws RemoteException {
         this.game = game;
-        game.setCurrentPlayer(game.getPlayers().get(0));
+        //game.setCurrentPlayer(game.getPlayers().get(0));
         turnHandler = new TurnHandler(game);
         this.views.add(view);
         //this.view = view;
@@ -119,7 +119,7 @@ public class Controller {
             try {
                 game.getCurrentPlayer().putItemInShelf(col);
                 saveGame(getGame(),"savedGame.ser");
-                this.turnHandler.manageTurn();
+                this.turnHandler.manageTurn(o);
             } catch (Exception e) {
                 System.err.println(e.getMessage());
                 System.err.println("Skipping this selection, the turn passes");

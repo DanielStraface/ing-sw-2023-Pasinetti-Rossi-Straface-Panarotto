@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.comcard.CommonObjCard;
 import it.polimi.ingsw.model.comcard.CommonObjCardReader;
 import it.polimi.ingsw.model.personcard.PersonalCardReader;
 import it.polimi.ingsw.model.personcard.PersonalObjCard;
+import it.polimi.ingsw.view.TextualUI;
 
 import java.io.Serializable;
 import java.rmi.RemoteException;

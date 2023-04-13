@@ -15,17 +15,20 @@ import java.rmi.server.UnicastRemoteObject;
 
 public class ClientImpl extends UnicastRemoteObject implements Client, Runnable {
     TextualUI view = new TextualUI();
-    String nickname = "VERSTAPPEN";
+    String nickname;
+    private int clientID;
 
     public ClientImpl(Server server, String nickname) throws RemoteException {
         super();
         this.nickname = nickname;
         server.register(this, nickname);
         initialize(server);
+        server.startGame();
     }
 
     public ClientImpl(Server server, Integer decision, String nickname) throws RemoteException {
         super();
+        this.nickname = nickname;
         server.register(this, decision.intValue(), nickname);
         initialize(server);
         server.startGame();
@@ -53,9 +56,13 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable 
     }
 
     @Override
-    public void update(GameView game) throws RemoteException{
-        this.view.update(game);
-        this.view.run(this);
+    public void update(GameView game, int clientID) throws RemoteException{
+        if(clientID == this.clientID){
+            this.view.update(game);
+            this.view.run(this);
+        } else {
+            this.view.update(game.getGameBoard());
+        }
     }
 
     @Override
@@ -70,7 +77,19 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable 
 
     @Override
     public void update(Integer column) {
+        if(column == 10)
+            System.exit(100);
         this.view.update(column);
+    }
+
+    @Override
+    public void update(String msg) throws RemoteException {
+        this.view.update(msg);
+    }
+
+    @Override
+    public void update(int clientID) throws RemoteException {
+        this.clientID = clientID;
     }
 
     @Override

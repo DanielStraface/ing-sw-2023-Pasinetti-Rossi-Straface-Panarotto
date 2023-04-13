@@ -32,7 +32,20 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
 
     @Override
     public void startGame() throws RemoteException{
-        this.controller.chooseFirstPlayer();
+        if(this.controller.getViews().size() == this.controller.getGame().getPlayers().size()){
+            for(Client client : this.controller.getViews())
+                client.update("The match is starting...Extraction of the first player is running");
+            this.controller.chooseFirstPlayer();
+        } else {
+            int temp = 0;
+            for(int i=0;i<this.toConnect.length;i++){
+                if(this.toConnect[i]==false)
+                    temp++;
+            }
+            for(Client client : this.controller.getViews()){
+                 client.update("Waiting for players\nSearching for " + temp + " other players");
+            }
+        }
     }
 
     @Override
@@ -53,9 +66,12 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
                 this.toConnect[i] = true;
                 this.game.getPlayers().get(i).addListenerForPlayer(client);
                 this.game.getPlayers().get(i).setNicknameAndClientID(nickname, i*10);
+                client.update(i*10);
                 break;
             }
         }
+        System.out.println("Register client " + client + " for a " + this.game.getPlayers().size() + " players match");
+        System.out.println("There are " + this.game.countObservers() + " game listeners");
         /*for(int i=0;i<this.toConnect.length;i++){
             if(this.toConnect[i] == false)
                 return false;
@@ -73,17 +89,18 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
         this.controller = new Controller(game, client);
         this.game.addListener(client);
         this.toConnect = new boolean[this.game.getPlayers().size()];
-        /*for(int i=0;i<toConnect.length;i++){
+        for(int i=0;i<toConnect.length;i++){
             if(this.toConnect[i] == false){
                 this.toConnect[i] = true;
                 this.game.getPlayers().get(i).addListenerForPlayer(client);
                 this.game.getPlayers().get(i).setNicknameAndClientID(nickname, i*10);
                 break;
             }
-        }*/
-        for(Player player : this.game.getPlayers()){
-            player.addListenerForPlayer(client);
         }
+        System.out.println("Register client " + client + " for a " + this.game.getPlayers().size() + " players match");
+        /*for(Player player : this.game.getPlayers()){
+            player.addListenerForPlayer(client);
+        }*/
         /*for(int i=0;i<this.toConnect.length;i++){
             if(this.toConnect[i] == false)
                 return false;

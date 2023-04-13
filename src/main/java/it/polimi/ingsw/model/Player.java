@@ -22,6 +22,7 @@ public class Player extends ModelSubject implements Serializable {
     private List<Item> selectItems;
     private boolean isFirstPlayer;
     private static final int INVALID = 0;
+    private int status = 0;
 
     /** constructor for Player class */
     public Player(){
@@ -209,6 +210,11 @@ public class Player extends ModelSubject implements Serializable {
         this.nickname = nickname;
         this.clientID = clientID;
     }
+    public void setStatus(int status, String msg) throws RemoteException {
+        this.status = status;
+        setChangedAndNotifyListener(msg);
+        setChangedAndNotifyListener(this.status);
+    }
 
     /* get methods */
     public String getNickname(){
@@ -238,6 +244,15 @@ public class Player extends ModelSubject implements Serializable {
     private void setChangedAndNotifyListener(Shelf sh) throws RemoteException{
         setChanged();
         notifyObservers(sh);
+    }
+    private void setChangedAndNotifyListener(String msg) throws RemoteException{
+        setChanged();
+        notifyObservers(msg);
+    }
+
+    private void setChangedAndNotifyListener(int status) throws RemoteException{
+        setChanged();
+        notifyObservers(status);
     }
 }
 

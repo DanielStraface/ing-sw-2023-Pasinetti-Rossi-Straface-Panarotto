@@ -24,7 +24,7 @@ public class AppClientRMI {
             }
             case 2 -> {
                 ClientImpl client = new ClientImpl(server, nickname);
-                client.run();
+                //client.run();
             }
             default -> {
                 System.exit(20);
@@ -62,7 +62,9 @@ public class AppClientRMI {
     }
 
     private static int joinNewGame() {
-        return 0;
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Insert the number of players of the match: ");
+        return scanner.nextInt();
     }
 
     private static int startNewGame() {

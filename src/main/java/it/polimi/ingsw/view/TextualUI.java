@@ -19,7 +19,6 @@ public class TextualUI extends ViewSubject{
 
     public void run(Client client) throws RemoteException{
         this.refClient = client;
-        //askNickname();
         System.out.println(client.getNickname());
         askAction();
         askColumn();

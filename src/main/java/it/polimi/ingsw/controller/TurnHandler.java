@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.exceptions.InvalidMatchesException;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
@@ -13,6 +14,7 @@ public class TurnHandler {
     private boolean endGame;
     private boolean gameOver;
     private static final int ENDGAME_POINTS = 1;
+    private static final int GAME_OVER = 100;
     public TurnHandler(Game game){
         this.turnChecker= new TurnChecker();
         this.game = game;
@@ -21,7 +23,6 @@ public class TurnHandler {
     }
 
     public void nextTurn(Player player) throws RemoteException {
-        System.err.println("THERE");
         if(!gameOver) {
             if (game.getPlayers().indexOf(player) == (game.getPlayers().size() - 1)) {
                 game.setCurrentPlayer(game.getPlayers().get(0));
@@ -33,7 +34,7 @@ public class TurnHandler {
         }
     }
 
-    public void manageTurn() throws Exception{
+    public void manageTurn(Client o) throws Exception{
         Player player = game.getCurrentPlayer();
 
         if(turnChecker.manageCheck(player, game) || endGame) {
@@ -55,6 +56,7 @@ public class TurnHandler {
                 gameOver = true;
             }
         }
+        o.update("Your turn is finished! Please wait for the other players turn");
         this.nextTurn(player);
     }
 
@@ -73,12 +75,18 @@ public class TurnHandler {
                 throw new RuntimeException(e);
             }
         }
-        game.getPlayers().get(0).setNicknameAndClientID("London", 0);
-        game.getPlayers().get(1).setNicknameAndClientID("Paris", 1);
         Player winner = game.getPlayers().get(0);
         if(winner.getScore() < game.getPlayers().get(1).getScore()) winner = game.getPlayers().get(1);
-        System.out.println(winner.getNickname() + " wins with a score of " + winner.getScore() + " points");
-        System.out.println("The game ends here. Thank you for playing this game!\nBYE");
+        String finalMessage = winner.getNickname() + " wins with a score of " + winner.getScore() + " points\n" +
+                    "The game ends here. Thank you for playing this game!\nBYE";
+        System.out.println(finalMessage);
+        for(Player p : game.getPlayers()){
+            try {
+                p.setStatus(GAME_OVER, finalMessage);
+            } catch (RemoteException e) {
+                System.err.println(e.getMessage());
+            }
+        }
         System.exit(10);
     }
 }

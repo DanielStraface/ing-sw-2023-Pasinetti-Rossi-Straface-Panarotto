@@ -105,7 +105,7 @@ public class ModelSubject {
 
         for (int i = arrLocal.length-1; i>=0; i--){
             Client vl = (Client) arrLocal[i];
-            vl.update(new GameView(arg));
+            vl.update(new GameView(arg), arg.getCurrentPlayer().getClientID());
         }
     }
 
@@ -233,8 +233,11 @@ public class ModelSubject {
 
         for (int i = arrLocal.length-1; i>=0; i--){
             Client vl = (Client) arrLocal[i];
-            /*vl.
-            vl.update(arg);*/
+            try {
+                vl.update(arg);
+            } catch (RemoteException e) {
+                System.err.println(e.getMessage());
+            }
         }
     }
 
@@ -257,6 +260,7 @@ public class ModelSubject {
     public synchronized int countObservers() {
         return obs.size();
     }
+    public synchronized int countListeners(){return listeners.size();}
 
     public synchronized void addListener(Client o) {
         if (o == null)
