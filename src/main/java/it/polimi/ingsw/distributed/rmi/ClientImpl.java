@@ -26,10 +26,10 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable 
         server.startGame();
     }
 
-    public ClientImpl(Server server, Integer decision, String nickname) throws RemoteException {
+    public ClientImpl(Server server, int decision, String nickname) throws RemoteException {
         super();
         this.nickname = nickname;
-        server.register(this, decision.intValue(), nickname);
+        server.register(this, decision, nickname);
         initialize(server);
         server.startGame();
     }

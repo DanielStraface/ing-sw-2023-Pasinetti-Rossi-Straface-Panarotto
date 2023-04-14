@@ -1,7 +1,9 @@
 package it.polimi.ingsw.distributed.socket.middleware;
 
+import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.distributed.Server;
+import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Item;
 import it.polimi.ingsw.modelview.GameBoardView;
 import it.polimi.ingsw.modelview.GameView;
@@ -21,6 +23,9 @@ public class ServerStub implements Server {
     private Socket socket;
     private ObjectOutputStream oos;
     private ObjectInputStream ois;
+    private Game game;
+    private Controller controller;
+    private boolean[] toConnect;
 
     public ServerStub(String ip, int port){
         this.ip = ip;
@@ -29,17 +34,66 @@ public class ServerStub implements Server {
 
     @Override
     public void startGame() throws RemoteException {
-
+        if(this.controller.getViews().size() == this.controller.getGame().getPlayers().size()){
+            for(Client client : this.controller.getViews())
+                client.update("The match is starting...Extraction of the first player is running");
+            this.controller.chooseFirstPlayer();
+        } else {
+            int temp = 0;
+            for(int i=0;i<this.toConnect.length;i++){
+                if(this.toConnect[i]==false)
+                    temp++;
+            }
+            for(Client client : this.controller.getViews()){
+                client.update("Waiting for players\nSearching for " + temp + " other players");
+            }
+        }
     }
 
     @Override
     public void register(Client client, String nickname) throws RemoteException {
         createConnection();
+        if(this.game == null){
+            System.err.println("No match found\nClosing...");
+            System.exit(3);
+        }
+        if(this.controller.getViews().size() == this.game.getPlayers().size()){
+            System.err.println("The lobby is full...");
+            return;
+        }
+        //this.controller = new Controller(game, client);
+        this.controller.addClientView(client);
+        this.game.addListener(client);
+        for(int i=0;i<toConnect.length;i++){
+            if(this.toConnect[i] == false){
+                this.toConnect[i] = true;
+                this.game.getPlayers().get(i).addListenerForPlayer(client);
+                this.game.getPlayers().get(i).setNicknameAndClientID(nickname, i*10);
+                client.update(i*10);
+                break;
+            }
+        }
     }
 
     @Override
     public void register(Client client, int typeOfMatch, String nickname) throws RemoteException {
         createConnection();
+        try{
+            this.game = new Game(typeOfMatch);
+        } catch (Exception e){
+            System.err.println(e.getMessage());
+        }
+        this.controller = new Controller(game, client);
+        this.game.addListener(client);
+        this.toConnect = new boolean[this.game.getPlayers().size()];
+        for(int i=0;i<toConnect.length;i++){
+            if(this.toConnect[i] == false){
+                this.toConnect[i] = true;
+                this.game.getPlayers().get(i).addListenerForPlayer(client);
+                this.game.getPlayers().get(i).setNicknameAndClientID(nickname, i*10);
+                break;
+            }
+        }
         /*try{
             oos.writeObject(coords);
         } catch (IOException e) {
