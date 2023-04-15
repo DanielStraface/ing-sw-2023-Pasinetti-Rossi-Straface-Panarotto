@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -37,18 +38,26 @@ public class TurnCheckerTest {
     }
 
 
-    /** Tests if the commonObjCard check doesn't assign points to the current player */
+    /**
+     * Tests if the commonObjCard check doesn't assign points to the current player
+     * @throws InvalidPointerException
+     * @throws RemoteException
+     */
     @Test
-    public void manageCheckCommonObjCardTest() throws InvalidPointerException {
+    public void manageCheckCommonObjCardTest() throws InvalidPointerException, RemoteException {
         game.setCurrentPlayer(player);
         turnChecker.manageCheck(game.getCurrentPlayer(),game);
         assertEquals(0,game.getCurrentPlayer().getScore(),"Points have been wrongly added!");
     }
 
 
-    /** Tests if the gameBoard is refilled under the correct conditions */
+    /**
+     * Tests if the gameBoard is refilled under the correct conditions
+     * @throws InvalidPointerException
+     * @throws RemoteException
+     */
     @Test
-    public void manageCheckRefillGameBoardCheck() throws InvalidPointerException {
+    public void manageCheckRefillGameBoardCheck() throws InvalidPointerException, RemoteException {
         game.setCurrentPlayer(player);
         int[][] validGrid;
         GameBoard gameBoard;
@@ -83,10 +92,13 @@ public class TurnCheckerTest {
     }
 
 
-
-    /** Checks if lastTurn is triggered or not under the correct conditions */
+    /**
+     * Checks if lastTurn is triggered or not under the correct conditions
+     * @throws InvalidPointerException
+     * @throws RemoteException
+     */
     @Test
-    public void manageCheckLastTurnTest() throws InvalidPointerException {
+    public void manageCheckLastTurnTest() throws InvalidPointerException, RemoteException {
         Shelf shelf;
         boolean check;
         game.setCurrentPlayer(player);
@@ -106,8 +118,9 @@ public class TurnCheckerTest {
     }
 
 
-
-    /** Tests every amount of points assigned (2,3,5,8) for adjacent Items */
+    /**
+     *  Tests every amount of points assigned (2,3,5,8) for adjacent Items
+     */
     @Test
     public void adjacentPointsCheck(){
         for(int i=0; i<3; i++){
@@ -126,7 +139,9 @@ public class TurnCheckerTest {
     }
 
 
-    /** Tests the adjacent Items score assignment with the example given in the rulebook */
+    /**
+     * Tests the adjacent Items score assignment with the example given in the rulebook
+     */
     @Test
     public void adjacentPointExampleCheck(){
         for(int i=0; i<2; i++){
@@ -156,8 +171,9 @@ public class TurnCheckerTest {
     }
 
 
-
-    /** Tests the adjacent Items score assignment with a Shelf filled with Items with random categories */
+    /**
+     * Tests the adjacent Items score assignment with a Shelf filled with Items with random categories
+     */
     @Test
     public void adjacentRandomItemsCheck(){
         Random random = new Random();
