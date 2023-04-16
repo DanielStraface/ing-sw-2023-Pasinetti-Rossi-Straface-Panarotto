@@ -17,7 +17,8 @@ public class TurnHandler {
         this.endGame= false;
         this.gameOver = false;
     }
-
+ /** nextTurn passes the turn if no shelf has been filled yet. If a player has filled the library, it calls
+  *  GameOverHandler method. */
     public void nextTurn(Player player){
         if(!gameOver) {
             if (game.getPlayers().indexOf(player) == (game.getPlayers().size() - 1)) {
@@ -30,7 +31,13 @@ public class TurnHandler {
         }
     }
 
-    public void manageTurn() throws Exception{
+    /**
+     * manageTurn adds a point to the current player if the current player is the first to have filled the library.
+     * The method verify if the player is the FirstPlayer or the player before the FirstPlayer, to verify if the game is to end,
+     * then it calls NextTUrn method.
+     * @throws Exception
+     */
+    public void manageTurn() throws Exception {
         Player player = game.getCurrentPlayer();
 
         if(turnChecker.manageCheck(player, game) || endGame) {
@@ -55,6 +62,10 @@ public class TurnHandler {
         this.nextTurn(player);
     }
 
+    /**
+     * gameOverHandler is called at the end of the game to add points of personal objective cards and adjacenses and
+     * assign the final score to the player.
+     */
     private void gameOverHandler() {
         System.out.println("GAME OVER");
         int counter = 1;
@@ -69,13 +80,15 @@ public class TurnHandler {
             } catch (InvalidMatchesException e) {
                 throw new RuntimeException(e);
             }
-        }
-        game.getPlayers().get(0).setNicknameAndClientID("London", 0);
+        } }
+        /*game.getPlayers().get(0).setNicknameAndClientID("London", 0);
         game.getPlayers().get(1).setNicknameAndClientID("Paris", 1);
         Player winner = game.getPlayers().get(0);
         if(winner.getScore() < game.getPlayers().get(1).getScore()) winner = game.getPlayers().get(1);
         System.out.println(winner.getNickname() + " wins with a score of " + winner.getScore() + " points");
         System.out.println("The game ends here. Thank you for playing this game!\nBYE");
         System.exit(10);
-    }
+    } */
+
+    public void callGameOverHandler(){gameOverHandler();} /*used for tests only */
 }
