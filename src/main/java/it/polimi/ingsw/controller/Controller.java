@@ -118,8 +118,8 @@ public class Controller {
             int col = column.intValue();
             try {
                 game.getCurrentPlayer().putItemInShelf(col);
-                saveGame(getGame(),"savedGame.ser");
                 this.turnHandler.manageTurn(o);
+                saveGame(getGame(),"savedGame.ser");
             } catch (Exception e) {
                 System.err.println(e.getMessage());
                 System.err.println("Skipping this selection, the turn passes");

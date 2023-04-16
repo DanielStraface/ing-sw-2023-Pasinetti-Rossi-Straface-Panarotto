@@ -11,13 +11,18 @@ public abstract class AppClient {
         System.out.println("Hello, welcome to MyShelfie!");
         System.out.println("1) Start a new game");
         System.out.println("2) Join an existing game");
-        System.out.println("3) Quit from MyShelfie");
+        System.out.println("3) Load a previous game");
+        System.out.println("4) Quit from MyShelfie");
         int decision = scanner.nextInt();
         askNickname();
         int numbOfPlayers = 0;
         switch(decision){
             case 1, 2 -> numbOfPlayers = askNumOfPlayer();
             case 3 -> {
+                numbOfPlayers = 0;
+                displayResearch();
+            }
+            case 4 -> {
                 System.out.println("Goodbye player! See you soon");
                 System.err.println("Termination of MyShelie");
                 System.exit(1);
@@ -38,6 +43,10 @@ public abstract class AppClient {
         }
         playersDecision.add(Integer.valueOf(decision));
         return playersDecision;
+    }
+
+    private static void displayResearch() {
+        System.out.println("Searching for a previous game...It may take a while");
     }
 
     private static int askNumOfPlayer() {

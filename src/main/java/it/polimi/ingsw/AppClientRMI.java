@@ -29,6 +29,7 @@ public class AppClientRMI {
             case "2" -> {
                 ClientImpl client = new ClientImpl(server.connect(), JOINING_EXISTING_GAME, nickname);
             }
+            //case "3" -> server.loadFromFile();
             default -> {
                 System.exit(20);
             }
