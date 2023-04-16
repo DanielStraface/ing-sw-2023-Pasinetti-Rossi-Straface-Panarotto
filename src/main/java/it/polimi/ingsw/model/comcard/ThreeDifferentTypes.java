@@ -31,8 +31,11 @@ class ThreeDifferentTypes extends StrategyCheck implements Serializable {
         }
     }
 
-    /** Method that returns a true boolean if there are at least 4 full rows in the Player's Shelf with 3 different Item
-     * categories at max, this is done by using a HashSet with one slot reserved for every type of category */
+    /**
+     * Method that returns a true boolean if there are at least 4 full rows in the Player's Shelf with 3 different Item
+     * categories at max, this is done by using a HashSet with one slot reserved for every type of category
+     * @param grid
+     */
     private boolean rowsDifferentTypes(Item[][] grid) {
         int rowCounter = 0;
         boolean invalidRow = false;
@@ -60,9 +63,11 @@ class ThreeDifferentTypes extends StrategyCheck implements Serializable {
     }
 
 
-
-    /** Method that returns a true boolean if there are at least 3 fullcolumns in the Player's Shelf with 3 different
-     *  Item categories at max, this is done by using a HashSet with one slot reserved for every type of category */
+    /**
+     * Method that returns a true boolean if there are at least 3 full columns in the Player's Shelf with 3 different
+     * Item categories at max, this is done by using a HashSet with one slot reserved for every type of category
+     * @param grid
+     */
     private boolean columnsDifferentTypes(Item[][] grid) {
         int columnCounter = 0;
         boolean invalidColumn = false;

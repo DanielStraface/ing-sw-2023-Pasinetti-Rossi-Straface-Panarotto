@@ -80,7 +80,7 @@ public class GameBoardTest {
     }
 
     /**
-     * Test method gridForFourTester controls that the grid is set for four player
+     *  Test method gridForFourTester controls that the grid is set for four player
      */
     @Test
     public void gridForFourTester(){

@@ -146,7 +146,10 @@ class GroupCards extends StrategyCheck implements Serializable {
     }
 
 
-    /** Method that returns a true boolean if there are 8 instances of the same category in the Player's Shelf */
+    /**
+     * Method that returns a true boolean if there are 8 instances of the same category in the Player's Shelf
+     * @param grid
+     */
     private boolean groupOfEight(Item[][] grid) {
         int catCounter = 0;
         int bookCounter = 0;

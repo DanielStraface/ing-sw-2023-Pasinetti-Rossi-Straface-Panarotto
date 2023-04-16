@@ -24,7 +24,9 @@ public class Player extends ModelSubject implements Serializable {
     private static final int INVALID = 0;
     private int status = 0;
 
-    /** constructor for Player class */
+    /**
+     * constructor for Player class
+     */
     public Player(){
         this.score = 0;
         this.isFirstPlayer = false;
@@ -32,7 +34,15 @@ public class Player extends ModelSubject implements Serializable {
         this.selectItems=new ArrayList<>();
     }
 
-    /** method to pick Items from the game board and put them in the selectItems list*/
+    /**
+     *  method to pick Items from the game board and put them in the selectItems list
+     * @param selectedCoords the GameBoard's coordinates selected by the current player's inputs
+     * @param gameGrid the GameBoard's item matrix
+     * @param validGrid the GameBoard's int matrix to check is the slot is valid or not
+     * @throws InvalidStateException
+     * @throws InvalidSelectionException
+     * @throws RemoteException
+     */
     public void pickItems(List<int[]> selectedCoords,Item[][] gameGrid, int[][] validGrid) throws InvalidStateException,
             InvalidSelectionException, RemoteException {
         if(selectedCoords.isEmpty()){
@@ -159,7 +169,13 @@ public class Player extends ModelSubject implements Serializable {
         setChangedAndNotifyListener(gameGrid);
     }
 
-    /** method to put Items into personal shelf and remove them from the selectItems list*/
+    /**
+     *  method to put Items into personal shelf and remove them from the selectItems list
+     * @param selectedCol the Shelf's column selected by the current player
+     * @throws OutOfBoundsException
+     * @throws InvalidNumberOfItemsException
+     * @throws RemoteException
+     */
     public void putItemInShelf(int selectedCol) throws OutOfBoundsException, InvalidNumberOfItemsException,
             RemoteException {
         Item[][] grid=myShelf.getShelfGrid();
@@ -189,7 +205,11 @@ public class Player extends ModelSubject implements Serializable {
         }
         setChangedAndNotifyListener(this.myShelf);
     }
-/** Method for adding points to the score*/
+
+    /**
+     * Method for adding points to the score
+     * @param points points to be added to the player
+     */
     public void addPoints(int points) {
         this.score += points;
     }
