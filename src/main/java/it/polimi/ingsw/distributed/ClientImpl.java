@@ -1,7 +1,8 @@
-package it.polimi.ingsw.distributed.rmi;
+package it.polimi.ingsw.distributed;
 
 import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.distributed.Server;
+import it.polimi.ingsw.distributed.socket.middleware.ServerStub;
 import it.polimi.ingsw.model.Item;
 import it.polimi.ingsw.modelview.GameBoardView;
 import it.polimi.ingsw.modelview.GameView;
@@ -18,18 +19,16 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable 
     String nickname;
     private int clientID;
 
-    public ClientImpl(Server server, String nickname) throws RemoteException {
-        super();
-        this.nickname = nickname;
-        server.register(this, nickname);
-        initialize(server);
-        server.startGame();
-    }
-
     public ClientImpl(Server server, Integer decision, String nickname) throws RemoteException {
         super();
+        String temp;
+        if(server instanceof ServerStub){
+            temp = nickname + "%%%";
+        } else {
+            temp = nickname;
+        }
         this.nickname = nickname;
-        server.register(this, decision.intValue(), nickname);
+        server.register(this, decision.intValue(), temp);
         initialize(server);
         server.startGame();
     }

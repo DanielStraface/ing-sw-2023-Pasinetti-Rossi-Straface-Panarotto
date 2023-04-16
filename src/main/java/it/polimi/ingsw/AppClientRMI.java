@@ -1,7 +1,7 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.distributed.Server;
-import it.polimi.ingsw.distributed.rmi.ClientImpl;
+import it.polimi.ingsw.distributed.ClientImpl;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -12,74 +12,26 @@ import java.util.List;
 import java.util.Scanner;
 
 public class AppClientRMI {
-    private static String nickname;
+    private static final int TYPE_OF_MATCH_POSITION = 0;
+    private static final int NUMBER_OF_PLAYER_POSITION = 1;
+    private static final int NICKNAME_POSITION = 2;
+    private static final Integer JOINING_EXISTING_GAME = 0;
+
     public static void main(String[] args) throws RemoteException, NotBoundException {
-        List<Integer> decision = welcome();
+        String nickname = args[NICKNAME_POSITION];
         Registry registry = LocateRegistry.getRegistry();
-        Server server = (Server) registry.lookup("server");
-        switch (decision.get(0)){
-            case 1 -> {
-                ClientImpl client = new ClientImpl(server, decision.get(1), nickname);
-                //client.run();
+        AppServer server = (AppServer) registry.lookup("server");
+        switch (args[TYPE_OF_MATCH_POSITION]) {
+            case "1" -> {
+                ClientImpl client = new ClientImpl(server.connect(),
+                        Integer.parseInt(args[NUMBER_OF_PLAYER_POSITION]), nickname);
             }
-            case 2 -> {
-                ClientImpl client = new ClientImpl(server, nickname);
-                //client.run();
+            case "2" -> {
+                ClientImpl client = new ClientImpl(server.connect(), JOINING_EXISTING_GAME, nickname);
             }
             default -> {
                 System.exit(20);
             }
         }
-    }
-
-    public static List<Integer> welcome() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Hello, welcome to MyShelfie!");
-        System.out.println("1) Start a new game");
-        System.out.println("2) Join an existing game");
-        System.out.println("3) Quit from MyShelfie");
-        int decision = scanner.nextInt();
-        askNickname();
-        int numbOfPlayers = 0;
-        switch(decision){
-            case 1 -> numbOfPlayers = startNewGame();
-            case 2 -> numbOfPlayers = joinNewGame();
-            case 3 -> {
-                System.out.println("Goodbye player! See you soon");
-                System.err.println("Termination of MyShelie");
-                System.exit(1);
-            }
-            default -> {
-                System.err.println("Wrong selection, app termination...");
-                System.exit(2);
-            }
-        }
-        System.err.println("Decide CLI or GUI have not implemented yet");
-        List<Integer> playersDecision = new ArrayList<Integer>();
-        playersDecision.add(Integer.valueOf(decision));
-        playersDecision.add(Integer.valueOf(numbOfPlayers));
-        return playersDecision;
-    }
-
-    private static int joinNewGame() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Insert the number of players of the match: ");
-        return scanner.nextInt();
-    }
-
-    private static int startNewGame() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Insert the number of players of the match: ");
-        return scanner.nextInt();
-    }
-
-    private static void askNickname(){
-        String input = null;
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Insert your nickname");
-        while(input == null){
-            input = scanner.nextLine();
-        }
-        nickname = input;
     }
 }

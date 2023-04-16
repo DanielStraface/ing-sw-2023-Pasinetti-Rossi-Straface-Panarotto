@@ -8,14 +8,15 @@ import it.polimi.ingsw.modelview.GameView;
 import it.polimi.ingsw.modelview.PlayerView;
 import it.polimi.ingsw.modelview.ShelfView;
 
+import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.*;
 
-public class TextualUI extends ViewSubject{
-    private String name;
-    private List<int[]> coords;
-    private int column;
-    private Client refClient;
+public class TextualUI extends ViewSubject implements Serializable {
+    private transient String name;
+    private transient List<int[]> coords;
+    private transient int column;
+    private transient Client refClient;
 
     public void run(Client client) throws RemoteException{
         this.refClient = client;
