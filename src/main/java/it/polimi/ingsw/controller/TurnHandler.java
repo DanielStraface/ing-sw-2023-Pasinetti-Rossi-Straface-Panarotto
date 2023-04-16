@@ -23,7 +23,7 @@ public class TurnHandler {
     }
  /** nextTurn passes the turn if no shelf has been filled yet. If a player has filled the library, it calls
   *  GameOverHandler method. */
-    public void nextTurn(Player player){
+    public void nextTurn(Player player) throws RemoteException {
         if(!gameOver) {
             if (game.getPlayers().indexOf(player) == (game.getPlayers().size() - 1)) {
                 game.setCurrentPlayer(game.getPlayers().get(0));
@@ -41,7 +41,6 @@ public class TurnHandler {
      * then it calls NextTUrn method.
      * @throws Exception
      */
-    public void manageTurn() throws Exception {
     public void manageTurn(Client o) throws Exception{
         Player player = game.getCurrentPlayer();
 
