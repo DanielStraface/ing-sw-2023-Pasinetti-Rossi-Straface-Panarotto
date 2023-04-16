@@ -1,10 +1,11 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.listeners.ViewListener;
+import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.view.TextualUI;
 
 import java.io.*;
+import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -16,28 +17,33 @@ import java.util.Random;
  * @method chooseFirstPlayer(), saveGame(), loadGame(), update(UI, Integer), update(UI, String), update(UI, List<int[]>)
  * @author Matteo Panarotto
  */
-public class Controller implements ViewListener {
+public class Controller {
     /* ATTRIBUTES SECTION */
     private final Game game;
-    private final TextualUI view;
+    //private final Client view;
+    private final List<Client> views = new ArrayList<>();
     private final TurnHandler turnHandler;
 
     /* METHODS SECTION */
 
     /* -- constructor --*/
-    public Controller(Game game, TextualUI view){
+    public Controller(Game game, Client view) throws RemoteException {
         this.game = game;
-        game.setCurrentPlayer(game.getPlayers().get(0));
+        //game.setCurrentPlayer(game.getPlayers().get(0));
         turnHandler = new TurnHandler(game);
-        this.view = view;
+        this.views.add(view);
+        //this.view = view;
     }
 
     /* -- logic methods --*/
+    public void addClientView(Client view){
+        this.views.add(view);
+    }
     /**
      * chooseFirstPlayer method decides the first player of the match
      * @author Matteo Panarotto
      */
-    public void chooseFirstPlayer(){
+    public void chooseFirstPlayer() throws RemoteException{
         //extract a random number between zero and numberOfPlayers
         Random random = new Random();
         int n = random.nextInt(game.getPlayers().size());
@@ -95,6 +101,7 @@ public class Controller implements ViewListener {
     public synchronized Game getGame(){
         return this.game;
     }
+    public List<Client> getViews(){return this.views;}
 
     /* update methods */
     /**
@@ -104,16 +111,19 @@ public class Controller implements ViewListener {
      * @param column - the chosen column by the player
      * @author Matteo Panarotto
      */
-    @Override
-    public void update(TextualUI o, Integer column) {
-        int col = column.intValue();
-        try {
-            game.getCurrentPlayer().putItemInShelf(col);
-            saveGame(getGame(),"savedGame.ser");
-            this.turnHandler.manageTurn();
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            System.err.println("Skipping this selection, the turn passes");
+    public void update(Client o, Integer column) {
+        if( !this.views.contains(o) ){
+            System.err.println("Discarding notification from " + o);
+        } else {
+            int col = column.intValue();
+            try {
+                game.getCurrentPlayer().putItemInShelf(col);
+                this.turnHandler.manageTurn(o);
+                saveGame(getGame(),"savedGame.ser");
+            } catch (Exception e) {
+                System.err.println(e.getMessage());
+                System.err.println("Skipping this selection, the turn passes");
+            }
         }
     }
 
@@ -124,9 +134,13 @@ public class Controller implements ViewListener {
      * @param nickname - the nickname chosen by the player
      * @author Matteo Panarotto
      */
-    @Override
-    public void update(TextualUI o, String nickname){
+    public void update(Client o, String nickname){
         game.getCurrentPlayer().setNicknameAndClientID(nickname, 0);
+        try {
+            this.chooseFirstPlayer();
+        } catch (RemoteException e) {
+            System.err.println(e.getMessage());
+        }
     }
 
     /**
@@ -136,9 +150,8 @@ public class Controller implements ViewListener {
      * @param coords - the list of coordinates of the item selected by the player
      * @author Matteo Panarotto
      */
-    @Override
-    public void update(TextualUI o, List<int[]> coords) {
-        if( o != this.view){
+    public void update(Client o, List<int[]> coords) throws RemoteException{
+        if( !this.views.contains(o) ){
             System.err.println("Discarding notification from " + o);
         } else {
             try {

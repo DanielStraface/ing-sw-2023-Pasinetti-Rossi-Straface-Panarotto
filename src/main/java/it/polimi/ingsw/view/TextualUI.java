@@ -1,6 +1,6 @@
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.listeners.ModelViewListener;
+import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.listeners.ViewSubject;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.modelview.GameBoardView;
@@ -8,17 +8,23 @@ import it.polimi.ingsw.modelview.GameView;
 import it.polimi.ingsw.modelview.PlayerView;
 import it.polimi.ingsw.modelview.ShelfView;
 
+import java.io.Serializable;
+import java.rmi.RemoteException;
 import java.util.*;
 
-public class TextualUI extends ViewSubject implements ModelViewListener, Runnable{
-    private String name;
-    private List<int[]> coords;
-    private int column;
+public class TextualUI extends ViewSubject implements Serializable {
+    private transient String name;
+    private transient List<int[]> coords;
+    private transient int column;
+    private transient Client refClient;
 
-    @Override
-    public void run() {
-        //askNickname();
+    public void run(Client client) throws RemoteException{
+        this.refClient = client;
+        System.out.println(client.getNickname());
         askAction();
+        askColumn();
+        setChangedAndNotifyListener(this.coords);
+        setChangedAndNotifyListener(Integer.valueOf(this.column));
     }
 
     private void askAction() {
@@ -54,9 +60,6 @@ public class TextualUI extends ViewSubject implements ModelViewListener, Runnabl
             }
         }
         askOrder();
-        askColumn();
-        setChangedAndNotifyListener(this.coords);
-        setChangedAndNotifyListener(Integer.valueOf(this.column));
     }
 
     private void askColumn() {
@@ -67,6 +70,7 @@ public class TextualUI extends ViewSubject implements ModelViewListener, Runnabl
             col = scanner.nextInt();
         }
         this.column = col - 1;
+        //setChangedAndNotifyListener(Integer.valueOf(this.column));
     }
 
     private void askOrder() {
@@ -92,16 +96,6 @@ public class TextualUI extends ViewSubject implements ModelViewListener, Runnabl
             counter++;
         }
         this.coords = temp;
-    }
-
-    private void askNickname() {
-        String input = null;
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Insert your nickname");
-        while(input == null){
-            input = scanner.nextLine();
-        }
-        setChangedAndNotifyListener(this.name);
     }
 
     private void displayPersonalObjCard(PlayerView player) {
@@ -225,41 +219,6 @@ public class TextualUI extends ViewSubject implements ModelViewListener, Runnabl
     }
 
     /* UNUSED METHOD THAT RUNS AT THE START OF APLICATION*/
-    public List<Integer> welcome() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Hello, welcome to MyShelfie!");
-        System.out.println("1) Start a new game");
-        System.out.println("2) Join an existing game");
-        System.out.println("3) Quit from MyShelfie");
-        int decision = scanner.nextInt();
-        int numbOfPlayers = 0;
-        switch(decision){
-            case 1 -> numbOfPlayers = startNewGame();
-            case 2 -> numbOfPlayers = joinNewGame();
-            case 3 -> {
-                System.out.println("Goodbye player! See you soon");
-                System.err.println("Termination of MyShelie");
-                System.exit(1);
-            }
-            default -> {
-                System.err.println("Wrong selection, app termination...");
-                System.exit(2);
-            }
-        }
-        System.err.println("Decide CLI or GUI have not implemented yet");
-        List<Integer> playersDecision = new ArrayList<Integer>();
-        playersDecision.add(Integer.valueOf(decision));
-        playersDecision.add(Integer.valueOf(numbOfPlayers));
-        return playersDecision;
-    }
-
-    private int joinNewGame() {
-        return 0;
-    }
-
-    private int startNewGame() {
-        return 0;
-    }
 
     private void displayNewTurn(GameView game){
         System.out.println("=================================================================================");
@@ -268,51 +227,43 @@ public class TextualUI extends ViewSubject implements ModelViewListener, Runnabl
         displayPersonalObjCard(game.getCurrentPlayer());
         displayGameBoard(game.getGameBoard());
         displayShelf(game.getCurrentPlayer().getMyShelf());
-        this.run();
     }
 
-    @Override
-    public void update(GameView game, GameBoardView gb) {
+    public void update(GameBoardView gb) {
         displayGameBoard(gb);
     }
 
-    @Override
     public void update(GameView game) {
         displayNewTurn(game);
     }
 
-    @Override
-    public void update(PlayerView player, Item[][] gameGrid) {
+    public void update(Item[][] gameGrid) {
         displayGameBoard(gameGrid);
     }
 
-    @Override
-    public void update(PlayerView player, ShelfView shelf) {
+    public void update(ShelfView shelf) {
         displayShelf(shelf);
     }
 
-    @Override
-    public void update(PlayerView player, Integer column) {
+    public void update(Integer column) {
         System.out.println("Invalid column selection. Try again!");
         askColumn();
-        setChangedAndNotifyListener(this.column);
     }
 
-    @Override
     public void update(String commonObjCardReached) {
         System.out.println(commonObjCardReached);
     }
 
-    private void setChangedAndNotifyListener(String nm){
+    private void setChangedAndNotifyListener(String nm) throws RemoteException {
         setChanged();
         notifyObservers(nm);
     }
-    private void setChangedAndNotifyListener(List<int[]> coords){
+    private void setChangedAndNotifyListener(List<int[]> coords) throws RemoteException{
         setChanged();
-        notifyObservers(coords);
+        notifyObservers(this.refClient, coords);
     }
-    private void setChangedAndNotifyListener(Integer column){
+    private void setChangedAndNotifyListener(Integer column) throws RemoteException{
         setChanged();
-        notifyObservers(column);
+        notifyObservers(this.refClient, column);
     }
 }

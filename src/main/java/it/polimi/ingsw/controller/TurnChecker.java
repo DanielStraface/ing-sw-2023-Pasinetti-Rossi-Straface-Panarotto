@@ -4,6 +4,7 @@ import it.polimi.ingsw.exceptions.InvalidPointerException;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.comcard.CommonObjCard;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +17,7 @@ public class TurnChecker {
 
 
     /** all checks that have to be done before ending a player's turn */
-    public boolean manageCheck(Player player, Game game) throws InvalidPointerException {
+    public boolean manageCheck(Player player, Game game) throws InvalidPointerException, RemoteException {
         boolean shelfFull;
         commonObjCardCheck(player, game);
         shelfFull = player.getMyShelf().isFull();
@@ -41,7 +42,7 @@ public class TurnChecker {
      *  check if any of its adjacent places are occupied by an Item as well.
      *  If there's a single adjacent item, there's no need to refill the GameBoard and the check is
      *  set to false. */
-    private void refillGameBoardCheck(Game game){
+    private void refillGameBoardCheck(Game game) throws RemoteException {
         boolean check = true;
         int[][] validGrid = game.getValidGrid();
         for(int i=1; i<8; i++){

@@ -6,8 +6,10 @@ import it.polimi.ingsw.model.comcard.CommonObjCard;
 import it.polimi.ingsw.model.comcard.CommonObjCardReader;
 import it.polimi.ingsw.model.personcard.PersonalCardReader;
 import it.polimi.ingsw.model.personcard.PersonalObjCard;
+import it.polimi.ingsw.view.TextualUI;
 
 import java.io.Serializable;
+import java.rmi.RemoteException;
 import java.util.*;
 
 public class Game extends ModelSubject implements Serializable {
@@ -25,7 +27,7 @@ public class Game extends ModelSubject implements Serializable {
     private Player currentPlayer;
 
     /** constructor for Game class */
-    public Game (int playersNumber) throws InvalidNumberOfPlayersException{
+    public Game (int playersNumber) throws InvalidNumberOfPlayersException, RemoteException{
         if(playersNumber <= 1 || playersNumber >= 5) throw new InvalidNumberOfPlayersException();
         this.playersNumber = playersNumber;
         this.players = new ArrayList<Player>(playersNumber);
@@ -50,7 +52,7 @@ public class Game extends ModelSubject implements Serializable {
     }
 
     /** Fills GameBoard slots with Items with random Categories depending on the number of players */
-    private void createGameBoard() {
+    private void createGameBoard() throws RemoteException{
         setGridForTwo(this.validGrid);
         switch(this.playersNumber) {
             case 3 -> {
@@ -179,7 +181,7 @@ public class Game extends ModelSubject implements Serializable {
     }
 
     /** Refills every PLAYABLE slot of the Gameboard with an Item of a random Category drawn from the Bag */
-    public void refillGameBoard(){
+    public void refillGameBoard() throws RemoteException{
         for(int i=0;i<DIM_GAMEBOARD;i++){
             for(int j=0;j<DIM_GAMEBOARD;j++){
                 if(validGrid[i][j]==PLAYABLE){
@@ -198,7 +200,7 @@ public class Game extends ModelSubject implements Serializable {
     }
 
     /* set methods */
-    public void setCurrentPlayer(Player player){
+    public void setCurrentPlayer(Player player) throws RemoteException{
         this.currentPlayer = player;
         setChangedAndNotifyListeners(this);
     }
@@ -213,11 +215,11 @@ public class Game extends ModelSubject implements Serializable {
     public Bag getBag(){return bag;}
     public Player getCurrentPlayer(){return currentPlayer;}
     public int[][] getValidGrid(){return validGrid;}
-    private void setChangedAndNotifyListeners(GameBoard gb){
+    private void setChangedAndNotifyListeners(GameBoard gb) throws RemoteException {
         setChanged();
         notifyObservers(gb);
     }
-    private void setChangedAndNotifyListeners(Game gm){
+    private void setChangedAndNotifyListeners(Game gm) throws RemoteException{
         setChanged();
         notifyObservers(gm);
     }

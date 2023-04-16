@@ -2,7 +2,9 @@ package it.polimi.ingsw.modelview;
 
 import it.polimi.ingsw.model.Item;
 
-public class GameBoardView {
+import java.io.Serializable;
+
+public class GameBoardView implements Serializable {
     private static final int DIM_GAMEBOARD = 9;
     private final Item[][] gameGrid;
 

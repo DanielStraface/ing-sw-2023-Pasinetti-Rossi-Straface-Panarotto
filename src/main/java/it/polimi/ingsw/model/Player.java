@@ -8,6 +8,7 @@ import it.polimi.ingsw.listeners.ModelSubject;
 import it.polimi.ingsw.model.personcard.PersonalObjCard;
 
 import java.io.Serializable;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +22,7 @@ public class Player extends ModelSubject implements Serializable {
     private List<Item> selectItems;
     private boolean isFirstPlayer;
     private static final int INVALID = 0;
+    private int status = 0;
 
     /** constructor for Player class */
     public Player(){
@@ -31,7 +33,8 @@ public class Player extends ModelSubject implements Serializable {
     }
 
     /** method to pick Items from the game board and put them in the selectItems list*/
-    public void pickItems(List<int[]> selectedCoords,Item[][] gameGrid, int[][] validGrid) throws InvalidStateException, InvalidSelectionException {
+    public void pickItems(List<int[]> selectedCoords,Item[][] gameGrid, int[][] validGrid) throws InvalidStateException,
+            InvalidSelectionException, RemoteException {
         if(selectedCoords.isEmpty()){
             throw new InvalidStateException("selectedCoords is empty");
         }
@@ -157,7 +160,8 @@ public class Player extends ModelSubject implements Serializable {
     }
 
     /** method to put Items into personal shelf and remove them from the selectItems list*/
-    public void putItemInShelf(int selectedCol) throws OutOfBoundsException, InvalidNumberOfItemsException {
+    public void putItemInShelf(int selectedCol) throws OutOfBoundsException, InvalidNumberOfItemsException,
+            RemoteException {
         Item[][] grid=myShelf.getShelfGrid();
         if (selectedCol >= 5) {
             throw new OutOfBoundsException("selectedCol must be less than 5");
@@ -206,6 +210,11 @@ public class Player extends ModelSubject implements Serializable {
         this.nickname = nickname;
         this.clientID = clientID;
     }
+    public void setStatus(int status, String msg) throws RemoteException {
+        this.status = status;
+        setChangedAndNotifyListener(msg);
+        setChangedAndNotifyListener(this.status);
+    }
 
     /* get methods */
     public String getNickname(){
@@ -228,13 +237,22 @@ public class Player extends ModelSubject implements Serializable {
     }
     public List<Item> getSelectItems(){return this.selectItems;}
 
-    private void setChangedAndNotifyListener(Item[][] gg){
+    private void setChangedAndNotifyListener(Item[][] gg) throws RemoteException{
         setChanged();
         notifyObservers(gg);
     }
-    private void setChangedAndNotifyListener(Shelf sh){
+    private void setChangedAndNotifyListener(Shelf sh) throws RemoteException{
         setChanged();
         notifyObservers(sh);
+    }
+    private void setChangedAndNotifyListener(String msg) throws RemoteException{
+        setChanged();
+        notifyObservers(msg);
+    }
+
+    private void setChangedAndNotifyListener(int status) throws RemoteException{
+        setChanged();
+        notifyObservers(status);
     }
 }
 
