@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.exceptions.NoElementException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -32,21 +33,26 @@ public class BagTest {
     }
 
 
-    /** Method to test if an Item is successfully drawn from the bag */
+    /**
+     * Method to test if an Item is successfully drawn from the bag
+     * @throws Exception
+     */
     @Test
-    public void drawItemTest() throws Exception {
+    public void drawItemTest() throws NoElementException {
         try {
             List<Category> categoryList = Arrays.asList(Category.values());
             Item itemDraw = bag.drawItem();
             assertNotEquals(null,itemDraw,"The item you drew is missing");
             assertTrue(categoryList.contains(itemDraw.getCategoryType()),"The item you drew doesn't have a category");
         }
-        catch (Exception e){
+        catch (NoElementException e){
             fail("You cannot draw from the bag");
         }
     }
 
-    /** Method to test if the exception triggers when the bag is empty */
+    /**
+     * Method to test if the exception triggers when the bag is empty
+     */
     @Test
     public void emptyBagTest(){
         for(int i=bag.getItemCards().size()-1; i>=0 ; i--){
@@ -57,18 +63,22 @@ public class BagTest {
             Item itemDraw = bag.drawItem();
             fail("The bag is not empty");
         }
-        catch (Exception e){
+        catch (NoElementException e){
         }
     }
 
-    /** Method to test if the List of Items is successfully returned */
+    /**
+     * Method to test if the List of Items is successfully returned
+     */
     @Test
     public void getItemCardsTest(){
         itemList = bag.getItemCards();
         assertEquals(bag.getItemCards(), itemList, "The bag returned is not the same");
     }
 
-    /** Method to test if an Item is successfully added to the bag */
+    /**
+     * Method to test if an Item is successfully added to the bag
+     */
     @Test
     public void setItemCardsTest(){
         item = new Item(Category.CAT);
@@ -77,7 +87,9 @@ public class BagTest {
                   "The item added is not a cat");
     }
 
-    /** Method to draw Items until the bag gets empty */
+    /**
+     * Method to draw Items until the bag gets empty
+     */
     @Test
     public void bagEmptierTest() {
         final int DIM = 87;

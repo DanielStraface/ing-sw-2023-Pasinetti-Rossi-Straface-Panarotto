@@ -26,7 +26,12 @@ public class Game extends ModelSubject implements Serializable {
     private List<CommonObjCard> commonObjCards;
     private Player currentPlayer;
 
-    /** constructor for Game class */
+    /**
+     * constructor for Game class
+     * @param playersNumber the number of players in a game
+     * @throws InvalidNumberOfPlayersException
+     * @throws RemoteException
+     */
     public Game (int playersNumber) throws InvalidNumberOfPlayersException, RemoteException{
         if(playersNumber <= 1 || playersNumber >= 5) throw new InvalidNumberOfPlayersException();
         this.playersNumber = playersNumber;
@@ -43,7 +48,9 @@ public class Game extends ModelSubject implements Serializable {
 
     //***********************************************
 
-    /** Creates x number of Players (x = playersNumber) */
+    /**
+     * Creates x number of Players (x = playersNumber)
+     */
     private void createPlayers(){
         for(int i=0;i<this.playersNumber;i++){
             //nickname: "space" for each player, clientID: 0, isFirstPlayer: false;
@@ -51,7 +58,10 @@ public class Game extends ModelSubject implements Serializable {
         }
     }
 
-    /** Fills GameBoard slots with Items with random Categories depending on the number of players */
+    /**
+     * Fills GameBoard slots with Items with random Categories depending on the number of players
+     * @throws RemoteException
+     */
     private void createGameBoard() throws RemoteException{
         setGridForTwo(this.validGrid);
         switch(this.playersNumber) {
@@ -88,9 +98,12 @@ public class Game extends ModelSubject implements Serializable {
         refillGameBoard();
     }
 
-    /** method to set the GameGrid for two players
-     *  0 = invalid slot
-     *  1 = playable slot */
+    /**
+     * method to set the GameGrid for two players
+     * 0 = invalid slot
+     * 1 = playable slot
+     * @param Grid the GameBoard's item matrix
+     */
     private void setGridForTwo (int[][] Grid) {
         int i, j;
         for (i = 0; i < 9; i++) {
@@ -129,7 +142,9 @@ public class Game extends ModelSubject implements Serializable {
         }
     }
 
-    /** Refills bag with 22 Items of each Category */
+    /**
+     * Refills bag with 22 Items of each Category
+     */
     private void createBag() {
         final int ITEM_NUM = 22;
         for(Category c : Category.values()){
@@ -180,7 +195,10 @@ public class Game extends ModelSubject implements Serializable {
 
     }
 
-    /** Refills every PLAYABLE slot of the Gameboard with an Item of a random Category drawn from the Bag */
+    /**
+     * Refills every PLAYABLE slot of the Gameboard with an Item of a random Category drawn from the Bag
+     * @throws RemoteException
+     */
     public void refillGameBoard() throws RemoteException{
         for(int i=0;i<DIM_GAMEBOARD;i++){
             for(int j=0;j<DIM_GAMEBOARD;j++){

@@ -20,6 +20,8 @@ class RowsColumnsCard extends StrategyCheck implements Serializable {
     /**
      * Method checker calls two different type of methods that verified the subsists of a certain condition
      * in the player shelf
+     * @param grid the item matrix of the player's shelf
+     * @return boolean that tells if a player satisfies a CommonObjectiveCard's condition
      */
     @Override
     public boolean check(Item[][] grid) {
@@ -38,6 +40,7 @@ class RowsColumnsCard extends StrategyCheck implements Serializable {
 
     /**
      * Method rowsChecker controls if the conditions express in the sixth common objective card subsists.
+     * @param grid
      */
     private boolean rowsChecker(Item[][] grid) {
         int rowsCounter = 0; //this is the counter of the rows needed for the goal (at least 2)

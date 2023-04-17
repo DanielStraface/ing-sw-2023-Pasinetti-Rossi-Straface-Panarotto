@@ -16,7 +16,14 @@ public class TurnChecker {
     private static final int SHELF_COLUMNS=5;
 
 
-    /** all checks that have to be done before ending a player's turn */
+    /**
+     * all checks that have to be done before ending a player's turn
+     * @param player the player whose turn in ending
+     * @param game
+     * @return shelfFull <==> boolean to check if the current player's shelf is full
+     * @throws InvalidPointerException
+     * @throws RemoteException
+     */
     public boolean manageCheck(Player player, Game game) throws InvalidPointerException, RemoteException {
         boolean shelfFull;
         commonObjCardCheck(player, game);
@@ -25,9 +32,14 @@ public class TurnChecker {
         return shelfFull;
     }
 
-    /** checks if the Player currently playing has reached any of the two CommonObjectiveCards' goal
-     *  after his turn and adds points to its Score tally , throws an InvalidPointerException if
-     *  all the points of one CommonObjectiveCard have already been taken */
+    /**
+     * checks if the Player currently playing has reached any of the two CommonObjectiveCards' goal
+     * after his turn and adds points to its Score tally , throws an InvalidPointerException if
+     * all the points of one CommonObjectiveCard have already been taken
+     * @param player
+     * @param game
+     * @throws InvalidPointerException
+     */
     private void commonObjCardCheck(Player player,Game game) throws InvalidPointerException {
         CommonObjCard commonObjCard;
 
@@ -38,10 +50,14 @@ public class TurnChecker {
         }
     }
 
-    /** check for every row and column (except first and last): if the slot is occupied by an Item,
-     *  check if any of its adjacent places are occupied by an Item as well.
-     *  If there's a single adjacent item, there's no need to refill the GameBoard and the check is
-     *  set to false. */
+    /**
+     * check for every row and column (except first and last): if the slot is occupied by an Item,
+     * check if any of its adjacent places are occupied by an Item as well.
+     * If there's a single adjacent item, there's no need to refill the GameBoard and the check is
+     * set to false.
+     * @param game
+     * @throws RemoteException
+     */
     private void refillGameBoardCheck(Game game) throws RemoteException {
         boolean check = true;
         int[][] validGrid = game.getValidGrid();
@@ -99,7 +115,11 @@ public class TurnChecker {
         }
     }
 
-    /** Returns points to assign to the player based on the number of adjacent items */
+    /**
+     * Returns points to assign to the player based on the number of adjacent items
+     * @param player
+     * @return integer of the score to be added to the player
+     */
     public int adjacentItemsCheck(Player player) {
         Item[][] shelf = player.getMyShelf().getShelfGrid();
         Category scanned;
@@ -133,8 +153,16 @@ public class TurnChecker {
     }
 
 
-    /** Recursive method used in conjunction to adjacentItemsCheck to increase the counter in case there's an
-     *  adjacent item with the same category */
+    /**
+     * Recursive method used in conjunction to adjacentItemsCheck to increase the counter in case there's an
+     * adjacent item with the same category
+     * @param shelf the current player's shelf
+     * @param visited a matrix of booleans to check if the slot has already been visited
+     * @param category the category of the previous item checked
+     * @param i the row of the previous item checked
+     * @param j the column of the previous item checked
+     * @param counter a counter that increases if the conditions are met
+     */
     private void adjacentCategoryCheck(Item[][] shelf, boolean[][] visited, Category category, int i, int j, List<Integer> counter){
         Integer temp;
         // stops the method if the item checked is out of the Shelf's bounds, has already been visited
