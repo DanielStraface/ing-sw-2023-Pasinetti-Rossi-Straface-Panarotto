@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.AppServerImpl;
 import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.exceptions.InvalidMatchesException;
 import it.polimi.ingsw.model.Game;
@@ -14,7 +15,6 @@ public class TurnHandler {
     private boolean endGame;
     private boolean gameOver;
     private static final int ENDGAME_POINTS = 1;
-    private static final int GAME_OVER = 100;
     public TurnHandler(Game game){
         this.turnChecker= new TurnChecker();
         this.game = game;
@@ -61,32 +61,31 @@ public class TurnHandler {
     }
 
     private void gameOverHandler() {
-        System.out.println("GAME OVER");
-        int counter = 1;
+        System.out.println("This match has got a game over");
         for(Player p : game.getPlayers()){
             PersonalObjCard personalObjCard = p.getMyPersonalOBjCard();
             try {
                 p.addPoints(personalObjCard.shelfCheck(p.getMyShelf()));
                 p.addPoints(turnChecker.adjacentItemsCheck(p));
-                System.out.println("Player " + counter + ":");
-                System.out.println("Your points: " + p.getScore());
-                counter++;
             } catch (InvalidMatchesException e) {
                 throw new RuntimeException(e);
             }
         }
         Player winner = game.getPlayers().get(0);
-        if(winner.getScore() < game.getPlayers().get(1).getScore()) winner = game.getPlayers().get(1);
+        for(int i=0;i<game.getPlayers().size();i++){
+            if(winner.getScore() < game.getPlayers().get(i).getScore()) winner = game.getPlayers().get(i);
+        }
         String finalMessage = winner.getNickname() + " wins with a score of " + winner.getScore() + " points\n" +
                     "The game ends here. Thank you for playing this game!\nBYE";
-        System.out.println(finalMessage);
         for(Player p : game.getPlayers()){
             try {
-                p.setStatus(GAME_OVER, finalMessage);
+                p.setStatus("%" + finalMessage);
             } catch (RemoteException e) {
                 System.err.println(e.getMessage());
             }
         }
-        System.exit(10);
+        AppServerImpl.gameFinished();
     }
+
+    public boolean getGameOver(){return this.gameOver;}
 }

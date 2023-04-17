@@ -22,7 +22,6 @@ public class Player extends ModelSubject implements Serializable {
     private List<Item> selectItems;
     private boolean isFirstPlayer;
     private static final int INVALID = 0;
-    private int status = 0;
 
     /** constructor for Player class */
     public Player(){
@@ -210,10 +209,8 @@ public class Player extends ModelSubject implements Serializable {
         this.nickname = nickname;
         this.clientID = clientID;
     }
-    public void setStatus(int status, String msg) throws RemoteException {
-        this.status = status;
+    public void setStatus(String msg) throws RemoteException {
         setChangedAndNotifyListener(msg);
-        setChangedAndNotifyListener(this.status);
     }
 
     /* get methods */

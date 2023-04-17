@@ -13,7 +13,6 @@ import java.rmi.RemoteException;
 import java.util.*;
 
 public class TextualUI extends ViewSubject implements Serializable {
-    private transient String name;
     private transient List<int[]> coords;
     private transient int column;
     private transient Client refClient;
@@ -33,21 +32,21 @@ public class TextualUI extends ViewSubject implements Serializable {
         int maxNum = 0;
         System.out.println("-----------------------------------------------------------------------------------------");
         System.out.println("Hey, is your turn");
-        System.out.println("How many items do you want to pick up?");
+        System.out.print("How many items do you want to pick up?\n>>");
         while(maxNum <=0 || maxNum > 3){
             maxNum = scanner.nextInt();
-            if(maxNum <=0 || maxNum > 3) System.out.println("Invalid number of items, please choose another number");
+            if(maxNum <=0 || maxNum > 3) System.out.print("\nInvalid number of items, please choose another number\n>>");
         }
         while(maxNum > 0){
             int[] coordsArray = new int[2];
             int coordsInput = 10;
-            System.out.println("Insert the row value of the item: ");
+            System.out.print("\nInsert the row value of the item: >>");
             while(coordsInput < 0 || coordsInput > 9 ){
                 coordsInput = scanner.nextInt();
             }
             coordsArray[0] = coordsInput;
             coordsInput = 10;
-            System.out.println("Insert the column value of the item: ");
+            System.out.print("Insert the column value of the item: >>");
             while(coordsInput < 0 || coordsInput > 9 ){
                 coordsInput = scanner.nextInt();
             }
@@ -66,7 +65,7 @@ public class TextualUI extends ViewSubject implements Serializable {
         Scanner scanner = new Scanner(System.in);
         int col = 0;
         while (col < 1 || col > 5) {
-            System.out.println("\nIn what column do you want to insert your items (from 1 to 5) ?");
+            System.out.print("\nIn what column do you want to insert your items (from 1 to 5) ?\n>>");
             col = scanner.nextInt();
         }
         this.column = col - 1;
@@ -87,7 +86,7 @@ public class TextualUI extends ViewSubject implements Serializable {
             do{
                 for(Integer i : selectedItems)
                     System.out.print(i+1 + " ");
-                System.out.println("\nWhat item do you want to insert at position number " + counter + "?");
+                System.out.print("\nWhat item do you want to insert at position number " + counter + "? >>");
                 cardIndex = scanner.nextInt();
             } while(!selectedItems.contains(cardIndex-1));
             temp.add(this.coords.remove(selectedItems.indexOf(cardIndex-1)));
@@ -250,9 +249,7 @@ public class TextualUI extends ViewSubject implements Serializable {
         askColumn();
     }
 
-    public void update(String commonObjCardReached) {
-        System.out.println(commonObjCardReached);
-    }
+    public void update(String commonObjCardReached) {System.out.println(commonObjCardReached);}
 
     private void setChangedAndNotifyListener(String nm) throws RemoteException {
         setChanged();

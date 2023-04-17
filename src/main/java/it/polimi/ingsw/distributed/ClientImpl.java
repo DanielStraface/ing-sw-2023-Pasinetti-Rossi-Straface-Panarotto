@@ -76,13 +76,17 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable 
 
     @Override
     public void update(Integer column) {
-        if(column == 10)
-            System.exit(100);
         this.view.update(column);
     }
 
     @Override
     public void update(String msg) throws RemoteException {
+        if(msg.contains("%")){
+            msg = msg.substring(1);
+            this.view.update(msg);
+            this.view.update("FINE PARTITA");
+            System.exit(100);
+        }
         this.view.update(msg);
     }
 

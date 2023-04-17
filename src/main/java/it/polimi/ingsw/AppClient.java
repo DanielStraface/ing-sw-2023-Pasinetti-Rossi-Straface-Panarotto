@@ -9,17 +9,15 @@ public abstract class AppClient {
     public static List<Integer> welcome() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Hello, welcome to MyShelfie!");
-        System.out.println("1) Start a new game");
-        System.out.println("2) Join an existing game");
-        System.out.println("3) Load a previous game");
-        System.out.println("4) Quit from MyShelfie");
+        System.out.print("1) Start a new game\n2) Join an existing game\n" +
+                "3) Load a previous game\n4) Quit from MyShelfie\n>>");
         int decision = scanner.nextInt();
         askNickname();
         int numbOfPlayers = 0;
         switch(decision){
-            case 1, 2 -> numbOfPlayers = askNumOfPlayer();
+            case 1 -> numbOfPlayers = askNumOfPlayer();
+            case 2 -> {}
             case 3 -> {
-                numbOfPlayers = 0;
                 displayResearch();
             }
             case 4 -> {
@@ -38,7 +36,7 @@ public abstract class AppClient {
         playersDecision.add(Integer.valueOf(numbOfPlayers));
         decision = 0;
         while(decision < 1 || decision > 2){
-            System.out.println("Choose between RMI Network version or Socket:\n1) RMI\n2) Socket");
+            System.out.print("Choose between RMI Network version or Socket:\n1) RMI\n2) Socket\n>>");
             decision = scanner.nextInt();
         }
         playersDecision.add(Integer.valueOf(decision));
@@ -46,26 +44,24 @@ public abstract class AppClient {
     }
 
     private static void displayResearch() {
-        System.out.println("Searching for a previous game...It may take a while");
+        System.out.print("Searching for a previous game...It may take a while");
     }
 
     private static int askNumOfPlayer() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Insert the number of players of the match: ");
-        return scanner.nextInt();
-    }
-
-    private static int startNewGame() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Insert the number of players of the match: ");
+        System.out.print("Insert the number of players of the match: >>");
         return scanner.nextInt();
     }
 
     private static void askNickname(){
-        String input = null;
+        String input;
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Insert your nickname");
-        while(input == null){
+        System.out.print("Insert your nickname\n>>");
+        input = scanner.nextLine();
+        while(input.contains("%") || input.contains("!") || input.contains("?") || input.contains("=") ||
+                input.contains("(") || input.contains(")") || input.contains("'") ||
+                input.contains("/") || input.contains("£") || input.contains("$") || input.contains("€")){
+            System.out.print("\nThis chars are not allowed !£$%&/()=?' , please try again");
             input = scanner.nextLine();
         }
         nickname = input;

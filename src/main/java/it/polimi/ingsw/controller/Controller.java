@@ -102,6 +102,7 @@ public class Controller {
         return this.game;
     }
     public List<Client> getViews(){return this.views;}
+    public boolean getGameOver(){return this.turnHandler.getGameOver();}
 
     /* update methods */
     /**

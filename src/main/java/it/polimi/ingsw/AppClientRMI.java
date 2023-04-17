@@ -23,11 +23,17 @@ public class AppClientRMI {
         AppServer server = (AppServer) registry.lookup("server");
         switch (args[TYPE_OF_MATCH_POSITION]) {
             case "1" -> {
-                ClientImpl client = new ClientImpl(server.connect(),
+                ClientImpl client = new ClientImpl(server.connect("NEW_GAME"),
                         Integer.parseInt(args[NUMBER_OF_PLAYER_POSITION]), nickname);
             }
             case "2" -> {
-                ClientImpl client = new ClientImpl(server.connect(), JOINING_EXISTING_GAME, nickname);
+                Server ref = server.connect();
+                if(ref == null){
+                    System.out.println("There are no match at this moment for you..\nPlease, reboot application and" +
+                            " choose 'to Start a new game'.");
+                    System.exit(3);
+                }
+                ClientImpl client = new ClientImpl(ref, JOINING_EXISTING_GAME, nickname);
             }
             //case "3" -> server.loadFromFile();
             default -> {

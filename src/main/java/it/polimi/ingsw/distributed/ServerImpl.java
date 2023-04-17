@@ -12,25 +12,16 @@ import java.rmi.RemoteException;
 import java.rmi.server.RMIClientSocketFactory;
 import java.rmi.server.RMIServerSocketFactory;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ServerImpl extends UnicastRemoteObject implements Server {
-    private static ServerImpl instance;
+    public int connectedClient;
     private Controller controller;
     private Game game = null;
-    private static final int PLAYERS_NUMB = 2;
     private boolean[] toConnect;
-
-    public static ServerImpl getInstance(){
-        if(instance == null){
-            try {
-                instance = new ServerImpl();
-            } catch (RemoteException e) {
-                System.err.println("Error while creating server in ServerImpl class" + e.getMessage());
-            }
-        }
-        return instance;
-    }
 
     public ServerImpl() throws RemoteException {
         super();
@@ -43,6 +34,9 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
     public ServerImpl(int port, RMIClientSocketFactory csf, RMIServerSocketFactory ssf) throws RemoteException {
         super(port, csf, ssf);
     }
+
+    public int getPlayersGameNumber(){return this.game.getPlayers().size();}
+    public boolean getGameOver(){return this.controller.getGameOver();}
 
     @Override
     public void startGame() throws RemoteException{
@@ -104,7 +98,9 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
         System.out.println("The server is " + this.toString());
         if(numOfPlayers == 0){
             if(this.game == null){
-                System.err.println("No match found\nClosing...");
+                client.update("There are no match at this moment for you..\nPlease, reboot application and" +
+                        " choose 'to Start a new game'. Note: the server will not respond you more!");
+                System.err.println("No match found\nSomeone must create a new one");
                 System.exit(3);
             }
             if(this.controller.getViews().size() == this.game.getPlayers().size()){
