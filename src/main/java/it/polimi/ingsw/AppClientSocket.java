@@ -2,6 +2,7 @@ package it.polimi.ingsw;
 
 import it.polimi.ingsw.distributed.ClientImpl;
 import it.polimi.ingsw.distributed.socket.middleware.ServerStub;
+import it.polimi.ingsw.exceptions.WaitingForEventSocketException;
 
 import java.rmi.RemoteException;
 
@@ -36,14 +37,16 @@ public class AppClientSocket {
                 try{
                     System.out.println("Client ready to receive message from server");
                     serverStub.receive(finalClient);
+                } catch (WaitingForEventSocketException e) {
+                    System.out.println(e.getMessage());
                 } catch (RemoteException e) {
-                    System.err.println("Error while receiving message from server");
-                    /*try{
+                    System.err.println("Error while receiving message from server" + e.getMessage());
+                    try{
                         serverStub.close();
                     } catch (RemoteException ex) {
                         System.err.println("Cannot close connection with server. Halting...");
                     }
-                    System.exit(1);*/
+                    System.exit(4);
                 }
             }
         }.start();

@@ -1,10 +1,13 @@
 package it.polimi.ingsw.distributed;
 
+import it.polimi.ingsw.AppServerImpl;
 import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.distributed.Server;
 import it.polimi.ingsw.distributed.socket.middleware.ClientSkeleton;
 import it.polimi.ingsw.distributed.socket.middleware.ServerStub;
+import it.polimi.ingsw.exceptions.NoSavingPointException;
+import it.polimi.ingsw.exceptions.SaveFileNotFoundException;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
 
@@ -35,6 +38,37 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
         super(port, csf, ssf);
     }
 
+    private boolean findAPreviousGame() throws RemoteException {
+        String fileName;
+        for(int i=0;i<100;i++){
+            try{
+                boolean marker = true;
+                fileName = "match" + i;
+                Game gameLoaded = this.controller.loadGame(fileName);
+                for(Player pFromGameLoaded : gameLoaded.getPlayers()){
+                    for(Player pFromThisGame : this.game.getPlayers()){
+                        if(!(pFromThisGame.getNickname().equals(pFromGameLoaded.getNickname()))){
+                            marker = false;
+                        }
+                    }
+                }
+                if(marker){
+                    this.game = gameLoaded;
+                    System.out.println("Server load a previous version of this match");
+                    for(Client client : this.controller.getViews()) {
+                        client.update("Previous match found for these player! The match resume from that point");
+                    }
+                    return true;
+                }
+            } catch (SaveFileNotFoundException e) {}
+        }
+        return false;
+
+        /*try{
+            Controller.loadGame(this.controller.)
+        }*/
+    }
+
     public int getPlayersGameNumber(){return this.game.getPlayers().size();}
     public boolean getGameOver(){return this.controller.getGameOver();}
 
@@ -43,7 +77,10 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
         if(this.controller.getViews().size() == this.controller.getGame().getPlayers().size()){
             for(Client client : this.controller.getViews())
                 client.update("The match is starting...Extraction of the first player is running");
-            this.controller.chooseFirstPlayer();
+            //*********************************
+            if(!findAPreviousGame()) this.controller.chooseFirstPlayer();
+            else this.controller.continuePreviousMatch();
+            //*********************************
         } else {
             int temp = 0;
             for(int i=0;i<this.toConnect.length;i++){
@@ -125,7 +162,13 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
             } catch (Exception e){
                 System.err.println(e.getMessage());
             }
-            this.controller = new Controller(game, client);
+            try{
+                this.controller = new Controller(game, client, AppServerImpl.getNumberOfMatch(this));
+            } catch (NoSavingPointException e) {
+                System.err.println("Controller not create correctly: " + e.getMessage() +"\nClosing...");
+                System.exit(5);
+            }
+            //this.controller = new Controller(game, client, AppServerImpl.getNumberOfMatch(this));
             this.game.addListener(client);
             this.toConnect = new boolean[this.game.getPlayers().size()];
             for(int i=0;i<toConnect.length;i++){
@@ -165,5 +208,15 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
     @Override
     public void update(Client client, List<int[]> coords) throws RemoteException {
         this.controller.update(client, coords);
+    }
+
+    @Override
+    public boolean equals(Object o){
+        if(!(o instanceof ServerImpl)){
+            return false;
+        } else {
+            if(o.toString().equals(this.toString())) return true;
+            else return false;
+        }
     }
 }

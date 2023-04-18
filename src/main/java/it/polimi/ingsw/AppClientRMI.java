@@ -2,6 +2,7 @@ package it.polimi.ingsw;
 
 import it.polimi.ingsw.distributed.Server;
 import it.polimi.ingsw.distributed.ClientImpl;
+import it.polimi.ingsw.exceptions.TooManyMatchesException;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -23,11 +24,17 @@ public class AppClientRMI {
         AppServer server = (AppServer) registry.lookup("server");
         switch (args[TYPE_OF_MATCH_POSITION]) {
             case "1" -> {
-                ClientImpl client = new ClientImpl(server.connect("NEW_GAME"),
-                        Integer.parseInt(args[NUMBER_OF_PLAYER_POSITION]), nickname);
+                try {
+                    ClientImpl client = new ClientImpl(server.connect("NEW_GAME"),
+                            Integer.parseInt(args[NUMBER_OF_PLAYER_POSITION]), nickname);
+                } catch (TooManyMatchesException e) {
+                    System.out.println(e.getMessage() + ", try later...\nThis client app is closing!");
+                    System.exit(5);
+                }
             }
             case "2" -> {
                 Server ref = server.connect();
+                System.out.println("----------");
                 if(ref == null){
                     System.out.println("There are no match at this moment for you..\nPlease, reboot application and" +
                             " choose 'to Start a new game'.");

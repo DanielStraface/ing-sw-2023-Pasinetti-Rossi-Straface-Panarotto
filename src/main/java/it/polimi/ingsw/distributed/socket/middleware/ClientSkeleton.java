@@ -134,11 +134,11 @@ public class ClientSkeleton implements Client {
         if(o instanceof String){
             System.err.println("Receiving a event from " + client + " client: String");
             nickname = (String) o;
-            if(nickname.equals("START GAME")){
+            /*if(nickname.equals("START GAME")){
                 server.startGame();
-            } else {
+            } else {*/
                 server.update(client, nickname);
-            }
+            //}
         }
         if(o instanceof List<?>){
             System.err.println("Receiving an event from " + client + " client: List<int[]>");

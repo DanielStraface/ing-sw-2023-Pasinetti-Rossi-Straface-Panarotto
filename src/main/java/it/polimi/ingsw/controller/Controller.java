@@ -1,6 +1,9 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.AppServerImpl;
 import it.polimi.ingsw.distributed.Client;
+import it.polimi.ingsw.exceptions.NoSavingPointException;
+import it.polimi.ingsw.exceptions.SaveFileNotFoundException;
 import it.polimi.ingsw.model.Game;
 
 import java.io.*;
@@ -19,6 +22,7 @@ import java.util.Random;
  */
 public class Controller {
     /* ATTRIBUTES SECTION */
+    private final String savedFileName;
     private final Game game;
     //private final Client view;
     private final List<Client> views = new ArrayList<>();
@@ -27,8 +31,14 @@ public class Controller {
     /* METHODS SECTION */
 
     /* -- constructor --*/
-    public Controller(Game game, Client view) throws RemoteException {
+    public Controller(Game game, Client view, Integer numberOfController) throws RemoteException, NoSavingPointException {
         this.game = game;
+        if(numberOfController == null){
+            System.out.println("The numberOfController is null");
+            this.savedFileName = "NOT_SAVE_POINT";
+            throw new NoSavingPointException("There is no saving point file name reference for this game!");
+        }
+        this.savedFileName = "match" + numberOfController + ".ser";
         //game.setCurrentPlayer(game.getPlayers().get(0));
         turnHandler = new TurnHandler(game);
         this.views.add(view);
@@ -63,6 +73,8 @@ public class Controller {
             FileOutputStream fileOutputStream=new FileOutputStream(fileName);
             ObjectOutputStream objectOutputStream=new ObjectOutputStream(fileOutputStream);
             objectOutputStream.writeObject(game);
+            objectOutputStream.flush();
+            objectOutputStream.reset();
             objectOutputStream.close();
             fileOutputStream.close();
         }
@@ -77,7 +89,7 @@ public class Controller {
      * @return the game instance that represent the model stored in the fileName
      * @author Christian Pasinetti
      */
-    public static Game loadGame(String fileName) {
+    public Game loadGame(String fileName) throws SaveFileNotFoundException {
         try {
             FileInputStream fileInputStream = new FileInputStream(fileName);
             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
@@ -85,9 +97,19 @@ public class Controller {
             objectInputStream.close();
             fileInputStream.close();
             return game;
-        } catch (IOException | ClassNotFoundException e) {
+        } catch (IOException e) {
+            throw new SaveFileNotFoundException(fileName);
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
-            return null;
+        }
+        return null;
+    }
+
+    public void continuePreviousMatch(){
+        try {
+            this.game.setCurrentPlayer(this.game.getCurrentPlayer());
+        } catch (RemoteException e) {
+            System.err.println("Unable to continue this match");
         }
     }
 
@@ -118,9 +140,9 @@ public class Controller {
         } else {
             int col = column.intValue();
             try {
+                saveGame(getGame(),this.savedFileName);
                 game.getCurrentPlayer().putItemInShelf(col);
                 this.turnHandler.manageTurn(o);
-                saveGame(getGame(),"savedGame.ser");
             } catch (Exception e) {
                 System.err.println(e.getMessage());
                 System.err.println("Skipping this selection, the turn passes");

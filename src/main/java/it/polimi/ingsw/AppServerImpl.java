@@ -3,6 +3,7 @@ package it.polimi.ingsw;
 import it.polimi.ingsw.distributed.Server;
 import it.polimi.ingsw.distributed.ServerImpl;
 import it.polimi.ingsw.distributed.socket.middleware.ClientSkeleton;
+import it.polimi.ingsw.exceptions.TooManyMatchesException;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -22,6 +23,7 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
     private static Map<Integer, ServerImpl> waitingQueue;
     private final ExecutorService executorService = Executors.newCachedThreadPool();
     private static int FIRST_WAITING_MATCH;
+    private static final int MAX_NUMBER_OF_MATCHES = 100;
     protected AppServerImpl() throws RemoteException {
     }
     public static AppServerImpl getInstance() throws RemoteException {
@@ -129,6 +131,15 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
         }
     }
 
+    public static Integer getNumberOfMatch(ServerImpl server){
+        for(Integer i : waitingQueue.keySet()){
+            if(server.equals(waitingQueue.get(i))){
+                return i;
+            }
+        }
+        return null;
+    }
+
     @Override
     public Server connect() throws RemoteException {
         if( waitingQueue == null || waitingQueue.size() == 0){
@@ -154,11 +165,16 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
     }
 
     @Override
-    public Server connect(String newGame) throws RemoteException {
+    public Server connect(String newGame) throws RemoteException, TooManyMatchesException {
         if(waitingQueue == null){
             waitingQueue = new HashMap<>();
             matches = new HashMap<>();
             FIRST_WAITING_MATCH = 0;
+        }
+        if(waitingQueue.size() + matches.size() == MAX_NUMBER_OF_MATCHES){
+            System.out.println("Too many matches are currently managed by this server. " +
+                    "Discarding the new Game Request");
+            throw new TooManyMatchesException();
         }
         ServerImpl match = null;
         try {

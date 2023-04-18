@@ -2,6 +2,7 @@ package it.polimi.ingsw.distributed.socket.middleware;
 
 import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.distributed.Server;
+import it.polimi.ingsw.exceptions.WaitingForEventSocketException;
 import it.polimi.ingsw.model.Item;
 import it.polimi.ingsw.modelview.GameBoardView;
 import it.polimi.ingsw.modelview.GameView;
@@ -79,7 +80,7 @@ public class ServerStub implements Server {
         }
     }
 
-    public void receive(Client client) throws RemoteException{
+    public void receive(Client client) throws RemoteException, WaitingForEventSocketException {
         Object o;
         GameView gmv;
         GameBoardView gb;
@@ -90,7 +91,7 @@ public class ServerStub implements Server {
         try{
             o = ois.readObject();
         } catch (IOException e) {
-            throw new RemoteException("Cannot receive event: " + e.getMessage());
+            throw new WaitingForEventSocketException("ServerStub is waiting for the server messages");
         } catch (ClassNotFoundException e) {
             throw new RemoteException("Cannot cast event: " + e.getMessage());
         }
