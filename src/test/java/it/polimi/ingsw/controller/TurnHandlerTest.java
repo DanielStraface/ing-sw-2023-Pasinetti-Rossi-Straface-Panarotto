@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.exceptions.InvalidMatchesException;
 import it.polimi.ingsw.exceptions.InvalidNumberOfItemsException;
 import it.polimi.ingsw.exceptions.InvalidPointerException;
@@ -10,6 +11,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
+
+import java.rmi.Remote;
+import java.rmi.RemoteException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -28,7 +32,7 @@ public class TurnHandlerTest {
     private Item[][] grid0, grid1, grid2, grid3;
     private final int ROWS = 6;
     private final int COLS = 5;
-
+    private Client o;
 
 
     @BeforeAll
@@ -70,9 +74,11 @@ public class TurnHandlerTest {
         game = new Game(3);
         turnHandler = new TurnHandler(game);
         turnChecker = new TurnChecker();
+        Client o;
         player1 = game.getPlayers().get(0);
         player2 = game.getPlayers().get(1);
         player3 = game.getPlayers().get(2);
+
 
     }
 
@@ -80,7 +86,7 @@ public class TurnHandlerTest {
      * correctNextTurnShift verify that the turn has passed correctly to the next player.
      */
     @Test
-    public void correctNextTurnShift() {
+    public void correctNextTurnShift() throws RemoteException {
         game.setCurrentPlayer(player1);
         turnHandler.nextTurn(player1);
         assertEquals(player2, game.getCurrentPlayer());
@@ -98,7 +104,7 @@ public class TurnHandlerTest {
      * @throws InvalidPointerException
      */
     @Test
-    public void correctCallToGameOver() throws InvalidPointerException {
+    public void correctCallToGameOver() throws InvalidPointerException, RemoteException {
         boolean gameOver;
         game.setCurrentPlayer(player2);
         gameOver = turnChecker.manageCheck(player2, game);
@@ -177,10 +183,12 @@ public class TurnHandlerTest {
 
     /**
      * ManageTurnPlayerNotFirstPlayer verify that ManageTurn added a point to the first player who fills the library
-     * and if the player isn't the FirstPlayer or the last one, passes the turn to the next player
+     * and if the player isn't the FirstPlayer or the last one, passes the turn to the next player.
+     * @throws RemoteException
+     * @throws InvalidPointerException
      */
     @Test
-    public void ManageTurnPlayerNotFirstPlayer() throws Exception {
+    public void ManageTurnPlayerNotFirstPlayer() throws RemoteException, InvalidPointerException{
         int points;
         shelf4 = player2.getMyShelf();
         for (int i = 0; i < 6; i++) {
@@ -192,7 +200,9 @@ public class TurnHandlerTest {
         game.setCurrentPlayer(player2);
         turnChecker.manageCheck(player2, game);
         points = player2.getScore();
-        turnHandler.manageTurn();
+
+
+        turnHandler.manageTurn(o);
         assertEquals(points + 1, player2.getScore());
         turnHandler.nextTurn(player2);
         assertEquals(player3, game.getCurrentPlayer());
@@ -207,8 +217,13 @@ public class TurnHandlerTest {
         }
     }
 
+    /**
+     * ManageTurnIsFirstPlayer check manageTurn method on the player seated before the firstPlayer.
+     * @throws RemoteException
+     * @throws InvalidPointerException
+     */
     @Test
-    public void ManageTurnIsFirstPlayer() throws Exception {
+    public void ManageTurnIsFirstPlayer() throws RemoteException, InvalidPointerException {
         int points;
         shelf4 = player2.getMyShelf();
         shelf5 = player1.getMyShelf();
@@ -231,9 +246,44 @@ public class TurnHandlerTest {
         assertFalse(turnChecker.manageCheck(player1, game));
         assertEquals(game.getPlayers().indexOf(player1), game.getPlayers().indexOf(player2) - 1);
         points = player1.getScore();
-        turnHandler.manageTurn();
+        turnHandler.manageTurn(o);
         assertEquals(points, player1.getScore());
         turnHandler.nextTurn(player1);
+    }
+
+    /**
+     * manageTurnLastPlayer check manageTurn method on the last player of the player list.
+     * @throws RemoteException
+     * @throws InvalidPointerException
+     */
+    @Test
+    public void manageTurnLastPlayer() throws RemoteException, InvalidPointerException{
+        int points2, points3;
+        shelf4 = player2.getMyShelf();
+        shelf5 = player1.getMyShelf();
+        shelf6 = player3.getMyShelf();
+        for (int i = 0; i < 6; i++) {
+            for (int j = 0; j < 5; j++) {
+                shelf4.getShelfGrid()[i][j] = new Item(Category.TROPHY);
+            }
+        }
+
+        shelf5.getShelfGrid()[0][2] = new Item(Category.TROPHY);
+        shelf5.getShelfGrid()[5][2] = new Item(Category.CAT);
+        shelf6.getShelfGrid()[2][2] = new Item(Category.BOOK);
+        shelf6.getShelfGrid()[0][4] = new Item(Category.TROPHY);
+
+        player1.setIsFirstPlayer();
+        game.setCurrentPlayer(player3);
+        points2 = player2.getScore();
+        points3= player3.getScore();
+        turnChecker.manageCheck(player2, game);
+        assertFalse(turnChecker.manageCheck(player3,game));
+        assertEquals(game.getPlayers().indexOf(player3), game.getPlayers().indexOf(player1) - 1);
+        turnHandler.manageTurn(o);
+        assertEquals(points2 + 1, player2.getScore());
+        assertEquals(points3, player3.getScore());
+
     }
 }
 

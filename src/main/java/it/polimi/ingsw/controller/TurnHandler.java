@@ -2,6 +2,7 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.exceptions.InvalidMatchesException;
+import it.polimi.ingsw.exceptions.InvalidPointerException;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.personcard.PersonalObjCard;
@@ -15,16 +16,20 @@ public class TurnHandler {
     private boolean gameOver;
     private static final int ENDGAME_POINTS = 1;
     private static final int GAME_OVER = 100;
-    public TurnHandler(Game game){
-        this.turnChecker= new TurnChecker();
+
+    public TurnHandler(Game game) {
+        this.turnChecker = new TurnChecker();
         this.game = game;
-        this.endGame= false;
+        this.endGame = false;
         this.gameOver = false;
     }
- /** nextTurn passes the turn if no shelf has been filled yet. If a player has filled the library, it calls
-  *  GameOverHandler method. */
+
+    /**
+     * nextTurn passes the turn if no shelf has been filled yet. If a player has filled the library, it calls
+     * GameOverHandler method.
+     */
     public void nextTurn(Player player) throws RemoteException {
-        if(!gameOver) {
+        if (!gameOver) {
             if (game.getPlayers().indexOf(player) == (game.getPlayers().size() - 1)) {
                 game.setCurrentPlayer(game.getPlayers().get(0));
             } else {
@@ -39,14 +44,15 @@ public class TurnHandler {
      * manageTurn adds a point to the current player if the current player is the first to have filled the library.
      * The method verify if the player is the FirstPlayer or the player before the FirstPlayer, to verify if the game is to end,
      * then it calls NextTUrn method.
+     *
      * @throws Exception
      */
-    public void manageTurn(Client o) throws Exception{
+    public void manageTurn(Client o) throws InvalidPointerException, RemoteException {
         Player player = game.getCurrentPlayer();
 
-        if(turnChecker.manageCheck(player, game) || endGame) {
+        if (turnChecker.manageCheck(player, game) || endGame) {
             System.err.println("HERE1");
-            if(!endGame) player.addPoints(ENDGAME_POINTS);
+            if (!endGame) player.addPoints(ENDGAME_POINTS);
             endGame = true;
             Player firstPlayer = null;
             for (Player p : game.getPlayers()) {
@@ -74,7 +80,7 @@ public class TurnHandler {
     private void gameOverHandler() {
         System.out.println("GAME OVER");
         int counter = 1;
-        for(Player p : game.getPlayers()){
+        for (Player p : game.getPlayers()) {
             PersonalObjCard personalObjCard = p.getMyPersonalOBjCard();
             try {
                 p.addPoints(personalObjCard.shelfCheck(p.getMyShelf()));
@@ -86,7 +92,7 @@ public class TurnHandler {
                 throw new RuntimeException(e);
             }
         }
-        Player winner = game.getPlayers().get(0);
+        /*Player winner = game.getPlayers().get(0);
         if(winner.getScore() < game.getPlayers().get(1).getScore()) winner = game.getPlayers().get(1);
         String finalMessage = winner.getNickname() + " wins with a score of " + winner.getScore() + " points\n" +
                     "The game ends here. Thank you for playing this game!\nBYE";
@@ -99,5 +105,7 @@ public class TurnHandler {
             }
         }
         System.exit(10);
+    }*/
     }
+    public void callGameOverHandler(){gameOverHandler();} /*used for test only */
 }
