@@ -213,6 +213,11 @@ public class Player extends ModelSubject implements Serializable {
         this.score += points;
     }
 
+    /**
+     * Method for adding points to the score specifically by completing a CommonObjectiveCard
+     * @param points points to be added to the player
+     * @param toDisplay displays the completion to the player
+     */
     public void addPointsByCommonObjCard(int points, String toDisplay) {
         this.score += points;
         setChanged();

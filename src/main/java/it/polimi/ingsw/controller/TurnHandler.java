@@ -22,6 +22,11 @@ public class TurnHandler {
         this.gameOver = false;
     }
 
+    /**
+     * Sets the next currentPlayer after the previous' one turn is over, checks if it's the last turn of the match
+     * @param player player whose turn is over
+     * @throws RemoteException
+     */
     public void nextTurn(Player player) throws RemoteException {
         if(!gameOver) {
             if (game.getPlayers().indexOf(player) == (game.getPlayers().size() - 1)) {
@@ -34,6 +39,12 @@ public class TurnHandler {
         }
     }
 
+    /**
+     * Checks if the currentPlayer filled his Shelf and triggers the endgame accordingly, and manages the turn
+     * cycle
+     * @param o the Client of the player whose turn is over
+     * @throws Exception
+     */
     public void manageTurn(Client o) throws Exception{
         Player player = game.getCurrentPlayer();
 
@@ -60,6 +71,9 @@ public class TurnHandler {
         this.nextTurn(player);
     }
 
+    /**
+     * At the end of the match it calculates every player's points and declares a winner based on who has the most
+     */
     private void gameOverHandler() {
         System.out.println("This match has got a game over");
         for(Player p : game.getPlayers()){

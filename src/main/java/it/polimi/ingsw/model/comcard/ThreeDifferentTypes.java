@@ -16,6 +16,12 @@ class ThreeDifferentTypes extends StrategyCheck implements Serializable {
         this.type = type;
     }
 
+    /**
+     * Method checker calls two different type of methods that verified the subsists of a certain condition
+     * in the player shelf
+     * @param grid the item matrix of the player's shelf
+     * @return boolean that tells if a player satisfies a CommonObjectiveCard's condition
+     */
     @Override
     public boolean check(Item[][] grid) {
         switch (this.type) {

@@ -196,7 +196,7 @@ public class Game extends ModelSubject implements Serializable {
     }
 
     /**
-     * Refills every PLAYABLE slot of the Gameboard with an Item of a random Category drawn from the Bag
+     * Refills every PLAYABLE slot of the GameBoard with an Item of a random Category drawn from the Bag
      * @throws RemoteException
      */
     public void refillGameBoard() throws RemoteException{

@@ -18,6 +18,10 @@ public class Shelf implements Serializable {
         }
     }
 
+    /**
+     * method that checks if the Shelf is full by checking if the first row is full
+     * @return a true boolean is the Shelf is full
+     */
     public boolean isFull() {
         for(int i=0;i<SHELF_COLUMNS;i++){
             if (this.getShelfGrid()[TOP_ROW][i].getCategoryType() == null) return false;

@@ -65,6 +65,14 @@ public class CommonObjCard implements Serializable {
         playersDone = new ArrayList<Player>();
     }
 
+    /**
+     * Constructor for CommonObjCard. It is based on how many players will play the game because the points provides by
+     * CommonObjCard instance is different.
+     * @param numberOfPlayers number of players in a match
+     * @param type the type of CommonObjectiveCard
+     * @param description the card's description taken from the json file
+     * @throws InvalidNumberOfPlayersException
+     */
     public CommonObjCard(int numberOfPlayers, int type, String description) throws InvalidNumberOfPlayersException {
         /*The switch case are chosen by the number of players of the game.
          * For each case statement, the objPoints array assume different points configuration.
@@ -120,6 +128,9 @@ public class CommonObjCard implements Serializable {
     }
     /* -- logic methods */
 
+    /**
+     * defines all the check methods depending on the type of card
+     */
     private void defineStrategy(int type){
         if(type == 2 || type == 6) strategyCheck = new RowsColumnsCard(type);
         if(type == 7 || type == 5) strategyCheck = new ThreeDifferentTypes(type);
