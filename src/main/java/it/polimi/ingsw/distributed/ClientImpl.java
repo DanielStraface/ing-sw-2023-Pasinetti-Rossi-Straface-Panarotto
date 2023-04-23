@@ -9,14 +9,15 @@ import it.polimi.ingsw.modelview.GameView;
 import it.polimi.ingsw.modelview.ShelfView;
 import it.polimi.ingsw.view.TextualUI;
 
+import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.RMIClientSocketFactory;
 import java.rmi.server.RMIServerSocketFactory;
 import java.rmi.server.UnicastRemoteObject;
 
-public class ClientImpl extends UnicastRemoteObject implements Client, Runnable {
-    TextualUI view = new TextualUI();
-    String nickname;
+public class ClientImpl extends UnicastRemoteObject implements Client, Serializable, Runnable {
+    transient TextualUI view = new TextualUI();
+    transient String nickname;
     private int clientID;
 
     public ClientImpl(Server server, Integer decision, String nickname) throws RemoteException {
@@ -106,4 +107,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable 
 
     @Override
     public String getNickname(){return this.nickname;}
+
+    @Override
+    public int getClientID() throws RemoteException {return this.clientID;}
 }

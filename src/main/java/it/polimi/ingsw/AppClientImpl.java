@@ -5,14 +5,21 @@ import java.rmi.RemoteException;
 import java.util.List;
 
 public class AppClientImpl extends AppClient{
+    private static final int TYPE_OF_MATCH_POSITION = 0;
+    private static final int NUMBER_OF_PLAYERS_POSITION = 1;
+    private static final int TYPE_OF_CONNECTION_POSITION = 2;
+    private static final int RMI_NETWORK = 1;
+    private static final int SOCKET_NETWORK = 2;
+    private static final int QUIT_IN_APPLCLIENTIMPL_ERROR = 2;
     public static void startClient() {
         List<Integer> decisions = welcome();
-        String[] elements = new String[3];
+        String[] elements = new String[decisions.size()];
+        System.out.println(decisions.size());
         elements[elements.length - 1] = AppClientImpl.nickname;
-        elements[0] = decisions.get(0).toString();
-        elements[1] = decisions.get(1).toString();
-        switch(decisions.get(decisions.size() - 1)){
-            case 1 -> {
+        elements[TYPE_OF_MATCH_POSITION] = decisions.get(TYPE_OF_MATCH_POSITION).toString();
+        elements[NUMBER_OF_PLAYERS_POSITION] = decisions.get(NUMBER_OF_PLAYERS_POSITION).toString();
+        switch(decisions.get(TYPE_OF_CONNECTION_POSITION)){
+            case RMI_NETWORK -> {
                 try {
                     AppClientRMI.main(elements);
                 } catch (RemoteException e) {
@@ -21,7 +28,7 @@ public class AppClientImpl extends AppClient{
                     System.err.println("Something went wrong with String[] args parameters: " + e.getMessage());
                 }
             }
-            case 2 -> {
+            case SOCKET_NETWORK -> {
                 try {
                     AppClientSocket.main(elements);
                 } catch (RemoteException e) {
@@ -29,9 +36,8 @@ public class AppClientImpl extends AppClient{
                 }
             }
             default -> {
-                System.out.println("Something went wrong! Closing...");
-                System.err.println("TERMINATED");
-                System.exit(1);
+                System.out.println("Something went wrong! Closing...\nTERMINATED");
+                System.exit(QUIT_IN_APPLCLIENTIMPL_ERROR);
             }
         }
     }

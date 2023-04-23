@@ -41,8 +41,9 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
     @Override
     public void startGame() throws RemoteException{
         if(this.controller.getViews().size() == this.controller.getGame().getPlayers().size()){
-            for(Client client : this.controller.getViews())
+            for(Client client : this.controller.getViews()) {
                 client.update("The match is starting...Extraction of the first player is running");
+            }
             this.controller.chooseFirstPlayer();
         } else {
             int temp = 0;
@@ -58,34 +59,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
 
     @Override
     public void register(Client client, String nickname) throws RemoteException {
-        /*if(this.game == null){
-            System.err.println("No match found\nClosing...");
-            System.exit(3);
-        }
-        if(this.controller.getViews().size() == this.game.getPlayers().size()){
-            System.err.println("The lobby is full...");
-            return;
-        }
-        //this.controller = new Controller(game, client);
-        this.controller.addClientView(client);
-        this.game.addListener(client);
-        for(int i=0;i<toConnect.length;i++){
-            if(this.toConnect[i] == false){
-                this.toConnect[i] = true;
-                this.game.getPlayers().get(i).addListenerForPlayer(client);
-                this.game.getPlayers().get(i).setNicknameAndClientID(nickname, i*10);
-                client.update(i*10);
-                break;
-            }
-        }
-        System.out.println("Register client " + client + " for a " + this.game.getPlayers().size() + " players match");
-        System.out.println("There are " + this.game.countObservers() + " game listeners");*/
-        /*for(int i=0;i<this.toConnect.length;i++){
-            if(this.toConnect[i] == false)
-                return false;
-        }
-        notifyAll();
-        return true;*/
+
     }
 
     @Override
@@ -107,18 +81,8 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
                 System.err.println("The lobby is full...");
                 return;
             }
-            //this.controller = new Controller(game, client);
             this.controller.addClientView(client);
             this.game.addListener(client);
-            for(int i=0;i<toConnect.length;i++){
-                if(this.toConnect[i] == false){
-                    this.toConnect[i] = true;
-                    this.game.getPlayers().get(i).addListenerForPlayer(client);
-                    this.game.getPlayers().get(i).setNicknameAndClientID(nickname, i*10);
-                    client.update(i*10);
-                    break;
-                }
-            }
         } else {
             try{
                 this.game = new Game(numOfPlayers);
@@ -128,28 +92,21 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
             this.controller = new Controller(game, client);
             this.game.addListener(client);
             this.toConnect = new boolean[this.game.getPlayers().size()];
-            for(int i=0;i<toConnect.length;i++){
-                if(this.toConnect[i] == false){
-                    this.toConnect[i] = true;
-                    this.game.getPlayers().get(i).addListenerForPlayer(client);
-                    this.game.getPlayers().get(i).setNicknameAndClientID(nickname, i*10);
-                    break;
-                }
+        }
+        for(int i=0;i<toConnect.length;i++){
+            if(this.toConnect[i] == false){
+                this.toConnect[i] = true;
+                this.game.getPlayers().get(i).addListenerForPlayer(client);
+                this.game.getPlayers().get(i).setNicknameAndClientID(nickname, i*10);
+                client.update(i*10);
+                break;
             }
         }
-        System.out.println("Register client " + client + " for a " + this.game.getPlayers().size() + " players match");
+        System.out.println("Register client " + client + "\nwith clientID := " + client.getClientID() +
+                "for a " + this.game.getPlayers().size() + " players match");
         if(fromSocket == true){
             this.startGame();
         }
-        //startGame();
-        /*for(Player player : this.game.getPlayers()){
-            player.addListenerForPlayer(client);
-        }*/
-        /*for(int i=0;i<this.toConnect.length;i++){
-            if(this.toConnect[i] == false)
-                return false;
-        }
-        return true;*/
     }
 
     @Override

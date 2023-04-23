@@ -2,6 +2,7 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.AppServerImpl;
 import it.polimi.ingsw.distributed.Client;
+import it.polimi.ingsw.distributed.ClientImpl;
 import it.polimi.ingsw.exceptions.InvalidMatchesException;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
@@ -47,9 +48,7 @@ public class TurnHandler {
      */
     public void manageTurn(Client o) throws Exception{
         Player player = game.getCurrentPlayer();
-
         if(turnChecker.manageCheck(player, game) || endGame) {
-            System.err.println("HERE1");
             if(!endGame) player.addPoints(ENDGAME_POINTS);
             endGame = true;
             Player firstPlayer = null;
@@ -57,13 +56,10 @@ public class TurnHandler {
                 if (p.getIsFirstPlayer()) firstPlayer = p;
             }
             if (game.getPlayers().indexOf(player) == game.getPlayers().size() - 1) {
-                System.err.print("HERE2");
                 if (game.getPlayers().indexOf(firstPlayer) == 0) {
-                    System.err.println("HERE3");
                     gameOver = true;
                 }
             } else if (game.getPlayers().indexOf(player) == game.getPlayers().indexOf(firstPlayer) - 1) {
-                System.err.println("HERE4");
                 gameOver = true;
             }
         }

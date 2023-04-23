@@ -1,6 +1,8 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.distributed.Client;
+import it.polimi.ingsw.distributed.ClientImpl;
+import it.polimi.ingsw.distributed.socket.middleware.ClientSkeleton;
 import it.polimi.ingsw.model.Game;
 
 import java.io.*;
@@ -20,19 +22,17 @@ import java.util.Random;
 public class Controller {
     /* ATTRIBUTES SECTION */
     private final Game game;
-    //private final Client view;
     private final List<Client> views = new ArrayList<>();
     private final TurnHandler turnHandler;
+    private static final String SelectionError = "Try again, invalid selection due to: ";
 
     /* METHODS SECTION */
 
     /* -- constructor --*/
     public Controller(Game game, Client view) throws RemoteException {
         this.game = game;
-        //game.setCurrentPlayer(game.getPlayers().get(0));
         turnHandler = new TurnHandler(game);
         this.views.add(view);
-        //this.view = view;
     }
 
     /* -- logic methods --*/
@@ -112,14 +112,26 @@ public class Controller {
      * @param column - the chosen column by the player
      * @author Matteo Panarotto
      */
-    public void update(Client o, Integer column) {
-        if( !this.views.contains(o) ){
-            System.err.println("Discarding notification from " + o);
+    public void update(Client o, Integer column) throws RemoteException {
+        boolean fromValidClient = false;
+        for(Client c : this.views){
+            if(c.getClientID() == o.getClientID())
+                fromValidClient = true;
+        }
+        if( !fromValidClient ){
+            System.err.println("Discarding notification from client with " + o.getClientID() + " clientID number in" +
+                    " update(column)");
         } else {
             int col = column.intValue();
             try {
                 game.getCurrentPlayer().putItemInShelf(col);
-                this.turnHandler.manageTurn(o);
+                for(Client c : this.views)
+                    if(c.getClientID() == o.getClientID())
+                        if(c instanceof ClientSkeleton){
+                            this.turnHandler.manageTurn(c);
+                        } else {
+                            this.turnHandler.manageTurn(o);
+                        }
                 saveGame(getGame(),"savedGame.ser");
             } catch (Exception e) {
                 System.err.println(e.getMessage());
@@ -152,14 +164,28 @@ public class Controller {
      * @author Matteo Panarotto
      */
     public void update(Client o, List<int[]> coords) throws RemoteException{
-        if( !this.views.contains(o) ){
-            System.err.println("Discarding notification from " + o);
+        boolean fromValidClient = false;
+        for(Client c : this.views){
+            if(c.getClientID() == o.getClientID())
+                fromValidClient = true;
+        }
+        if(!fromValidClient){
+            System.err.println("Discarding notification from client with " + o.getClientID() + " clientID number" +
+                    " in update(coords)");
         } else {
             try {
                 game.getCurrentPlayer().pickItems(coords, game.getGameboard().getGameGrid(), game.getValidGrid());
             } catch (Exception e) {
                 System.err.println(e.getMessage());
                 System.err.println("Skipping this selection, repeat the turn");
+                for(Client c : this.views){
+                    if(c.getClientID() == o.getClientID())
+                        if(c instanceof ClientSkeleton){
+                            c.update(SelectionError + e.getMessage());
+                        } else {
+                            o.update(SelectionError + e.getMessage());
+                        }
+                }
                 game.setCurrentPlayer(game.getCurrentPlayer());
             }
         }

@@ -22,6 +22,7 @@ public class Player extends ModelSubject implements Serializable {
     private List<Item> selectItems;
     private boolean isFirstPlayer;
     private static final int INVALID = 0;
+    private static final int PLAYABLE = 1;
 
     /**
      * constructor for Player class
@@ -48,8 +49,9 @@ public class Player extends ModelSubject implements Serializable {
             throw new InvalidStateException("selectedCoords is empty");
         }
         for(int i=0;i<selectedCoords.size();i++){
-            if(validGrid[selectedCoords.get(i)[0]][selectedCoords.get(i)[1]] == INVALID)
-                throw new InvalidSelectionException("Selected item in invalid slot");
+            if(validGrid[selectedCoords.get(i)[0]][selectedCoords.get(i)[1]] == INVALID ||
+                    validGrid[selectedCoords.get(i)[0]][selectedCoords.get(i)[1]] == PLAYABLE )
+                throw new InvalidSelectionException("Selected item in invalid or empty slot");
         }
         boolean sameX = true;
         boolean sameY = true;
@@ -163,7 +165,7 @@ public class Player extends ModelSubject implements Serializable {
             int col = selectedCoords.get(i)[1];
             selectItems.add(gameGrid[row][col]);
             gameGrid[row][col] = new Item(null);
-            validGrid[row][col] = 1;
+            validGrid[row][col] = PLAYABLE;
         }
         setChangedAndNotifyListener(gameGrid);
     }

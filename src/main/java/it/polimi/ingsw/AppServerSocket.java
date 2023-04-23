@@ -11,7 +11,7 @@ import java.rmi.RemoteException;
 
 public class AppServerSocket {
     public static void main(String[] args) throws RemoteException {
-        try(ServerSocket serverSocket = new ServerSocket(1234)){
+        /*try(ServerSocket serverSocket = new ServerSocket(1234)){
             System.out.println("Server is starting...");
             while(true){
                 System.out.println("Server ready!");
@@ -28,6 +28,6 @@ public class AppServerSocket {
             }
         } catch (IOException e) {
             throw new RemoteException("Error while creating server socket", e);
-        }
+        }*/
     }
 }
