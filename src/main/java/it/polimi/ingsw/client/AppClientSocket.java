@@ -1,4 +1,4 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.distributed.ClientImpl;
 import it.polimi.ingsw.distributed.socket.middleware.ServerStub;

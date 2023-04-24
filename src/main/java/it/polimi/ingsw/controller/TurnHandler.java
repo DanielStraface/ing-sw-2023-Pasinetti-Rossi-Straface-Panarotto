@@ -1,8 +1,7 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.AppServerImpl;
+import it.polimi.ingsw.server.AppServerImpl;
 import it.polimi.ingsw.distributed.Client;
-import it.polimi.ingsw.distributed.ClientImpl;
 import it.polimi.ingsw.exceptions.InvalidMatchesException;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;

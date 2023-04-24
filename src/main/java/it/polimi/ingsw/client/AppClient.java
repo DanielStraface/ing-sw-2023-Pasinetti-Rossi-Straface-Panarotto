@@ -1,4 +1,4 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.client;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,8 +9,8 @@ public abstract class AppClient {
     static String nickname;
     public static List<Integer> welcome() {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Hello, welcome to MyShelfie!\n1)Start a new game\n2)Join an existing game\n" +
-                "3)Load a previous game\n4)Quit from MyShelfie\n>>");
+        System.out.print("Hello, welcome to MyShelfie!\nThis is MyShelfie main menu, please choose from this menu list:\n" +
+                "1)Start a new game\n2)Join an existing game\n3)Load a previous game\n4)Quit from MyShelfie\n>>");
         int decision = scanner.nextInt();
         while(decision < 1 || decision > 4){
             System.out.print("\nInvalid selection from above menu! Please try again\n>>");

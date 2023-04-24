@@ -1,9 +1,10 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.distributed.Server;
 import it.polimi.ingsw.distributed.ServerImpl;
 import it.polimi.ingsw.distributed.socket.middleware.ClientSkeleton;
 import it.polimi.ingsw.exceptions.NotMessageFromClientYet;
+import it.polimi.ingsw.exceptions.TooManyMatchesException;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -30,7 +31,8 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
     private static final int TYPE_OF_MATCH = 1;
     private static final int NICKNAME_POSITION = 2;
     private static final int SERVER_PORT = 1234;
-    private static final String APPSERVER_REGISTRY_NAME = "it.polimi.ingsw.AppServer";
+    private static final String APPSERVER_REGISTRY_NAME = "it.polimi.ingsw.server.AppServer";
+    private static final int MAX_MATCHES_MANAGED = 100;
     private static final int ERROR_WHILE_CREATING_SERVER_SOCKET = 1;
     protected AppServerImpl() throws RemoteException {
     }
@@ -109,7 +111,13 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
                         Server server = null;
                         List<Object> information = clientSkeleton.receive();
                         Integer typeOfMatch = (Integer) information.get(TYPE_OF_MATCH);
-                        if(typeOfMatch.intValue() != JOIN_EXISTING_GAME) server = instance.connect("NEW GAME");
+                        if(typeOfMatch.intValue() != JOIN_EXISTING_GAME) {
+                            try{
+                                server = instance.connect("NEW GAME");
+                            } catch (TooManyMatchesException e){
+                                clientSkeleton.update(e.getMessage());
+                            }
+                        }
                         else server = instance.connect();
                         if(server == null){
                             clientSkeleton.update(NoGame);
@@ -185,12 +193,17 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
     }
 
     @Override
-    public Server connect(String newGame) throws RemoteException {
+    public Server connect(String newGame) throws RemoteException, TooManyMatchesException {
         if(waitingQueue == null){
             waitingQueue = new HashMap<>();
             matches = new HashMap<>();
             FIRST_WAITING_MATCH = 0;
         }
+        if(matches != null && (waitingQueue.size() + matches.size() >= MAX_MATCHES_MANAGED)){
+            System.err.println("Too many matches managed!");
+            throw new TooManyMatchesException();
+        }
+
         ServerImpl match = null;
         try {
             match = new ServerImpl();

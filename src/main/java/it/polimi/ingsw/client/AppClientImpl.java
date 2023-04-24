@@ -1,4 +1,4 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.client;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;

@@ -1,10 +1,7 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.distributed.ClientImpl;
-import it.polimi.ingsw.distributed.Server;
-import it.polimi.ingsw.distributed.ServerImpl;
+import it.polimi.ingsw.client.AppClientImpl;
 
-import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
 public class App
