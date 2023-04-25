@@ -2,6 +2,8 @@ package it.polimi.ingsw.distributed.socket.middleware;
 
 import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.distributed.Server;
+import it.polimi.ingsw.exceptions.NotMessageFromClientYet;
+import it.polimi.ingsw.exceptions.NotMessageFromServerYet;
 import it.polimi.ingsw.model.Item;
 import it.polimi.ingsw.modelview.GameBoardView;
 import it.polimi.ingsw.modelview.GameView;
@@ -12,12 +14,18 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ClientSkeleton implements Client {
 
     private final ObjectOutputStream oos;
     private final ObjectInputStream ois;
+    private int status = 0;
+    private int numberOfTurnRequest = 0;
+    private Client auxiliaryClient = null;
+    private Integer auxiliaryColumn = null;
+    private int clientID;
 
     public ClientSkeleton(Socket socket) throws RemoteException {
         try {
@@ -36,8 +44,9 @@ public class ClientSkeleton implements Client {
     public void update(GameBoardView gb) throws RemoteException {
         try{
             oos.writeObject(gb);
+            flushAndReset(oos);
         } catch (IOException e) {
-            throw new RemoteException("Cannot send event: " + e.getMessage());
+            throw new RemoteException("Cannot send gb event: " + e.getMessage());
         }
     }
 
@@ -45,9 +54,11 @@ public class ClientSkeleton implements Client {
     public void update(GameView game, int clientID) throws RemoteException {
         try{
             oos.writeObject(game);
+            flushAndReset(oos);
             oos.writeObject(clientID);
+            flushAndReset(oos);
         } catch (IOException e) {
-            throw new RemoteException("Cannot send event: " + e.getMessage());
+            throw new RemoteException("Cannot send gameview and clientID event: " + e.getMessage());
         }
     }
 
@@ -55,8 +66,9 @@ public class ClientSkeleton implements Client {
     public void update(Item[][] gameGrid) throws RemoteException {
         try{
             oos.writeObject(gameGrid);
+            flushAndReset(oos);
         } catch (IOException e) {
-            throw new RemoteException("Cannot send event: " + e.getMessage());
+            throw new RemoteException("Cannot send gameGrid event: " + e.getMessage());
         }
     }
 
@@ -64,8 +76,9 @@ public class ClientSkeleton implements Client {
     public void update(ShelfView shelf) throws RemoteException {
         try{
             oos.writeObject(shelf);
+            flushAndReset(oos);
         } catch (IOException e) {
-            throw new RemoteException("Cannot send event: " + e.getMessage());
+            throw new RemoteException("Cannot send shelf event: " + e.getMessage());
         }
     }
 
@@ -73,8 +86,9 @@ public class ClientSkeleton implements Client {
     public void update(Integer column) throws RemoteException {
         try{
             oos.writeObject(column);
+            flushAndReset(oos);
         } catch (IOException e) {
-            throw new RemoteException("Cannot send event: " + e.getMessage());
+            throw new RemoteException("Cannot send column event: " + e.getMessage());
         }
     }
 
@@ -82,17 +96,20 @@ public class ClientSkeleton implements Client {
     public void update(String msg) throws RemoteException {
         try{
             oos.writeObject(msg);
+            flushAndReset(oos);
         } catch (IOException e) {
-            throw new RemoteException("Cannot send event: " + e.getMessage());
+            throw new RemoteException("Cannot send string event: " + e.getMessage());
         }
     }
 
     @Override
     public void update(int clientID) throws RemoteException {
         try{
+            this.clientID = clientID;
             oos.writeObject(clientID);
+            flushAndReset(oos);
         } catch (IOException e) {
-            throw new RemoteException("Cannot send event: " + e.getMessage());
+            throw new RemoteException("Cannot send clientID event: " + e.getMessage());
         }
     }
 
@@ -101,49 +118,89 @@ public class ClientSkeleton implements Client {
         return null;
     }
 
-    public void receive(Server server) throws RemoteException {
-        Client client;
+    @Override
+    public int getClientID() throws RemoteException {
+        return this.clientID;
+    }
+
+    public synchronized void receive(Server server) throws RemoteException, NotMessageFromClientYet {
+        Client client = null;
         Object o;
-        Integer column;
+        Integer column = null;
+        String nickname = null;
+        List<int[]> coords = null;
+
+        try{
+            o = ois.readObject();
+            if(o instanceof Client){
+                client = (Client) o;
+            }
+            if(o instanceof List<?>) coords = (List<int[]>) o;
+            if(o instanceof Integer) column = (Integer) o;
+        } catch (IOException e) {
+            return;
+        } catch (ClassNotFoundException e) {
+            throw new RemoteException("Cannot find the object class correctly in ClientSkeleton: " + e.getMessage());
+        }
+
+        if(client != null){
+            numberOfTurnRequest++;
+            if(this.status == 0){
+                this.status = 1;
+                this.auxiliaryClient = client;
+            } else {
+                this.status = -1;
+            }
+        } else if(coords != null) {
+            if (this.status == 1) {
+                this.status = 0;
+                server.update(this.auxiliaryClient, coords);
+                this.auxiliaryClient = null;
+            } else {
+                this.status = -1;
+                System.err.println("Ho letto coords prima di client. Status := " + this.status);
+            }
+        } else if(column != null){
+            if(this.status == 1){
+                this.status = 0;
+                server.update(this.auxiliaryClient, column);
+                this.auxiliaryClient = null;
+            } else {
+                this.status = -1;
+                System.err.println("Ho letto column prima di client. Status := " + this.status);
+            }
+        } else {
+            if(this.numberOfTurnRequest == 0){
+                throw new NotMessageFromClientYet();
+            } else {
+                throw new RemoteException("Error while reading the client, i did not read the client!");
+            }
+
+        }
+    }
+
+    public List<Object> receive() throws RemoteException{
+        Client client;
+        Integer numberOfPlayer;
         String nickname;
-        List<int[]> coords;
         try{
             client = (Client) ois.readObject();
-            o = ois.readObject();
-            System.out.println("Receiving an event from " + client + " client");
+            numberOfPlayer = (Integer) ois.readObject();
+            nickname = (String) ois.readObject();
         } catch (IOException e) {
-            throw new RemoteException("Cannot receive event: " + e.getMessage());
+            throw new RemoteException("Cannot receive the client while understand which match it is " + e.getMessage());
         } catch (ClassNotFoundException e) {
-            throw new RemoteException("Cannot cast event: " + e.getMessage());
+            throw new RemoteException("Cannot cast the client while understand which match it is " + e.getMessage());
         }
-        if(o instanceof Integer){
-            System.out.println("Receiving event from " + client + " client: integer");
-            try{
-                nickname = (String) ois.readObject();
-                System.out.println("Receiving event from " + client + " client: string");
-                column = (Integer) o;
-                server.register(client, column.intValue(), nickname);
-            } catch (IOException e) {
-                System.out.println("Call update column9845");
-                column = (Integer) o;
-                server.update(client, column);
-            } catch (ClassNotFoundException e) {
-                throw new RemoteException("Cannot cast the nickname to String: " + e.getMessage());
-            }
-        }
-        if(o instanceof String){
-            System.err.println("Receiving a event from " + client + " client: String");
-            nickname = (String) o;
-            /*if(nickname.equals("START GAME")){
-                server.startGame();
-            } else {*/
-                server.update(client, nickname);
-            //}
-        }
-        if(o instanceof List<?>){
-            System.err.println("Receiving an event from " + client + " client: List<int[]>");
-            coords = (List<int[]>) o;
-            server.update(client, coords);
-        }
+        List<Object> information = new ArrayList<>();
+        information.add(client);
+        information.add(numberOfPlayer);
+        information.add(nickname);
+        return information;
+    }
+
+    private void flushAndReset(ObjectOutputStream o) throws IOException {
+        o.flush();
+        o.reset();
     }
 }

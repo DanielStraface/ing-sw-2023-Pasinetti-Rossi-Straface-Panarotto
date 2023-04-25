@@ -2,7 +2,7 @@ package it.polimi.ingsw.distributed.socket.middleware;
 
 import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.distributed.Server;
-import it.polimi.ingsw.exceptions.WaitingForEventSocketException;
+import it.polimi.ingsw.exceptions.NotMessageFromServerYet;
 import it.polimi.ingsw.model.Item;
 import it.polimi.ingsw.modelview.GameBoardView;
 import it.polimi.ingsw.modelview.GameView;
@@ -22,6 +22,7 @@ public class ServerStub implements Server {
     private Socket socket;
     private ObjectOutputStream oos;
     private ObjectInputStream ois;
+    private static final String NO_GAME_ON_SERVER = "NO_GAME";
 
     public ServerStub(String ip, int port){
         this.ip = ip;
@@ -31,6 +32,7 @@ public class ServerStub implements Server {
     public void startGame() throws RemoteException {
         try{
             oos.writeObject("START GAME");
+            flushAndReset(oos);
         } catch (IOException e) {
             throw new RemoteException("Error while starting the game method", e);
         }
@@ -46,8 +48,11 @@ public class ServerStub implements Server {
         createConnection();
         try{
             oos.writeObject(client);
+            flushAndReset(oos);
             oos.writeObject(typeOfMatch);
+            flushAndReset(oos);
             oos.writeObject(nickname);
+            flushAndReset(oos);
         } catch (IOException e) {
             throw new RemoteException("Error while register the client on the server", e);
         }
@@ -56,7 +61,10 @@ public class ServerStub implements Server {
     @Override
     public void update(Client client, Integer column) throws RemoteException {
         try{
+            oos.writeObject(client);
+            flushAndReset(oos);
             oos.writeObject(column);
+            flushAndReset(oos);
         } catch (IOException e) {
             throw new RemoteException("Cannot send event: " + e.getMessage());
         }
@@ -65,7 +73,10 @@ public class ServerStub implements Server {
     @Override
     public void update(Client client, String nickname) throws RemoteException {
         try{
+            oos.writeObject(client);
+            flushAndReset(oos);
             oos.writeObject(nickname);
+            flushAndReset(oos);
         } catch (IOException e) {
             throw new RemoteException("Cannot send event: " + e.getMessage());
         }
@@ -74,13 +85,16 @@ public class ServerStub implements Server {
     @Override
     public void update(Client client, List<int[]> coords) throws RemoteException {
         try{
+            oos.writeObject(client);
+            flushAndReset(oos);
             oos.writeObject(coords);
+            flushAndReset(oos);
         } catch (IOException e) {
             throw new RemoteException("Cannot send event: " + e.getMessage());
         }
     }
 
-    public void receive(Client client) throws RemoteException, WaitingForEventSocketException {
+    public void receive(Client client) throws RemoteException, NotMessageFromServerYet {
         Object o;
         GameView gmv;
         GameBoardView gb;
@@ -91,7 +105,8 @@ public class ServerStub implements Server {
         try{
             o = ois.readObject();
         } catch (IOException e) {
-            throw new WaitingForEventSocketException("ServerStub is waiting for the server messages");
+            throw new NotMessageFromServerYet();
+            //throw new RemoteException("Cannot receive event: " + e.getMessage());
         } catch (ClassNotFoundException e) {
             throw new RemoteException("Cannot cast event: " + e.getMessage());
         }
@@ -121,7 +136,19 @@ public class ServerStub implements Server {
         //--------------------------------------------------------------------------------------------------------------
         if(o instanceof String){
             msg = (String) o;
+            boolean toTerminate = false;
+            if(msg.equals(NO_GAME_ON_SERVER)){
+                try{
+                    msg = (String) ois.readObject();
+                    toTerminate = true;
+                } catch (IOException e) {
+                    throw new RemoteException("Cannot receive event: " + e.getMessage());
+                } catch (ClassNotFoundException e) {
+                    throw new RemoteException("Cannot cast event: " + e.getMessage());
+                }
+            }
             client.update(msg);
+            if(toTerminate) System.exit(3);
         }
         //--------------------------------------------------------------------------------------------------------------
         //game --> readObject() = integer --> update(GameBoardView, int)
@@ -165,6 +192,11 @@ public class ServerStub implements Server {
         } catch (IOException e) {
             throw new RemoteException("Error while connecting to server: ", e);
         }
+    }
+
+    private void flushAndReset(ObjectOutputStream o) throws IOException {
+        o.flush();
+        o.reset();
     }
 
     public void close() throws RemoteException{

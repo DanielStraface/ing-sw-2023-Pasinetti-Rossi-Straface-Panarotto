@@ -1,5 +1,7 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.client.AppClientImpl;
+
 public class Prova {
     public static void main(String[] args){
         /*new Thread(){

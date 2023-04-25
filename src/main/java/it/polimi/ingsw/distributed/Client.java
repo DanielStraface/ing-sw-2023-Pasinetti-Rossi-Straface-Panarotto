@@ -17,4 +17,5 @@ public interface Client extends Remote {
     void update(String msg) throws RemoteException;
     void update(int clientID) throws RemoteException;
     String getNickname() throws RemoteException;
+    int getClientID() throws RemoteException;
 }

@@ -32,22 +32,27 @@ public class TextualUI extends ViewSubject implements Serializable {
         int maxNum = 0;
         System.out.println("-----------------------------------------------------------------------------------------");
         System.out.println("Hey, is your turn");
-        System.out.print("How many items do you want to pick up?\n>>");
+        System.out.print("How many items do you want to pick up? >>");
+        maxNum = scanner.nextInt();
         while(maxNum <=0 || maxNum > 3){
+            System.out.print("\nInvalid number of items, please choose another number >>");
             maxNum = scanner.nextInt();
-            if(maxNum <=0 || maxNum > 3) System.out.print("\nInvalid number of items, please choose another number\n>>");
         }
         while(maxNum > 0){
             int[] coordsArray = new int[2];
             int coordsInput = 10;
             System.out.print("\nInsert the row value of the item: >>");
+            coordsInput = scanner.nextInt();
             while(coordsInput < 0 || coordsInput > 9 ){
+                System.out.print("\nInvalid row value, please choose a valid row >>");
                 coordsInput = scanner.nextInt();
             }
             coordsArray[0] = coordsInput;
             coordsInput = 10;
             System.out.print("Insert the column value of the item: >>");
+            coordsInput = scanner.nextInt();
             while(coordsInput < 0 || coordsInput > 9 ){
+                System.out.print("\nInvalid column value, please choose a valid column >>");
                 coordsInput = scanner.nextInt();
             }
             coordsArray[1] = coordsInput;
@@ -65,7 +70,7 @@ public class TextualUI extends ViewSubject implements Serializable {
         Scanner scanner = new Scanner(System.in);
         int col = 0;
         while (col < 1 || col > 5) {
-            System.out.print("\nIn what column do you want to insert your items (from 1 to 5) ?\n>>");
+            System.out.print("\nIn what column do you want to insert your items (from 1 to 5) ? >>");
             col = scanner.nextInt();
         }
         this.column = col - 1;

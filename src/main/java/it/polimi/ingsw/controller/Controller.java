@@ -1,9 +1,8 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.AppServerImpl;
 import it.polimi.ingsw.distributed.Client;
-import it.polimi.ingsw.exceptions.NoSavingPointException;
-import it.polimi.ingsw.exceptions.SaveFileNotFoundException;
+import it.polimi.ingsw.distributed.ClientImpl;
+import it.polimi.ingsw.distributed.socket.middleware.ClientSkeleton;
 import it.polimi.ingsw.model.Game;
 
 import java.io.*;
@@ -22,27 +21,18 @@ import java.util.Random;
  */
 public class Controller {
     /* ATTRIBUTES SECTION */
-    private final String savedFileName;
     private final Game game;
-    //private final Client view;
     private final List<Client> views = new ArrayList<>();
     private final TurnHandler turnHandler;
+    private static final String SelectionError = "Try again, invalid selection due to: ";
 
     /* METHODS SECTION */
 
     /* -- constructor --*/
-    public Controller(Game game, Client view, Integer numberOfController) throws RemoteException, NoSavingPointException {
+    public Controller(Game game, Client view) throws RemoteException {
         this.game = game;
-        if(numberOfController == null){
-            System.out.println("The numberOfController is null");
-            this.savedFileName = "NOT_SAVE_POINT";
-            throw new NoSavingPointException("There is no saving point file name reference for this game!");
-        }
-        this.savedFileName = "match" + numberOfController + ".ser";
-        //game.setCurrentPlayer(game.getPlayers().get(0));
         turnHandler = new TurnHandler(game);
         this.views.add(view);
-        //this.view = view;
     }
 
     /* -- logic methods --*/
@@ -73,8 +63,6 @@ public class Controller {
             FileOutputStream fileOutputStream=new FileOutputStream(fileName);
             ObjectOutputStream objectOutputStream=new ObjectOutputStream(fileOutputStream);
             objectOutputStream.writeObject(game);
-            objectOutputStream.flush();
-            objectOutputStream.reset();
             objectOutputStream.close();
             fileOutputStream.close();
         }
@@ -89,7 +77,7 @@ public class Controller {
      * @return the game instance that represent the model stored in the fileName
      * @author Christian Pasinetti
      */
-    public Game loadGame(String fileName) throws SaveFileNotFoundException {
+    public static Game loadGame(String fileName) {
         try {
             FileInputStream fileInputStream = new FileInputStream(fileName);
             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
@@ -97,19 +85,9 @@ public class Controller {
             objectInputStream.close();
             fileInputStream.close();
             return game;
-        } catch (IOException e) {
-            throw new SaveFileNotFoundException(fileName);
-        } catch (ClassNotFoundException e) {
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
-        }
-        return null;
-    }
-
-    public void continuePreviousMatch(){
-        try {
-            this.game.setCurrentPlayer(this.game.getCurrentPlayer());
-        } catch (RemoteException e) {
-            System.err.println("Unable to continue this match");
+            return null;
         }
     }
 
@@ -134,15 +112,27 @@ public class Controller {
      * @param column - the chosen column by the player
      * @author Matteo Panarotto
      */
-    public void update(Client o, Integer column) {
-        if( !this.views.contains(o) ){
-            System.err.println("Discarding notification from " + o);
+    public void update(Client o, Integer column) throws RemoteException {
+        boolean fromValidClient = false;
+        for(Client c : this.views){
+            if(c.getClientID() == o.getClientID())
+                fromValidClient = true;
+        }
+        if( !fromValidClient ){
+            System.err.println("Discarding notification from client with " + o.getClientID() + " clientID number in" +
+                    " update(column)");
         } else {
             int col = column.intValue();
             try {
-                saveGame(getGame(),this.savedFileName);
                 game.getCurrentPlayer().putItemInShelf(col);
-                this.turnHandler.manageTurn(o);
+                for(Client c : this.views)
+                    if(c.getClientID() == o.getClientID())
+                        if(c instanceof ClientSkeleton){
+                            this.turnHandler.manageTurn(c);
+                        } else {
+                            this.turnHandler.manageTurn(o);
+                        }
+                saveGame(getGame(),"savedGame.ser");
             } catch (Exception e) {
                 System.err.println(e.getMessage());
                 System.err.println("Skipping this selection, the turn passes");
@@ -174,14 +164,28 @@ public class Controller {
      * @author Matteo Panarotto
      */
     public void update(Client o, List<int[]> coords) throws RemoteException{
-        if( !this.views.contains(o) ){
-            System.err.println("Discarding notification from " + o);
+        boolean fromValidClient = false;
+        for(Client c : this.views){
+            if(c.getClientID() == o.getClientID())
+                fromValidClient = true;
+        }
+        if(!fromValidClient){
+            System.err.println("Discarding notification from client with " + o.getClientID() + " clientID number" +
+                    " in update(coords)");
         } else {
             try {
                 game.getCurrentPlayer().pickItems(coords, game.getGameboard().getGameGrid(), game.getValidGrid());
             } catch (Exception e) {
                 System.err.println(e.getMessage());
                 System.err.println("Skipping this selection, repeat the turn");
+                for(Client c : this.views){
+                    if(c.getClientID() == o.getClientID())
+                        if(c instanceof ClientSkeleton){
+                            c.update(SelectionError + e.getMessage());
+                        } else {
+                            o.update(SelectionError + e.getMessage());
+                        }
+                }
                 game.setCurrentPlayer(game.getCurrentPlayer());
             }
         }

@@ -26,10 +26,10 @@ class RowsColumnsCard extends StrategyCheck implements Serializable {
     @Override
     public boolean check(Item[][] grid) {
         switch (this.type) {
-            case 2 -> {
+            case 6 -> {
                 return rowsChecker(grid);
             }
-            case 6 -> {
+            case 2 -> {
                 return columnsChecker(grid);
             }
             default -> {
@@ -39,7 +39,7 @@ class RowsColumnsCard extends StrategyCheck implements Serializable {
     }
 
     /**
-     * Method rowsChecker controls if the conditions express in the sixth common objective card subsists.
+     * method that returns a true boolean if there are at least two full rows of items each formed by six different types
      * @param grid
      */
     private boolean rowsChecker(Item[][] grid) {
@@ -82,6 +82,10 @@ class RowsColumnsCard extends StrategyCheck implements Serializable {
         return false;
     }
 
+    /**
+     * method that returns a true boolean if there are at least two full columns of items each formed by six different types
+     * @param grid
+     */
     private boolean columnsChecker(Item[][] grid) {
         int columnsCounter = 0; //this is the counter of the columns needed for the goal (at least 2)
 

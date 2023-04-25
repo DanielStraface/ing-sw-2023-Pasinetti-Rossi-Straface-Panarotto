@@ -1,4 +1,4 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.distributed.Server;
 import it.polimi.ingsw.exceptions.TooManyMatchesException;
