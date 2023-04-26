@@ -18,7 +18,6 @@ public class AppClientSocket {
         String nickname = args[NICKNAME_POSITION];
         ServerStub serverStub = new ServerStub(SERVER_ADDRESS, SERVER_PORT);
         ClientImpl client = null;
-        System.err.println(args[TYPE_OF_MATCH_POSITION]);
         switch (args[TYPE_OF_MATCH_POSITION]) {
             case "1" -> {
                 client = new ClientImpl(serverStub,
@@ -28,6 +27,11 @@ public class AppClientSocket {
                 client = new ClientImpl(serverStub, JOINING_EXISTING_GAME, nickname);
             }
             default -> {
+                try{
+                    serverStub.close();
+                } catch (RemoteException e) {
+                    System.err.println("Cannot close serverStub, error: " + e.getMessage());
+                }
                 System.exit(QUIT_IN_APPLCLIENTSOCKET_ERROR);
             }
         }

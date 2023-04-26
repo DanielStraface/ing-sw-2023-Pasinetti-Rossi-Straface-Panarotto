@@ -219,8 +219,10 @@ public class Game extends ModelSubject implements Serializable {
 
     /* set methods */
     public void setCurrentPlayer(Player player) throws RemoteException{
-        this.currentPlayer = player;
-        setChangedAndNotifyListeners(this);
+        if(this.currentPlayer == null || !this.currentPlayer.equals(player)){
+                this.currentPlayer = player;
+                setChangedAndNotifyListeners(this);
+        }
     }
     public void setGameBoard (GameBoard gameboard) { this.gameboard = gameboard; }
     public void setValidGrid (int[][] validGrid) { this.validGrid = validGrid; }
