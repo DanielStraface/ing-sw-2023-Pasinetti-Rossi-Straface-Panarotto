@@ -61,7 +61,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Serializa
             this.view.update(game);
             this.view.run(this);
         } else {
-            this.view.update(game.getGameBoard());
+            this.view.update(game.getGameBoard().getGameGrid());
         }
     }
 
@@ -88,7 +88,13 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Serializa
             this.view.update("FINE PARTITA");
             System.exit(100);
         }
-        this.view.update(msg);
+        if(msg.equals("WRONG_COL")){
+            this.view.update("Error, invalid column selection. Please choose another one.");
+            this.view.askColumn("Repeat");
+        } else {
+            this.view.update(msg);
+        }
+
     }
 
     @Override

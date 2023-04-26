@@ -7,6 +7,7 @@ import it.polimi.ingsw.distributed.socket.middleware.ClientSkeleton;
 import it.polimi.ingsw.distributed.socket.middleware.ServerStub;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.server.AppServerImpl;
 
 import java.rmi.RemoteException;
 import java.rmi.server.RMIClientSocketFactory;
@@ -41,6 +42,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
     @Override
     public void startGame() throws RemoteException{
         if(this.controller.getViews().size() == this.controller.getGame().getPlayers().size()){
+            this.controller.setMatchID(AppServerImpl.getMatchID(this));
             for(Client client : this.controller.getViews()) {
                 client.update("The match is starting...Extraction of the first player is running");
             }

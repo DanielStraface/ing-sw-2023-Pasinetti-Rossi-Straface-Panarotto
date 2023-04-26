@@ -14,7 +14,6 @@ public class AppClientImpl extends AppClient{
     public static void startClient() {
         List<Integer> decisions = welcome();
         String[] elements = new String[decisions.size()];
-        System.out.println(decisions.size());
         elements[elements.length - 1] = AppClientImpl.nickname;
         elements[TYPE_OF_MATCH_POSITION] = decisions.get(TYPE_OF_MATCH_POSITION).toString();
         elements[NUMBER_OF_PLAYERS_POSITION] = decisions.get(NUMBER_OF_PLAYERS_POSITION).toString();
@@ -24,6 +23,7 @@ public class AppClientImpl extends AppClient{
                     AppClientRMI.main(elements);
                 } catch (RemoteException e) {
                     System.err.println("Something went wrong with network connections: " + e.getMessage());
+                    terminationError();
                 } catch (NotBoundException e) {
                     System.err.println("Something went wrong with String[] args parameters: " + e.getMessage());
                 }
@@ -33,12 +33,15 @@ public class AppClientImpl extends AppClient{
                     AppClientSocket.main(elements);
                 } catch (RemoteException e) {
                     System.err.println("Something went wrong with network connections: " + e.getMessage());
+                    terminationError();
                 }
             }
-            default -> {
-                System.out.println("Something went wrong! Closing...\nTERMINATED");
-                System.exit(QUIT_IN_APPLCLIENTIMPL_ERROR);
-            }
+            default -> {terminationError();}
         }
+    }
+
+    private static void terminationError(){
+        System.err.println("Something went wrong! Closing...\nTERMINATED");
+        System.exit(QUIT_IN_APPLCLIENTIMPL_ERROR);
     }
 }

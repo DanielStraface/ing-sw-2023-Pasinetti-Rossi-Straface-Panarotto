@@ -28,11 +28,14 @@ public class TurnHandler {
      * @throws RemoteException
      */
     public void nextTurn(Player player) throws RemoteException {
+        System.out.println("The actual player is := " + player.getNickname() + player.getClientID());
         if(!gameOver) {
             if (game.getPlayers().indexOf(player) == (game.getPlayers().size() - 1)) {
                 game.setCurrentPlayer(game.getPlayers().get(0));
+                System.out.println("After turn changed is := " + this.game.getCurrentPlayer().getNickname());
             } else {
                 game.setCurrentPlayer(game.getPlayers().get((game.getPlayers().indexOf(player)) + 1));
+                System.out.println("After turn changed is := " + this.game.getCurrentPlayer().getNickname());
             }
         } else {
             gameOverHandler();

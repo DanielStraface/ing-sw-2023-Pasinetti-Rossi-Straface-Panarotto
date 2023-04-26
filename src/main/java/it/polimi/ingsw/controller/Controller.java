@@ -4,6 +4,7 @@ import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.distributed.ClientImpl;
 import it.polimi.ingsw.distributed.socket.middleware.ClientSkeleton;
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.modelview.GameView;
 
 import java.io.*;
 import java.rmi.RemoteException;
@@ -21,10 +22,12 @@ import java.util.Random;
  */
 public class Controller {
     /* ATTRIBUTES SECTION */
+    private int matchID;
     private final Game game;
     private final List<Client> views = new ArrayList<>();
     private final TurnHandler turnHandler;
     private static final String SelectionError = "Try again, invalid selection due to: ";
+    private boolean toRepeatTheTurnFlag = false;
 
     /* METHODS SECTION */
 
@@ -91,6 +94,9 @@ public class Controller {
         }
     }
 
+    public void setMatchID(int matchID) {this.matchID = matchID;}
+    private void setToRepeatTheTurn(boolean value) {this.toRepeatTheTurnFlag = value;}
+
     /* get methods */
     /**
      * getGame method return the game reference in controller. It is synchronized due to view interactions,
@@ -103,6 +109,8 @@ public class Controller {
     }
     public List<Client> getViews(){return this.views;}
     public boolean getGameOver(){return this.turnHandler.getGameOver();}
+    private int getMatchID() {return this.matchID;}
+    private boolean getToRepeatTheTurn(){return this.toRepeatTheTurnFlag;}
 
     /* update methods */
     /**
@@ -124,6 +132,10 @@ public class Controller {
         } else {
             int col = column.intValue();
             try {
+                if(getToRepeatTheTurn()) {
+                    setToRepeatTheTurn(false);
+                    return;
+                }
                 game.getCurrentPlayer().putItemInShelf(col);
                 for(Client c : this.views)
                     if(c.getClientID() == o.getClientID())
@@ -134,8 +146,20 @@ public class Controller {
                         }
                 saveGame(getGame(),"savedGame.ser");
             } catch (Exception e) {
-                System.err.println(e.getMessage());
-                System.err.println("Skipping this selection, the turn passes");
+                System.err.println("Macthes#" + this.getMatchID() + ": " + e.getMessage() +
+                        "\nSkipping this selection, repeat the column selection of "
+                        + game.getCurrentPlayer().getNickname());
+                this.views.stream()
+                        .filter(client -> {
+                            try {
+                                return client.getClientID() == this.game.getCurrentPlayer().getClientID();
+                            } catch (RemoteException ex) {
+                                throw new RuntimeException(ex);
+                            }
+                        })
+                        .findAny()
+                        .get()
+                        .update("WRONG_COL");
             }
         }
     }
@@ -176,17 +200,22 @@ public class Controller {
             try {
                 game.getCurrentPlayer().pickItems(coords, game.getGameboard().getGameGrid(), game.getValidGrid());
             } catch (Exception e) {
-                System.err.println(e.getMessage());
-                System.err.println("Skipping this selection, repeat the turn");
+                System.err.println("Macthes#" + this.getMatchID() + ": " + e.getMessage() +
+                        "\nSkipping this selection, repeat the turn of " + game.getCurrentPlayer().getNickname());
                 for(Client c : this.views){
-                    if(c.getClientID() == o.getClientID())
+                    if(c.getClientID() == o.getClientID()){
                         if(c instanceof ClientSkeleton){
+                            setToRepeatTheTurn(true);
                             c.update(SelectionError + e.getMessage());
                         } else {
                             o.update(SelectionError + e.getMessage());
                         }
+                    }
                 }
                 game.setCurrentPlayer(game.getCurrentPlayer());
+                for(Client c : views)
+                    if(c.getClientID() == game.getCurrentPlayer().getClientID())
+                        c.update(new GameView(this.game), game.getCurrentPlayer().getClientID());
             }
         }
     }

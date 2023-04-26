@@ -43,7 +43,7 @@ public class Player extends ModelSubject implements Serializable {
      * @throws InvalidSelectionException
      * @throws RemoteException
      */
-    public void pickItems(List<int[]> selectedCoords,Item[][] gameGrid, int[][] validGrid) throws InvalidStateException,
+    public synchronized void pickItems(List<int[]> selectedCoords,Item[][] gameGrid, int[][] validGrid) throws InvalidStateException,
             InvalidSelectionException, RemoteException {
         if(selectedCoords.isEmpty()){
             throw new InvalidStateException("selectedCoords is empty");
@@ -177,7 +177,7 @@ public class Player extends ModelSubject implements Serializable {
      * @throws InvalidNumberOfItemsException
      * @throws RemoteException
      */
-    public void putItemInShelf(int selectedCol) throws OutOfBoundsException, InvalidNumberOfItemsException,
+    public synchronized void putItemInShelf(int selectedCol) throws OutOfBoundsException, InvalidNumberOfItemsException,
             RemoteException {
         Item[][] grid=myShelf.getShelfGrid();
         if (selectedCol >= 5) {

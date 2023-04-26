@@ -13,12 +13,14 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 
 public class AppServerImpl extends UnicastRemoteObject implements AppServer {
@@ -216,5 +218,15 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
                         "\nThe waiting queue is " + waitingQueue.size() + " matches long");
         if(newGame.equals("NO MATCH FOUND")) match.connectedClient += 5;
         return match;
+    }
+
+    public static int getMatchID(Server server){
+        return matches.entrySet()
+                .stream()
+                .filter(entry -> server.equals(entry.getValue()))
+                .mapToInt(Map.Entry::getKey)
+                .boxed()
+                .toList()
+                .get(0);
     }
 }

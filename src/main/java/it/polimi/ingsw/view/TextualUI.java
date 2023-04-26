@@ -77,6 +77,17 @@ public class TextualUI extends ViewSubject implements Serializable {
         //setChangedAndNotifyListener(Integer.valueOf(this.column));
     }
 
+    public void askColumn(String repeat) throws RemoteException {
+        Scanner scanner = new Scanner(System.in);
+        int col = 0;
+        while (col < 1 || col > 5) {
+            System.out.print("\nIn what column do you want to insert your items (from 1 to 5) ? >>");
+            col = scanner.nextInt();
+        }
+        this.column = col - 1;
+        setChangedAndNotifyListener(Integer.valueOf(this.column));
+    }
+
     private void askOrder() {
         Scanner scanner = new Scanner(System.in);
         List<Integer> selectedItems = new ArrayList<Integer>();
@@ -154,40 +165,6 @@ public class TextualUI extends ViewSubject implements Serializable {
         System.out.print("\n\n");
     }
 
-    private void displayGameBoard(GameBoardView gameBoard) {
-        System.out.println("The gameboard is ");
-        for(int i=0;i<gameBoard.getGameGrid().length;i++){
-            System.out.print(i + " ");
-            for(int j=0;j<gameBoard.getGameGrid()[i].length;j++){
-                if(gameBoard.getGameGrid()[i][j].getCategoryType() == Category.CAT){
-                    System.out.print("C ");
-                }
-                if(gameBoard.getGameGrid()[i][j].getCategoryType() == Category.GAME){
-                    System.out.print("G ");
-                }
-                if(gameBoard.getGameGrid()[i][j].getCategoryType() == Category.PLANT){
-                    System.out.print("P ");
-                }
-                if(gameBoard.getGameGrid()[i][j].getCategoryType() == Category.FRAME){
-                    System.out.print("F ");
-                }
-                if(gameBoard.getGameGrid()[i][j].getCategoryType() == Category.TROPHY){
-                    System.out.print("T ");
-                }
-                if(gameBoard.getGameGrid()[i][j].getCategoryType() == Category.BOOK){
-                    System.out.print("B ");
-                }
-                if(gameBoard.getGameGrid()[i][j].getCategoryType() == null){
-                    System.out.print("  ");
-                }
-            }
-            System.out.print("\n");
-        }
-        System.out.print("  ");
-        for(int j=0;j<gameBoard.getGameGrid().length;j++) System.out.print(j + " ");
-        System.out.print("\n\n");
-    }
-
     private void displayGameBoard(Item[][] gameGrid){
         System.out.println("The gameboard is ");
         for(int i=0;i<gameGrid.length;i++){
@@ -222,20 +199,16 @@ public class TextualUI extends ViewSubject implements Serializable {
         System.out.print("\n\n");
     }
 
-    /* UNUSED METHOD THAT RUNS AT THE START OF APLICATION*/
-
     private void displayNewTurn(GameView game){
         System.out.println("=================================================================================");
         System.out.println("Your points: " + game.getCurrentPlayer().getScore());
         displayCommonObjCard(game);
         displayPersonalObjCard(game.getCurrentPlayer());
-        displayGameBoard(game.getGameBoard());
+        displayGameBoard(game.getGameBoard().getGameGrid());
         displayShelf(game.getCurrentPlayer().getMyShelf());
     }
 
-    public void update(GameBoardView gb) {
-        displayGameBoard(gb);
-    }
+    public void update(GameBoardView gb) {displayGameBoard(gb.getGameGrid());}
 
     public void update(GameView game) {
         displayNewTurn(game);
