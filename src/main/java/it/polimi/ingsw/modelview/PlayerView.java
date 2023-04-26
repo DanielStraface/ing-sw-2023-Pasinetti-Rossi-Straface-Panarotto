@@ -41,8 +41,8 @@ public class PlayerView extends GameViewSubject implements PlayerListener, Seria
     }
 
     @Override
-    public void update(String commonObjCardReached) {
+    public void update(String msg) {
         setChanged();
-        notifyObservers(commonObjCardReached);
+        notifyObservers(msg);
     }
 }

@@ -12,7 +12,7 @@ public interface ModelViewListener {
     void update(PlayerView player, Item[][] gameGrid);
     void update(PlayerView player, ShelfView shelf);
     void update(PlayerView player, Integer column);
-    void update(String commonObjCardReached);
+    void update(String msg);
 }
 
 /**

@@ -60,11 +60,6 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
     }
 
     @Override
-    public void register(Client client, String nickname) throws RemoteException {
-
-    }
-
-    @Override
     public void register(Client client, int numOfPlayers, String nickname) throws RemoteException {
         boolean fromSocket = false;
         if(nickname.contains("%%%")){
