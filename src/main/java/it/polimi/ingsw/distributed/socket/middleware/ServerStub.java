@@ -39,11 +39,6 @@ public class ServerStub implements Server {
     }
 
     @Override
-    public void register(Client client, String nickname) throws RemoteException {
-        createConnection();
-    }
-
-    @Override
     public void register(Client client, int typeOfMatch, String nickname) throws RemoteException {
         createConnection();
         try{

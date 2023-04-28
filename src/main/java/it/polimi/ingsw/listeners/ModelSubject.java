@@ -18,7 +18,8 @@ public class ModelSubject {
         this.obs = new Vector<>();
         this.listeners = new Vector<>();
     }
-    /*public synchronized void addListener(GameListener o){
+
+    public synchronized void addListener(Client o) {
         if (o == null)
             throw new NullPointerException();
         if (!obs.contains(o)) {
@@ -26,24 +27,13 @@ public class ModelSubject {
         }
     }
 
-    public synchronized void addListener(PlayerListener o){
+    public synchronized void addListenerForPlayer(Client o) {
         if (o == null)
             throw new NullPointerException();
         if (!listeners.contains(o)) {
             listeners.addElement(o);
         }
-    }*/
-
-    public synchronized void deleteListener(GameListener o) {
-        obs.removeElement(o);
     }
-    public synchronized void deleteListener(PlayerListener o) {
-        listeners.removeElement(o);
-    }
-
-    /*public void notifyObservers() {
-        notifyObservers(null);
-    }*/
 
     public void notifyObservers(GameBoard arg) throws RemoteException {
         /*
@@ -241,40 +231,11 @@ public class ModelSubject {
         }
     }
 
-    public synchronized void deleteObservers() {
-        obs.removeAllElements();
-    }
-
     protected synchronized void setChanged() {
         changed = true;
     }
 
     protected synchronized void clearChanged() {
         changed = false;
-    }
-
-    public synchronized boolean hasChanged() {
-        return changed;
-    }
-
-    public synchronized int countObservers() {
-        return obs.size();
-    }
-    public synchronized int countListeners(){return listeners.size();}
-
-    public synchronized void addListener(Client o) {
-        if (o == null)
-            throw new NullPointerException();
-        if (!obs.contains(o)) {
-            obs.addElement(o);
-        }
-    }
-
-    public synchronized void addListenerForPlayer(Client o) {
-        if (o == null)
-            throw new NullPointerException();
-        if (!listeners.contains(o)) {
-            listeners.addElement(o);
-        }
     }
 }

@@ -226,13 +226,8 @@ public class TextualUI extends ViewSubject implements Serializable {
         System.out.println("Invalid column selection. Try again!");
         askColumn();
     }
+    public void update(String msg) {System.out.println(msg);}
 
-    public void update(String commonObjCardReached) {System.out.println(commonObjCardReached);}
-
-    private void setChangedAndNotifyListener(String nm) throws RemoteException {
-        setChanged();
-        notifyObservers(nm);
-    }
     private void setChangedAndNotifyListener(List<int[]> coords) throws RemoteException{
         setChanged();
         notifyObservers(this.refClient, coords);
