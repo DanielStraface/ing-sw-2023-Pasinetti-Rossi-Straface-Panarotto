@@ -18,7 +18,7 @@ public class AppClientRMI {
     private static final Integer JOINING_EXISTING_GAME = 0;
     private static final String APPSERVER_REGISTRY_NAME = "it.polimi.ingsw.server.AppServer";
     private static final int NO_MATCH_IN_WAITING_NOW_ERROR = 3;
-    private static final int QUIT_IN_APPLCLIENTRMI_ERROR = 4;
+    private static final int QUIT_IN_APPCLIENTRMI_ERROR = 4;
 
     public static void main(String[] args) throws RemoteException, NotBoundException {
         String nickname = args[NICKNAME_POSITION];
@@ -31,7 +31,7 @@ public class AppClientRMI {
                             Integer.parseInt(args[NUMBER_OF_PLAYER_POSITION]), nickname);
                 } catch (TooManyMatchesException e) {
                     System.out.print(e.getMessage() + "\nClient termination...");
-                    System.exit(QUIT_IN_APPLCLIENTRMI_ERROR);
+                    System.exit(QUIT_IN_APPCLIENTRMI_ERROR);
                 }
                 /*new ClientImpl(serverApp.connect(TO_START_NEW_GAME),
                         Integer.parseInt(args[NUMBER_OF_PLAYER_POSITION]), nickname);*/
@@ -47,7 +47,7 @@ public class AppClientRMI {
             }
             //case "3" -> server.loadFromFile();
             default -> {
-                System.exit(QUIT_IN_APPLCLIENTRMI_ERROR);
+                System.exit(QUIT_IN_APPCLIENTRMI_ERROR);
             }
         }
     }
