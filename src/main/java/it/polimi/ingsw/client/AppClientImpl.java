@@ -10,7 +10,7 @@ public class AppClientImpl extends AppClient{
     private static final int TYPE_OF_CONNECTION_POSITION = 2;
     private static final int RMI_NETWORK = 1;
     private static final int SOCKET_NETWORK = 2;
-    private static final int QUIT_IN_APPLCLIENTIMPL_ERROR = 2;
+    private static final int QUIT_IN_APPCLIENTIMPL_ERROR = 2;
     public static void startClient() {
         List<Integer> decisions = welcome();
         String[] elements = new String[decisions.size()];
@@ -42,6 +42,6 @@ public class AppClientImpl extends AppClient{
 
     private static void terminationError(){
         System.err.println("Something went wrong! Closing...\nTERMINATED");
-        System.exit(QUIT_IN_APPLCLIENTIMPL_ERROR);
+        System.exit(QUIT_IN_APPCLIENTIMPL_ERROR);
     }
 }

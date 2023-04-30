@@ -32,7 +32,7 @@ public class ControllerTest {
 
         this.view = new ClientImpl(server, 3, "attempt");
         this.turnHandler = new TurnHandler(this.game);
-        this.controller = new Controller(this.game, this.view);
+        this.controller = new Controller(this.game, this.view, 0);
     }
 
     @Test
