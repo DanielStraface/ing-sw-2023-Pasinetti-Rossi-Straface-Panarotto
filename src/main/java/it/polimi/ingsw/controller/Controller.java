@@ -1,10 +1,12 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.distributed.Client;
-import it.polimi.ingsw.distributed.ClientImpl;
-import it.polimi.ingsw.distributed.socket.middleware.ClientSkeleton;
+import it.polimi.ingsw.exceptions.FullColumnException;
+import it.polimi.ingsw.exceptions.InvalidSelectionException;
+import it.polimi.ingsw.exceptions.InvalidStateException;
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.modelview.GameView;
+import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.modelview.ShelfView;
 
 import java.io.*;
 import java.rmi.RemoteException;
@@ -24,23 +26,22 @@ public class Controller {
     /* ATTRIBUTES SECTION */
     private int matchID;
     private final Game game;
-    private final List<Client> views = new ArrayList<>();
+    private final List<Client> clients = new ArrayList<>();
     private final TurnHandler turnHandler;
     private static final String SelectionError = "Try again, invalid selection due to: ";
-    private boolean toRepeatTheTurnFlag = false;
 
     /* METHODS SECTION */
 
     /* -- constructor --*/
-    public Controller(Game game, Client view) throws RemoteException {
+    public Controller(Game game, Client view) {
         this.game = game;
         turnHandler = new TurnHandler(game);
-        this.views.add(view);
+        this.clients.add(view);
     }
 
     /* -- logic methods --*/
-    public void addClientView(Client view){
-        this.views.add(view);
+    public void addClient(Client view){
+        this.clients.add(view);
     }
     /**
      * chooseFirstPlayer method decides the first player of the match
@@ -52,6 +53,14 @@ public class Controller {
         int n = random.nextInt(game.getPlayers().size());
         //set isFirstPlayer = true for that player
         game.getPlayers().get(n).setIsFirstPlayer();
+        Player p = game.getPlayers().stream().filter(Player::getIsFirstPlayer).findAny().get();
+        int idOfFirstPlayer = p.getClientID();
+        String msg = null;
+        for(Client client : this.getClients()){
+            if(client.getClientID() == idOfFirstPlayer) msg = "You are the first player.";
+            else msg = p.getNickname() + " is the first player. Wait your turn!";
+            client.update(msg + " Enjoy!");
+        }
         game.setCurrentPlayer(game.getPlayers().get(n));
     }
 
@@ -95,7 +104,6 @@ public class Controller {
     }
 
     public void setMatchID(int matchID) {this.matchID = matchID;}
-    private void setToRepeatTheTurn(boolean value) {this.toRepeatTheTurnFlag = value;}
 
     /* get methods */
     /**
@@ -107,10 +115,9 @@ public class Controller {
     public synchronized Game getGame(){
         return this.game;
     }
-    public List<Client> getViews(){return this.views;}
+    public List<Client> getClients(){return this.clients;}
     public boolean getGameOver(){return this.turnHandler.getGameOver();}
     private int getMatchID() {return this.matchID;}
-    private boolean getToRepeatTheTurn(){return this.toRepeatTheTurnFlag;}
 
     /* update methods */
     /**
@@ -122,34 +129,27 @@ public class Controller {
      */
     public void update(Client o, Integer column) throws RemoteException {
         boolean fromValidClient = false;
-        for(Client c : this.views){
+        for(Client c : this.clients){
             if(c.getClientID() == o.getClientID())
                 fromValidClient = true;
         }
         if( !fromValidClient ){
-            System.err.println("Discarding notification from client with " + o.getClientID() + " clientID number in" +
-                    " update(column)");
+            System.err.println("Match#" + this.getMatchID() + ", discarding notification from client with "
+                    + o.getClientID() + " clientID number in update(column)");
         } else {
             int col = column.intValue();
             try {
-                if(getToRepeatTheTurn()) {
-                    setToRepeatTheTurn(false);
-                    return;
-                }
-                game.getCurrentPlayer().putItemInShelf(col);
-                for(Client c : this.views)
-                    if(c.getClientID() == o.getClientID())
-                        if(c instanceof ClientSkeleton){
-                            this.turnHandler.manageTurn(c);
-                        } else {
-                            this.turnHandler.manageTurn(o);
-                        }
+                    game.getCurrentPlayer().putItemInShelf(col);
+                for(Client c : this.clients)
+                    if(c.getClientID() == o.getClientID()){
+                        this.turnHandler.manageTurn(c);
+                    }
                 saveGame(getGame(),"savedGame.ser");
-            } catch (Exception e) {
-                System.err.println("Macthes#" + this.getMatchID() + ": " + e.getMessage() +
+            } catch (FullColumnException e) {
+                System.err.println("Match#" + this.getMatchID() + ": " + e.getMessage() +
                         "\nSkipping this selection, repeat the column selection of "
                         + game.getCurrentPlayer().getNickname());
-                this.views.stream()
+                this.clients.stream()
                         .filter(client -> {
                             try {
                                 return client.getClientID() == this.game.getCurrentPlayer().getClientID();
@@ -160,6 +160,9 @@ public class Controller {
                         .findAny()
                         .get()
                         .update("WRONG_COL");
+            } catch (RemoteException e) {
+                System.err.println("Match#" + this.getMatchID() +
+                        "Error while try to notify the client: " + e.getMessage());
             }
         }
     }
@@ -189,33 +192,37 @@ public class Controller {
      */
     public void update(Client o, List<int[]> coords) throws RemoteException{
         boolean fromValidClient = false;
-        for(Client c : this.views){
+        for(Client c : this.clients){
             if(c.getClientID() == o.getClientID())
                 fromValidClient = true;
         }
         if(!fromValidClient){
-            System.err.println("Discarding notification from client with " + o.getClientID() + " clientID number" +
-                    " in update(coords)");
+            System.err.println("Match#" + this.getMatchID() + " discarding notification from client with "
+                    + o.getClientID() + " clientID number in update(coords)");
         } else {
             try {
                 game.getCurrentPlayer().pickItems(coords, game.getGameboard().getGameGrid(), game.getValidGrid());
-            } catch (Exception e) {
-                System.err.println("Macthes#" + this.getMatchID() + ": " + e.getMessage() +
+            } catch (InvalidSelectionException e) {
+                coords.clear();
+                System.err.println("Match#" + this.getMatchID() + ": " + e.getMessage() +
                         "\nSkipping this selection, repeat the turn of " + game.getCurrentPlayer().getNickname());
-                for(Client c : this.views){
-                    if(c.getClientID() == o.getClientID()){
-                        if(c instanceof ClientSkeleton){
-                            setToRepeatTheTurn(true);
-                            c.update(SelectionError + e.getMessage());
-                        } else {
-                            o.update(SelectionError + e.getMessage());
-                        }
-                    }
+                throw new RemoteException(SelectionError + e.getMessage());
+            } catch (InvalidStateException e) {
+                System.err.println("Match#" + this.getMatchID() + "Something went wrong during pickItems execution: "
+                        + e.getMessage());
+                System.out.println("Match#" + this.getMatchID() + "Ignoring this problem");
+            } catch (RemoteException e) {
+                System.err.println("Match#" + this.getMatchID() + " error occurred during notification of observers: "
+                        + e.getMessage() + ". The controller tries...");
+                try{
+                    o.update(new ShelfView(this.game.getCurrentPlayer().getMyShelf().getShelfGrid()));
+                } catch (RemoteException ex) {
+                    System.err.println("Cannot handling the problem, the error occurred again!" +
+                            "\nIgnoring this for now...");
+                } finally {
+                    System.out.println("A remote error occurred during " + this.game.getCurrentPlayer().getNickname() +
+                            " turn while calling pickItems");
                 }
-                game.setCurrentPlayer(game.getCurrentPlayer());
-                for(Client c : views)
-                    if(c.getClientID() == game.getCurrentPlayer().getClientID())
-                        c.update(new GameView(this.game), game.getCurrentPlayer().getClientID());
             }
         }
     }

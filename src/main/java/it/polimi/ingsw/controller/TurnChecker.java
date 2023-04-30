@@ -24,11 +24,16 @@ public class TurnChecker {
      * @throws InvalidPointerException
      * @throws RemoteException
      */
-    public boolean manageCheck(Player player, Game game) throws InvalidPointerException, RemoteException {
+    public boolean manageCheck(Player player, Game game) {
         boolean shelfFull;
         commonObjCardCheck(player, game);
         shelfFull = player.getMyShelf().isFull();
-        refillGameBoardCheck(game);
+        try{
+            refillGameBoardCheck(game);
+        } catch (RemoteException e) {
+            System.err.println("Error occurred while check the gameboard refill: " + e.getMessage());
+            System.err.println("Skipping this problem for now");
+        }
         return shelfFull;
     }
 
@@ -40,13 +45,18 @@ public class TurnChecker {
      * @param game
      * @throws InvalidPointerException
      */
-    private void commonObjCardCheck(Player player,Game game) throws InvalidPointerException {
+    private void commonObjCardCheck(Player player,Game game) {
         CommonObjCard commonObjCard;
 
         // check if the current player has reached the goal for both CommonObjectiveCards in Game
         for(int i=0; i<game.getCommonObjCard().size(); i++){
             commonObjCard = game.getCommonObjCard().get(i);
-            commonObjCard.doCheck(player);
+            try{
+                commonObjCard.doCheck(player);
+            } catch (InvalidPointerException e) {
+                System.err.println("Something went wrong, the obj points list of this card is less than zero: "
+                        + e.getMessage());
+            }
         }
     }
 

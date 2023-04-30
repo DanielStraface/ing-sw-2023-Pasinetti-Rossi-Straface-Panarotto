@@ -6,7 +6,6 @@ import it.polimi.ingsw.model.comcard.CommonObjCard;
 import it.polimi.ingsw.model.comcard.CommonObjCardReader;
 import it.polimi.ingsw.model.personcard.PersonalCardReader;
 import it.polimi.ingsw.model.personcard.PersonalObjCard;
-import it.polimi.ingsw.view.TextualUI;
 
 import java.io.Serializable;
 import java.rmi.RemoteException;
@@ -219,10 +218,8 @@ public class Game extends ModelSubject implements Serializable {
 
     /* set methods */
     public void setCurrentPlayer(Player player) throws RemoteException{
-        if(this.currentPlayer == null || !this.currentPlayer.equals(player)){
-                this.currentPlayer = player;
-                setChangedAndNotifyListeners(this);
-        }
+        this.currentPlayer = player;
+        setChangedAndNotifyListeners(this);
     }
     public void setGameBoard (GameBoard gameboard) { this.gameboard = gameboard; }
     public void setValidGrid (int[][] validGrid) { this.validGrid = validGrid; }

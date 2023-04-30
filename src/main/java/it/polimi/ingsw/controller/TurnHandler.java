@@ -28,14 +28,11 @@ public class TurnHandler {
      * @throws RemoteException
      */
     public void nextTurn(Player player) throws RemoteException {
-        System.out.println("The actual player is := " + player.getNickname() + player.getClientID());
         if(!gameOver) {
             if (game.getPlayers().indexOf(player) == (game.getPlayers().size() - 1)) {
                 game.setCurrentPlayer(game.getPlayers().get(0));
-                System.out.println("After turn changed is := " + this.game.getCurrentPlayer().getNickname());
             } else {
                 game.setCurrentPlayer(game.getPlayers().get((game.getPlayers().indexOf(player)) + 1));
-                System.out.println("After turn changed is := " + this.game.getCurrentPlayer().getNickname());
             }
         } else {
             gameOverHandler();
@@ -48,7 +45,7 @@ public class TurnHandler {
      * @param o the Client of the player whose turn is over
      * @throws Exception
      */
-    public void manageTurn(Client o) throws Exception{
+    public void manageTurn(Client o) throws RemoteException {
         Player player = game.getCurrentPlayer();
         if(turnChecker.manageCheck(player, game) || endGame) {
             if(!endGame) player.addPoints(ENDGAME_POINTS);
@@ -80,7 +77,7 @@ public class TurnHandler {
                 p.addPoints(personalObjCard.shelfCheck(p.getMyShelf()));
                 p.addPoints(turnChecker.adjacentItemsCheck(p));
             } catch (InvalidMatchesException e) {
-                throw new RuntimeException(e);
+                System.err.println("Error occurred while calculating the players point: " + e.getMessage());
             }
         }
         Player winner = game.getPlayers().get(0);

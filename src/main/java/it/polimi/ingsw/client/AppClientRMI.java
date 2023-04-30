@@ -33,8 +33,6 @@ public class AppClientRMI {
                     System.out.print(e.getMessage() + "\nClient termination...");
                     System.exit(QUIT_IN_APPLCLIENTRMI_ERROR);
                 }
-                /*new ClientImpl(serverApp.connect(TO_START_NEW_GAME),
-                        Integer.parseInt(args[NUMBER_OF_PLAYER_POSITION]), nickname);*/
             }
             case "2" -> {
                 Server ref = serverApp.connect();

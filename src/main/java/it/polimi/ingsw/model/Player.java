@@ -1,9 +1,6 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.exceptions.InvalidNumberOfItemsException;
-import it.polimi.ingsw.exceptions.InvalidSelectionException;
-import it.polimi.ingsw.exceptions.InvalidStateException;
-import it.polimi.ingsw.exceptions.OutOfBoundsException;
+import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.listeners.ModelSubject;
 import it.polimi.ingsw.model.personcard.PersonalObjCard;
 
@@ -31,7 +28,7 @@ public class Player extends ModelSubject implements Serializable {
         this.score = 0;
         this.isFirstPlayer = false;
         this.myShelf = new Shelf();
-        this.selectItems=new ArrayList<>();
+        this.selectItems = new ArrayList<>();
     }
 
     /**
@@ -43,15 +40,17 @@ public class Player extends ModelSubject implements Serializable {
      * @throws InvalidSelectionException
      * @throws RemoteException
      */
-    public synchronized void pickItems(List<int[]> selectedCoords,Item[][] gameGrid, int[][] validGrid) throws InvalidStateException,
-            InvalidSelectionException, RemoteException {
+    public void pickItems(List<int[]> selectedCoords,Item[][] gameGrid, int[][] validGrid)
+            throws InvalidStateException, InvalidSelectionException, RemoteException {
         if(selectedCoords.isEmpty()){
-            throw new InvalidStateException("selectedCoords is empty");
+            throw new EmptyCoordsListException("selectedCoords is empty");
         }
         for(int i=0;i<selectedCoords.size();i++){
-            if(validGrid[selectedCoords.get(i)[0]][selectedCoords.get(i)[1]] == INVALID ||
-                    validGrid[selectedCoords.get(i)[0]][selectedCoords.get(i)[1]] == PLAYABLE )
-                throw new InvalidSelectionException("Selected item in invalid or empty slot");
+            if(validGrid[selectedCoords.get(i)[0]][selectedCoords.get(i)[1]] == INVALID)
+                throw new SelectionInvalidOrEmptySlotException("selected item in invalid slot");
+            else if(validGrid[selectedCoords.get(i)[0]][selectedCoords.get(i)[1]] == PLAYABLE )
+                throw new SelectionInvalidOrEmptySlotException("selected item in empty slot");
+
         }
         boolean sameX = true;
         boolean sameY = true;
@@ -70,7 +69,7 @@ public class Player extends ModelSubject implements Serializable {
         }
         /* If all coordinates haven't the same x or the same y: items can not be picked from the game board */
         if (!sameX && !sameY) {
-            throw new InvalidSelectionException("Invalid selection: no same rows or cols");
+            throw new NotSameRowOrColException("no same rows or cols selection");
         }
 
         boolean consecutiveX=true;
@@ -100,7 +99,7 @@ public class Player extends ModelSubject implements Serializable {
                 }
             }
             if(!consecutiveY){
-                throw new InvalidSelectionException("Invalid selection: No consecutive selection");
+                throw new NoConsecutiveSelectionException("no consecutive items selection");
             }
         }
 
@@ -129,7 +128,7 @@ public class Player extends ModelSubject implements Serializable {
                 }
             }
             if(!consecutiveX){
-                throw new InvalidSelectionException("Invalid selection: No consecutive selection");
+                throw new NoConsecutiveSelectionException("no consecutive item selection");
             }
         }
 
@@ -156,17 +155,17 @@ public class Player extends ModelSubject implements Serializable {
             }
             if (gameGrid[row][col - 1].getCategoryType() != null && gameGrid[row][col + 1].getCategoryType() != null &&
                     gameGrid[row - 1][col].getCategoryType() != null || gameGrid[row + 1][col].getCategoryType() != null) {
-                throw new InvalidSelectionException("Invalid selection: no free sides");
+                throw new NoFreeSidesException("selected item with no free sides");
             }
         }
-        /* For-cycle to pick items from the game board and put them in the selectItems list*/
-        for (int i = 0; i < selectedCoords.size(); i++) {
-            int row = selectedCoords.get(i)[0];
-            int col = selectedCoords.get(i)[1];
-            selectItems.add(gameGrid[row][col]);
-            gameGrid[row][col] = new Item(null);
-            validGrid[row][col] = PLAYABLE;
-        }
+            /* For-cycle to pick items from the game board and put them in the selectItems list*/
+            for (int i = 0; i < selectedCoords.size(); i++) {
+                int row = selectedCoords.get(i)[0];
+                int col = selectedCoords.get(i)[1];
+                selectItems.add(gameGrid[row][col]);
+                gameGrid[row][col] = new Item(null);
+                validGrid[row][col] = PLAYABLE;
+            }
         setChangedAndNotifyListener(gameGrid);
     }
 
@@ -177,33 +176,25 @@ public class Player extends ModelSubject implements Serializable {
      * @throws InvalidNumberOfItemsException
      * @throws RemoteException
      */
-    public synchronized void putItemInShelf(int selectedCol) throws OutOfBoundsException, InvalidNumberOfItemsException,
-            RemoteException {
+    public void putItemInShelf(int selectedCol) throws RemoteException, FullColumnException {
         Item[][] grid=myShelf.getShelfGrid();
-        if (selectedCol >= 5) {
-            throw new OutOfBoundsException("selectedCol must be less than 5");
-        }
-        if(selectItems.size()>3){
-            throw new InvalidNumberOfItemsException();
-        }
         /* For-cycle to search the last row available*/
         int lastRow = 0;
         for (int row = 0; row<6; row++) {
-            if (grid[row][selectedCol].getCategoryType() ==null ) {
+            if (grid[row][selectedCol].getCategoryType() == null ) {
                 lastRow = row;
             }
         }
-        /* For-cycle to put items into the selected column starting from the last row available*/
         if(lastRow == 0){
-            setChanged();
-            notifyObservers(Integer.valueOf(selectedCol));
+            throw new FullColumnException();
         }
-        for (int i = 0; i < selectItems.size(); i++, lastRow--) {
-            grid[lastRow][selectedCol] = selectItems.get(i);
-        }
-        while(!selectItems.isEmpty()){
-            selectItems.remove(0);
-        }
+            /* For-cycle to put items into the selected column starting from the last row available*/
+            for (int i = 0; i < selectItems.size(); i++, lastRow--) {
+                grid[lastRow][selectedCol] = selectItems.get(i);
+            }
+            while(!selectItems.isEmpty()){
+                selectItems.remove(0);
+            }
         setChangedAndNotifyListener(this.myShelf);
     }
 
@@ -269,14 +260,9 @@ public class Player extends ModelSubject implements Serializable {
         setChanged();
         notifyObservers(sh);
     }
-    private void setChangedAndNotifyListener(String msg) throws RemoteException{
+    private void setChangedAndNotifyListener(String msg) {
         setChanged();
         notifyObservers(msg);
-    }
-
-    private void setChangedAndNotifyListener(int status) throws RemoteException{
-        setChanged();
-        notifyObservers(status);
     }
 }
 

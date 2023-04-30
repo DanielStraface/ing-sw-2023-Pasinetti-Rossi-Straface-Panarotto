@@ -1,8 +1,5 @@
 package it.polimi.ingsw.distributed;
 
-import it.polimi.ingsw.distributed.Client;
-import it.polimi.ingsw.distributed.Server;
-import it.polimi.ingsw.distributed.socket.middleware.ServerStub;
 import it.polimi.ingsw.model.Item;
 import it.polimi.ingsw.modelview.GameBoardView;
 import it.polimi.ingsw.modelview.GameView;
@@ -23,13 +20,8 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Serializa
     public ClientImpl(Server server, Integer decision, String nickname) throws RemoteException {
         super();
         String temp;
-        if(server instanceof ServerStub){
-            temp = nickname + "%%%";
-        } else {
-            temp = nickname;
-        }
         this.nickname = nickname;
-        server.register(this, decision.intValue(), temp);
+        server.register(this, decision.intValue(), nickname);
         initialize(server);
         server.startGame();
     }
@@ -51,23 +43,22 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Serializa
     }
 
     @Override
-    public void update(GameBoardView gb) {
-        this.view.update(gb);
-    }
+    public void update(GameBoardView gb) {this.view.update(gb);}
 
     @Override
-    public void update(GameView game, int clientID) throws RemoteException{
-        if(clientID == this.clientID){
-            this.view.update(game);
-            this.view.run(this);
-        } else {
-            this.view.update(game.getGameBoard().getGameGrid());
-        }
+    public void update(GameView game, int clientID) throws RemoteException {
+        this.view.update(game);
+        this.view.run(this);
     }
 
     @Override
     public void update(Item[][] gameGrid) {
         this.view.update(gameGrid);
+        try {
+            this.view.gameActionOnShelf();
+        } catch (RemoteException e) {
+            System.err.println("Error while invoking gameActionOnShelf in ClientImpl: " + e.getMessage());
+        }
     }
 
     @Override
@@ -89,12 +80,10 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Serializa
             System.exit(100);
         }
         if(msg.equals("WRONG_COL")){
-            this.view.update("Error, invalid column selection. Please choose another one.");
-            this.view.askColumn("Repeat");
+            this.view.update(0);
         } else {
             this.view.update(msg);
         }
-
     }
 
     @Override
@@ -104,11 +93,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Serializa
 
     @Override
     public void run() {
-        try{
-            this.view.run(this);
-        } catch (RemoteException e) {
-            System.err.println(e.getMessage());
-        }
+        //empty
     }
 
     @Override

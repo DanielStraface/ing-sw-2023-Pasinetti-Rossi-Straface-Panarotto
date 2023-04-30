@@ -3,7 +3,6 @@ package it.polimi.ingsw.distributed.socket.middleware;
 import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.distributed.Server;
 import it.polimi.ingsw.exceptions.NotMessageFromClientYet;
-import it.polimi.ingsw.exceptions.NotMessageFromServerYet;
 import it.polimi.ingsw.model.Item;
 import it.polimi.ingsw.modelview.GameBoardView;
 import it.polimi.ingsw.modelview.GameView;
@@ -23,8 +22,6 @@ public class ClientSkeleton implements Client {
     private final ObjectInputStream ois;
     private int status = 0;
     private int numberOfTurnRequest = 0;
-    private Client auxiliaryClient = null;
-    private Integer auxiliaryColumn = null;
     private int clientID;
 
     public ClientSkeleton(Socket socket) throws RemoteException {
@@ -38,6 +35,7 @@ public class ClientSkeleton implements Client {
         } catch (IOException e) {
             throw new RemoteException("Cannot create input stream", e);
         }
+        System.out.println("This is clientSkeleton #" + this.toString());
     }
 
     @Override
@@ -127,7 +125,7 @@ public class ClientSkeleton implements Client {
         Client client = null;
         Object o;
         Integer column = null;
-        String nickname = null;
+        String msg;
         List<int[]> coords = null;
 
         try{
@@ -137,6 +135,12 @@ public class ClientSkeleton implements Client {
             }
             if(o instanceof List<?>) coords = (List<int[]>) o;
             if(o instanceof Integer) column = (Integer) o;
+            if(o instanceof String) {
+                msg = (String) o;
+                if(msg.equals("START GAME")) server.startGame();
+                else System.err.println("Discarding notification " + msg + "as string in clientSkeleton " +
+                        this.clientID + " clientID number");
+            }
         } catch (IOException e) {
             return;
         } catch (ClassNotFoundException e) {
@@ -147,27 +151,30 @@ public class ClientSkeleton implements Client {
             numberOfTurnRequest++;
             if(this.status == 0){
                 this.status = 1;
-                this.auxiliaryClient = client;
             } else {
                 this.status = -1;
             }
         } else if(coords != null) {
             if (this.status == 1) {
                 this.status = 0;
-                server.update(this.auxiliaryClient, coords);
-                this.auxiliaryClient = null;
+                try{
+                    server.update(this, coords);
+                } catch (RemoteException e) {
+                    if(e.getMessage().contains("Try again")){
+                        this.update(e.getMessage());
+                    }
+                }
             } else {
                 this.status = -1;
-                System.err.println("Ho letto coords prima di client. Status := " + this.status);
+                System.err.println("I have read coords before client. Status := " + this.status);
             }
         } else if(column != null){
             if(this.status == 1){
                 this.status = 0;
-                server.update(this.auxiliaryClient, column);
-                this.auxiliaryClient = null;
+                server.update(this, column);
             } else {
                 this.status = -1;
-                System.err.println("Ho letto column prima di client. Status := " + this.status);
+                System.err.println("I have read column before client. Status := " + this.status);
             }
         } else {
             if(this.numberOfTurnRequest == 0){

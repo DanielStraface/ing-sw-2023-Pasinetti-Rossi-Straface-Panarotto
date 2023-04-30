@@ -72,16 +72,6 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
         };
         socketThread.start();
 
-        /*Thread finishedGameThread = new Thread(){
-            @Override
-            public void run(){
-                while(true){
-                    gameFinished();
-                }
-            }
-        };
-        finishedGameThread.start();*/
-
         try {
             rmiThread.join();
             socketThread.join();
@@ -173,7 +163,7 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
     @Override
     public Server connect() throws RemoteException {
         if( waitingQueue == null || waitingQueue.size() == 0){
-            System.out.println("No game in waiting list...create a new match display to client user");
+            System.err.println("A client tried to join an existing match but the waiting list is empty");
             return null;
         }
         ServerImpl match = waitingQueue.get(FIRST_WAITING_MATCH);

@@ -3,6 +3,7 @@ package it.polimi.ingsw.listeners;
 
 import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.distributed.Server;
+import it.polimi.ingsw.exceptions.InvalidSelectionException;
 import it.polimi.ingsw.view.TextualUI;
 
 import java.rmi.Remote;
@@ -58,7 +59,7 @@ public class ViewSubject {
         }
     }
 
-    public void notifyObservers(Client o, List<int[]> arg) throws RemoteException {
+    public void notifyObservers(Client o, List<int[]> arg) throws RemoteException, InvalidSelectionException {
         /*
          * a temporary array buffer, used as a snapshot of the state of
          * current Observers.
@@ -86,7 +87,17 @@ public class ViewSubject {
 
         for (int i = arrLocal.length-1; i>=0; i--){
             Server vl = (Server)arrLocal[i];
-            vl.update(o, arg);
+            try{
+                vl.update(o, arg);
+            } catch (RemoteException e) {
+                if(e.getMessage().contains("Try again")){
+                    String msg = e.getMessage().substring(92);
+                    throw new InvalidSelectionException(msg);
+                } else {
+                    throw new RemoteException(e.getMessage());
+                }
+            }
+
         }
     }
 

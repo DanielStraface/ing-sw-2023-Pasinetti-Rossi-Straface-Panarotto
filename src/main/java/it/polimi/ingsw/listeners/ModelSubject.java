@@ -13,10 +13,12 @@ public class ModelSubject {
     private boolean changed = false;
     private Vector<Client> obs;
     private Vector<Client> listeners;
+    private boolean isTheFirstTurn;
 
     public ModelSubject(){
         this.obs = new Vector<>();
         this.listeners = new Vector<>();
+        this.isTheFirstTurn = true;
     }
 
     public synchronized void addListener(Client o) {
@@ -93,9 +95,15 @@ public class ModelSubject {
             clearChanged();
         }
 
+        Player currentP = arg.getCurrentPlayer();
         for (int i = arrLocal.length-1; i>=0; i--){
             Client vl = (Client) arrLocal[i];
-            vl.update(new GameView(arg), arg.getCurrentPlayer().getClientID());
+            if(vl.getClientID() == currentP.getClientID()){
+                vl.update(new GameView(arg), arg.getCurrentPlayer().getClientID());
+            } else if(isTheFirstTurn) {
+                vl.update(new GameBoardView(arg.getGameboard().getGameGrid()));
+                isTheFirstTurn = false;
+            }
         }
     }
 
