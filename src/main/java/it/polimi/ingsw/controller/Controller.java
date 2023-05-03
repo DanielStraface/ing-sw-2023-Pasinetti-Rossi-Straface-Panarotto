@@ -215,7 +215,7 @@ public class Controller {
                 System.err.println("Match#" + this.getMatchID() + " error occurred during notification of observers: "
                         + e.getMessage() + ". The controller tries...");
                 try{
-                    o.update(new ShelfView(this.game.getCurrentPlayer().getMyShelf().getShelfGrid()));
+                    o.update(new ShelfView(this.game.getCurrentPlayer().getMyShelf().getShelfGrid(), this.game.getCurrentPlayer().getMyShelf().getLastRow()));
                 } catch (RemoteException ex) {
                     System.err.println("Cannot handling the problem, the error occurred again!" +
                             "\nIgnoring this for now...");
