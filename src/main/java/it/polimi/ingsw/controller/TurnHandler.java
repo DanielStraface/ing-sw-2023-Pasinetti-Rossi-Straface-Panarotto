@@ -8,6 +8,8 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.personcard.PersonalObjCard;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TurnHandler {
     private TurnChecker turnChecker;
@@ -71,11 +73,13 @@ public class TurnHandler {
      */
     private void gameOverHandler() {
         System.out.println("This match has got a game over");
+        List<Player> players = new ArrayList<Player>();
         for(Player p : game.getPlayers()){
             PersonalObjCard personalObjCard = p.getMyPersonalOBjCard();
             try {
                 p.addPoints(personalObjCard.shelfCheck(p.getMyShelf()));
                 p.addPoints(turnChecker.adjacentItemsCheck(p));
+                players.add(p);
             } catch (InvalidMatchesException e) {
                 System.err.println("Error occurred while calculating the players point: " + e.getMessage());
             }
@@ -84,8 +88,13 @@ public class TurnHandler {
         for(int i=0;i<game.getPlayers().size();i++){
             if(winner.getScore() < game.getPlayers().get(i).getScore()) winner = game.getPlayers().get(i);
         }
-        String finalMessage = winner.getNickname() + " wins with a score of " + winner.getScore() + " points\n" +
-                    "The game ends here. Thank you for playing this game!\nBYE";
+        String initMessage = players.get(0).getNickname() + " has a score of " + players.get(0).getScore() + "\n";
+        for(int i=1; i< players.size(); i++){
+            String tempMessage = players.get(i).getNickname() + " has a score of " + players.get(i).getScore() + "\n";
+            initMessage = initMessage.concat(tempMessage);
+        }
+        String finalMessage = initMessage.concat(winner.getNickname() + " wins with a score of " + winner.getScore() + " points\n" +
+                    "The game ends here. Thank you for playing this game!\nBYE");
         for(Player p : game.getPlayers()){
             try {
                 p.setStatus("%" + finalMessage);
