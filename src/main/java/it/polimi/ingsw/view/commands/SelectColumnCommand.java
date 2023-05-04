@@ -1,5 +1,8 @@
 package it.polimi.ingsw.view.commands;
 
+import it.polimi.ingsw.exceptions.FullColumnException;
+import it.polimi.ingsw.modelview.ShelfView;
+
 import java.util.List;
 import java.util.Scanner;
 
@@ -7,6 +10,8 @@ public class SelectColumnCommand implements Command{
     private Scanner scanner;
     private int col;
     private List<Integer> columnReference;
+    private ShelfView shelfView;
+    private int numOfItems;
 
     public SelectColumnCommand(List<Integer> param){
         this.scanner = new Scanner(System.in);
@@ -26,6 +31,30 @@ public class SelectColumnCommand implements Command{
     @Override
     public void execute() {
         this.askUser();
+        try {
+            columnCheck(this.col);
+        } catch (FullColumnException e) {
+            System.err.println(e.getMessage());
+        }
         this.columnReference.add(Integer.valueOf(this.col));
     }
+
+
+    private void columnCheck(int columnSelected) throws FullColumnException {
+        int[] lastRows = shelfView.getLastRow();
+        if(numOfItems > lastRows[columnSelected-1]+1){
+            throw new FullColumnException();
+        }
+    }
+
+
+
+    public void setShelfView(ShelfView shelf){
+        this.shelfView= shelf;
+    }
+
+    public void setMaxNumOfItems(int numOfItems){
+        this.numOfItems=numOfItems;
+    }
+
 }

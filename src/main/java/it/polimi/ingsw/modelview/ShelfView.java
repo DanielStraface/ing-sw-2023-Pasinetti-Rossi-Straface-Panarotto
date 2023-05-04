@@ -15,11 +15,14 @@ public class ShelfView implements Serializable {
             for(int j=0;j<shelfGrid[0].length;j++){
                 this.shelfGrid[i][j] = new Item(shelfGrid[i][j].getCategoryType());
             }
+            if(i<=4){
+                this.lastRow[i]=lastRow[i];
+            }
         }
     }
 
     public Item[][] getShelfGrid(){
         return shelfGrid;
     }
-    public int[] getLastRow(){return lastRow; }
+    public int[] getLastRow(){ return lastRow; }
 }

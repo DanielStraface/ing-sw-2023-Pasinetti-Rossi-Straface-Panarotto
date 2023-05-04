@@ -48,6 +48,9 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Serializa
     @Override
     public void update(GameView game, int clientID) throws RemoteException {
         this.view.update(game);
+        if(this.clientID == clientID){
+            this.view.setShelfView(game.getCurrentPlayer().getMyShelf());
+        }
         this.view.run(this);
     }
 
