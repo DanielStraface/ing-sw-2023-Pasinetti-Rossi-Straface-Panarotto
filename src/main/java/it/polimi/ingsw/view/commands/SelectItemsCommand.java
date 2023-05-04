@@ -1,5 +1,7 @@
 package it.polimi.ingsw.view.commands;
 
+import it.polimi.ingsw.modelview.GameBoardView;
+
 import java.util.List;
 import java.util.Scanner;
 
@@ -7,6 +9,7 @@ public class SelectItemsCommand implements Command{
     private Scanner scanner;
     private List<int[]> coords;
     private SelectOrderCommand sortingCommand;
+    private int maxNum;
 
     public SelectItemsCommand(List<int[]> param){
         this.scanner = new Scanner(System.in);
@@ -19,7 +22,7 @@ public class SelectItemsCommand implements Command{
     }
 
     private void askUser(){
-        int maxNum = 0;
+        maxNum = 0;
         System.out.print("\nHow many items do you want to pick up? >>");
         maxNum = this.scanner.nextInt();
         while(maxNum <=0 || maxNum > 3){
@@ -52,6 +55,8 @@ public class SelectItemsCommand implements Command{
             }
         }
     }
+
+    public int getNumOfItems(){ return maxNum; }
 
     @Override
     public void execute() {

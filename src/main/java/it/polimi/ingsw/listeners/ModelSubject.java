@@ -167,7 +167,7 @@ public class ModelSubject {
 
         for (int i = arrLocal.length-1; i>=0; i--){
             Client vl = (Client) arrLocal[i];
-            vl.update(new ShelfView(arg.getShelfGrid()));
+            vl.update(new ShelfView(arg.getShelfGrid(), arg.getLastRow()));
         }
     }
 
