@@ -226,6 +226,7 @@ public class Game extends ModelSubject implements Serializable {
 
 
     /* get methods */
+    public int getPlayersNumber(){return this.playersNumber;}
     public List<Player> getPlayers(){return players;}
     public GameBoard getGameboard(){return gameboard;}
     public List<CommonObjCard> getCommonObjCard(){return commonObjCards;}

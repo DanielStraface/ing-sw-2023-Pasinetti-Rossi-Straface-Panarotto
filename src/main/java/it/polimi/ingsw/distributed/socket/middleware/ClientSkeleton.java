@@ -7,13 +7,13 @@ import it.polimi.ingsw.model.Item;
 import it.polimi.ingsw.modelview.GameBoardView;
 import it.polimi.ingsw.modelview.GameView;
 import it.polimi.ingsw.modelview.ShelfView;
+import it.polimi.ingsw.server.AppServer;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ClientSkeleton implements Client {
@@ -27,6 +27,7 @@ public class ClientSkeleton implements Client {
     public ClientSkeleton(Socket socket) throws RemoteException {
         try {
             this.oos = new ObjectOutputStream(socket.getOutputStream());
+            oos.flush();
         } catch (IOException e) {
             throw new RemoteException("Cannot create output stream", e);
         }
@@ -35,7 +36,6 @@ public class ClientSkeleton implements Client {
         } catch (IOException e) {
             throw new RemoteException("Cannot create input stream", e);
         }
-        System.out.println("This is clientSkeleton #" + this.toString());
     }
 
     @Override
@@ -186,24 +186,47 @@ public class ClientSkeleton implements Client {
         }
     }
 
-    public List<Object> receive() throws RemoteException{
-        Client client;
-        Integer numberOfPlayer;
+    public String receive() throws RemoteException{
         String nickname;
         try{
-            client = (Client) ois.readObject();
-            numberOfPlayer = (Integer) ois.readObject();
             nickname = (String) ois.readObject();
+            return nickname;
         } catch (IOException e) {
             throw new RemoteException("Cannot receive the client while understand which match it is " + e.getMessage());
         } catch (ClassNotFoundException e) {
             throw new RemoteException("Cannot cast the client while understand which match it is " + e.getMessage());
         }
-        List<Object> information = new ArrayList<>();
-        information.add(client);
-        information.add(numberOfPlayer);
-        information.add(nickname);
-        return information;
+    }
+
+    public AppServer.typeOfMatch setupClient() throws RemoteException {
+        try{
+            Object o = ois.readObject();
+            if(o instanceof AppServer.typeOfMatch) return (AppServer.typeOfMatch) o;
+            else throw new RemoteException();
+        } catch (IOException e) {
+            throw new RemoteException("Cannot receive the client while understand which match it is " + e.getMessage());
+        } catch (ClassNotFoundException e) {
+            throw new RemoteException("Cannot cast the client while understand which match it is " + e.getMessage());
+        }
+    }
+
+    public void sendLogInResult(Boolean result) throws RemoteException{
+        try{
+            oos.writeObject(result);
+            flushAndReset(oos);
+        } catch (IOException e) {
+            throw new RemoteException("Cannot send clientID event: " + e.getMessage());
+        }
+    }
+
+    public void sendMatchServer(Boolean value) throws RemoteException{
+        try{
+            flushAndReset(oos);
+            oos.writeObject(value);
+            oos.flush();
+        } catch (IOException e) {
+            throw new RemoteException("Cannot send clientID event: " + e.getMessage());
+        }
     }
 
     private void flushAndReset(ObjectOutputStream o) throws IOException {

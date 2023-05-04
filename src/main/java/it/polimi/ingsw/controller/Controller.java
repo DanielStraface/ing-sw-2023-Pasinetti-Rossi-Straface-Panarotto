@@ -33,10 +33,9 @@ public class Controller {
     /* METHODS SECTION */
 
     /* -- constructor --*/
-    public Controller(Game game, Client view) {
+    public Controller(Game game) {
         this.game = game;
         turnHandler = new TurnHandler(game);
-        this.clients.add(view);
     }
 
     /* -- logic methods --*/

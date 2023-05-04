@@ -6,17 +6,17 @@ import java.util.Scanner;
 
 public abstract class AppClient {
     private static final int CLOSE_APP_FROM_MAIN_MENU = 1;
-    static String nickname;
-    public static List<Integer> welcome() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Hello, welcome to MyShelfie!\nThis is MyShelfie main menu, please choose from this menu list:\n" +
+    protected static String nickname;
+    private static Scanner scanner = new Scanner(System.in);
+
+    protected static List<Integer> welcomeMenu(){
+        System.out.print("\n\nThis is MyShelfie main menu, please choose from this menu list:\n" +
                 "1)Start a new game\n2)Join an existing game\n3)Load a previous game\n4)Quit from MyShelfie\n>>");
         int decision = scanner.nextInt();
         while(decision < 1 || decision > 4){
             System.out.print("\nInvalid selection from above menu! Please try again\n>>");
             decision = scanner.nextInt();
         }
-        askNickname();
         int numbOfPlayers = 0;
         switch(decision){
             case 1 -> numbOfPlayers = askNumOfPlayer();
@@ -30,22 +30,16 @@ public abstract class AppClient {
             default -> {}
         }
         System.err.println("Decide CLI or GUI have not implemented yet");
-        List<Integer> playersDecision = new ArrayList<Integer>();
-        playersDecision.add(Integer.valueOf(decision));
-        playersDecision.add(Integer.valueOf(numbOfPlayers));
-        decision = 0;
-        while(decision < 1 || decision > 2){
-            System.out.print("Choose between RMI Network version or Socket: " + "\n1) RMI\n2) Socket\n>>");
-            decision = scanner.nextInt();
-        }
-        playersDecision.add(Integer.valueOf(decision));
+        List<Integer> playersDecision = new ArrayList<>();
+        playersDecision.add(decision);
+        playersDecision.add(numbOfPlayers);
         return playersDecision;
     }
 
-    private static void askNickname(){
+    protected static void askNickname(){
         String input;
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Insert your nickname\n>>");
+        System.out.print("\nInsert your nickname >>");
         input = scanner.nextLine();
         while(input.contains("%") || input.contains("!") || input.contains("?") || input.contains("=") ||
                 input.contains("(") || input.contains(")") || input.contains("'") ||

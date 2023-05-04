@@ -17,13 +17,10 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Serializa
     transient String nickname;
     private int clientID;
 
-    public ClientImpl(Server server, Integer decision, String nickname) throws RemoteException {
+    public ClientImpl(Server server, String nickname) throws RemoteException {
         super();
-        String temp;
         this.nickname = nickname;
-        server.register(this, decision.intValue(), nickname);
-        initialize(server);
-        server.startGame();
+        server.register(this, nickname);
     }
 
     public ClientImpl(Server server, int port) throws RemoteException {
@@ -38,7 +35,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Serializa
     }
 
     private void initialize(Server server) throws RemoteException{
-        this.view.addListener(server);
+        this.view.addListener(server); //add the match server as this client view observer
         //per Damiani e\' diverso
     }
 
@@ -83,6 +80,9 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Serializa
             this.view.update(0);
         } else {
             this.view.update(msg);
+            if(msg.contains("Extraction")){
+                System.out.println("I am " + this.nickname + " @ " + this.clientID);
+            }
         }
     }
 
