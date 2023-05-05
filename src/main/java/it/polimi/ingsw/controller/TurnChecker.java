@@ -24,12 +24,12 @@ public class TurnChecker {
      * @throws InvalidPointerException
      * @throws RemoteException
      */
-    public boolean manageCheck(Player player, Game game) {
+    public boolean manageCheck(Player player, Game game, GameBoard gameBoard) {
         boolean shelfFull;
         commonObjCardCheck(player, game);
         shelfFull = player.getMyShelf().isFull();
         try{
-            refillGameBoardCheck(game);
+            refillGameBoardCheck(gameBoard);
         } catch (RemoteException e) {
             System.err.println("Error occurred while check the gameboard refill: " + e.getMessage());
             System.err.println("Skipping this problem for now");
@@ -65,12 +65,12 @@ public class TurnChecker {
      * check if any of its adjacent places are occupied by an Item as well.
      * If there's a single adjacent item, there's no need to refill the GameBoard and the check is
      * set to false.
-     * @param game
+     * @param gameBoard
      * @throws RemoteException
      */
-    private void refillGameBoardCheck(Game game) throws RemoteException {
+    private void refillGameBoardCheck(GameBoard gameBoard) throws RemoteException {
         boolean check = true;
-        int[][] validGrid = game.getValidGrid();
+        int[][] validGrid = gameBoard.getValidGrid();
         for(int i=1; i<8; i++){
             for(int j=1; j<8; j++){
                 if(validGrid[i][j] == OCCUPIED){
@@ -121,7 +121,7 @@ public class TurnChecker {
 
         //if no Item has adjacent Items, the GameBoard needs to be refilled
         if(check){
-            game.refillGameBoard();
+            gameBoard.refillGameBoard();
         }
     }
 

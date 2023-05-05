@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.model.GameBoard;
 import it.polimi.ingsw.server.AppServerImpl;
 import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.exceptions.InvalidMatchesException;
@@ -14,6 +15,7 @@ import java.util.List;
 public class TurnHandler {
     private TurnChecker turnChecker;
     private Game game;
+    private GameBoard gameBoard;
     private boolean endGame;
     private boolean gameOver;
     private static final int ENDGAME_POINTS = 1;
@@ -49,7 +51,7 @@ public class TurnHandler {
      */
     public void manageTurn(Client o) throws RemoteException {
         Player player = game.getCurrentPlayer();
-        if(turnChecker.manageCheck(player, game) || endGame) {
+        if(turnChecker.manageCheck(player, game, gameBoard) || endGame) {
             if(!endGame) player.addPoints(ENDGAME_POINTS);
             endGame = true;
             Player firstPlayer = null;

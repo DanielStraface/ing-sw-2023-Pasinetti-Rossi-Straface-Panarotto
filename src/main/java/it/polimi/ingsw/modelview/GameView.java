@@ -14,7 +14,7 @@ public class GameView implements Serializable {
 
     public GameView(Object o) {
         Game game = (Game) o;
-        this.gameBoard = new GameBoardView(game.getGameboard().getGameGrid());
+        this.gameBoard = new GameBoardView(game.getGameboard().getGameGrid(), game.getGameboard().getValidGrid());
         this.commonObjCards = new ArrayList<>();
         this.commonObjCards.add(new CommonObjCardView(game.getCommonObjCard().get(0)));
         this.commonObjCards.add(new CommonObjCardView(game.getCommonObjCard().get(1)));

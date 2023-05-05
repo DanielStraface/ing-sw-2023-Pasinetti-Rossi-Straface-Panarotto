@@ -20,7 +20,7 @@ public class Game extends ModelSubject implements Serializable {
     private int playersNumber;
     private List<Player> players;
     private GameBoard gameboard;
-    private int[][] validGrid = new int[DIM_GAMEBOARD][DIM_GAMEBOARD];
+
     private Bag bag;
     private List<CommonObjCard> commonObjCards;
     private Player currentPlayer;
@@ -36,11 +36,10 @@ public class Game extends ModelSubject implements Serializable {
         this.playersNumber = playersNumber;
         this.players = new ArrayList<Player>(playersNumber);
         this.bag = new Bag();
-        this.gameboard = new GameBoard();
+        this.gameboard = new GameBoard(playersNumber);
         this.commonObjCards = new ArrayList<CommonObjCard>();
         createPlayers();
         createBag();
-        createGameBoard();
         generatePersonalObjCards();
         generateCommonObjCards();
     }
@@ -57,89 +56,7 @@ public class Game extends ModelSubject implements Serializable {
         }
     }
 
-    /**
-     * Fills GameBoard slots with Items with random Categories depending on the number of players
-     * @throws RemoteException
-     */
-    private void createGameBoard() throws RemoteException{
-        setGridForTwo(this.validGrid);
-        switch(this.playersNumber) {
-            case 3 -> {
-                validGrid[0][3] = PLAYABLE;
-                validGrid[2][2] = PLAYABLE;
-                validGrid[2][6] = PLAYABLE;
-                validGrid[3][8] = PLAYABLE;
-                validGrid[5][0] = PLAYABLE;
-                validGrid[6][2] = PLAYABLE;
-                validGrid[6][6] = PLAYABLE;
-                validGrid[8][5] = PLAYABLE;
-            }
-            case 4 -> {
-                validGrid[0][3] = PLAYABLE;
-                validGrid[0][4] = PLAYABLE;
-                validGrid[1][5] = PLAYABLE;
-                validGrid[2][2] = PLAYABLE;
-                validGrid[2][6] = PLAYABLE;
-                validGrid[3][1] = PLAYABLE;
-                validGrid[3][8] = PLAYABLE;
-                validGrid[4][0] = PLAYABLE;
-                validGrid[4][8] = PLAYABLE;
-                validGrid[5][0] = PLAYABLE;
-                validGrid[5][7] = PLAYABLE;
-                validGrid[6][2] = PLAYABLE;
-                validGrid[6][6] = PLAYABLE;
-                validGrid[7][3] = PLAYABLE;
-                validGrid[8][4] = PLAYABLE;
-                validGrid[8][5] = PLAYABLE;
-            }
-            default -> {}
-        }
-        refillGameBoard();
-    }
 
-    /**
-     * method to set the GameGrid for two players
-     * 0 = invalid slot
-     * 1 = playable slot
-     * @param Grid the GameBoard's item matrix
-     */
-    private void setGridForTwo (int[][] Grid) {
-        int i, j;
-        for (i = 0; i < 9; i++) {
-            for (j = 0; j < 9; j++) {
-                if (i==1){
-                    if(j>2 && j<5){
-                        Grid[i][j] = PLAYABLE;
-                    }
-                }
-                if (i==2 || i==6){
-                    if(j>2 && j<6){
-                        Grid[i][j] = PLAYABLE;
-                    }
-                }
-                if (i==3){
-                    if(j>1 && j<8){
-                        Grid[i][j] = PLAYABLE;
-                    }
-                }
-                if (i==4){
-                    if(j>0 && j<8){
-                        Grid[i][j] = PLAYABLE;
-                    }
-                }
-                if (i==5){
-                    if(j>0 && j<7){
-                        Grid[i][j] = PLAYABLE;
-                    }
-                }
-                if (i==7){
-                    if(j>3 && j<6){
-                        Grid[i][j] = PLAYABLE;
-                    }
-                }
-            }
-        }
-    }
 
     /**
      * Refills bag with 22 Items of each Category
@@ -201,14 +118,14 @@ public class Game extends ModelSubject implements Serializable {
     public void refillGameBoard() throws RemoteException{
         for(int i=0;i<DIM_GAMEBOARD;i++){
             for(int j=0;j<DIM_GAMEBOARD;j++){
-                if(validGrid[i][j]==PLAYABLE){
+                if(gameboard.getValidGrid()[i][j]==PLAYABLE){
                     try {
                         this.gameboard.getGameGrid()[i][j] = this.bag.drawItem();
-                        this.validGrid[i][j] = OCCUPIED;
+                        this.gameboard.getValidGrid()[i][j] = OCCUPIED;
                     } catch (Exception e) {
                         throw new RuntimeException(e);
                     }
-                } else if(validGrid[i][j]==0) {
+                } else if(gameboard.getValidGrid()[i][j]==0) {
                     this.gameboard.getGameGrid()[i][j] = new Item(null);
                 }
             }
@@ -222,7 +139,7 @@ public class Game extends ModelSubject implements Serializable {
         setChangedAndNotifyListeners(this);
     }
     public void setGameBoard (GameBoard gameboard) { this.gameboard = gameboard; }
-    public void setValidGrid (int[][] validGrid) { this.validGrid = validGrid; }
+
 
 
     /* get methods */
@@ -232,7 +149,7 @@ public class Game extends ModelSubject implements Serializable {
     public List<CommonObjCard> getCommonObjCard(){return commonObjCards;}
     public Bag getBag(){return bag;}
     public Player getCurrentPlayer(){return currentPlayer;}
-    public int[][] getValidGrid(){return validGrid;}
+
     private void setChangedAndNotifyListeners(GameBoard gb) throws RemoteException {
         setChanged();
         notifyObservers(gb);

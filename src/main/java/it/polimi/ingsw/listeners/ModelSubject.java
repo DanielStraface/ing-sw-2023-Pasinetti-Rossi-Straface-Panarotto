@@ -65,7 +65,7 @@ public class ModelSubject {
 
         for (int i = arrLocal.length-1; i>=0; i--){
             Client vl = (Client)arrLocal[i];
-            vl.update(new GameBoardView(arg.getGameGrid()));
+            vl.update(new GameBoardView(arg.getGameGrid(), arg.getValidGrid()));
         }
     }
 
@@ -101,7 +101,7 @@ public class ModelSubject {
             if(vl.getClientID() == currentP.getClientID()){
                 vl.update(new GameView(arg), arg.getCurrentPlayer().getClientID());
             } else if(isTheFirstTurn) {
-                vl.update(new GameBoardView(arg.getGameboard().getGameGrid()));
+                vl.update(new GameBoardView(arg.getGameboard().getGameGrid(), arg.getGameboard().getValidGrid()));
                 isTheFirstTurn = false;
             }
         }
