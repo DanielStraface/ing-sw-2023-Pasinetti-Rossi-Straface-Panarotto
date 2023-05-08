@@ -204,15 +204,6 @@ public class Controller {
             try {
                 game.getCurrentPlayer().pickItems(coords, game.getGameboard().getGameGrid(),
                         game.getGameboard().getValidGrid());
-            } catch (InvalidSelectionException e) {
-                coords.clear();
-                System.err.println("Match#" + this.getMatchID() + ": " + e.getMessage() +
-                        "\nSkipping this selection, repeat the turn of " + game.getCurrentPlayer().getNickname());
-                throw new RemoteException(SelectionError + e.getMessage());
-            } catch (InvalidStateException e) {
-                System.err.println("Match#" + this.getMatchID() + "Something went wrong during pickItems execution: "
-                        + e.getMessage());
-                System.out.println("Match#" + this.getMatchID() + "Ignoring this problem");
             } catch (RemoteException e) {
                 System.err.println("Match#" + this.getMatchID() + " error occurred during notification of observers: "
                         + e.getMessage() + ". The controller tries...");
@@ -248,10 +239,6 @@ public class Controller {
                         this.turnHandler.manageTurn(c);
                     }
                 saveGame(getGame(),"savedGame.ser");
-            } catch (InvalidStateException e) {
-                System.err.println("ERR1");
-            } catch (InvalidSelectionException e) {
-                System.err.println("ERR2");
             } catch (FullColumnException e) {
                 System.err.println("ERR3");
             }

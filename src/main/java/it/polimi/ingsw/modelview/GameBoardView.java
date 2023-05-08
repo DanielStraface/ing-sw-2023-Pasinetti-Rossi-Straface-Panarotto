@@ -26,4 +26,6 @@ public class GameBoardView implements Serializable {
 
     /** get methods */
     public Item[][] getGameGrid(){return gameGrid;}
+    public int[][] getValidGrid(){return validGrid;}
 }
+

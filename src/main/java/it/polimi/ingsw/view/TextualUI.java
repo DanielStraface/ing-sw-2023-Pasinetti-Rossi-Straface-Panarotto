@@ -148,7 +148,7 @@ public class TextualUI extends ViewSubject implements Serializable {
         //setChangedAndNotifyListener(this.coords);
     }
 
-    public void gameActionOnShelf() throws RemoteException {
+    public void gameActionOnShelf() throws RemoteException, InvalidSelectionException {
         this.gameActionMenu.get(1).execute();
         //setChangedAndNotifyListener(this.columnReference.remove(0));
     }
@@ -173,6 +173,8 @@ public class TextualUI extends ViewSubject implements Serializable {
             gameActionOnShelf();
         } catch (RemoteException e) {
             System.err.println("Error occurred while re-asking the number of column in TextualUI: "  + e.getMessage());
+        } catch (InvalidSelectionException e) {
+            System.err.println(e.getMessage());
         }
     }
     public void update(String msg) {
