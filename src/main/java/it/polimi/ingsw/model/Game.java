@@ -33,7 +33,6 @@ public class Game extends ModelSubject implements Serializable {
      * @throws RemoteException
      */
     public Game (int playersNumber) throws InvalidNumberOfPlayersException, RemoteException{
-        System.out.println("UNO");
         if(playersNumber <= 1 || playersNumber >= 5) throw new InvalidNumberOfPlayersException();
         this.playersNumber = playersNumber;
         this.prevClientID = -1;
@@ -41,16 +40,11 @@ public class Game extends ModelSubject implements Serializable {
         this.bag = new Bag();
         this.gameboard = new GameBoard(playersNumber);
         this.commonObjCards = new ArrayList<CommonObjCard>();
-        System.out.println("DUE");
         createPlayers();
         createBag();
-        System.out.println("TRE");
         refillGameBoard();
-        System.out.println("QUATTRO");
-        generateCommonObjCards();
-        System.out.println("CINQUE");
         generatePersonalObjCards();
-        System.out.println("SEI");
+        generateCommonObjCards();
     }
 
     //***********************************************
@@ -168,9 +162,7 @@ public class Game extends ModelSubject implements Serializable {
     public void generatePersonalObjCards(){
         /* Creation of cardReader and fill the list with personalObjCard in reading order*/
         PersonalCardReader cardReader = new PersonalCardReader();
-        System.out.println("DIECI");
         List<PersonalObjCard> cardsList = new LinkedList<>(cardReader.readFromFile());
-        System.out.println("VENTI");
         /* Generation of random number to extract from the list a specific personalObjCard and use it as a parameter
          *  for the setPersonalObjCard method of player entity.
          *  This is done for each player in the match */

@@ -21,9 +21,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
     public ServerImpl(AppServer.typeOfMatch numOfPlayers) throws RemoteException {
         super();
         try{
-            System.out.println("QUI");
             this.game = new Game(numOfPlayers.ordinal() + 1); //create the game model for this numOfPlayerMatch
-            System.out.println("HELLO");
         } catch (Exception e){
             System.err.println(e.getMessage());
         }

@@ -13,6 +13,7 @@ public class SelectItemsCommand implements Command{
     private List<int[]> coords;
     private SelectOrderCommand sortingCommand;
     private int maxNum;
+    private int numOfPickItems;
     private GameBoardView gb;
     private static final int INVALID = 0;
     private static final int PLAYABLE = 1;
@@ -31,13 +32,14 @@ public class SelectItemsCommand implements Command{
     public void setGameBoardView(GameBoardView gb){this.gb = gb;}
 
     private void askUser(){
-        maxNum = 0;
+        numOfPickItems = 0;
         System.out.print("\nHow many items do you want to pick up? >>");
-        maxNum = this.scanner.nextInt();
-        while(maxNum <=0 || maxNum > 3){
+        numOfPickItems = this.scanner.nextInt();
+        while(numOfPickItems <=0 || numOfPickItems > 3){
             System.out.print("\nInvalid number of items, please choose another number >>");
-            maxNum = this.scanner.nextInt();
+            numOfPickItems = this.scanner.nextInt();
         }
+        maxNum = numOfPickItems;
         while(maxNum > 0){
             int[] coordsArray = new int[2];
             int coordsInput = 10;
@@ -174,7 +176,7 @@ public class SelectItemsCommand implements Command{
         rowAndColChecker();
     }
 
-    public int getNumOfItems(){ return maxNum; }
+    public int getNumOfItems(){ return numOfPickItems; }
 
     @Override
     public void execute() throws InvalidSelectionException{

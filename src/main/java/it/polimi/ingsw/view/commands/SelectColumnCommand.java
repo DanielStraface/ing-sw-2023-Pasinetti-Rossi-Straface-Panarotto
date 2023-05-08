@@ -38,7 +38,7 @@ public class SelectColumnCommand implements Command{
 
     private void columnCheck(int columnSelected) throws FullColumnException {
         int[] lastRows = shelfView.getLastRow();
-        if(numOfItems > lastRows[columnSelected-1]+1){
+        if(numOfItems > lastRows[columnSelected]+1){
             throw new FullColumnException();
         }
     }

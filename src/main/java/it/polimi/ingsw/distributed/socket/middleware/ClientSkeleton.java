@@ -125,7 +125,6 @@ public class ClientSkeleton implements Client {
         String nickname;
         try{
             nickname = (String) ois.readObject();
-            System.out.println("THERE");
             return nickname;
         } catch (IOException e) {
             throw new RemoteException("Cannot receive the client while understand which match it is " + e.getMessage());

@@ -57,9 +57,13 @@ public class Player extends ModelSubject implements Serializable {
      * @throws RemoteException
      */
     public void putItemInShelf(int selectedCol) throws RemoteException, FullColumnException {
+        int[] lastRows = myShelf.getLastRow();
         Item[][] grid=myShelf.getShelfGrid();
+
+        // 3 5 5 5 5
+        int lastRow = lastRows[selectedCol];
         /* For-cycle to search the last row available*/
-        int lastRow = -1;
+        /*int lastRow = -1;
         for (int row = 0; row<6; row++) {
             if (grid[row][selectedCol].getCategoryType() == null ) {
                 lastRow = row;
@@ -67,15 +71,30 @@ public class Player extends ModelSubject implements Serializable {
         }
         if(lastRow == -1){
             throw new FullColumnException();
+        }*/
+        /* For-cycle to put items into the selected column starting from the last row available*/
+        for (int i = 0; i < selectItems.size(); i++, lastRow--) {
+            grid[lastRow][selectedCol] = selectItems.get(i);
         }
-            /* For-cycle to put items into the selected column starting from the last row available*/
-            for (int i = 0; i < selectItems.size(); i++, lastRow--) {
-                grid[lastRow][selectedCol] = selectItems.get(i);
-            }
-            while(!selectItems.isEmpty()){
-                selectItems.remove(0);
-            }
+        updateLastRows(selectedCol, selectItems.size());
+        while(!selectItems.isEmpty()){
+            selectItems.remove(0);
+        }
         //setChangedAndNotifyListener(this.myShelf);
+    }
+
+    public boolean updateLastRows(int selectedColumn, int numOfSelectItem){
+        int[] lastRows = myShelf.getLastRow();
+        switch (numOfSelectItem){
+            case 1 -> lastRows[selectedColumn] = lastRows[selectedColumn] - 1;
+            case 2 -> lastRows[selectedColumn] = lastRows[selectedColumn] - 2;
+            case 3 -> lastRows[selectedColumn] = lastRows[selectedColumn] - 3;
+            default ->{
+                System.err.println("Last row not updated correctly");
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
