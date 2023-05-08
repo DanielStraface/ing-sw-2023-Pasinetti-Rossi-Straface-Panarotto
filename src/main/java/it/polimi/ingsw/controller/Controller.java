@@ -5,6 +5,7 @@ import it.polimi.ingsw.exceptions.FullColumnException;
 import it.polimi.ingsw.exceptions.InvalidSelectionException;
 import it.polimi.ingsw.exceptions.InvalidStateException;
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.GameBoard;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.modelview.ShelfView;
 
@@ -27,6 +28,7 @@ public class Controller {
     /* ATTRIBUTES SECTION */
     private int matchID;
     private final Game game;
+    private final GameBoard gameBoard;
     private final List<Client> clients = new ArrayList<>();
     private final TurnHandler turnHandler;
     private static final String SelectionError = "Try again, invalid selection due to: ";
@@ -34,8 +36,9 @@ public class Controller {
     /* METHODS SECTION */
 
     /* -- constructor --*/
-    public Controller(Game game) {
+    public Controller(Game game, GameBoard gameBoard) {
         this.game = game;
+        this.gameBoard= gameBoard;
         turnHandler = new TurnHandler(game);
     }
 
@@ -202,7 +205,7 @@ public class Controller {
                     + o.getClientID() + " clientID number in update(coords)");
         } else {
             try {
-                game.getCurrentPlayer().pickItems(coords, game.getGameboard().getGameGrid(), game.getValidGrid());
+                game.getCurrentPlayer().pickItems(coords, game.getGameboard().getGameGrid(), gameBoard.getValidGrid());
             } catch (InvalidSelectionException e) {
                 coords.clear();
                 System.err.println("Match#" + this.getMatchID() + ": " + e.getMessage() +

@@ -185,6 +185,17 @@ public class TextualUI extends ViewSubject implements Serializable {
         notifyObservers(this.refClient, this.coords, this.columnReference.remove(0));
     }
 
+    public void setShelfView(ShelfView shelf){
+        if(this.gameActionMenu.get(0) instanceof SelectItemsCommand){
+            int temp = ((SelectItemsCommand) this.gameActionMenu.get(0)).getNumOfItems();
+            if(this.gameActionMenu.get(1) instanceof SelectColumnCommand){
+                SelectColumnCommand scc = ((SelectColumnCommand) this.gameActionMenu.get(1));
+                scc.setMaxNumOfItems(temp);
+                scc.setShelfView(shelf);
+            }
+        }
+    }
+
     private void setChangedAndNotifyListener(List<int[]> coords) throws RemoteException, InvalidSelectionException {
         setChanged();
         notifyObservers(this.refClient, coords);
