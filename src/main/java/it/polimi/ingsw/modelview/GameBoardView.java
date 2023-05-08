@@ -2,9 +2,12 @@ package it.polimi.ingsw.modelview;
 
 import it.polimi.ingsw.model.Item;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 public class GameBoardView implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 2L;
     private static final int DIM_GAMEBOARD = 9;
     private final Item[][] gameGrid;
 

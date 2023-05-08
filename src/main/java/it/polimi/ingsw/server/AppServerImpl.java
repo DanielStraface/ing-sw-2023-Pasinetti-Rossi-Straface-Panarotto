@@ -3,6 +3,7 @@ package it.polimi.ingsw.server;
 import it.polimi.ingsw.distributed.Server;
 import it.polimi.ingsw.distributed.ServerImpl;
 import it.polimi.ingsw.distributed.socket.middleware.ClientSkeleton;
+import it.polimi.ingsw.exceptions.NotMessageFromClientYet;
 import it.polimi.ingsw.exceptions.NotSupportedMatchesException;
 import it.polimi.ingsw.exceptions.TooManyMatchesException;
 
@@ -99,16 +100,16 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
                     boolean temp;
                     while(true){
                         try {
-                            nicknameToLog = clientSkeleton.receive();
+                            nicknameToLog = clientSkeleton.receiveNicknameToLog();
                             temp = instance.log(nicknameToLog);
-                            clientSkeleton.sendLogInResult(temp);
+                            clientSkeleton.sendLogginResult(temp);
                             if(temp) break;
                         } catch (RemoteException ignored) {
                         }
                     }
                     while(true){
                         try{
-                            AppServer.typeOfMatch type = clientSkeleton.setupClient();
+                            AppServer.typeOfMatch type = clientSkeleton.setupMatch();
                             try{
                                 server = instance.connect(type);
                                 if(server != null){
@@ -128,7 +129,7 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
                     while(true){
                         try {
                             clientSkeleton.receive(server);
-                        } catch (RemoteException e) {
+                        } catch (RemoteException | NotMessageFromClientYet e) {
                             System.err.println("Error while receiving message from client: " + e.getMessage());
                         }
                     }

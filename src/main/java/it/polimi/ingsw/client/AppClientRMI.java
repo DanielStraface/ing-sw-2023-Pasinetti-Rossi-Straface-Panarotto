@@ -14,27 +14,16 @@ import java.rmi.registry.Registry;
 import java.util.List;
 
 public class AppClientRMI extends AppClient{
-    private static final int TYPE_OF_MATCH_POSITION = 0;
-    private static final int CREATE_A_NEW_MATCH = 1;
-    private static final int JOIN_EXISTING_MATCH = 2;
-    private static final int NUMBER_OF_PLAYER_POSITION = 1;
     private static final String APPSERVER_REGISTRY_NAME = "it.polimi.ingsw.server.AppServer";
-    private static final int NO_MATCH_IN_WAITING_NOW_ERROR = 3;
-    private static final int QUIT_IN_APPCLIENTRMI_ERROR = 4;
 
     public static void main(String[] args) throws RemoteException, NotBoundException {
+        Server matchServerRef = null;
         Registry registry = LocateRegistry.getRegistry();
         AppServer serverApp = (AppServer) registry.lookup(APPSERVER_REGISTRY_NAME);
         System.out.print("\nConnection successfully created!\nPlease log in with your nickname before play:");
-        boolean nickanameAccepted;
-        while(true){
-            askNickname();
-            nickanameAccepted = serverApp.log(nickname);
-            if(nickanameAccepted) break;
-            else System.out.print("\nThis nickname is already used by another user, you must choose another one.");
-        }
-        System.out.print("Log successfully completed!");
-        List<Integer> decisions = welcomeMenu();
+        logginToAppServer(serverApp, null);
+        List<Integer> decisions = mainMenu();
+        /* -- create or join a match -- */
         switch (decisions.get(TYPE_OF_MATCH_POSITION)) {
             case CREATE_A_NEW_MATCH -> {
                 System.out.println("Creazione di una nuova partita");
@@ -44,7 +33,8 @@ public class AppClientRMI extends AppClient{
                         if(t.ordinal() + 1 == decisions.get(NUMBER_OF_PLAYER_POSITION))
                             tom = t;
                     }
-                    new ClientImpl(serverApp.connect(tom), nickname);
+                    matchServerRef = serverApp.connect(tom);
+                    new ClientImpl(matchServerRef, nickname);
                 } catch (NotSupportedMatchesException e) {
                     if (e instanceof TooManyMatchesException) {
                         serverApp.removeLoggedUser(nickname);
@@ -55,24 +45,24 @@ public class AppClientRMI extends AppClient{
             }
             case JOIN_EXISTING_MATCH -> {
                 System.out.println("Join una partita esistente");
-                Server ref = null;
                 try {
-                     ref = serverApp.connect(AppServer.typeOfMatch.existingGame);
+                     matchServerRef = serverApp.connect(AppServer.typeOfMatch.existingGame);
                 } catch (NotSupportedMatchesException e) {
                     if(e instanceof NoMatchException) System.err.println("Something went wrong, not reachable section");
                 }
-                if(ref == null){
+                if(matchServerRef == null){
                     System.out.println("There are no match at this moment for you..\nPlease, reboot application and" +
                             " choose 'to Start a new game'.");
                     serverApp.removeLoggedUser(nickname);
                     System.exit(NO_MATCH_IN_WAITING_NOW_ERROR);
                 }
-                new ClientImpl(ref, nickname);
+                new ClientImpl(matchServerRef, nickname);
             }
             //case "3" -> server.loadFromFile();
             default -> {
                 System.exit(QUIT_IN_APPCLIENTRMI_ERROR);
             }
         }
+        if(matchServerRef != null) matchServerRef.startGame();
     }
 }

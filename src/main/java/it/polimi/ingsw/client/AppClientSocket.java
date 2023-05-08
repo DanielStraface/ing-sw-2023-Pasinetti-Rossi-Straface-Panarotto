@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client;
 
+import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.distributed.ClientImpl;
 import it.polimi.ingsw.distributed.socket.middleware.ServerStub;
 import it.polimi.ingsw.exceptions.NoMatchException;
@@ -14,25 +15,13 @@ import java.util.List;
 public class AppClientSocket extends AppClient {
     private static final String SERVER_ADDRESS = "localhost";
     private static final int SERVER_PORT = 1234;
-    private static final int TYPE_OF_MATCH_POSITION = 0;
-    private static final int CREATE_A_NEW_MATCH = 1;
-    private static final int JOIN_EXISTING_MATCH = 2;
-    private static final int NUMBER_OF_PLAYER_POSITION = 1;
-    private static final int QUIT_IN_APPLCLIENTSOCKET_ERROR = 5;
     public static void main(String[] args) throws RemoteException {
-        //String nickname = args[NICKNAME_POSITION];
         ServerStub appServerStub = new ServerStub(SERVER_ADDRESS, SERVER_PORT);
         System.out.print("\nConnection successfully created!\nPlease log in with your nickname before play:");
-        ClientImpl client = null;
-        boolean nickanameAccepted;
-        while(true){
-            askNickname();
-            nickanameAccepted = appServerStub.log(nickname);
-            if(nickanameAccepted) break;
-            else System.out.print("\nThis nickname is already used by another user, you must choose another one.");
-        }
-        System.out.print("Log successfully completed!");
-        List<Integer> decisions = welcomeMenu();
+        Client userClient = null;
+        logginToAppServer(null, appServerStub);
+        List<Integer> decisions = mainMenu();
+        /* -- create or join a match -- */
         switch (decisions.get(TYPE_OF_MATCH_POSITION)) {
             case CREATE_A_NEW_MATCH -> {
                 System.out.println("Creation of a new match in progress...");
@@ -50,7 +39,7 @@ public class AppClientSocket extends AppClient {
                         System.exit(QUIT_IN_APPLCLIENTSOCKET_ERROR);
                     }
                 }
-                client = new ClientImpl(appServerStub, nickname);
+                userClient = new ClientImpl(appServerStub, nickname);
             }
             case JOIN_EXISTING_MATCH -> {
                 System.out.println("Joining an existing match in progress...");
@@ -60,10 +49,10 @@ public class AppClientSocket extends AppClient {
                     if(e instanceof NoMatchException){
                         System.out.println("There are no match at this moment for you..\nPlease, reboot application and" +
                                 " choose 'to Start a new game'.");
-                        System.exit(-1);
+                        System.exit(NO_MATCH_IN_WAITING_NOW_ERROR);
                     }
                 }
-                client = new ClientImpl(appServerStub, nickname);
+                userClient = new ClientImpl(appServerStub, nickname);
             }
             default -> {
                 try{
@@ -74,7 +63,7 @@ public class AppClientSocket extends AppClient {
                 System.exit(QUIT_IN_APPLCLIENTSOCKET_ERROR);
             }
         }
-        ClientImpl finalClient = client;
+        Client finalClient = userClient;
         new Thread(() -> {
             while (true) {
                 try {

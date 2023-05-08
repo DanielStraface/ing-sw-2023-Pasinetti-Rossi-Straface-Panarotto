@@ -29,20 +29,19 @@ public class TextualUI extends ViewSubject implements Serializable {
                 new SelectColumnCommand(this.columnReference));
     }
 
-    public void run(Client client) throws RemoteException{
-        this.refClient = client;
+    public void run(GameView gameView) throws RemoteException{
+        this.displayNewTurn(gameView);
         System.out.println("-----------------------------------------------------------------------------------------");
-        System.out.println("Hey " + client.getNickname() + ", is your turn!");
-        do{
-            try{
-                gameActionOnGameboard();
-                break;
-            } catch (InvalidSelectionException e) {
-                System.out.println(e.getMessage());
-            } catch (RemoteException e) {
-                System.err.println("Remote error occurred,\n" + e.getMessage());
-            }
-        } while(true);
+        System.out.println("Hey " + this.refClient.getNickname() + ", is your turn!");
+        try{
+            gameActionOnGameboard();
+            gameActionOnShelf();
+            setChangedAndNotifyListener();
+        } catch (InvalidSelectionException e) {
+            System.out.println(e.getMessage());
+        } catch (RemoteException e) {
+            System.err.println("Remote error occurred,\n" + e.getMessage());
+        }
     }
 
     private void displayPersonalObjCard(PlayerView player) {
@@ -143,12 +142,12 @@ public class TextualUI extends ViewSubject implements Serializable {
     public void gameActionOnGameboard() throws RemoteException, InvalidSelectionException {
         this.coords.clear();
         this.gameActionMenu.get(0).execute();
-        setChangedAndNotifyListener(this.coords);
+        //setChangedAndNotifyListener(this.coords);
     }
 
     public void gameActionOnShelf() throws RemoteException {
         this.gameActionMenu.get(1).execute();
-        setChangedAndNotifyListener(this.columnReference.remove(0));
+        //setChangedAndNotifyListener(this.columnReference.remove(0));
     }
 
     public void update(GameBoardView gb) {displayGameBoard(gb.getGameGrid());}
@@ -175,13 +174,15 @@ public class TextualUI extends ViewSubject implements Serializable {
     }
     public void update(String msg) {
         System.out.println(msg);
-        if(msg.contains("Try again")){
-            try {
-                this.gameActionOnGameboard();
-            } catch (RemoteException | InvalidSelectionException e) {
-                System.err.println("Error while repeating the gameActionOnGameboard: " + e.getMessage());
-            }
-        }
+    }
+
+    public void setReferenceClient(Client client){
+        this.refClient = client;
+    }
+
+    private void setChangedAndNotifyListener() throws RemoteException{
+        setChanged();
+        notifyObservers(this.refClient, this.coords, this.columnReference.remove(0));
     }
 
     private void setChangedAndNotifyListener(List<int[]> coords) throws RemoteException, InvalidSelectionException {
