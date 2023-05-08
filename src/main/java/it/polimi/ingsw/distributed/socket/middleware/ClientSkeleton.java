@@ -7,13 +7,13 @@ import it.polimi.ingsw.model.Item;
 import it.polimi.ingsw.modelview.GameBoardView;
 import it.polimi.ingsw.modelview.GameView;
 import it.polimi.ingsw.modelview.ShelfView;
+import it.polimi.ingsw.server.AppServer;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ClientSkeleton implements Client {
@@ -23,10 +23,13 @@ public class ClientSkeleton implements Client {
     private int status = 0;
     private int numberOfTurnRequest = 0;
     private int clientID;
+    private List<int[]> auxiliaryCoords;
+    private Integer auxiliaryColumn;
 
     public ClientSkeleton(Socket socket) throws RemoteException {
         try {
             this.oos = new ObjectOutputStream(socket.getOutputStream());
+            oos.flush();
         } catch (IOException e) {
             throw new RemoteException("Cannot create output stream", e);
         }
@@ -35,10 +38,9 @@ public class ClientSkeleton implements Client {
         } catch (IOException e) {
             throw new RemoteException("Cannot create input stream", e);
         }
-        System.out.println("This is clientSkeleton #" + this.toString());
     }
 
-    @Override
+    /*@Override
     public void update(GameBoardView gb) throws RemoteException {
         try{
             oos.writeObject(gb);
@@ -46,21 +48,19 @@ public class ClientSkeleton implements Client {
         } catch (IOException e) {
             throw new RemoteException("Cannot send gb event: " + e.getMessage());
         }
-    }
+    }*/
 
     @Override
-    public void update(GameView game, int clientID) throws RemoteException {
+    public void update(GameView game) throws RemoteException {
         try{
             oos.writeObject(game);
-            flushAndReset(oos);
-            oos.writeObject(clientID);
             flushAndReset(oos);
         } catch (IOException e) {
             throw new RemoteException("Cannot send gameview and clientID event: " + e.getMessage());
         }
     }
 
-    @Override
+    /*@Override
     public void update(Item[][] gameGrid) throws RemoteException {
         try{
             oos.writeObject(gameGrid);
@@ -88,7 +88,7 @@ public class ClientSkeleton implements Client {
         } catch (IOException e) {
             throw new RemoteException("Cannot send column event: " + e.getMessage());
         }
-    }
+    }*/
 
     @Override
     public void update(String msg) throws RemoteException {
@@ -121,6 +121,50 @@ public class ClientSkeleton implements Client {
         return this.clientID;
     }
 
+    public String receiveNicknameToLog() throws RemoteException{
+        String nickname;
+        try{
+            nickname = (String) ois.readObject();
+            System.out.println("THERE");
+            return nickname;
+        } catch (IOException e) {
+            throw new RemoteException("Cannot receive the client while understand which match it is " + e.getMessage());
+        } catch (ClassNotFoundException e) {
+            throw new RemoteException("Cannot cast the client while understand which match it is " + e.getMessage());
+        }
+    }
+
+    public void sendLogginResult(Boolean result) throws RemoteException{
+        try{
+            oos.writeObject(result);
+            flushAndReset(oos);
+        } catch (IOException e) {
+            throw new RemoteException("Cannot send clientID event: " + e.getMessage());
+        }
+    }
+
+    public AppServer.typeOfMatch setupMatch() throws RemoteException {
+        try{
+            Object o = ois.readObject();
+            if(o instanceof AppServer.typeOfMatch) return (AppServer.typeOfMatch) o;
+            else throw new RemoteException();
+        } catch (IOException e) {
+            throw new RemoteException("Cannot receive the client while understand which match it is " + e.getMessage());
+        } catch (ClassNotFoundException e) {
+            throw new RemoteException("Cannot cast the client while understand which match it is " + e.getMessage());
+        }
+    }
+
+    public void sendMatchServer(Boolean value) throws RemoteException{
+        try{
+            flushAndReset(oos);
+            oos.writeObject(value);
+            oos.flush();
+        } catch (IOException e) {
+            throw new RemoteException("Cannot send clientID event: " + e.getMessage());
+        }
+    }
+
     public synchronized void receive(Server server) throws RemoteException, NotMessageFromClientYet {
         Client client = null;
         Object o;
@@ -130,14 +174,13 @@ public class ClientSkeleton implements Client {
 
         try{
             o = ois.readObject();
-            if(o instanceof Client){
-                client = (Client) o;
-            }
             if(o instanceof List<?>) coords = (List<int[]>) o;
             if(o instanceof Integer) column = (Integer) o;
             if(o instanceof String) {
                 msg = (String) o;
-                if(msg.equals("START GAME")) server.startGame();
+                if(msg.equals("START GAME")) {
+                    server.startGame();
+                }
                 else System.err.println("Discarding notification " + msg + "as string in clientSkeleton " +
                         this.clientID + " clientID number");
             }
@@ -147,63 +190,14 @@ public class ClientSkeleton implements Client {
             throw new RemoteException("Cannot find the object class correctly in ClientSkeleton: " + e.getMessage());
         }
 
-        if(client != null){
-            numberOfTurnRequest++;
-            if(this.status == 0){
-                this.status = 1;
-            } else {
-                this.status = -1;
-            }
-        } else if(coords != null) {
-            if (this.status == 1) {
-                this.status = 0;
-                try{
-                    server.update(this, coords);
-                } catch (RemoteException e) {
-                    if(e.getMessage().contains("Try again")){
-                        this.update(e.getMessage());
-                    }
-                }
-            } else {
-                this.status = -1;
-                System.err.println("I have read coords before client. Status := " + this.status);
-            }
-        } else if(column != null){
-            if(this.status == 1){
-                this.status = 0;
-                server.update(this, column);
-            } else {
-                this.status = -1;
-                System.err.println("I have read column before client. Status := " + this.status);
-            }
-        } else {
-            if(this.numberOfTurnRequest == 0){
-                throw new NotMessageFromClientYet();
-            } else {
-                throw new RemoteException("Error while reading the client, i did not read the client!");
-            }
-
+        if(coords != null){
+            if(this.auxiliaryColumn != null) server.update(this, coords, this.auxiliaryColumn);
+            else this.auxiliaryCoords = coords;
         }
-    }
-
-    public List<Object> receive() throws RemoteException{
-        Client client;
-        Integer numberOfPlayer;
-        String nickname;
-        try{
-            client = (Client) ois.readObject();
-            numberOfPlayer = (Integer) ois.readObject();
-            nickname = (String) ois.readObject();
-        } catch (IOException e) {
-            throw new RemoteException("Cannot receive the client while understand which match it is " + e.getMessage());
-        } catch (ClassNotFoundException e) {
-            throw new RemoteException("Cannot cast the client while understand which match it is " + e.getMessage());
+        if(column != null){
+            if(this.auxiliaryCoords != null) server.update(this, this.auxiliaryCoords, column);
+            else this.auxiliaryColumn = column;
         }
-        List<Object> information = new ArrayList<>();
-        information.add(client);
-        information.add(numberOfPlayer);
-        information.add(nickname);
-        return information;
     }
 
     private void flushAndReset(ObjectOutputStream o) throws IOException {

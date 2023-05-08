@@ -1,22 +1,33 @@
 package it.polimi.ingsw.client;
 
+import it.polimi.ingsw.distributed.socket.middleware.ServerStub;
+import it.polimi.ingsw.server.AppServer;
+
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public abstract class AppClient {
+    protected static final int TYPE_OF_MATCH_POSITION = 0;
+    protected static final int CREATE_A_NEW_MATCH = 1;
+    protected static final int JOIN_EXISTING_MATCH = 2;
+    protected static final int NUMBER_OF_PLAYER_POSITION = 1;
     private static final int CLOSE_APP_FROM_MAIN_MENU = 1;
-    static String nickname;
-    public static List<Integer> welcome() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Hello, welcome to MyShelfie!\nThis is MyShelfie main menu, please choose from this menu list:\n" +
+    protected static final int NO_MATCH_IN_WAITING_NOW_ERROR = -2;
+    protected static final int QUIT_IN_APPCLIENTRMI_ERROR = -3;
+    protected static final int QUIT_IN_APPLCLIENTSOCKET_ERROR = -4;;
+    protected static String nickname;
+    private static final Scanner scanner = new Scanner(System.in);
+
+    protected static List<Integer> mainMenu(){
+        System.out.print("\n\nThis is MyShelfie main menu, please choose from this menu list:\n" +
                 "1)Start a new game\n2)Join an existing game\n3)Load a previous game\n4)Quit from MyShelfie\n>>");
         int decision = scanner.nextInt();
         while(decision < 1 || decision > 4){
             System.out.print("\nInvalid selection from above menu! Please try again\n>>");
             decision = scanner.nextInt();
         }
-        askNickname();
         int numbOfPlayers = 0;
         switch(decision){
             case 1 -> numbOfPlayers = askNumOfPlayer();
@@ -30,22 +41,16 @@ public abstract class AppClient {
             default -> {}
         }
         System.err.println("Decide CLI or GUI have not implemented yet");
-        List<Integer> playersDecision = new ArrayList<Integer>();
-        playersDecision.add(Integer.valueOf(decision));
-        playersDecision.add(Integer.valueOf(numbOfPlayers));
-        decision = 0;
-        while(decision < 1 || decision > 2){
-            System.out.print("Choose between RMI Network version or Socket: " + "\n1) RMI\n2) Socket\n>>");
-            decision = scanner.nextInt();
-        }
-        playersDecision.add(Integer.valueOf(decision));
+        List<Integer> playersDecision = new ArrayList<>();
+        playersDecision.add(decision);
+        playersDecision.add(numbOfPlayers);
         return playersDecision;
     }
 
-    private static void askNickname(){
+    protected static void askNickname(){
         String input;
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Insert your nickname\n>>");
+        System.out.print("\nInsert your nickname >>");
         input = scanner.nextLine();
         while(input.contains("%") || input.contains("!") || input.contains("?") || input.contains("=") ||
                 input.contains("(") || input.contains(")") || input.contains("'") ||
@@ -68,6 +73,21 @@ public abstract class AppClient {
             choice = scanner.nextInt();
         }
         return choice;
+    }
+
+    protected static void logginToAppServer(AppServer appS, ServerStub stub) throws RemoteException {
+
+        while(true){
+            askNickname();
+            if(appS != null){
+                if(appS.log(nickname)) break;
+                else System.out.print("\nThis nickname is already used by another user, you must choose another one.");
+            } else {
+                if(stub.log(nickname)) break;
+                else System.out.print("\nThis nickname is already used by another user, you must choose another one.");
+            }
+        }
+        System.out.print("Log successfully completed!");
     }
 
     private static void displayResearch() {

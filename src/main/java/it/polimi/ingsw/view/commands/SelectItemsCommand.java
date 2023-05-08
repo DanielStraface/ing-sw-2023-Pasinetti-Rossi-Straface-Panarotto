@@ -1,5 +1,7 @@
 package it.polimi.ingsw.view.commands;
 
+import it.polimi.ingsw.modelview.GameBoardView;
+
 import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.modelview.GameBoardView;
 
@@ -10,6 +12,7 @@ public class SelectItemsCommand implements Command{
     private Scanner scanner;
     private List<int[]> coords;
     private SelectOrderCommand sortingCommand;
+    private int maxNum;
     private GameBoardView gb;
     private static final int INVALID = 0;
     private static final int PLAYABLE = 1;
@@ -27,7 +30,7 @@ public class SelectItemsCommand implements Command{
     }
 
     private void askUser(){
-        int maxNum = 0;
+        maxNum = 0;
         System.out.print("\nHow many items do you want to pick up? >>");
         maxNum = this.scanner.nextInt();
         while(maxNum <=0 || maxNum > 3){
@@ -169,6 +172,8 @@ public class SelectItemsCommand implements Command{
         freeSideChecker(gb.getValidGrid());
         rowAndColChecker();
     }
+
+    public int getNumOfItems(){ return maxNum; }
 
     @Override
     public void execute() throws InvalidSelectionException{

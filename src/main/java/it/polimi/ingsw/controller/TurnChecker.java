@@ -70,7 +70,7 @@ public class TurnChecker {
      */
     private void refillGameBoardCheck(Game game) throws RemoteException {
         boolean check = true;
-        int[][] validGrid = game.getValidGrid();
+        int[][] validGrid = game.getGameboard().getValidGrid();
         for(int i=1; i<8; i++){
             for(int j=1; j<8; j++){
                 if(validGrid[i][j] == OCCUPIED){

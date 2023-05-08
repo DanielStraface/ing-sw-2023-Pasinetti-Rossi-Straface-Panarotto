@@ -1,47 +1,74 @@
 package it.polimi.ingsw.client;
 
+import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.distributed.ClientImpl;
 import it.polimi.ingsw.distributed.socket.middleware.ServerStub;
+import it.polimi.ingsw.exceptions.NoMatchException;
 import it.polimi.ingsw.exceptions.NotMessageFromServerYet;
+import it.polimi.ingsw.exceptions.NotSupportedMatchesException;
+import it.polimi.ingsw.exceptions.TooManyMatchesException;
+import it.polimi.ingsw.server.AppServer;
 
 import java.rmi.RemoteException;
+import java.util.List;
 
-public class AppClientSocket {
+public class AppClientSocket extends AppClient {
     private static final String SERVER_ADDRESS = "localhost";
     private static final int SERVER_PORT = 1234;
-    private static final int TYPE_OF_MATCH_POSITION = 0;
-    private static final int NUMBER_OF_PLAYER_POSITION = 1;
-    private static final int NICKNAME_POSITION = 2;
-    private static final Integer JOINING_EXISTING_GAME = 0;
-    private static final int QUIT_IN_APPLCLIENTSOCKET_ERROR = 5;
     public static void main(String[] args) throws RemoteException {
-        String nickname = args[NICKNAME_POSITION];
-        ServerStub serverStub = new ServerStub(SERVER_ADDRESS, SERVER_PORT);
-        ClientImpl client = null;
-        switch (args[TYPE_OF_MATCH_POSITION]) {
-            case "1" -> {
-                client = new ClientImpl(serverStub,
-                        Integer.parseInt(args[NUMBER_OF_PLAYER_POSITION]), nickname);
+        ServerStub appServerStub = new ServerStub(SERVER_ADDRESS, SERVER_PORT);
+        System.out.print("\nConnection successfully created!\nPlease log in with your nickname before play:");
+        Client userClient = null;
+        logginToAppServer(null, appServerStub);
+        List<Integer> decisions = mainMenu();
+        /* -- create or join a match -- */
+        switch (decisions.get(TYPE_OF_MATCH_POSITION)) {
+            case CREATE_A_NEW_MATCH -> {
+                System.out.println("Creation of a new match in progress...");
+                try{
+                    AppServer.typeOfMatch tom = AppServer.typeOfMatch.newTwoPlayersGame;
+                    for(AppServer.typeOfMatch t : AppServer.typeOfMatch.values()){
+                        if(t.ordinal() + 1 == decisions.get(NUMBER_OF_PLAYER_POSITION))
+                            tom = t;
+                    }
+                    appServerStub.connect(tom);
+                } catch (NotSupportedMatchesException e) {
+                    if(e instanceof TooManyMatchesException){
+                        System.out.print(e.getMessage() + "\nClient termination...");
+                        appServerStub.removeLoggedUser(nickname);
+                        System.exit(QUIT_IN_APPLCLIENTSOCKET_ERROR);
+                    }
+                }
+                userClient = new ClientImpl(appServerStub, nickname);
             }
-            case "2" -> {
-                client = new ClientImpl(serverStub, JOINING_EXISTING_GAME, nickname);
+            case JOIN_EXISTING_MATCH -> {
+                System.out.println("Joining an existing match in progress...");
+                try{
+                    appServerStub.connect(AppServer.typeOfMatch.existingGame);
+                } catch (NotSupportedMatchesException e) {
+                    if(e instanceof NoMatchException){
+                        System.out.println("There are no match at this moment for you..\nPlease, reboot application and" +
+                                " choose 'to Start a new game'.");
+                        System.exit(NO_MATCH_IN_WAITING_NOW_ERROR);
+                    }
+                }
+                userClient = new ClientImpl(appServerStub, nickname);
             }
             default -> {
                 try{
-                    serverStub.close();
+                    appServerStub.close();
                 } catch (RemoteException e) {
                     System.err.println("Cannot close serverStub, error: " + e.getMessage());
                 }
                 System.exit(QUIT_IN_APPLCLIENTSOCKET_ERROR);
             }
         }
-        ClientImpl finalClient = client;
+        Client finalClient = userClient;
         new Thread(() -> {
             while (true) {
                 try {
-                    serverStub.receive(finalClient);
-                } catch (NotMessageFromServerYet e) {
-                } catch (RemoteException e) {
+                    appServerStub.receive(finalClient);
+                } catch (NotMessageFromServerYet | RemoteException ignored) {
                 }
             }
         }).start();

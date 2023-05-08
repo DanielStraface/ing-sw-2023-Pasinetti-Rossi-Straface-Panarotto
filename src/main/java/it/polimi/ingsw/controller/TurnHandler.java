@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.distributed.Server;
 import it.polimi.ingsw.server.AppServerImpl;
 import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.exceptions.InvalidMatchesException;
@@ -30,6 +31,7 @@ public class TurnHandler {
      * @throws RemoteException
      */
     public void nextTurn(Player player) throws RemoteException {
+        game.setTurnFinishedPlayerID(player.getClientID());
         if(!gameOver) {
             if (game.getPlayers().indexOf(player) == (game.getPlayers().size() - 1)) {
                 game.setCurrentPlayer(game.getPlayers().get(0));
@@ -64,7 +66,6 @@ public class TurnHandler {
                 gameOver = true;
             }
         }
-        o.update("Your turn is finished! Please wait for the other players turn");
         this.nextTurn(player);
     }
 
@@ -95,12 +96,10 @@ public class TurnHandler {
         }
         String finalMessage = initMessage.concat(winner.getNickname() + " wins with a score of " + winner.getScore() + " points\n" +
                     "The game ends here. Thank you for playing this game!\nBYE");
-        for(Player p : game.getPlayers()){
-            try {
-                p.setStatus("%" + finalMessage);
-            } catch (RemoteException e) {
-                System.err.println(e.getMessage());
-            }
+        try {
+            this.game.setGameOverFinalMessage(finalMessage);
+        } catch (RemoteException e) {
+            System.err.println("Cannot notify the gameOver: " + e.getMessage());
         }
         AppServerImpl.gameFinished();
     }
