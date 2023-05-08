@@ -48,48 +48,6 @@ public class ServerStub implements Server {
     @Override
     public void register(Client client, String nickname) throws RemoteException {
         this.startGame();
-        /*try{
-            oos.writeObject("START GAME");
-            flushAndReset(oos);
-        } catch (IOException e) {
-            throw new RemoteException("Error while register the client on the server", e);
-        }*/
-    }
-
-    @Override
-    public void update(Client client, Integer column) throws RemoteException {
-        try{
-            oos.writeObject(client);
-            flushAndReset(oos);
-            oos.writeObject(column);
-            flushAndReset(oos);
-        } catch (IOException e) {
-            throw new RemoteException("Cannot send event: " + e.getMessage());
-        }
-    }
-
-    @Override
-    public void update(Client client, String nickname) throws RemoteException {
-        try{
-            oos.writeObject(client);
-            flushAndReset(oos);
-            oos.writeObject(nickname);
-            flushAndReset(oos);
-        } catch (IOException e) {
-            throw new RemoteException("Cannot send event: " + e.getMessage());
-        }
-    }
-
-    @Override
-    public void update(Client client, List<int[]> coords) throws RemoteException {
-        try{
-            oos.writeObject(client);
-            flushAndReset(oos);
-            oos.writeObject(coords);
-            flushAndReset(oos);
-        } catch (IOException e) {
-            throw new RemoteException("Cannot send event: " + e.getMessage());
-        }
     }
 
     @Override

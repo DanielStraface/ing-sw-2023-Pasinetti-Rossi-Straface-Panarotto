@@ -67,9 +67,6 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Serializa
             this.view.update(msg);
             this.view.update("FINE PARTITA");
             System.exit(100);
-        }
-        if(msg.equals("WRONG_COL")){
-            this.view.update(0);
         } else this.view.update(msg);
     }
 

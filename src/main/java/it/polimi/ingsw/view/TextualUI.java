@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.distributed.Client;
+import it.polimi.ingsw.exceptions.FullColumnException;
 import it.polimi.ingsw.exceptions.InvalidSelectionException;
 import it.polimi.ingsw.listeners.ViewSubject;
 import it.polimi.ingsw.model.*;
@@ -34,8 +35,8 @@ public class TextualUI extends ViewSubject implements Serializable {
         System.out.println("-----------------------------------------------------------------------------------------");
         System.out.println("Hey " + this.refClient.getNickname() + ", is your turn!");
         try{
-            gameActionOnGameboard();
-            gameActionOnShelf();
+            gameActionOnGameboard(gameView.getGameBoard());
+            gameActionOnShelf(gameView.getCurrentPlayer().getMyShelf());
             setChangedAndNotifyListener();
         } catch (InvalidSelectionException e) {
             System.out.println(e.getMessage());
@@ -139,17 +140,34 @@ public class TextualUI extends ViewSubject implements Serializable {
         displayShelf(game.getCurrentPlayer().getMyShelf());
     }
 
-    public void gameActionOnGameboard() throws RemoteException, InvalidSelectionException {
+    public void gameActionOnGameboard(GameBoardView gb) throws RemoteException {
+        SelectItemsCommand sic = (SelectItemsCommand) this.gameActionMenu.get(0);
+        sic.setGameBoardView(gb);
         while(true){
-            this.coords.clear();
-            this.gameActionMenu.get(0).execute();
-            break;
+            try{
+                this.coords.clear();
+                sic.execute();
+                break;
+            } catch (InvalidSelectionException e) {
+                System.err.println("Wrong item selection: " + e.getMessage());
+            }
         }
         //setChangedAndNotifyListener(this.coords);
     }
 
-    public void gameActionOnShelf() throws RemoteException, InvalidSelectionException {
-        this.gameActionMenu.get(1).execute();
+    public void gameActionOnShelf(ShelfView sh) throws RemoteException, InvalidSelectionException {
+        SelectColumnCommand scc = (SelectColumnCommand) this.gameActionMenu.get(1);
+        SelectItemsCommand sic = (SelectItemsCommand) this.gameActionMenu.get(0);
+        scc.setShelfView(sh);
+        scc.setMaxNumOfItems(sic.getNumOfItems());
+        while(true){
+            try{
+                scc.execute();
+                break;
+            } catch (FullColumnException e) {
+                System.err.println("Wrong column selection: " + e.getMessage());
+            }
+        }
         //setChangedAndNotifyListener(this.columnReference.remove(0));
     }
 
@@ -166,17 +184,6 @@ public class TextualUI extends ViewSubject implements Serializable {
     public void update(ShelfView shelf) {
         displayShelf(shelf);
     }
-
-    public void update(Integer column) {
-        System.out.println("Invalid column selection. Please choose another one!");
-        try {
-            gameActionOnShelf();
-        } catch (RemoteException e) {
-            System.err.println("Error occurred while re-asking the number of column in TextualUI: "  + e.getMessage());
-        } catch (InvalidSelectionException e) {
-            System.err.println(e.getMessage());
-        }
-    }
     public void update(String msg) {
         System.out.println(msg);
     }
@@ -188,14 +195,5 @@ public class TextualUI extends ViewSubject implements Serializable {
     private void setChangedAndNotifyListener() throws RemoteException{
         setChanged();
         notifyObservers(this.refClient, this.coords, this.columnReference.remove(0));
-    }
-
-    private void setChangedAndNotifyListener(List<int[]> coords) throws RemoteException, InvalidSelectionException {
-        setChanged();
-        notifyObservers(this.refClient, coords);
-    }
-    private void setChangedAndNotifyListener(Integer column) throws RemoteException{
-        setChanged();
-        notifyObservers(this.refClient, column);
     }
 }

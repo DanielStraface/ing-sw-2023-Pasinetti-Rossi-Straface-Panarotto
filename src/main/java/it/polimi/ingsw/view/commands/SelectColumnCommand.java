@@ -29,13 +29,9 @@ public class SelectColumnCommand implements Command{
     }
 
     @Override
-    public void execute() {
+    public void execute() throws FullColumnException {
         this.askUser();
-        try {
-            columnCheck(this.col);
-        } catch (FullColumnException e) {
-            System.err.println(e.getMessage());
-        }
+        columnCheck(this.col);
         this.columnReference.add(Integer.valueOf(this.col));
     }
 

@@ -21,7 +21,9 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
     public ServerImpl(AppServer.typeOfMatch numOfPlayers) throws RemoteException {
         super();
         try{
+            System.out.println("QUI");
             this.game = new Game(numOfPlayers.ordinal() + 1); //create the game model for this numOfPlayerMatch
+            System.out.println("HELLO");
         } catch (Exception e){
             System.err.println(e.getMessage());
         }
@@ -82,21 +84,6 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
         System.out.println("Register client " + client + "\nwith clientID := " + client.getClientID() +
                 "for a " + this.game.getPlayers().size() + " players match");
         //this.startGame();
-    }
-
-    @Override
-    public void update(Client client, Integer column) throws RemoteException {
-        this.controller.update(client, column);
-    }
-
-    @Override
-    public void update(Client client, String nickname) throws RemoteException {
-        this.controller.update(client, nickname);
-    }
-
-    @Override
-    public void update(Client client, List<int[]> coords) throws RemoteException {
-        this.controller.update(client, coords);
     }
 
     @Override
