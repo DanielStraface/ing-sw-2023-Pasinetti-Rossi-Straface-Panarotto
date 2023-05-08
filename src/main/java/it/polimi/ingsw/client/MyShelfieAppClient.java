@@ -2,14 +2,13 @@ package it.polimi.ingsw.client;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.util.List;
 import java.util.Scanner;
 
-public class AppClientImpl extends AppClient{
+public class MyShelfieAppClient {
     private static final Scanner scanner = new Scanner(System.in);
     private static final int RMI_NETWORK = 1;
     private static final int SOCKET_NETWORK = 2;
-    private static final int QUIT_IN_APPCLIENTIMPL_ERROR = 2;
+    private static final int QUIT_IN_MYSHELFIE_APP_CLIENT_ERROR = -1;
     public static void startClient() {
         int connectionDecision = welcome();
         switch (connectionDecision){
@@ -47,6 +46,6 @@ public class AppClientImpl extends AppClient{
 
     private static void terminationError(){
         System.err.println("Something went wrong! Closing...\nTERMINATED");
-        System.exit(QUIT_IN_APPCLIENTIMPL_ERROR);
+        System.exit(QUIT_IN_MYSHELFIE_APP_CLIENT_ERROR);
     }
 }

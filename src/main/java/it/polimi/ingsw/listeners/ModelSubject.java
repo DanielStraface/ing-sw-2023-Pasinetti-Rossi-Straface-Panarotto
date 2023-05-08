@@ -7,6 +7,7 @@ import it.polimi.ingsw.modelview.GameView;
 import it.polimi.ingsw.modelview.ShelfView;
 
 import java.rmi.RemoteException;
+import java.util.List;
 import java.util.Vector;
 
 public class ModelSubject {
@@ -26,6 +27,21 @@ public class ModelSubject {
             throw new NullPointerException();
         if (!obs.contains(o)) {
             obs.addElement(o);
+        }
+    }
+
+    public synchronized void informLog(Client client, List<int[]> coords, Integer column) throws RemoteException {
+        /*
+         * a temporary array buffer, used as a snapshot of the state of
+         * current Observers.
+         */
+        Object[] arrLocal;
+
+        synchronized (this) {arrLocal = obs.toArray();}
+
+        for (int i = arrLocal.length-1; i>=0; i--){
+            if(arrLocal[i] instanceof MatchLog)
+                ((MatchLog) arrLocal[i]).update(client, coords, column);
         }
     }
 
@@ -65,7 +81,7 @@ public class ModelSubject {
 
         for (int i = arrLocal.length-1; i>=0; i--){
             Client vl = (Client)arrLocal[i];
-            vl.update(new GameBoardView(arg.getGameGrid()));
+            //vl.update(new GameBoardView(arg.getGameGrid()));
         }
     }
 
@@ -95,16 +111,14 @@ public class ModelSubject {
             clearChanged();
         }
 
-        Player currentP = arg.getCurrentPlayer();
+        Client turnUserClient = null;
+        GameView gmv = new GameView(arg);
         for (int i = arrLocal.length-1; i>=0; i--){
             Client vl = (Client) arrLocal[i];
-            if(vl.getClientID() == currentP.getClientID()){
-                vl.update(new GameView(arg), arg.getCurrentPlayer().getClientID());
-            } else if(isTheFirstTurn) {
-                vl.update(new GameBoardView(arg.getGameboard().getGameGrid()));
-                isTheFirstTurn = false;
-            }
+            if(vl.getClientID() == arg.getCurrentPlayer().getClientID()) turnUserClient = vl;
+            else vl.update(gmv);
         }
+        if(turnUserClient != null) turnUserClient.update(gmv);
     }
 
     public void notifyObservers(Item[][] arg) throws RemoteException{
@@ -135,7 +149,7 @@ public class ModelSubject {
 
         for (int i = arrLocal.length-1; i>=0; i--){
             Client vl = (Client) arrLocal[i];
-            vl.update(arg);
+            //vl.update(arg);
         }
     }
 
@@ -167,7 +181,7 @@ public class ModelSubject {
 
         for (int i = arrLocal.length-1; i>=0; i--){
             Client vl = (Client) arrLocal[i];
-            vl.update(new ShelfView(arg.getShelfGrid()));
+            //vl.update(new ShelfView(arg.getShelfGrid()));
         }
     }
 

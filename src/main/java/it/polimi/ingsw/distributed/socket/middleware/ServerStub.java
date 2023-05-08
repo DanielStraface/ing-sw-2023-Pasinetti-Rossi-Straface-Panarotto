@@ -6,10 +6,8 @@ import it.polimi.ingsw.exceptions.NoMatchException;
 import it.polimi.ingsw.exceptions.NotMessageFromServerYet;
 import it.polimi.ingsw.exceptions.NotSupportedMatchesException;
 import it.polimi.ingsw.exceptions.TooManyMatchesException;
-import it.polimi.ingsw.model.Item;
-import it.polimi.ingsw.modelview.GameBoardView;
+import it.polimi.ingsw.listeners.MatchLog;
 import it.polimi.ingsw.modelview.GameView;
-import it.polimi.ingsw.modelview.ShelfView;
 import it.polimi.ingsw.server.AppServer;
 
 import java.io.IOException;
@@ -49,12 +47,13 @@ public class ServerStub implements Server {
 
     @Override
     public void register(Client client, String nickname) throws RemoteException {
-        try{
-            oos.writeObject(nickname);
+        this.startGame();
+        /*try{
+            oos.writeObject("START GAME");
             flushAndReset(oos);
         } catch (IOException e) {
             throw new RemoteException("Error while register the client on the server", e);
-        }
+        }*/
     }
 
     @Override
@@ -93,14 +92,23 @@ public class ServerStub implements Server {
         }
     }
 
+    @Override
+    public void update(Client client, List<int[]> coords, Integer column) throws RemoteException {
+        try{
+            oos.writeObject(coords);
+            flushAndReset(oos);
+            oos.writeObject(column);
+            flushAndReset(oos);
+        } catch (IOException e) {
+            throw new RemoteException("Cannot send event: " + e.getMessage());
+        }
+    }
+
     public void receive(Client client) throws RemoteException, NotMessageFromServerYet {
         Object o;
         GameView gmv;
-        GameBoardView gb;
-        ShelfView sh;
-        Item[][] gg;
-        Integer integer; //clientID and column in 3 methods
         String msg;
+        Integer id;
         try{
             o = ois.readObject();
         } catch (IOException e) {
@@ -109,30 +117,6 @@ public class ServerStub implements Server {
         } catch (ClassNotFoundException e) {
             throw new RemoteException("Cannot cast event: " + e.getMessage());
         }
-        //--------------------------------------------------------------------------------------------------------------
-        //gameboard --> update(GameBoardView)
-        //--------------------------------------------------------------------------------------------------------------
-        if(o instanceof GameBoardView){
-            gb = (GameBoardView) o;
-            client.update(gb);
-        }
-        //--------------------------------------------------------------------------------------------------------------
-        //shelf --> update(ShelfView)
-        //--------------------------------------------------------------------------------------------------------------
-        if(o instanceof ShelfView){
-            sh = (ShelfView) o;
-            client.update(sh);
-        }
-        //--------------------------------------------------------------------------------------------------------------
-        //gamegrid --> update(Item[][])
-        //--------------------------------------------------------------------------------------------------------------
-        if(o instanceof Item[][]){
-            gg = (Item[][]) o;
-            client.update(gg);
-        }
-        //--------------------------------------------------------------------------------------------------------------
-        //msg --> update(String)
-        //--------------------------------------------------------------------------------------------------------------
         if(o instanceof String){
             msg = (String) o;
             boolean toTerminate = false;
@@ -154,24 +138,12 @@ public class ServerStub implements Server {
         //--------------------------------------------------------------------------------------------------------------
         if(o instanceof GameView){
             gmv = (GameView) o;
-            try{
-                integer = (Integer) ois.readObject();
-                client.update(gmv, integer.intValue());
-            } catch (IOException e) {
-                throw new RemoteException("Cannot receive event: " + e.getMessage());
-            } catch (ClassNotFoundException e) {
-                throw new RemoteException("Cannot cast event: " + e.getMessage());
-            }
+            if(client instanceof MatchLog) System.out.println("RERER");
+            client.update(gmv);
         }
-        //--------------------------------------------------------------------------------------------------------------
-        //integer --> update(Integer - column) or update(int - clientID)
-        //--------------------------------------------------------------------------------------------------------------
         if(o instanceof Integer){
-            integer = (Integer) o;
-            if(integer >= 10)
-                client.update(integer.intValue());
-            if(integer > 0 && integer < 6)
-                client.update(integer);
+            id = (Integer) o;
+            client.update(id);
         }
     }
 

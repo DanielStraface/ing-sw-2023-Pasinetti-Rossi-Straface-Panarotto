@@ -12,6 +12,7 @@ import java.io.*;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 /**
@@ -49,18 +50,19 @@ public class Controller {
     public void chooseFirstPlayer() throws RemoteException{
         //extract a random number between zero and numberOfPlayers
         Random random = new Random();
-        int n = random.nextInt(game.getPlayers().size());
-        //set isFirstPlayer = true for that player
-        game.getPlayers().get(n).setIsFirstPlayer();
-        Player p = game.getPlayers().stream().filter(Player::getIsFirstPlayer).findAny().get();
-        int idOfFirstPlayer = p.getClientID();
-        String msg = null;
+        int n = random.nextInt(game.getPlayersNumber());
+        Player p = game.getPlayers().stream()
+                        .filter(pl -> pl.getClientID() == n*10)
+                                .findFirst()
+                                        .get();
+        p.setIsFirstPlayer();
+        String msg;
         for(Client client : this.getClients()){
-            if(client.getClientID() == idOfFirstPlayer) msg = "You are the first player.";
+            if(client.getClientID() == p.getClientID()) msg = "You are the first player.";
             else msg = p.getNickname() + " is the first player. Wait your turn!";
             client.update(msg + " Enjoy!");
         }
-        game.setCurrentPlayer(game.getPlayers().get(n));
+        game.setCurrentPlayer(p);
     }
 
     /**
@@ -116,7 +118,7 @@ public class Controller {
     }
     public List<Client> getClients(){return this.clients;}
     public boolean getGameOver(){return this.turnHandler.getGameOver();}
-    private int getMatchID() {return this.matchID;}
+    public int getMatchID() {return this.matchID;}
 
     /* update methods */
     /**
@@ -200,7 +202,8 @@ public class Controller {
                     + o.getClientID() + " clientID number in update(coords)");
         } else {
             try {
-                game.getCurrentPlayer().pickItems(coords, game.getGameboard().getGameGrid(), game.getValidGrid());
+                game.getCurrentPlayer().pickItems(coords, game.getGameboard().getGameGrid(),
+                        game.getGameboard().getValidGrid());
             } catch (InvalidSelectionException e) {
                 coords.clear();
                 System.err.println("Match#" + this.getMatchID() + ": " + e.getMessage() +
@@ -213,7 +216,7 @@ public class Controller {
             } catch (RemoteException e) {
                 System.err.println("Match#" + this.getMatchID() + " error occurred during notification of observers: "
                         + e.getMessage() + ". The controller tries...");
-                try{
+                /*try{
                     o.update(new ShelfView(this.game.getCurrentPlayer().getMyShelf().getShelfGrid()));
                 } catch (RemoteException ex) {
                     System.err.println("Cannot handling the problem, the error occurred again!" +
@@ -221,7 +224,36 @@ public class Controller {
                 } finally {
                     System.out.println("A remote error occurred during " + this.game.getCurrentPlayer().getNickname() +
                             " turn while calling pickItems");
-                }
+                }*/
+            }
+        }
+    }
+
+    public void update(Client o, List<int[]> coords, Integer column) throws RemoteException {
+        boolean fromValidClient = false;
+        for(Client c : this.clients){
+            if(c.getClientID() == o.getClientID())
+                fromValidClient = true;
+        }
+        if(!fromValidClient){
+            System.err.println("Match#" + this.getMatchID() + " discarding notification from client with "
+                    + o.getClientID() + " clientID number in update");
+        } else {
+            try{
+                game.getCurrentPlayer().pickItems(coords, game.getGameboard().getGameGrid(),
+                        game.getGameboard().getValidGrid());
+                game.getCurrentPlayer().putItemInShelf(column);
+                for(Client c : this.clients)
+                    if(c.getClientID() == o.getClientID()){
+                        this.turnHandler.manageTurn(c);
+                    }
+                saveGame(getGame(),"savedGame.ser");
+            } catch (InvalidStateException e) {
+                System.err.println("ERR1");
+            } catch (InvalidSelectionException e) {
+                System.err.println("ERR2");
+            } catch (FullColumnException e) {
+                System.err.println("ERR3");
             }
         }
     }

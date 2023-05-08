@@ -16,7 +16,6 @@ public class Game extends ModelSubject implements Serializable {
     private static final int DIM_GAMEBOARD=9;
     private static final int PLAYABLE = 1;
     private static final int OCCUPIED = 2;
-
     private int playersNumber;
     private List<Player> players;
     private GameBoard gameboard;
@@ -24,6 +23,8 @@ public class Game extends ModelSubject implements Serializable {
     private Bag bag;
     private List<CommonObjCard> commonObjCards;
     private Player currentPlayer;
+    private int prevClientID;
+    private String gameOverFinalMessage;
 
     /**
      * constructor for Game class
@@ -34,13 +35,14 @@ public class Game extends ModelSubject implements Serializable {
     public Game (int playersNumber) throws InvalidNumberOfPlayersException, RemoteException{
         if(playersNumber <= 1 || playersNumber >= 5) throw new InvalidNumberOfPlayersException();
         this.playersNumber = playersNumber;
+        this.prevClientID = -1;
         this.players = new ArrayList<Player>(playersNumber);
         this.bag = new Bag();
-        this.gameboard = new GameBoard();
+        this.gameboard = new GameBoard(playersNumber);
         this.commonObjCards = new ArrayList<CommonObjCard>();
         createPlayers();
         createBag();
-        createGameBoard();
+        refillGameBoard();
         generatePersonalObjCards();
         generateCommonObjCards();
     }
@@ -198,22 +200,23 @@ public class Game extends ModelSubject implements Serializable {
      * Refills every PLAYABLE slot of the GameBoard with an Item of a random Category drawn from the Bag
      * @throws RemoteException
      */
-    public void refillGameBoard() throws RemoteException{
+    public void refillGameBoard() {
+        int[][] vlg = this.gameboard.getValidGrid();
         for(int i=0;i<DIM_GAMEBOARD;i++){
             for(int j=0;j<DIM_GAMEBOARD;j++){
-                if(validGrid[i][j]==PLAYABLE){
+                if(vlg[i][j]==PLAYABLE){
                     try {
                         this.gameboard.getGameGrid()[i][j] = this.bag.drawItem();
-                        this.validGrid[i][j] = OCCUPIED;
+                        this.gameboard.getValidGrid()[i][j] = OCCUPIED;
                     } catch (Exception e) {
                         throw new RuntimeException(e);
                     }
-                } else if(validGrid[i][j]==0) {
+                } else if(vlg[i][j]==0) {
                     this.gameboard.getGameGrid()[i][j] = new Item(null);
                 }
             }
         }
-        setChangedAndNotifyListeners(this.gameboard);
+        //setChangedAndNotifyListeners(this.gameboard);
     }
 
     /* set methods */
@@ -221,8 +224,15 @@ public class Game extends ModelSubject implements Serializable {
         this.currentPlayer = player;
         setChangedAndNotifyListeners(this);
     }
+    public void setTurnFinishedPlayerID(int prevClientID){
+        this.prevClientID = prevClientID;
+    }
     public void setGameBoard (GameBoard gameboard) { this.gameboard = gameboard; }
     public void setValidGrid (int[][] validGrid) { this.validGrid = validGrid; }
+    public void setGameOverFinalMessage(String finalMessage) throws RemoteException {
+        this.gameOverFinalMessage = finalMessage;
+        setChangedAndNotifyListeners(this);
+    }
 
 
     /* get methods */
@@ -232,7 +242,9 @@ public class Game extends ModelSubject implements Serializable {
     public List<CommonObjCard> getCommonObjCard(){return commonObjCards;}
     public Bag getBag(){return bag;}
     public Player getCurrentPlayer(){return currentPlayer;}
+    public int getPrevClientID(){return this.prevClientID;}
     public int[][] getValidGrid(){return validGrid;}
+    public String getGameOverFinalMessage(){return this.gameOverFinalMessage;}
     private void setChangedAndNotifyListeners(GameBoard gb) throws RemoteException {
         setChanged();
         notifyObservers(gb);

@@ -2,9 +2,12 @@ package it.polimi.ingsw.modelview;
 
 import it.polimi.ingsw.model.Item;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 public class PersonalObjCardView implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 2L;
     private final Item[][] cardGrid;
 
     public PersonalObjCardView(Item[][] cardGrid) {

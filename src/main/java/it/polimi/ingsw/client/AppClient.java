@@ -1,15 +1,26 @@
 package it.polimi.ingsw.client;
 
+import it.polimi.ingsw.distributed.socket.middleware.ServerStub;
+import it.polimi.ingsw.server.AppServer;
+
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public abstract class AppClient {
+    protected static final int TYPE_OF_MATCH_POSITION = 0;
+    protected static final int CREATE_A_NEW_MATCH = 1;
+    protected static final int JOIN_EXISTING_MATCH = 2;
+    protected static final int NUMBER_OF_PLAYER_POSITION = 1;
     private static final int CLOSE_APP_FROM_MAIN_MENU = 1;
+    protected static final int NO_MATCH_IN_WAITING_NOW_ERROR = -2;
+    protected static final int QUIT_IN_APPCLIENTRMI_ERROR = -3;
+    protected static final int QUIT_IN_APPLCLIENTSOCKET_ERROR = -4;;
     protected static String nickname;
-    private static Scanner scanner = new Scanner(System.in);
+    private static final Scanner scanner = new Scanner(System.in);
 
-    protected static List<Integer> welcomeMenu(){
+    protected static List<Integer> mainMenu(){
         System.out.print("\n\nThis is MyShelfie main menu, please choose from this menu list:\n" +
                 "1)Start a new game\n2)Join an existing game\n3)Load a previous game\n4)Quit from MyShelfie\n>>");
         int decision = scanner.nextInt();
@@ -62,6 +73,21 @@ public abstract class AppClient {
             choice = scanner.nextInt();
         }
         return choice;
+    }
+
+    protected static void logginToAppServer(AppServer appS, ServerStub stub) throws RemoteException {
+
+        while(true){
+            askNickname();
+            if(appS != null){
+                if(appS.log(nickname)) break;
+                else System.out.print("\nThis nickname is already used by another user, you must choose another one.");
+            } else {
+                if(stub.log(nickname)) break;
+                else System.out.print("\nThis nickname is already used by another user, you must choose another one.");
+            }
+        }
+        System.out.print("Log successfully completed!");
     }
 
     private static void displayResearch() {

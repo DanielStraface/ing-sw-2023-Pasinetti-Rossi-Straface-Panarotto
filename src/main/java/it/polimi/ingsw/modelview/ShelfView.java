@@ -2,9 +2,12 @@ package it.polimi.ingsw.modelview;
 
 import it.polimi.ingsw.model.Item;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 public class ShelfView implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 2L;
     private final Item[][] shelfGrid;
 
     public ShelfView(Item[][] shelfGrid) {

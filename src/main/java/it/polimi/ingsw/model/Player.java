@@ -179,13 +179,13 @@ public class Player extends ModelSubject implements Serializable {
     public void putItemInShelf(int selectedCol) throws RemoteException, FullColumnException {
         Item[][] grid=myShelf.getShelfGrid();
         /* For-cycle to search the last row available*/
-        int lastRow = 0;
+        int lastRow = -1;
         for (int row = 0; row<6; row++) {
             if (grid[row][selectedCol].getCategoryType() == null ) {
                 lastRow = row;
             }
         }
-        if(lastRow == 0){
+        if(lastRow == -1){
             throw new FullColumnException();
         }
             /* For-cycle to put items into the selected column starting from the last row available*/
@@ -195,7 +195,7 @@ public class Player extends ModelSubject implements Serializable {
             while(!selectItems.isEmpty()){
                 selectItems.remove(0);
             }
-        setChangedAndNotifyListener(this.myShelf);
+        //setChangedAndNotifyListener(this.myShelf);
     }
 
     /**
