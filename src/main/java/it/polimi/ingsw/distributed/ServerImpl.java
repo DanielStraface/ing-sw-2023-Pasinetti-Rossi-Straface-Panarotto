@@ -3,9 +3,11 @@ package it.polimi.ingsw.distributed;
 import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.listeners.MatchLog;
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.server.AppServer;
 import it.polimi.ingsw.server.AppServerImpl;
 
+import java.io.FileNotFoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.RMIClientSocketFactory;
 import java.rmi.server.RMIServerSocketFactory;
@@ -48,11 +50,19 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
             this.controller.getClients().get(this.controller.getClients().size() - 1).update("Joining a lobby...");
             this.controller.setMatchID(AppServerImpl.getMatchID(this));
             this.game.addListener(new MatchLog(this.controller.getMatchID()));
-            for(Client client : this.controller.getClients()) {
-                client.update("Correct number of players reached!" +
-                        "\nThe match is starting...Extraction of the first player is running");
+            if(checkIfPrevGame()){
+                for(Client c : this.controller.getClients())
+                    c.update("Old unfinished match found!\nThe game will resume at that point. " +
+                            "If you want to join a new game consider to changed your nickname");
+                this.controller.substituteGameModel(this.game);
+                this.game.setCurrentPlayer(this.game.getCurrentPlayer());
+            } else {
+                for(Client client : this.controller.getClients()) {
+                    client.update("Correct number of players reached!" +
+                            "\nThe match is starting...Extraction of the first player is running");
+                }
+                this.controller.chooseFirstPlayer();
             }
-            this.controller.chooseFirstPlayer();
         } else {
             int temp = 0;
             for (boolean b : this.toConnect) {
@@ -64,6 +74,44 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
                          "\nSearching for " + temp + " other players");
             }
         }
+    }
+
+    private boolean checkIfPrevGame() {
+        Game game;
+        boolean isPrevGame = true;
+        for(int i=0;i<AppServerImpl.MAX_MATCHES_MANAGED;i++){
+            try{
+                game = Controller.loadGame("match" + i + ".ser");
+                if(game == null) return false;
+                else {
+                    List<String> nicknames = this.game.getPlayers().stream()
+                            .map(Player::getNickname)
+                            .toList();
+                    for(Player p : game.getPlayers())
+                        if (!nicknames.contains(p.getNickname())) {
+                            isPrevGame = false;
+                            break;
+                        }
+                }
+                if(!isPrevGame) return false;
+                else {
+                    this.game = game;
+                    this.game.deleteListeners();
+                    this.controller.getClients()
+                            .forEach(client -> this.game.addListener(client));
+                    this.game.addListener(new MatchLog(this.controller.getMatchID()));
+                    for(Client c : this.controller.getClients())
+                        for(Player player : this.game.getPlayers())
+                            if(player.getNickname().equals(c.getNickname()))
+                                c.update(player.getClientID());
+                    return true;
+                }
+            } catch (FileNotFoundException ignored) {
+            } catch (RemoteException e) {
+                System.err.println("Cannot reach the nickname: " + e.getMessage());
+            }
+        }
+        return false;
     }
 
     @Override
@@ -81,7 +129,6 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
         }
         System.out.println("Register client " + client + "\nwith clientID := " + client.getClientID() +
                 "for a " + this.game.getPlayers().size() + " players match");
-        //this.startGame();
     }
 
     @Override

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.exceptions.InvalidNumberOfPlayersException;
 import it.polimi.ingsw.listeners.ModelSubject;
 import it.polimi.ingsw.model.comcard.CommonObjCard;
@@ -136,6 +137,12 @@ public class Game extends ModelSubject implements Serializable {
     }
 
     /* set methods */
+    public void setAndSave(int matchID, Player player) throws RemoteException {
+        this.currentPlayer = player;
+        String fileName = "match" + Integer.toString(matchID) + ".ser";
+        Controller.saveGame(this, fileName);
+        setChangedAndNotifyListeners(this);
+    }
     public void setCurrentPlayer(Player player) throws RemoteException{
         this.currentPlayer = player;
         setChangedAndNotifyListeners(this);
@@ -161,10 +168,6 @@ public class Game extends ModelSubject implements Serializable {
     public int getPrevClientID(){return this.prevClientID;}
     public int[][] getValidGrid(){return validGrid;}
     public String getGameOverFinalMessage(){return this.gameOverFinalMessage;}
-    private void setChangedAndNotifyListeners(GameBoard gb) throws RemoteException {
-        setChanged();
-        notifyObservers(gb);
-    }
     private void setChangedAndNotifyListeners(Game gm) throws RemoteException{
         setChanged();
         notifyObservers(gm);

@@ -12,6 +12,7 @@ public abstract class AppClient {
     protected static final int TYPE_OF_MATCH_POSITION = 0;
     protected static final int CREATE_A_NEW_MATCH = 1;
     protected static final int JOIN_EXISTING_MATCH = 2;
+    protected static final int LOAD_PREVIOUS_GAME = 3;
     protected static final int NUMBER_OF_PLAYER_POSITION = 1;
     private static final int CLOSE_APP_FROM_MAIN_MENU = 1;
     protected static final int NO_MATCH_IN_WAITING_NOW_ERROR = -2;

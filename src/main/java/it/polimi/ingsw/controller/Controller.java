@@ -1,18 +1,13 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.distributed.Client;
-import it.polimi.ingsw.exceptions.FullColumnException;
-import it.polimi.ingsw.exceptions.InvalidSelectionException;
-import it.polimi.ingsw.exceptions.InvalidStateException;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.modelview.ShelfView;
 
 import java.io.*;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 
 /**
@@ -26,9 +21,9 @@ import java.util.Random;
 public class Controller {
     /* ATTRIBUTES SECTION */
     private int matchID;
-    private final Game game;
+    private Game game;
     private final List<Client> clients = new ArrayList<>();
-    private final TurnHandler turnHandler;
+    private TurnHandler turnHandler;
     private static final String SelectionError = "Try again, invalid selection due to: ";
 
     /* METHODS SECTION */
@@ -71,7 +66,7 @@ public class Controller {
      * @param fileName - the name of the saving file
      * @author Christian Pasinetti
      */
-    public void saveGame(Game game, String fileName) {
+    public static void saveGame(Game game, String fileName) {
         try{
             FileOutputStream fileOutputStream=new FileOutputStream(fileName);
             ObjectOutputStream objectOutputStream=new ObjectOutputStream(fileOutputStream);
@@ -90,7 +85,7 @@ public class Controller {
      * @return the game instance that represent the model stored in the fileName
      * @author Christian Pasinetti
      */
-    public static Game loadGame(String fileName) {
+    public static Game loadGame(String fileName) throws FileNotFoundException {
         try {
             FileInputStream fileInputStream = new FileInputStream(fileName);
             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
@@ -98,10 +93,18 @@ public class Controller {
             objectInputStream.close();
             fileInputStream.close();
             return game;
-        } catch (IOException | ClassNotFoundException e) {
+        } catch (IOException e) {
+            if(e instanceof FileNotFoundException) throw new FileNotFoundException();
+            else System.err.println("IO error: " + e.getMessage());
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
-            return null;
         }
+        return null;
+    }
+
+    public void substituteGameModel(Game game){
+        this.game = game;
+        this.turnHandler = new TurnHandler(game);
     }
 
     public void setMatchID(int matchID) {this.matchID = matchID;}
@@ -121,104 +124,6 @@ public class Controller {
     public int getMatchID() {return this.matchID;}
 
     /* update methods */
-    /**
-     * This method is a custom implementation of the observer-observable pattern. In particular, it is the update that
-     * manage the column choice of the player's shelf.
-     * @param o - the UI that notify this event
-     * @param column - the chosen column by the player
-     * @author Matteo Panarotto
-     */
-    public void update(Client o, Integer column) throws RemoteException {
-        boolean fromValidClient = false;
-        for(Client c : this.clients){
-            if(c.getClientID() == o.getClientID())
-                fromValidClient = true;
-        }
-        if( !fromValidClient ){
-            System.err.println("Match#" + this.getMatchID() + ", discarding notification from client with "
-                    + o.getClientID() + " clientID number in update(column)");
-        } else {
-            int col = column.intValue();
-            try {
-                    game.getCurrentPlayer().putItemInShelf(col);
-                for(Client c : this.clients)
-                    if(c.getClientID() == o.getClientID()){
-                        this.turnHandler.manageTurn(c);
-                    }
-                saveGame(getGame(),"savedGame.ser");
-            } catch (FullColumnException e) {
-                System.err.println("Match#" + this.getMatchID() + ": " + e.getMessage() +
-                        "\nSkipping this selection, repeat the column selection of "
-                        + game.getCurrentPlayer().getNickname());
-                this.clients.stream()
-                        .filter(client -> {
-                            try {
-                                return client.getClientID() == this.game.getCurrentPlayer().getClientID();
-                            } catch (RemoteException ex) {
-                                throw new RuntimeException(ex);
-                            }
-                        })
-                        .findAny()
-                        .get()
-                        .update("WRONG_COL");
-            } catch (RemoteException e) {
-                System.err.println("Match#" + this.getMatchID() +
-                        "Error while try to notify the client: " + e.getMessage());
-            }
-        }
-    }
-
-    /**
-     * This method is a custom implementation of the observer-observable pattern. In particular, it is the update that
-     * manage the nickname of the player.
-     * @param o - the UI that notify this event
-     * @param nickname - the nickname chosen by the player
-     * @author Matteo Panarotto
-     */
-    public void update(Client o, String nickname){
-        game.getCurrentPlayer().setNicknameAndClientID(nickname, 0);
-        try {
-            this.chooseFirstPlayer();
-        } catch (RemoteException e) {
-            System.err.println(e.getMessage());
-        }
-    }
-
-    /**
-     * This method is a custom implementation of the observer-observable pattern. In particular, it is the update that
-     * manage the item selection choice by the player.
-     * @param o - the UI that notify this event
-     * @param coords - the list of coordinates of the item selected by the player
-     * @author Matteo Panarotto
-     */
-    public void update(Client o, List<int[]> coords) throws RemoteException{
-        boolean fromValidClient = false;
-        for(Client c : this.clients){
-            if(c.getClientID() == o.getClientID())
-                fromValidClient = true;
-        }
-        if(!fromValidClient){
-            System.err.println("Match#" + this.getMatchID() + " discarding notification from client with "
-                    + o.getClientID() + " clientID number in update(coords)");
-        } else {
-            try {
-                game.getCurrentPlayer().pickItems(coords, game.getGameboard().getGameGrid(),
-                        game.getGameboard().getValidGrid());
-            } catch (RemoteException e) {
-                System.err.println("Match#" + this.getMatchID() + " error occurred during notification of observers: "
-                        + e.getMessage() + ". The controller tries...");
-                /*try{
-                    o.update(new ShelfView(this.game.getCurrentPlayer().getMyShelf().getShelfGrid()));
-                } catch (RemoteException ex) {
-                    System.err.println("Cannot handling the problem, the error occurred again!" +
-                            "\nIgnoring this for now...");
-                } finally {
-                    System.out.println("A remote error occurred during " + this.game.getCurrentPlayer().getNickname() +
-                            " turn while calling pickItems");
-                }*/
-            }
-        }
-    }
 
     public void update(Client o, List<int[]> coords, Integer column) throws RemoteException {
         boolean fromValidClient = false;
@@ -230,18 +135,12 @@ public class Controller {
             System.err.println("Match#" + this.getMatchID() + " discarding notification from client with "
                     + o.getClientID() + " clientID number in update");
         } else {
-            try{
-                game.getCurrentPlayer().pickItems(coords, game.getGameboard().getGameGrid(),
-                        game.getGameboard().getValidGrid());
-                game.getCurrentPlayer().putItemInShelf(column);
-                for(Client c : this.clients)
-                    if(c.getClientID() == o.getClientID()){
-                        this.turnHandler.manageTurn(c);
-                    }
-                saveGame(getGame(),"savedGame.ser");
-            } catch (FullColumnException e) {
-                System.err.println("ERR3");
-            }
+            game.getCurrentPlayer().pickItems(coords, game.getGameboard().getGameGrid(),
+                    game.getGameboard().getValidGrid());
+            game.getCurrentPlayer().putItemInShelf(column);
+            for(Client c : this.clients)
+                if(c.getClientID() == o.getClientID())
+                    this.turnHandler.manageTurn(this.getMatchID(), c);
         }
     }
 }

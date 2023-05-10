@@ -30,13 +30,15 @@ public class TurnHandler {
      * @param player player whose turn is over
      * @throws RemoteException
      */
-    public void nextTurn(Player player) throws RemoteException {
+    public void nextTurn(int matchID, Player player) throws RemoteException {
         game.setTurnFinishedPlayerID(player.getClientID());
         if(!gameOver) {
             if (game.getPlayers().indexOf(player) == (game.getPlayers().size() - 1)) {
-                game.setCurrentPlayer(game.getPlayers().get(0));
+                saveModelAndSetNewPlayer(matchID, game.getPlayers().get(0));
+                //game.setCurrentPlayer(game.getPlayers().get(0));
             } else {
-                game.setCurrentPlayer(game.getPlayers().get((game.getPlayers().indexOf(player)) + 1));
+                saveModelAndSetNewPlayer(matchID, game.getPlayers().get((game.getPlayers().indexOf(player)) + 1));
+                //game.setCurrentPlayer(game.getPlayers().get((game.getPlayers().indexOf(player)) + 1));
             }
         } else {
             gameOverHandler();
@@ -49,7 +51,7 @@ public class TurnHandler {
      * @param o the Client of the player whose turn is over
      * @throws Exception
      */
-    public void manageTurn(Client o) throws RemoteException {
+    public void manageTurn(int matchID, Client o) throws RemoteException {
         Player player = game.getCurrentPlayer();
         if(turnChecker.manageCheck(player, game) || endGame) {
             if(!endGame) player.addPoints(ENDGAME_POINTS);
@@ -66,7 +68,7 @@ public class TurnHandler {
                 gameOver = true;
             }
         }
-        this.nextTurn(player);
+        this.nextTurn(matchID,player);
     }
 
     /**
@@ -94,14 +96,18 @@ public class TurnHandler {
             String tempMessage = players.get(i).getNickname() + " has a score of " + players.get(i).getScore() + "\n";
             initMessage = initMessage.concat(tempMessage);
         }
-        String finalMessage = initMessage.concat(winner.getNickname() + " wins with a score of " + winner.getScore() + " points\n" +
-                    "The game ends here. Thank you for playing this game!\nBYE");
+        String finalMessage = initMessage.concat(winner.getNickname() + " wins with a score of " + winner.getScore()
+                + " points\nThe game ends here. Thank you for playing this game!\nBYE\n\nWaiting for app termination by user");
         try {
             this.game.setGameOverFinalMessage(finalMessage);
         } catch (RemoteException e) {
             System.err.println("Cannot notify the gameOver: " + e.getMessage());
         }
         AppServerImpl.gameFinished();
+    }
+
+    private void saveModelAndSetNewPlayer(int matchID, Player player) throws RemoteException {
+        game.setAndSave(matchID, player);
     }
 
     public boolean getGameOver(){return this.gameOver;}

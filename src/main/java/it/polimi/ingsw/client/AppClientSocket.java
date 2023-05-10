@@ -18,7 +18,6 @@ public class AppClientSocket extends AppClient {
     public static void main(String[] args) throws RemoteException {
         ServerStub appServerStub = new ServerStub(SERVER_ADDRESS, SERVER_PORT);
         System.out.print("\nConnection successfully created!\nPlease log in with your nickname before play:");
-        Client userClient = null;
         logginToAppServer(null, appServerStub);
         List<Integer> decisions = mainMenu();
         /* -- create or join a match -- */
@@ -39,7 +38,7 @@ public class AppClientSocket extends AppClient {
                         System.exit(QUIT_IN_APPLCLIENTSOCKET_ERROR);
                     }
                 }
-                userClient = new ClientImpl(appServerStub, nickname);
+                new ClientImpl(appServerStub, nickname);
             }
             case JOIN_EXISTING_MATCH -> {
                 System.out.println("Joining an existing match in progress...");
@@ -52,7 +51,7 @@ public class AppClientSocket extends AppClient {
                         System.exit(NO_MATCH_IN_WAITING_NOW_ERROR);
                     }
                 }
-                userClient = new ClientImpl(appServerStub, nickname);
+                new ClientImpl(appServerStub, nickname);
             }
             default -> {
                 try{
@@ -63,14 +62,5 @@ public class AppClientSocket extends AppClient {
                 System.exit(QUIT_IN_APPLCLIENTSOCKET_ERROR);
             }
         }
-        Client finalClient = userClient;
-        new Thread(() -> {
-            while (true) {
-                try {
-                    appServerStub.receive(finalClient);
-                } catch (NotMessageFromServerYet | RemoteException ignored) {
-                }
-            }
-        }).start();
     }
 }

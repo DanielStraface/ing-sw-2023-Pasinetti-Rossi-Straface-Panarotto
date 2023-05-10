@@ -10,6 +10,9 @@ import it.polimi.ingsw.exceptions.TooManyMatchesException;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -28,7 +31,7 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
     private static int FIRST_WAITING_MATCH;
     private static final int SERVER_PORT = 1234;
     private static final String APPSERVER_REGISTRY_NAME = "it.polimi.ingsw.server.AppServer";
-    private static final int MAX_MATCHES_MANAGED = 2;
+    public static final int MAX_MATCHES_MANAGED = 10;
     private static final int ERROR_WHILE_CREATING_SERVER_SOCKET = 1;
     protected AppServerImpl() throws RemoteException {
     }
@@ -121,6 +124,7 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
                                 }
                             } catch (NotSupportedMatchesException e){
                                 instance.removeLoggedUser(nicknameToLog);
+                                clientSkeleton.sendMatchServer(false);
                             }
                             break;
                         } catch (RemoteException ignored) {
@@ -149,6 +153,14 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
                     matches.remove(i);
                     System.out.println("The match #" + i + " is finished!\nRemoving from matches...Done!\n" +
                             "There are " + matches.size() + " matches now");
+                    try {
+                        Path path = FileSystems.getDefault().getPath("./match0.ser");
+                        if(Files.deleteIfExists(path))
+                            System.out.println("Saving file of match # " + i + " delete successfully");
+                        else System.err.println("Error while delete the saving file of match # " + i);
+                    } catch (IOException e) {
+                        System.err.println("Error while deleting the saving file of match # " + i);
+                    }
                 }
             }
         }
@@ -189,10 +201,13 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
                     return null;
                 }
                 match = waitingQueue.get(FIRST_WAITING_MATCH);
+                System.out.println("ALFA");
+                if(match == null) System.out.println("is nUlll");
                 int numberOfClientConnected = match.connectedClient;
+                System.out.println("BETA");
                 if(numberOfClientConnected == match.getPlayersGameNumber() - 1) {
                     matches.put(matches.size(), waitingQueue.remove(FIRST_WAITING_MATCH));
-                    FIRST_WAITING_MATCH++;
+                    if(FIRST_WAITING_MATCH > 1) FIRST_WAITING_MATCH--;
                     System.out.println("New match is running!\nThe next match to be served is the #" + FIRST_WAITING_MATCH);
                 }
                 match.connectedClient++;
@@ -222,6 +237,10 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
             loggedNicknames.remove(nickname);
             System.out.println("Forced log out of " + nickname);
         }
+    }
+
+    public void loadPrevMatch() throws RemoteException {
+
     }
 
     public static int getMatchID(Server server){

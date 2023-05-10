@@ -18,6 +18,7 @@ public class Player extends ModelSubject implements Serializable {
     private PersonalObjCard myPersonalObjCard;
     private List<Item> selectItems;
     private boolean isFirstPlayer;
+    private String commonObjCardsReachedString;
     private static final int INVALID = 0;
     private static final int PLAYABLE = 1;
 
@@ -46,7 +47,6 @@ public class Player extends ModelSubject implements Serializable {
             gameGrid[row][col] = new Item(null);
             validGrid[row][col] = PLAYABLE;
         }
-        setChangedAndNotifyListener(gameGrid);
     }
 
     /**
@@ -56,22 +56,12 @@ public class Player extends ModelSubject implements Serializable {
      * @throws InvalidNumberOfItemsException
      * @throws RemoteException
      */
-    public void putItemInShelf(int selectedCol) throws RemoteException, FullColumnException {
+    public void putItemInShelf(int selectedCol) throws RemoteException {
         int[] lastRows = myShelf.getLastRow();
         Item[][] grid=myShelf.getShelfGrid();
 
-        // 3 5 5 5 5
         int lastRow = lastRows[selectedCol];
-        /* For-cycle to search the last row available*/
-        /*int lastRow = -1;
-        for (int row = 0; row<6; row++) {
-            if (grid[row][selectedCol].getCategoryType() == null ) {
-                lastRow = row;
-            }
-        }
-        if(lastRow == -1){
-            throw new FullColumnException();
-        }*/
+
         /* For-cycle to put items into the selected column starting from the last row available*/
         for (int i = 0; i < selectItems.size(); i++, lastRow--) {
             grid[lastRow][selectedCol] = selectItems.get(i);
@@ -80,7 +70,6 @@ public class Player extends ModelSubject implements Serializable {
         while(!selectItems.isEmpty()){
             selectItems.remove(0);
         }
-        //setChangedAndNotifyListener(this.myShelf);
     }
 
     public boolean updateLastRows(int selectedColumn, int numOfSelectItem){
@@ -113,7 +102,7 @@ public class Player extends ModelSubject implements Serializable {
     public void addPointsByCommonObjCard(int points, String toDisplay) {
         this.score += points;
         setChanged();
-        notifyObservers(toDisplay);
+        notifyObservers( this.clientID + "% " + toDisplay);
     }
 
     /* set methods */
@@ -126,10 +115,6 @@ public class Player extends ModelSubject implements Serializable {
         this.nickname = nickname;
         this.clientID = clientID;
     }
-    public void setStatus(String msg) throws RemoteException {
-        setChangedAndNotifyListener(msg);
-    }
-
     /* get methods */
     public String getNickname(){
         return this.nickname;
@@ -150,19 +135,6 @@ public class Player extends ModelSubject implements Serializable {
         return this.isFirstPlayer;
     }
     public List<Item> getSelectItems(){return this.selectItems;}
-
-    private void setChangedAndNotifyListener(Item[][] gg) throws RemoteException{
-        setChanged();
-        notifyObservers(gg);
-    }
-    private void setChangedAndNotifyListener(Shelf sh) throws RemoteException{
-        setChanged();
-        notifyObservers(sh);
-    }
-    private void setChangedAndNotifyListener(String msg) {
-        setChanged();
-        notifyObservers(msg);
-    }
 }
 
 
