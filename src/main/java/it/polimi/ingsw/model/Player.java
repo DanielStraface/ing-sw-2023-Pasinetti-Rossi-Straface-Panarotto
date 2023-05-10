@@ -101,8 +101,6 @@ public class Player extends ModelSubject implements Serializable {
      */
     public void addPointsByCommonObjCard(int points, String toDisplay) {
         this.score += points;
-        setChanged();
-        notifyObservers( this.clientID + "% " + toDisplay);
     }
 
     /* set methods */
