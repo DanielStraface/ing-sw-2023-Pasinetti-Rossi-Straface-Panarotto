@@ -143,21 +143,22 @@ public class CommonObjCard implements Serializable {
      * doCheck method controls if the condition for distributes points subsist.
      * @return true <==> conditions of the commonObjCard subsists for the parameter player
      */
-    public void doCheck(Player player) throws InvalidPointerException {
+    public int doCheck(Player player) throws InvalidPointerException {
         if(!this.playersDone.contains(player)){
             boolean isTrue = strategyCheck.check(player.getMyShelf().getShelfGrid());
             if(isTrue){
                 try{
-                    int numOfPoints = this.getPoints();
-                    player.addPointsByCommonObjCard(numOfPoints, "Common Objective Card " +
+                    /*player.addPointsByCommonObjCard(numOfPoints, "Common Objective Card " +
                             this.strategyCheck.type + " goal reach!\n" +
-                            "Obtain +" + numOfPoints + " points!");
+                            "Obtain +" + numOfPoints + " points!");*/
                     playersDone.add(player);
+                    return this.getPoints();
                 } catch (OutOfBoundsException e){
                     System.err.println("Throw an OutOfBoundException in " + this + ".getPoints()");
                 }
             }
         }
+        return -1;
     }
 
 }

@@ -45,14 +45,18 @@ public class TurnChecker {
      * @param game
      * @throws InvalidPointerException
      */
-    private void commonObjCardCheck(Player player,Game game) {
+    private void commonObjCardCheck(Player player, Game game) {
         CommonObjCard commonObjCard;
 
         // check if the current player has reached the goal for both CommonObjectiveCards in Game
         for(int i=0; i<game.getCommonObjCard().size(); i++){
             commonObjCard = game.getCommonObjCard().get(i);
             try{
-                commonObjCard.doCheck(player);
+                int numOfPoints = commonObjCard.doCheck(player);
+                if(numOfPoints == -1) return;
+                game.commonObjCardReached(player, numOfPoints, "Common Objective Card " +
+                        commonObjCard.getType() + " goal reach!\n" +
+                        "Obtain +" + numOfPoints + " points!");
             } catch (InvalidPointerException e) {
                 System.err.println("Something went wrong, the obj points list of this card is less than zero: "
                         + e.getMessage());

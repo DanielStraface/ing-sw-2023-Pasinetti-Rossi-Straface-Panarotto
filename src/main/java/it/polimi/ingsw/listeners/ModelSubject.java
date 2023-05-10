@@ -78,7 +78,7 @@ public class ModelSubject {
         if(turnUserClient != null) turnUserClient.update(gmv);
     }
 
-    public void notifyObservers(String arg) {
+    public void notifyObservers(int clientID, String arg) {
         /*
          * a temporary array buffer, used as a snapshot of the state of
          * current Observers.
@@ -104,18 +104,14 @@ public class ModelSubject {
             clearChanged();
         }
 
-        int clientID = Integer.parseInt(arg.substring(0, arg.indexOf("%")));
-        String temp = arg.substring(arg.indexOf("%") + 1);
-
         for (int i = arrLocal.length-1; i>=0; i--){
             Client vl = (Client) arrLocal[i];
             try {
                 if(vl.getClientID() == clientID)
-                    vl.update(temp);
+                    vl.update(arg);
             } catch (RemoteException e) {
                 System.err.println("Cannot obtain the clientID to notify: " + e.getMessage());
             }
-
         }
     }
 

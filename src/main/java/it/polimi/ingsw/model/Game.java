@@ -156,6 +156,11 @@ public class Game extends ModelSubject implements Serializable {
         this.gameOverFinalMessage = finalMessage;
         setChangedAndNotifyListeners(this);
     }
+    public void commonObjCardReached(Player player, int numOfPoints, String toDisplay){
+        player.addPoints(numOfPoints);
+        setChanged();
+        notifyObservers(player.getClientID(), toDisplay);
+    }
 
 
     /* get methods */
