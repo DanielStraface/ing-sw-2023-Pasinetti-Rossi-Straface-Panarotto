@@ -24,7 +24,6 @@ public class AppClientRMI extends AppClient{
         logginToAppServer(serverApp, null);
         List<Integer> decisions = mainMenu();
         /* -- create or join a match -- */
-        ClientImpl userClient = null;
         switch (decisions.get(TYPE_OF_MATCH_POSITION)) {
             case CREATE_A_NEW_MATCH -> {
                 System.out.println("Creation of a new match in progress...");
@@ -35,7 +34,7 @@ public class AppClientRMI extends AppClient{
                             tom = t;
                     }
                     matchServerRef = serverApp.connect(tom);
-                    userClient = new ClientImpl(matchServerRef, nickname);
+                    new ClientImpl(matchServerRef, nickname);
                 } catch (NotSupportedMatchesException e) {
                     if (e instanceof TooManyMatchesException) {
                         serverApp.removeLoggedUser(nickname);
@@ -57,19 +56,12 @@ public class AppClientRMI extends AppClient{
                     serverApp.removeLoggedUser(nickname);
                     System.exit(NO_MATCH_IN_WAITING_NOW_ERROR);
                 }
-                userClient = new ClientImpl(matchServerRef, nickname);
+                new ClientImpl(matchServerRef, nickname);
             }
             default -> {
                 System.exit(QUIT_IN_APPCLIENTRMI_ERROR);
             }
         }
-        System.out.println("QUI");
-        ClientImpl finalUserClient = userClient;
-        new Thread(() -> {
-            while(true){
-                if(finalUserClient.getClientState() == ClientImpl.ClientState.GAMEOVER) break;
-            }
-        }).start();
         if(matchServerRef != null) matchServerRef.startGame();
     }
 }
