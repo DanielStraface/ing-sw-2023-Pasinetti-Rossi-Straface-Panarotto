@@ -16,35 +16,61 @@ public class TurnChecker {
     private static final int SHELF_COLUMNS=5;
 
 
-    /** all checks that have to be done before ending a player's turn */
-    public boolean manageCheck(Player player, Game game) throws InvalidPointerException, RemoteException {
+    /**
+     * all checks that have to be done before ending a player's turn
+     * @param player the player whose turn in ending
+     * @param game
+     * @return shelfFull <==> boolean to check if the current player's shelf is full
+     * @throws InvalidPointerException
+     * @throws RemoteException
+     */
+    public boolean manageCheck(Player player, Game game) {
         boolean shelfFull;
         commonObjCardCheck(player, game);
         shelfFull = player.getMyShelf().isFull();
-        refillGameBoardCheck(game);
+        try{
+            refillGameBoardCheck(game);
+        } catch (RemoteException e) {
+            System.err.println("Error occurred while check the gameboard refill: " + e.getMessage());
+            System.err.println("Skipping this problem for now");
+        }
         return shelfFull;
     }
 
-    /** checks if the Player currently playing has reached any of the two CommonObjectiveCards' goal
-     *  after his turn and adds points to its Score tally , throws an InvalidPointerException if
-     *  all the points of one CommonObjectiveCard have already been taken */
-    private void commonObjCardCheck(Player player,Game game) throws InvalidPointerException {
+    /**
+     * checks if the Player currently playing has reached any of the two CommonObjectiveCards' goal
+     * after his turn and adds points to its Score tally , throws an InvalidPointerException if
+     * all the points of one CommonObjectiveCard have already been taken
+     * @param player
+     * @param game
+     * @throws InvalidPointerException
+     */
+    private void commonObjCardCheck(Player player,Game game) {
         CommonObjCard commonObjCard;
 
         // check if the current player has reached the goal for both CommonObjectiveCards in Game
         for(int i=0; i<game.getCommonObjCard().size(); i++){
             commonObjCard = game.getCommonObjCard().get(i);
-            commonObjCard.doCheck(player);
+            try{
+                commonObjCard.doCheck(player);
+            } catch (InvalidPointerException e) {
+                System.err.println("Something went wrong, the obj points list of this card is less than zero: "
+                        + e.getMessage());
+            }
         }
     }
 
-    /** check for every row and column (except first and last): if the slot is occupied by an Item,
-     *  check if any of its adjacent places are occupied by an Item as well.
-     *  If there's a single adjacent item, there's no need to refill the GameBoard and the check is
-     *  set to false. */
+    /**
+     * check for every row and column (except first and last): if the slot is occupied by an Item,
+     * check if any of its adjacent places are occupied by an Item as well.
+     * If there's a single adjacent item, there's no need to refill the GameBoard and the check is
+     * set to false.
+     * @param game
+     * @throws RemoteException
+     */
     private void refillGameBoardCheck(Game game) throws RemoteException {
         boolean check = true;
-        int[][] validGrid = game.getValidGrid();
+        int[][] validGrid = game.getGameboard().getValidGrid();
         for(int i=1; i<8; i++){
             for(int j=1; j<8; j++){
                 if(validGrid[i][j] == OCCUPIED){
@@ -99,7 +125,11 @@ public class TurnChecker {
         }
     }
 
-    /** Returns points to assign to the player based on the number of adjacent items */
+    /**
+     * Returns points to assign to the player based on the number of adjacent items
+     * @param player
+     * @return integer of the score to be added to the player
+     */
     public int adjacentItemsCheck(Player player) {
         Item[][] shelf = player.getMyShelf().getShelfGrid();
         Category scanned;
@@ -133,8 +163,16 @@ public class TurnChecker {
     }
 
 
-    /** Recursive method used in conjunction to adjacentItemsCheck to increase the counter in case there's an
-     *  adjacent item with the same category */
+    /**
+     * Recursive method used in conjunction to adjacentItemsCheck to increase the counter in case there's an
+     * adjacent item with the same category
+     * @param shelf the current player's shelf
+     * @param visited a matrix of booleans to check if the slot has already been visited
+     * @param category the category of the previous item checked
+     * @param i the row of the previous item checked
+     * @param j the column of the previous item checked
+     * @param counter a counter that increases if the conditions are met
+     */
     private void adjacentCategoryCheck(Item[][] shelf, boolean[][] visited, Category category, int i, int j, List<Integer> counter){
         Integer temp;
         // stops the method if the item checked is out of the Shelf's bounds, has already been visited

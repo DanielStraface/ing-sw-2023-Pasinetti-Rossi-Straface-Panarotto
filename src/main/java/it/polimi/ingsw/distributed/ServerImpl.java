@@ -1,13 +1,13 @@
 package it.polimi.ingsw.distributed;
 
 import it.polimi.ingsw.controller.Controller;
-import it.polimi.ingsw.distributed.Client;
-import it.polimi.ingsw.distributed.Server;
-import it.polimi.ingsw.distributed.socket.middleware.ClientSkeleton;
-import it.polimi.ingsw.distributed.socket.middleware.ServerStub;
+import it.polimi.ingsw.listeners.MatchLog;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.server.AppServer;
+import it.polimi.ingsw.server.AppServerImpl;
 
+import java.io.FileNotFoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.RMIClientSocketFactory;
 import java.rmi.server.RMIServerSocketFactory;
@@ -15,25 +15,20 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 
 public class ServerImpl extends UnicastRemoteObject implements Server {
-    private static ServerImpl instance;
+    public int connectedClient;
     private Controller controller;
     private Game game = null;
-    private static final int PLAYERS_NUMB = 2;
     private boolean[] toConnect;
 
-    public static ServerImpl getInstance(){
-        if(instance == null){
-            try {
-                instance = new ServerImpl();
-            } catch (RemoteException e) {
-                System.err.println("Error while creating server in ServerImpl class" + e.getMessage());
-            }
-        }
-        return instance;
-    }
-
-    public ServerImpl() throws RemoteException {
+    public ServerImpl(AppServer.typeOfMatch numOfPlayers) throws RemoteException {
         super();
+        try{
+            this.game = new Game(numOfPlayers.ordinal() + 1); //create the game model for this numOfPlayerMatch
+        } catch (Exception e){
+            System.err.println(e.getMessage());
+        }
+        this.controller = new Controller(game);
+        this.toConnect = new boolean[this.game.getPlayers().size()];
     }
 
     public ServerImpl(int port) throws RemoteException {
@@ -44,130 +39,101 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
         super(port, csf, ssf);
     }
 
+    public int getPlayersGameNumber(){
+        return this.game.getPlayersNumber();
+    }
+    public boolean getGameOver(){return this.controller.getGameOver();}
+
     @Override
     public void startGame() throws RemoteException{
-        if(this.controller.getViews().size() == this.controller.getGame().getPlayers().size()){
-            for(Client client : this.controller.getViews())
-                client.update("The match is starting...Extraction of the first player is running");
-            this.controller.chooseFirstPlayer();
+        if(this.controller.getClients().size() == this.controller.getGame().getPlayers().size()){
+            this.controller.getClients().get(this.controller.getClients().size() - 1).update("Joining a lobby...");
+            this.controller.setMatchID(AppServerImpl.getMatchID(this));
+            this.game.addListener(new MatchLog(this.controller.getMatchID()));
+            if(checkIfPrevGame()){
+                for(Client c : this.controller.getClients())
+                    c.update("Old unfinished match found!\nThe game will resume at that point. " +
+                            "If you want to join a new game consider to changed your nickname");
+                this.controller.substituteGameModel(this.game);
+                this.game.setCurrentPlayer(this.game.getCurrentPlayer());
+            } else {
+                for(Client client : this.controller.getClients()) {
+                    client.update("Correct number of players reached!" +
+                            "\nThe match is starting...Extraction of the first player is running");
+                }
+                this.controller.chooseFirstPlayer();
+            }
         } else {
             int temp = 0;
-            for(int i=0;i<this.toConnect.length;i++){
-                if(this.toConnect[i]==false)
+            for (boolean b : this.toConnect) {
+                if (!b)
                     temp++;
             }
-            for(Client client : this.controller.getViews()){
-                 client.update("Waiting for players\nSearching for " + temp + " other players");
+            for(Client client : this.controller.getClients()){
+                 client.update("Lobby joined but the match lobby is not full. Please wait..." +
+                         "\nSearching for " + temp + " other players");
             }
         }
     }
 
+    private boolean checkIfPrevGame() {
+        Game game;
+        boolean isPrevGame = true;
+        for(int i=0;i<AppServerImpl.MAX_MATCHES_MANAGED;i++){
+            try{
+                game = Controller.loadGame("match" + i + ".ser");
+                if(game == null) return false;
+                else {
+                    List<String> nicknames = this.game.getPlayers().stream()
+                            .map(Player::getNickname)
+                            .toList();
+                    for(Player p : game.getPlayers())
+                        if (!nicknames.contains(p.getNickname())) {
+                            isPrevGame = false;
+                            break;
+                        }
+                }
+                if(!isPrevGame) return false;
+                else {
+                    this.game = game;
+                    this.game.deleteListeners();
+                    this.controller.getClients()
+                            .forEach(client -> this.game.addListener(client));
+                    this.game.addListener(new MatchLog(this.controller.getMatchID()));
+                    for(Client c : this.controller.getClients())
+                        for(Player player : this.game.getPlayers())
+                            if(player.getNickname().equals(c.getNickname()))
+                                c.update(player.getClientID());
+                    return true;
+                }
+            } catch (FileNotFoundException ignored) {
+            } catch (RemoteException e) {
+                System.err.println("Cannot reach the nickname: " + e.getMessage());
+            }
+        }
+        return false;
+    }
+
     @Override
     public void register(Client client, String nickname) throws RemoteException {
-        /*if(this.game == null){
-            System.err.println("No match found\nClosing...");
-            System.exit(3);
-        }
-        if(this.controller.getViews().size() == this.game.getPlayers().size()){
-            System.err.println("The lobby is full...");
-            return;
-        }
-        //this.controller = new Controller(game, client);
-        this.controller.addClientView(client);
-        this.game.addListener(client);
+        this.controller.addClient(client); //add this client in the client list of controller
+        this.game.addListener(client); // add this client as model listener
         for(int i=0;i<toConnect.length;i++){
-            if(this.toConnect[i] == false){
+            if(!this.toConnect[i]){
                 this.toConnect[i] = true;
-                this.game.getPlayers().get(i).addListenerForPlayer(client);
+                //this.game.getPlayers().get(i).addListenerForPlayer(client);
                 this.game.getPlayers().get(i).setNicknameAndClientID(nickname, i*10);
                 client.update(i*10);
                 break;
             }
         }
-        System.out.println("Register client " + client + " for a " + this.game.getPlayers().size() + " players match");
-        System.out.println("There are " + this.game.countObservers() + " game listeners");*/
-        /*for(int i=0;i<this.toConnect.length;i++){
-            if(this.toConnect[i] == false)
-                return false;
-        }
-        notifyAll();
-        return true;*/
+        System.out.println("Register client " + client + "\nwith clientID := " + client.getClientID() +
+                "for a " + this.game.getPlayers().size() + " players match");
     }
 
     @Override
-    public void register(Client client, int numOfPlayers, String nickname) throws RemoteException {
-        boolean fromSocket = false;
-        if(nickname.contains("%%%")){
-            fromSocket = true;
-            nickname = nickname.substring(0, nickname.length() - 3);
-        }
-        System.out.println("The server is " + this.toString());
-        if(numOfPlayers == 0){
-            if(this.game == null){
-                System.err.println("No match found\nClosing...");
-                System.exit(3);
-            }
-            if(this.controller.getViews().size() == this.game.getPlayers().size()){
-                System.err.println("The lobby is full...");
-                return;
-            }
-            //this.controller = new Controller(game, client);
-            this.controller.addClientView(client);
-            this.game.addListener(client);
-            for(int i=0;i<toConnect.length;i++){
-                if(this.toConnect[i] == false){
-                    this.toConnect[i] = true;
-                    this.game.getPlayers().get(i).addListenerForPlayer(client);
-                    this.game.getPlayers().get(i).setNicknameAndClientID(nickname, i*10);
-                    client.update(i*10);
-                    break;
-                }
-            }
-        } else {
-            try{
-                this.game = new Game(numOfPlayers);
-            } catch (Exception e){
-                System.err.println(e.getMessage());
-            }
-            this.controller = new Controller(game, client);
-            this.game.addListener(client);
-            this.toConnect = new boolean[this.game.getPlayers().size()];
-            for(int i=0;i<toConnect.length;i++){
-                if(this.toConnect[i] == false){
-                    this.toConnect[i] = true;
-                    this.game.getPlayers().get(i).addListenerForPlayer(client);
-                    this.game.getPlayers().get(i).setNicknameAndClientID(nickname, i*10);
-                    break;
-                }
-            }
-        }
-        System.out.println("Register client " + client + " for a " + this.game.getPlayers().size() + " players match");
-        if(fromSocket == true){
-            this.startGame();
-        }
-        //startGame();
-        /*for(Player player : this.game.getPlayers()){
-            player.addListenerForPlayer(client);
-        }*/
-        /*for(int i=0;i<this.toConnect.length;i++){
-            if(this.toConnect[i] == false)
-                return false;
-        }
-        return true;*/
-    }
-
-    @Override
-    public void update(Client client, Integer column) throws RemoteException {
-        this.controller.update(client, column);
-    }
-
-    @Override
-    public void update(Client client, String nickname) throws RemoteException {
-        this.controller.update(client, nickname);
-    }
-
-    @Override
-    public void update(Client client, List<int[]> coords) throws RemoteException {
-        this.controller.update(client, coords);
+    public void update(Client client, List<int[]> coords, Integer column) throws RemoteException {
+        this.game.informLog(client, coords, column);
+        this.controller.update(client, coords, column);
     }
 }

@@ -37,11 +37,12 @@ public class PersonalCardReader {
         Gson gson = new Gson();
         Reader input = null;
         try {
+            System.out.println("Read from " + this.file);
             input = new InputStreamReader(
-                    getClass().getClassLoader().getResourceAsStream(file)
+                    getClass().getClassLoader().getResourceAsStream(this.file)
             );
         } catch (NullPointerException e) {
-            System.err.println("ResourceAsStream is null");
+            System.err.println("ResourceAsStream is null " + e.getLocalizedMessage());
         }
 
         /* Extraction of the information store in Json file and copying into a personalObjCard array */

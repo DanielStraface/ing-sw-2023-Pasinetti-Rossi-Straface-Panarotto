@@ -37,7 +37,9 @@ public class GameTest {
     }
 
 
-    /** Method to test if players are successfully created in a match */
+    /**
+     * Method to test if players are successfully created in a match
+     */
     @Test
     public void playerCreationTest(){
         boolean checker = true;
@@ -53,8 +55,9 @@ public class GameTest {
     }
 
 
-
-    /** Method to test if the bag is created successfully */
+    /**
+     *  Method to test if the bag is created successfully
+     */
     @Test
     public void bagCreation(){
         Bag bag;
@@ -65,8 +68,9 @@ public class GameTest {
     }
 
 
-
-    /** Method to test if the GameBoard is refilled correctly */
+    /**
+     *  Method to test if the GameBoard is refilled correctly
+     */
     @Test
     public void gameBoardRefillTest(){
         boolean checker = true;
@@ -84,7 +88,9 @@ public class GameTest {
     }
 
 
-    /** Method to test if each player successfully receives its own PersonalObjectiveCard */
+    /**
+     * Method to test if each player successfully receives its own PersonalObjectiveCard
+     */
     @Test
     public void persObjCardGenerationTest(){
         for(int i=0; i<playersNumber; i++){
@@ -101,8 +107,9 @@ public class GameTest {
     }
 
 
-
-    /** Method to test if two commonObjectiveCards are correctly extracted */
+    /**
+     * Method to test if two commonObjectiveCards are correctly extracted
+     */
     @Test
     public void commonObjCardGenerationTest(){
         for(int i=0; i<commonObjCards.size(); i++){
@@ -118,7 +125,9 @@ public class GameTest {
     }
 
 
-    /** Method to test if the current player is correctly changed */
+    /**
+     *  Method to test if the current player is correctly changed
+     */
     @Test
     public void setCurrentPlayerTest(){
         try {

@@ -19,6 +19,8 @@ class CornerDiagonals extends StrategyCheck implements Serializable {
     /**
      * Method checker calls three different type of methods that verified the subsists of a certain condition
      * in the player shelf
+     * @param grid the item matrix of the player's shelf
+     * @return boolean that tells if a player satisfies a CommonObjectiveCard's condition
      */
     @Override
     public boolean check(Item[][] grid) {
@@ -40,6 +42,7 @@ class CornerDiagonals extends StrategyCheck implements Serializable {
 
     /**
      * Method diagonals controls if the conditions express in the second common objective card subsists.
+     * @param grid
      */
     public boolean diagonals(Item[][] grid) {
         boolean diag1 = true; //first main diagonal referencer
@@ -97,6 +100,7 @@ class CornerDiagonals extends StrategyCheck implements Serializable {
 
     /**
      * Method corners controls if the conditions express in the third common objective card subsists.
+     * @param grid
      */
     public boolean corners(Item[][] grid) {
         if (grid[0][0].getCategoryType() != null) {

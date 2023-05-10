@@ -1,12 +1,12 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.exceptions.InvalidNumberOfPlayersException;
 import it.polimi.ingsw.listeners.ModelSubject;
 import it.polimi.ingsw.model.comcard.CommonObjCard;
 import it.polimi.ingsw.model.comcard.CommonObjCardReader;
 import it.polimi.ingsw.model.personcard.PersonalCardReader;
 import it.polimi.ingsw.model.personcard.PersonalObjCard;
-import it.polimi.ingsw.view.TextualUI;
 
 import java.io.Serializable;
 import java.rmi.RemoteException;
@@ -17,7 +17,6 @@ public class Game extends ModelSubject implements Serializable {
     private static final int DIM_GAMEBOARD=9;
     private static final int PLAYABLE = 1;
     private static final int OCCUPIED = 2;
-
     private int playersNumber;
     private List<Player> players;
     private GameBoard gameboard;
@@ -25,25 +24,35 @@ public class Game extends ModelSubject implements Serializable {
     private Bag bag;
     private List<CommonObjCard> commonObjCards;
     private Player currentPlayer;
+    private int prevClientID;
+    private String gameOverFinalMessage;
 
-    /** constructor for Game class */
+    /**
+     * constructor for Game class
+     * @param playersNumber the number of players in a game
+     * @throws InvalidNumberOfPlayersException
+     * @throws RemoteException
+     */
     public Game (int playersNumber) throws InvalidNumberOfPlayersException, RemoteException{
         if(playersNumber <= 1 || playersNumber >= 5) throw new InvalidNumberOfPlayersException();
         this.playersNumber = playersNumber;
+        this.prevClientID = -1;
         this.players = new ArrayList<Player>(playersNumber);
         this.bag = new Bag();
-        this.gameboard = new GameBoard();
+        this.gameboard = new GameBoard(playersNumber);
         this.commonObjCards = new ArrayList<CommonObjCard>();
         createPlayers();
         createBag();
-        createGameBoard();
+        refillGameBoard();
         generatePersonalObjCards();
         generateCommonObjCards();
     }
 
     //***********************************************
 
-    /** Creates x number of Players (x = playersNumber) */
+    /**
+     * Creates x number of Players (x = playersNumber)
+     */
     private void createPlayers(){
         for(int i=0;i<this.playersNumber;i++){
             //nickname: "space" for each player, clientID: 0, isFirstPlayer: false;
@@ -51,85 +60,9 @@ public class Game extends ModelSubject implements Serializable {
         }
     }
 
-    /** Fills GameBoard slots with Items with random Categories depending on the number of players */
-    private void createGameBoard() throws RemoteException{
-        setGridForTwo(this.validGrid);
-        switch(this.playersNumber) {
-            case 3 -> {
-                validGrid[0][3] = PLAYABLE;
-                validGrid[2][2] = PLAYABLE;
-                validGrid[2][6] = PLAYABLE;
-                validGrid[3][8] = PLAYABLE;
-                validGrid[5][0] = PLAYABLE;
-                validGrid[6][2] = PLAYABLE;
-                validGrid[6][6] = PLAYABLE;
-                validGrid[8][5] = PLAYABLE;
-            }
-            case 4 -> {
-                validGrid[0][3] = PLAYABLE;
-                validGrid[0][4] = PLAYABLE;
-                validGrid[1][5] = PLAYABLE;
-                validGrid[2][2] = PLAYABLE;
-                validGrid[2][6] = PLAYABLE;
-                validGrid[3][1] = PLAYABLE;
-                validGrid[3][8] = PLAYABLE;
-                validGrid[4][0] = PLAYABLE;
-                validGrid[4][8] = PLAYABLE;
-                validGrid[5][0] = PLAYABLE;
-                validGrid[5][7] = PLAYABLE;
-                validGrid[6][2] = PLAYABLE;
-                validGrid[6][6] = PLAYABLE;
-                validGrid[7][3] = PLAYABLE;
-                validGrid[8][4] = PLAYABLE;
-                validGrid[8][5] = PLAYABLE;
-            }
-            default -> {}
-        }
-        refillGameBoard();
-    }
-
-    /** method to set the GameGrid for two players
-     *  0 = invalid slot
-     *  1 = playable slot */
-    private void setGridForTwo (int[][] Grid) {
-        int i, j;
-        for (i = 0; i < 9; i++) {
-            for (j = 0; j < 9; j++) {
-                if (i==1){
-                    if(j>2 && j<5){
-                        Grid[i][j] = PLAYABLE;
-                    }
-                }
-                if (i==2 || i==6){
-                    if(j>2 && j<6){
-                        Grid[i][j] = PLAYABLE;
-                    }
-                }
-                if (i==3){
-                    if(j>1 && j<8){
-                        Grid[i][j] = PLAYABLE;
-                    }
-                }
-                if (i==4){
-                    if(j>0 && j<8){
-                        Grid[i][j] = PLAYABLE;
-                    }
-                }
-                if (i==5){
-                    if(j>0 && j<7){
-                        Grid[i][j] = PLAYABLE;
-                    }
-                }
-                if (i==7){
-                    if(j>3 && j<6){
-                        Grid[i][j] = PLAYABLE;
-                    }
-                }
-            }
-        }
-    }
-
-    /** Refills bag with 22 Items of each Category */
+    /**
+     * Refills bag with 22 Items of each Category
+     */
     private void createBag() {
         final int ITEM_NUM = 22;
         for(Category c : Category.values()){
@@ -180,45 +113,61 @@ public class Game extends ModelSubject implements Serializable {
 
     }
 
-    /** Refills every PLAYABLE slot of the Gameboard with an Item of a random Category drawn from the Bag */
-    public void refillGameBoard() throws RemoteException{
+    /**
+     * Refills every PLAYABLE slot of the GameBoard with an Item of a random Category drawn from the Bag
+     * @throws RemoteException
+     */
+    public void refillGameBoard() {
+        int[][] vlg = this.gameboard.getValidGrid();
         for(int i=0;i<DIM_GAMEBOARD;i++){
             for(int j=0;j<DIM_GAMEBOARD;j++){
-                if(validGrid[i][j]==PLAYABLE){
+                if(vlg[i][j]==PLAYABLE){
                     try {
                         this.gameboard.getGameGrid()[i][j] = this.bag.drawItem();
-                        this.validGrid[i][j] = OCCUPIED;
+                        this.gameboard.getValidGrid()[i][j] = OCCUPIED;
                     } catch (Exception e) {
                         throw new RuntimeException(e);
                     }
-                } else if(validGrid[i][j]==0) {
+                } else if(vlg[i][j]==0) {
                     this.gameboard.getGameGrid()[i][j] = new Item(null);
                 }
             }
         }
-        setChangedAndNotifyListeners(this.gameboard);
+        //setChangedAndNotifyListeners(this.gameboard);
     }
 
     /* set methods */
+    public void setAndSave(int matchID, Player player) throws RemoteException {
+        this.currentPlayer = player;
+        String fileName = "match" + Integer.toString(matchID) + ".ser";
+        Controller.saveGame(this, fileName);
+        setChangedAndNotifyListeners(this);
+    }
     public void setCurrentPlayer(Player player) throws RemoteException{
         this.currentPlayer = player;
         setChangedAndNotifyListeners(this);
     }
+    public void setTurnFinishedPlayerID(int prevClientID){
+        this.prevClientID = prevClientID;
+    }
     public void setGameBoard (GameBoard gameboard) { this.gameboard = gameboard; }
     public void setValidGrid (int[][] validGrid) { this.validGrid = validGrid; }
+    public void setGameOverFinalMessage(String finalMessage) throws RemoteException {
+        this.gameOverFinalMessage = finalMessage;
+        setChangedAndNotifyListeners(this);
+    }
 
 
     /* get methods */
+    public int getPlayersNumber(){return this.playersNumber;}
     public List<Player> getPlayers(){return players;}
     public GameBoard getGameboard(){return gameboard;}
     public List<CommonObjCard> getCommonObjCard(){return commonObjCards;}
     public Bag getBag(){return bag;}
     public Player getCurrentPlayer(){return currentPlayer;}
+    public int getPrevClientID(){return this.prevClientID;}
     public int[][] getValidGrid(){return validGrid;}
-    private void setChangedAndNotifyListeners(GameBoard gb) throws RemoteException {
-        setChanged();
-        notifyObservers(gb);
-    }
+    public String getGameOverFinalMessage(){return this.gameOverFinalMessage;}
     private void setChangedAndNotifyListeners(Game gm) throws RemoteException{
         setChanged();
         notifyObservers(gm);

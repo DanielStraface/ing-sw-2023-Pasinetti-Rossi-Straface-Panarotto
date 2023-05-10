@@ -17,6 +17,12 @@ class GroupCards extends StrategyCheck implements Serializable {
         this.type = type;
     }
 
+    /**
+     * Method checker calls two different type of methods that verified the subsists of a certain condition
+     * in the player shelf
+     * @param grid the item matrix of the player's shelf
+     * @return boolean that tells if a player satisfies a CommonObjectiveCard's condition
+     */
     @Override
     public boolean check(Item[][] grid) {
         switch (this.type) {
@@ -38,6 +44,10 @@ class GroupCards extends StrategyCheck implements Serializable {
         }
     }
 
+    /**
+     * method that returns a true boolean if there are at least six groups containing two tiles of the same type
+     * @param grid
+     */
     private boolean groupOfTwo(Item[][] grid) {
 
         boolean[][] check = new boolean[6][5];
@@ -77,6 +87,11 @@ class GroupCards extends StrategyCheck implements Serializable {
         return false;
     }
 
+    /**
+     * method that returns a true boolean if there are at least four groups containing four adjacent tiles of the
+     * same type
+     * @param grid
+     */
     private boolean groupOfFour(Item[][] grid) {
         int groupCounter = 0; //counter of the group
         for(int i=0;i<6;i++){
@@ -120,6 +135,11 @@ class GroupCards extends StrategyCheck implements Serializable {
         return groupCounter == 4;
     }
 
+    /**
+     * method that returns a true boolean if there are at least two groups containing four tiles of the same type
+     * for both groups
+     * @param grid
+     */
     private boolean groupOfSquares(Item[][] grid) {
         int[] categoryReference = new int[6]; //category reference for comparison
         List<Category> list = Arrays.asList(Category.CAT, Category.BOOK, Category.FRAME,
@@ -146,7 +166,10 @@ class GroupCards extends StrategyCheck implements Serializable {
     }
 
 
-    /** Method that returns a true boolean if there are 8 instances of the same category in the Player's Shelf */
+    /**
+     * Method that returns a true boolean if there are 8 instances of the same category in the Player's Shelf
+     * @param grid
+     */
     private boolean groupOfEight(Item[][] grid) {
         int catCounter = 0;
         int bookCounter = 0;
