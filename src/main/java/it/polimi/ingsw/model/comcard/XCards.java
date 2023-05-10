@@ -15,6 +15,11 @@ class XCards extends StrategyCheck implements Serializable {
         this.type = type;
     }
 
+    /**
+     * method that returns a true boolean if there are at least five tiles of the same type forming an "X"
+     * @param grid the player's Shelf grid to be checked
+     * @return a true boolean if the condition is satisfied
+     */
     @Override
     public boolean check(Item[][] grid) {
         //assert this.type == 12;

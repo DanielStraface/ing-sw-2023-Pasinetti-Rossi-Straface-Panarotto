@@ -33,7 +33,9 @@ public class ThreeDifferentTypesTest {
     }
 
 
-    /** Checks CommonObjectiveCard n.7 conditions on an empty GameBoard */
+    /**
+     * Checks CommonObjectiveCard n.7 conditions on an empty GameBoard
+     */
     @Test
     public void gridNullRowsTest(){
         card = new ThreeDifferentTypes(DIFFERENT_ROWS);
@@ -41,7 +43,9 @@ public class ThreeDifferentTypesTest {
     }
 
 
-    /** Checks CommonObjectiveCard n.5 conditions on an empty GameBoard */
+    /**
+     *  Checks CommonObjectiveCard n.5 conditions on an empty GameBoard
+     */
     @Test
     public void gridNullColumnsTest(){
         card = new ThreeDifferentTypes(DIFFERENT_COLS);
@@ -49,8 +53,10 @@ public class ThreeDifferentTypesTest {
     }
 
 
-    /** Verifies that the check method returns a true boolean when the
-     * CommonObjectiveCard n.7's condition is met */
+    /**
+     * Verifies that the check method returns a true boolean when the
+     * CommonObjectiveCard n.7's condition is met
+     */
     @Test
     public void checkDifferentRowsOkTest(){
         card = new ThreeDifferentTypes(DIFFERENT_ROWS);
@@ -85,8 +91,10 @@ public class ThreeDifferentTypesTest {
     }
 
 
-    /** Various test methods to verify that the check method returns a false boolean when the
-     * CommonObjectiveCard n.7's conditions aren't met */
+    /**
+     * Various test methods to verify that the check method returns a false boolean when the
+     * CommonObjectiveCard n.7's conditions aren't met
+     */
     @Test
     public void checkDifferentRowsFailTest1(){
         card = new ThreeDifferentTypes(DIFFERENT_ROWS);
@@ -180,11 +188,10 @@ public class ThreeDifferentTypesTest {
     }
 
 
-
-
-
-    /** Verifies that the check method returns a true boolean when the
-     * CommonObjectiveCard n.5's condition is met */
+    /**
+     * Verifies that the check method returns a true boolean when the
+     * CommonObjectiveCard n.5's condition is met
+     */
     @Test
     public void checkDifferentColumnsOkTest(){
         card = new ThreeDifferentTypes(DIFFERENT_COLS);
@@ -216,9 +223,10 @@ public class ThreeDifferentTypesTest {
     }
 
 
-
-    /** Various test methods to verify that the check method returns a false boolean when the
-     * CommonObjectiveCard n.5's conditions aren't met */
+    /**
+     * Various test methods to verify that the check method returns a false boolean when the
+     * CommonObjectiveCard n.5's conditions aren't met
+     */
     @Test
     public void checkDifferentColumnsFailTest1(){
         card = new ThreeDifferentTypes(DIFFERENT_COLS);

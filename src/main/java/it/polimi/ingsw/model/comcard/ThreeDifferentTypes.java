@@ -16,6 +16,12 @@ class ThreeDifferentTypes extends StrategyCheck implements Serializable {
         this.type = type;
     }
 
+    /**
+     * Method checker calls two different type of methods that verified the subsists of a certain condition
+     * in the player shelf
+     * @param grid the item matrix of the player's shelf
+     * @return boolean that tells if a player satisfies a CommonObjectiveCard's condition
+     */
     @Override
     public boolean check(Item[][] grid) {
         switch (this.type) {
@@ -31,8 +37,11 @@ class ThreeDifferentTypes extends StrategyCheck implements Serializable {
         }
     }
 
-    /** Method that returns a true boolean if there are at least 4 full rows in the Player's Shelf with 3 different Item
-     * categories at max, this is done by using a HashSet with one slot reserved for every type of category */
+    /**
+     * Method that returns a true boolean if there are at least 4 full rows in the Player's Shelf with 3 different Item
+     * categories at max, this is done by using a HashSet with one slot reserved for every type of category
+     * @param grid
+     */
     private boolean rowsDifferentTypes(Item[][] grid) {
         int rowCounter = 0;
         boolean invalidRow = false;
@@ -60,9 +69,11 @@ class ThreeDifferentTypes extends StrategyCheck implements Serializable {
     }
 
 
-
-    /** Method that returns a true boolean if there are at least 3 fullcolumns in the Player's Shelf with 3 different
-     *  Item categories at max, this is done by using a HashSet with one slot reserved for every type of category */
+    /**
+     * Method that returns a true boolean if there are at least 3 full columns in the Player's Shelf with 3 different
+     * Item categories at max, this is done by using a HashSet with one slot reserved for every type of category
+     * @param grid
+     */
     private boolean columnsDifferentTypes(Item[][] grid) {
         int columnCounter = 0;
         boolean invalidColumn = false;

@@ -1,22 +1,25 @@
 package it.polimi.ingsw.modelview;
 
-import it.polimi.ingsw.listeners.GameViewSubject;
-import it.polimi.ingsw.listeners.PlayerListener;
-import it.polimi.ingsw.model.Item;
 import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.Shelf;
 
+import java.io.Serial;
 import java.io.Serializable;
 
-public class PlayerView extends GameViewSubject implements PlayerListener, Serializable {
+public class PlayerView implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 2L;
     private final int score;
     private final ShelfView myShelf;
     private final PersonalObjCardView myPersonalObjCard;
+    private final String nickname;
+    private final int clientID;
 
     public PlayerView(Player player) {
         this.score = player.getScore();
-        this.myShelf = new ShelfView(player.getMyShelf().getShelfGrid());
+        this.myShelf = new ShelfView(player.getMyShelf().getShelfGrid(), player.getMyShelf().getLastRow());
         this.myPersonalObjCard = new PersonalObjCardView(player.getMyPersonalOBjCard().getCardGrid());
+        this.nickname = player.getNickname();
+        this.clientID = player.getClientID();
     }
     public int getScore(){
         return this.score;
@@ -27,22 +30,6 @@ public class PlayerView extends GameViewSubject implements PlayerListener, Seria
     public ShelfView getMyShelf(){
         return this.myShelf;
     }
-
-    @Override
-    public void update(Player player, Item[][] gameGrid) {
-        setChanged();
-        notifyObservers(gameGrid);
-    }
-
-    @Override
-    public void update(Player player, Shelf shelf) {
-        setChanged();
-        notifyObservers(new ShelfView(shelf.getShelfGrid()));
-    }
-
-    @Override
-    public void update(String commonObjCardReached) {
-        setChanged();
-        notifyObservers(commonObjCardReached);
-    }
+    public String getNickname(){return this.nickname;}
+    public int getClientID(){return this.clientID;}
 }

@@ -38,7 +38,11 @@ public class PlayerTest {
         validGrid=testGame.getValidGrid();
         selectItems=testPlayer.getSelectItems();
     }
-/** Method to test if player is successfully created */
+
+    /**
+     * Method to test if player is successfully created
+     * @throws Exception
+     */
     @Test
     public void setTestPlayer() throws Exception {
         assertNull(testPlayer.getNickname());
@@ -47,7 +51,10 @@ public class PlayerTest {
         System.out.println("ClientID: " + testPlayer.getClientID());
     }
 
-  /** Method to test if isFirstPlayer and score attributes are successfully set */
+    /**
+     * Method to test if isFirstPlayer and score attributes are successfully set
+     * @throws Exception
+     */
     @Test
     public void setAttributesTestPlayer() throws Exception {
         final int SHELF_ROWS=6;
@@ -76,7 +83,10 @@ public class PlayerTest {
 
     }
 
-    /** Method to test InvalidStateException when selectedCoords list is empty */
+    /**
+     * Method to test InvalidStateException when selectedCoords list is empty
+     * @throws Exception
+     */
     @Test
     public void emptyListOfCoordinates() throws Exception{
         selectedCoords=new ArrayList<>();
@@ -84,8 +94,11 @@ public class PlayerTest {
         assertEquals("selectedCoords is empty", e.getMessage());
     }
 
-    /** Method to test InvalidStateException when coordinates in selectedCoords list
-     * are not available according to the validGrid values */
+    /**
+     *  Method to test InvalidStateException when coordinates in selectedCoords list
+     *  are not available according to the validGrid values
+     * @throws Exception
+     */
     @Test
     public void invalidCoordsSelectionTest() throws Exception{
         selectedCoords=new ArrayList<>();
@@ -97,8 +110,11 @@ public class PlayerTest {
         assertEquals("Selected item in invalid slot", e.getMessage());
     }
 
-    /** Method to test InvalidSelectionException when coordinates in selectedCoords list
-     * are not available because of different rows and columns values*/
+    /**
+     *  Method to test InvalidSelectionException when coordinates in selectedCoords list
+     *  are not available because of different rows and columns values
+     * @throws Exception
+     */
     @Test
     public void diffRowsAndColumnsTest() throws Exception{
         selectedCoords=new ArrayList<>();
@@ -112,8 +128,11 @@ public class PlayerTest {
         assertEquals("Invalid selection: no same rows or cols", e.getMessage());
     }
 
-    /** Method to test InvalidSelectionException when coordinates in selectedCoords list
-     * are not available because are not consecutive (case1: 3 coordinates, no consecutive rows)*/
+    /**
+     * Method to test InvalidSelectionException when coordinates in selectedCoords list
+     * are not available because are not consecutive (case1: 3 coordinates, no consecutive rows)
+     * @throws Exception
+     */
     @Test
     public void NoConsecutive3RowsTest() throws Exception{
         final int COLUMN=2;
@@ -128,8 +147,11 @@ public class PlayerTest {
         assertEquals("Invalid selection: No consecutive selection", e.getMessage());
     }
 
-    /** Method to test InvalidSelectionException when coordinates in selectedCoords list
-     * are not available because are not consecutive (case2: 2 coordinates, no consecutive rows)*/
+    /**
+     * Method to test InvalidSelectionException when coordinates in selectedCoords list
+     * are not available because are not consecutive (case2: 2 coordinates, no consecutive rows)
+     * @throws Exception
+     */
     @Test
     public void NoConsecutive2RowsTest() throws Exception{
         final int COLUMN=2;
@@ -143,8 +165,11 @@ public class PlayerTest {
         assertEquals("Invalid selection: No consecutive selection", e.getMessage());
     }
 
-    /** Method to test InvalidSelectionException when coordinates in selectedCoords list
-     * are not available because are not consecutive (case3: 3 coordinates, no consecutive columns)*/
+    /**
+     * Method to test InvalidSelectionException when coordinates in selectedCoords list
+     * are not available because are not consecutive (case3: 3 coordinates, no consecutive columns)
+     * @throws Exception
+     */
     @Test
     public void NoConsecutive3ColumnsTest() throws Exception{
         final int ROW=2;
@@ -159,8 +184,11 @@ public class PlayerTest {
         assertEquals("Invalid selection: No consecutive selection", e.getMessage());
     }
 
-    /** Method to test InvalidSelectionException when coordinates in selectedCoords list
-     * are not available because are not consecutive (case4: 2 coordinates, no consecutive columns)*/
+    /**
+     * Method to test InvalidSelectionException when coordinates in selectedCoords list
+     * are not available because are not consecutive (case4: 2 coordinates, no consecutive columns)
+     * @throws Exception
+     */
     @Test
     public void NoConsecutive2ColumnsTest() throws Exception{
         final int ROW=2;
@@ -174,8 +202,11 @@ public class PlayerTest {
         assertEquals("Invalid selection: No consecutive selection", e.getMessage());
     }
 
-    /** Method to test InvalidSelectionException when three random coordinates in selectedCoords list
-     * are not available because of no free side exception*/
+    /**
+     * Method to test InvalidSelectionException when three random coordinates in selectedCoords list
+     * are not available because of no free side exception
+     * @throws Exception
+     */
     @Test
     public void FreeSideTest() throws Exception{
         final int ROW=2;
@@ -202,7 +233,10 @@ public class PlayerTest {
         assertEquals("Invalid selection: no free sides", e.getMessage());
     }
 
-    /** Method to test if first row items are available to be picked because they always have free side */
+    /**
+     * Method to test if first row items are available to be picked because they always have free side
+     * @throws Exception
+     */
     @Test
     public void FreeSideFirstROWTest() throws Exception{
         final int ROW=0;
@@ -239,7 +273,10 @@ public class PlayerTest {
         }
     }
 
-    /** Method to test if an item which has the next column free can be picked*/
+    /**
+     *  Method to test if an item which has the next column free can be picked
+     * @throws Exception
+     */
     @Test
     public void FreeSideNextColIsFreeTest() throws Exception{
         final int ROW=3;
@@ -264,7 +301,10 @@ public class PlayerTest {
         assertDoesNotThrow(()->testPlayer.pickItems(selectedCoords,gameBoard,validGrid));
     }
 
-    /** Method to test if an item which has the next row free can be picked*/
+    /**
+     * Method to test if an item which has the next row free can be picked
+     * @throws Exception
+     */
     @Test
     public void FreeSideNexTrowIsFreeTest() throws Exception{
         final int ROW=3;
@@ -290,7 +330,10 @@ public class PlayerTest {
     }
 
 
-    /** Method to test if validGrid and GameGrid values are successfully set after pickItems call*/
+    /**
+     * Method to test if validGrid and GameGrid values are successfully set after pickItems call
+     * @throws Exception
+     */
     @Test
     public void rightValuesInValidAndGameGridTest() throws Exception{
         final int ROW=0;
@@ -331,7 +374,10 @@ public class PlayerTest {
         }
     }
 
-    /** Method to test if selected items in GameBoard are the same in selectedItems list*/
+    /**
+     *  Method to test if selected items in GameBoard are the same in selectedItems list
+     * @throws Exception
+     */
     @Test
     public void rightItemsInSelectItemsTest() throws Exception {
         final int ROW = 0;
@@ -378,7 +424,10 @@ public class PlayerTest {
         System.out.println();
     }
 
-    /** Method to test OutOfBoundsException if the column selected is not available*/
+    /**
+     *  Method to test OutOfBoundsException if the column selected is not available
+     * @throws Exception
+     */
     @Test
     public void noAvailableColumnTest() throws Exception{
         final int INVALID_COLUMN=6;
@@ -391,7 +440,10 @@ public class PlayerTest {
 
     }
 
-    /** Method to test if selectedItems list has more than three items*/
+    /**
+     * Method to test if selectedItems list has more than three items
+     * @throws Exception
+     */
     @Test
     public void noAvailableDimensionOfSelectItems() throws Exception{
         selectedCol=3;
@@ -403,7 +455,10 @@ public class PlayerTest {
         Exception e=assertThrows(InvalidNumberOfItemsException.class,()-> testPlayer.putItemInShelf(selectedCol));
     }
 
-    /** Method to test if Items of selectedItems list are successfully placed in personal shelf*/
+    /**
+     * Method to test if Items of selectedItems list are successfully placed in personal shelf
+     * @throws Exception
+     */
     @Test
     public void rightPositionsOfItemsInMyShelfTest() throws Exception{
         final int VALID_COLUMN=3;
@@ -432,7 +487,10 @@ public class PlayerTest {
         }
     }
 
-    /** Method to test if points are successfully added to personal score*/
+    /**
+     * Method to test if points are successfully added to personal score
+     * @throws Exception
+     */
     @Test
     public void addPointsTest() throws Exception{
         final int POINTS=10;
