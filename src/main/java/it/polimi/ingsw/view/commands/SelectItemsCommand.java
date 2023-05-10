@@ -3,15 +3,14 @@ package it.polimi.ingsw.view.commands;
 import it.polimi.ingsw.modelview.GameBoardView;
 
 import it.polimi.ingsw.exceptions.*;
-import it.polimi.ingsw.modelview.GameBoardView;
 
 import java.util.List;
 import java.util.Scanner;
 
 public class SelectItemsCommand implements Command{
-    private Scanner scanner;
+    private final Scanner scanner;
     private List<int[]> coords;
-    private SelectOrderCommand sortingCommand;
+    private final SelectOrderCommand sortingCommand;
     private int maxNum;
     private int numOfPickItems;
     private GameBoardView gb;
@@ -25,11 +24,6 @@ public class SelectItemsCommand implements Command{
         this.coords = param;
         this.sortingCommand = new SelectOrderCommand();
     }
-
-    public void coordsToSelect(List<int[]> coords){
-        this.coords = coords;
-    }
-    public void setGameBoardView(GameBoardView gb){this.gb = gb;}
 
     private void askUser(){
         numOfPickItems = 0;
@@ -175,6 +169,8 @@ public class SelectItemsCommand implements Command{
         freeSideChecker(gb.getValidGrid());
         rowAndColChecker();
     }
+
+    public void setGameBoardView(GameBoardView gb){this.gb = gb;}
 
     public int getNumOfItems(){ return numOfPickItems; }
 

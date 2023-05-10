@@ -24,7 +24,6 @@ public class Controller {
     private Game game;
     private final List<Client> clients = new ArrayList<>();
     private TurnHandler turnHandler;
-    private static final String SelectionError = "Try again, invalid selection due to: ";
 
     /* METHODS SECTION */
 

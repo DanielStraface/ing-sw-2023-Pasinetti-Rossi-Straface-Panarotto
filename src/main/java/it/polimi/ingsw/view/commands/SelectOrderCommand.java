@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Scanner;
 
 public class SelectOrderCommand implements Command{
-    private List<Integer> cardinalNumberOfSelectedItems;
-    private Scanner scanner;
+    private final List<Integer> cardinalNumberOfSelectedItems;
+    private final Scanner scanner;
     private List<int[]> coordsToOrder;
     private List<Integer> sortingOrder;
 

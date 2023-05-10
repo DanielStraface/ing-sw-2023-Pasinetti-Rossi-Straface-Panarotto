@@ -10,7 +10,6 @@ public interface AppServer extends Remote {
     enum typeOfMatch {
         existingGame, newTwoPlayersGame, newThreePlayersGame, newFourPlayersGame
     }
-    Server connect() throws RemoteException;
 
     Server connect(typeOfMatch type) throws RemoteException, NotSupportedMatchesException;
 

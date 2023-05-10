@@ -26,7 +26,7 @@ public class ModelSubject {
 
     public synchronized void deleteListeners(){obs = new Vector<>();}
 
-    public synchronized void informLog(Client client, List<int[]> coords, Integer column) throws RemoteException {
+    public synchronized void informLog(Client o, List<int[]> coords, Integer column) throws RemoteException {
         /*
          * a temporary array buffer, used as a snapshot of the state of
          * current Observers.
@@ -37,7 +37,7 @@ public class ModelSubject {
 
         for (int i = arrLocal.length-1; i>=0; i--){
             if(arrLocal[i] instanceof MatchLog)
-                ((MatchLog) arrLocal[i]).update(client, coords, column);
+                ((MatchLog) arrLocal[i]).update(o, coords, column);
         }
     }
 
@@ -78,7 +78,7 @@ public class ModelSubject {
         if(turnUserClient != null) turnUserClient.update(gmv);
     }
 
-    public void notifyObservers(int clientID, String arg) {
+    public void notifyObservers(Player player, String arg) {
         /*
          * a temporary array buffer, used as a snapshot of the state of
          * current Observers.
@@ -107,8 +107,9 @@ public class ModelSubject {
         for (int i = arrLocal.length-1; i>=0; i--){
             Client vl = (Client) arrLocal[i];
             try {
-                if(vl.getClientID() == clientID)
+                if(vl.getClientID() == player.getClientID())
                     vl.update(arg);
+                else vl.update("New info from " + player.getNickname() + ": " + arg);
             } catch (RemoteException e) {
                 System.err.println("Cannot obtain the clientID to notify: " + e.getMessage());
             }

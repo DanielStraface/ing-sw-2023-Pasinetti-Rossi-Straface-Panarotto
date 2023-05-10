@@ -9,7 +9,7 @@ import java.util.List;
 
 public class MatchLog implements Client {
 
-    private int matchID;
+    private final int matchID;
     private int turnCounter;
 
     public MatchLog(int matchID){
@@ -27,7 +27,7 @@ public class MatchLog implements Client {
     @Override
     public void update(String msg) throws RemoteException {
         if(msg.equals("START GAME")) return;
-        System.out.println("Log := match#" + matchID + " new clients string message notification : \n\t\t");
+        System.out.println("Log := match#" + matchID + " new clients string message notification : \n->" + msg);
     }
 
     @Override

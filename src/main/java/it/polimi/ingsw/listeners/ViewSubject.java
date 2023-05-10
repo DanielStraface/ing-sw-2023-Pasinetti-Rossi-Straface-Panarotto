@@ -3,17 +3,14 @@ package it.polimi.ingsw.listeners;
 
 import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.distributed.Server;
-import it.polimi.ingsw.exceptions.InvalidSelectionException;
-import it.polimi.ingsw.view.TextualUI;
 
-import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
 import java.util.Vector;
 
 public class ViewSubject {
     private boolean changed = false;
-    private Vector<Server> obs;
+    private final Vector<Server> obs;
 
     public ViewSubject(){
         obs = new Vector<>();

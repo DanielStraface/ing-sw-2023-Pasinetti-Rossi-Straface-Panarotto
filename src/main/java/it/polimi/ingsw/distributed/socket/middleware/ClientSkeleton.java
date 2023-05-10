@@ -3,10 +3,7 @@ package it.polimi.ingsw.distributed.socket.middleware;
 import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.distributed.Server;
 import it.polimi.ingsw.exceptions.NotMessageFromClientYet;
-import it.polimi.ingsw.model.Item;
-import it.polimi.ingsw.modelview.GameBoardView;
 import it.polimi.ingsw.modelview.GameView;
-import it.polimi.ingsw.modelview.ShelfView;
 import it.polimi.ingsw.server.AppServer;
 
 import java.io.IOException;
@@ -20,8 +17,6 @@ public class ClientSkeleton implements Client {
 
     private final ObjectOutputStream oos;
     private final ObjectInputStream ois;
-    private int status = 0;
-    private int numberOfTurnRequest = 0;
     private int clientID;
     private List<int[]> auxiliaryCoords;
     private Integer auxiliaryColumn;
@@ -40,16 +35,6 @@ public class ClientSkeleton implements Client {
         }
     }
 
-    /*@Override
-    public void update(GameBoardView gb) throws RemoteException {
-        try{
-            oos.writeObject(gb);
-            flushAndReset(oos);
-        } catch (IOException e) {
-            throw new RemoteException("Cannot send gb event: " + e.getMessage());
-        }
-    }*/
-
     @Override
     public void update(GameView game) throws RemoteException {
         try{
@@ -59,36 +44,6 @@ public class ClientSkeleton implements Client {
             throw new RemoteException("Cannot send gameview and clientID event: " + e.getMessage());
         }
     }
-
-    /*@Override
-    public void update(Item[][] gameGrid) throws RemoteException {
-        try{
-            oos.writeObject(gameGrid);
-            flushAndReset(oos);
-        } catch (IOException e) {
-            throw new RemoteException("Cannot send gameGrid event: " + e.getMessage());
-        }
-    }
-
-    @Override
-    public void update(ShelfView shelf) throws RemoteException {
-        try{
-            oos.writeObject(shelf);
-            flushAndReset(oos);
-        } catch (IOException e) {
-            throw new RemoteException("Cannot send shelf event: " + e.getMessage());
-        }
-    }
-
-    @Override
-    public void update(Integer column) throws RemoteException {
-        try{
-            oos.writeObject(column);
-            flushAndReset(oos);
-        } catch (IOException e) {
-            throw new RemoteException("Cannot send column event: " + e.getMessage());
-        }
-    }*/
 
     @Override
     public void update(String msg) throws RemoteException {

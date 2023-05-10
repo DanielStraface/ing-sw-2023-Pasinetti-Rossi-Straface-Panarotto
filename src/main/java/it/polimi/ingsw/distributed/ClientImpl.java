@@ -14,7 +14,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Serializa
     public enum ClientState {
         LAUNCH, WAITING_IN_LOBBY, PLAYING, GAMEOVER
     }
-    private ClientState clientState;
+    private transient ClientState clientState;
     transient TextualUI view = new TextualUI();
     transient String nickname;
     private int clientID;
@@ -42,7 +42,6 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Serializa
         this.view.addListener(server); //add the match server as this client view observer
         //per Damiani e\' diverso
     }
-    public ClientState getClientState(){return this.clientState;}
 
     @Override
     public void update(GameView game) throws RemoteException {
@@ -101,4 +100,6 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Serializa
 
     @Override
     public int getClientID() throws RemoteException {return this.clientID;}
+
+    public ClientState getClientState(){return this.clientState;}
 }

@@ -18,8 +18,6 @@ public class Player extends ModelSubject implements Serializable {
     private PersonalObjCard myPersonalObjCard;
     private List<Item> selectItems;
     private boolean isFirstPlayer;
-    private String commonObjCardsReachedString;
-    private static final int INVALID = 0;
     private static final int PLAYABLE = 1;
 
     /**

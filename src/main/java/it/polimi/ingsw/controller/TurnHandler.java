@@ -1,6 +1,5 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.distributed.Server;
 import it.polimi.ingsw.server.AppServerImpl;
 import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.exceptions.InvalidMatchesException;
@@ -13,8 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TurnHandler {
-    private TurnChecker turnChecker;
-    private Game game;
+    private final TurnChecker turnChecker;
+    private final Game game;
     private boolean endGame;
     private boolean gameOver;
     private static final int ENDGAME_POINTS = 1;
