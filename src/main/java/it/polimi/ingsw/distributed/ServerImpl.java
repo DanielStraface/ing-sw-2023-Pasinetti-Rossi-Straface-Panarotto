@@ -44,7 +44,9 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
         if(this.controller.getClients().size() == this.controller.getGame().getPlayers().size()){
             this.controller.getClients().get(this.controller.getClients().size() - 1).update("Joining a lobby...");
             this.controller.setMatchID(AppServerImpl.getMatchID(this));
-            this.game.addListener(new MatchLog(this.controller.getMatchID()));
+            MatchLog thisMatchLog = new MatchLog(this.controller.getMatchID());
+            thisMatchLog.update(5);
+            this.game.addListener(thisMatchLog);
             if(checkIfPrevGame()){
                 for(Client c : this.controller.getClients())
                     c.update("Old unfinished match found!\nThe game will resume at that point. " +
