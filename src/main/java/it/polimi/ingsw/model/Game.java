@@ -136,10 +136,15 @@ public class Game extends ModelSubject implements Serializable {
         //setChangedAndNotifyListeners(this.gameboard);
     }
 
+    public void commonObjCardReached(Player player, String toDisplay){
+        setChanged();
+        notifyObservers(player, toDisplay);
+    }
+
     /* set methods */
     public void setAndSave(int matchID, Player player) throws RemoteException {
         this.currentPlayer = player;
-        String fileName = "match" + Integer.toString(matchID) + ".ser";
+        String fileName = "match" + matchID + ".ser";
         Controller.saveGame(this, fileName);
         setChangedAndNotifyListeners(this);
     }
@@ -156,12 +161,6 @@ public class Game extends ModelSubject implements Serializable {
         this.gameOverFinalMessage = finalMessage;
         setChangedAndNotifyListeners(this);
     }
-    public void commonObjCardReached(Player player, int numOfPoints, String toDisplay){
-        player.addPoints(numOfPoints);
-        setChanged();
-        notifyObservers(player.getClientID(), toDisplay);
-    }
-
 
     /* get methods */
     public int getPlayersNumber(){return this.playersNumber;}

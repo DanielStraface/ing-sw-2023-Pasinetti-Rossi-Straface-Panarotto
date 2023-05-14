@@ -39,17 +39,14 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
         super(port, csf, ssf);
     }
 
-    public int getPlayersGameNumber(){
-        return this.game.getPlayersNumber();
-    }
-    public boolean getGameOver(){return this.controller.getGameOver();}
-
     @Override
     public void startGame() throws RemoteException{
         if(this.controller.getClients().size() == this.controller.getGame().getPlayers().size()){
             this.controller.getClients().get(this.controller.getClients().size() - 1).update("Joining a lobby...");
             this.controller.setMatchID(AppServerImpl.getMatchID(this));
-            this.game.addListener(new MatchLog(this.controller.getMatchID()));
+            MatchLog thisMatchLog = new MatchLog(this.controller.getMatchID());
+            thisMatchLog.update(5);
+            this.game.addListener(thisMatchLog);
             if(checkIfPrevGame()){
                 for(Client c : this.controller.getClients())
                     c.update("Old unfinished match found!\nThe game will resume at that point. " +
@@ -74,6 +71,29 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
                          "\nSearching for " + temp + " other players");
             }
         }
+    }
+
+    @Override
+    public void register(Client client, String nickname) throws RemoteException {
+        this.controller.addClient(client); //add this client in the client list of controller
+        this.game.addListener(client); // add this client as model listener
+        for(int i=0;i<toConnect.length;i++){
+            if(!this.toConnect[i]){
+                this.toConnect[i] = true;
+                //this.game.getPlayers().get(i).addListenerForPlayer(client);
+                this.game.getPlayers().get(i).setNicknameAndClientID(nickname, i*10);
+                client.update(i*10);
+                break;
+            }
+        }
+        System.out.println("Register client " + client + "\nwith clientID := " + client.getClientID() +
+                "for a " + this.game.getPlayers().size() + " players match");
+    }
+
+    @Override
+    public void update(Client client, List<int[]> coords, Integer column) throws RemoteException {
+        this.game.informLog(client, coords, column);
+        this.controller.update(client, coords, column);
     }
 
     private boolean checkIfPrevGame() {
@@ -114,26 +134,8 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
         return false;
     }
 
-    @Override
-    public void register(Client client, String nickname) throws RemoteException {
-        this.controller.addClient(client); //add this client in the client list of controller
-        this.game.addListener(client); // add this client as model listener
-        for(int i=0;i<toConnect.length;i++){
-            if(!this.toConnect[i]){
-                this.toConnect[i] = true;
-                //this.game.getPlayers().get(i).addListenerForPlayer(client);
-                this.game.getPlayers().get(i).setNicknameAndClientID(nickname, i*10);
-                client.update(i*10);
-                break;
-            }
-        }
-        System.out.println("Register client " + client + "\nwith clientID := " + client.getClientID() +
-                "for a " + this.game.getPlayers().size() + " players match");
+    public int getPlayersGameNumber(){
+        return this.game.getPlayersNumber();
     }
-
-    @Override
-    public void update(Client client, List<int[]> coords, Integer column) throws RemoteException {
-        this.game.informLog(client, coords, column);
-        this.controller.update(client, coords, column);
-    }
+    public boolean getGameOver(){return this.controller.getGameOver();}
 }

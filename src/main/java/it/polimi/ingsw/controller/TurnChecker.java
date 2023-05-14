@@ -54,9 +54,9 @@ public class TurnChecker {
             try{
                 int numOfPoints = commonObjCard.doCheck(player);
                 if(numOfPoints == -1) return;
-                game.commonObjCardReached(player, numOfPoints, "Common Objective Card " +
-                        commonObjCard.getType() + " goal reach!\n" +
-                        "Obtain +" + numOfPoints + " points!");
+                player.addPoints(numOfPoints);
+                game.commonObjCardReached(player ,"Common Objective Card " + commonObjCard.getType() +
+                        " goal reach!\n" + "Obtain +" + numOfPoints + " points!");
             } catch (InvalidPointerException e) {
                 System.err.println("Something went wrong, the obj points list of this card is less than zero: "
                         + e.getMessage());

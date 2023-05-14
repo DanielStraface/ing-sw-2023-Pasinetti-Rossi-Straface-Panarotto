@@ -9,12 +9,15 @@ import java.util.List;
 
 public class MatchLog implements Client {
 
-    private int matchID;
+    private final int matchID;
+    private final String nickname;
+    private int listenerID;
     private int turnCounter;
 
     public MatchLog(int matchID){
         this.turnCounter = 1;
         this.matchID = matchID;
+        this.nickname = "MatchLog for match#" + this.matchID;
     }
     @Override
     public void update(GameView game) throws RemoteException {
@@ -27,22 +30,22 @@ public class MatchLog implements Client {
     @Override
     public void update(String msg) throws RemoteException {
         if(msg.equals("START GAME")) return;
-        System.out.println("Log := match#" + matchID + " new clients string message notification : \n\t\t");
+        System.out.println("Log := match#" + matchID + " new clients string message notification : \n->" + msg);
     }
 
     @Override
     public void update(int clientID) throws RemoteException {
-
+        this.listenerID = clientID;
     }
 
     @Override
     public String getNickname() throws RemoteException {
-        return null;
+        return this.nickname;
     }
 
     @Override
     public int getClientID() throws RemoteException {
-        return 5;
+        return this.listenerID;
     }
 
     public void update(Client client, List<int[]> coords, Integer column) throws RemoteException {

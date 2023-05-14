@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class SelectColumnCommand implements Command{
-    private Scanner scanner;
+    private final Scanner scanner;
     private int col;
     private List<Integer> columnReference;
     private ShelfView shelfView;
@@ -28,29 +28,23 @@ public class SelectColumnCommand implements Command{
         this.col = this.col - 1;
     }
 
-    @Override
-    public void execute() throws FullColumnException {
-        this.askUser();
-        columnCheck(this.col);
-        this.columnReference.add(Integer.valueOf(this.col));
-    }
-
-
     private void columnCheck(int columnSelected) throws FullColumnException {
         int[] lastRows = shelfView.getLastRow();
         if(numOfItems > lastRows[columnSelected]+1){
             throw new FullColumnException();
         }
     }
-
-
-
     public void setShelfView(ShelfView shelf){
         this.shelfView= shelf;
     }
-
     public void setMaxNumOfItems(int numOfItems){
         this.numOfItems=numOfItems;
     }
 
+    @Override
+    public void execute() throws FullColumnException {
+        this.askUser();
+        columnCheck(this.col);
+        this.columnReference.add(Integer.valueOf(this.col));
+    }
 }

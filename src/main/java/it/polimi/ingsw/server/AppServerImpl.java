@@ -167,11 +167,6 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
     }
 
     @Override
-    public Server connect() throws RemoteException {
-        return null;
-    }
-
-    @Override
     public Server connect(typeOfMatch type) throws RemoteException, NotSupportedMatchesException {
         ServerImpl match = null;
         switch(type){
@@ -201,14 +196,14 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
                     return null;
                 }
                 match = waitingQueue.get(FIRST_WAITING_MATCH);
-                System.out.println("ALFA");
                 if(match == null) System.out.println("is nUlll");
                 int numberOfClientConnected = match.connectedClient;
-                System.out.println("BETA");
                 if(numberOfClientConnected == match.getPlayersGameNumber() - 1) {
                     matches.put(matches.size(), waitingQueue.remove(FIRST_WAITING_MATCH));
-                    if(FIRST_WAITING_MATCH > 1) FIRST_WAITING_MATCH--;
-                    System.out.println("New match is running!\nThe next match to be served is the #" + FIRST_WAITING_MATCH);
+                    FIRST_WAITING_MATCH = waitingQueue.keySet().stream()
+                            .min(Comparator.comparing(Integer::valueOf)).orElse(-1);
+                    if(FIRST_WAITING_MATCH == -1) System.out.println("No match in waiting");
+                    else System.out.println("The next match to be served is the #" + FIRST_WAITING_MATCH);
                 }
                 match.connectedClient++;
                 System.out.println("The current running matches are " + matches.size() +
@@ -237,10 +232,6 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
             loggedNicknames.remove(nickname);
             System.out.println("Forced log out of " + nickname);
         }
-    }
-
-    public void loadPrevMatch() throws RemoteException {
-
     }
 
     public static int getMatchID(Server server){
