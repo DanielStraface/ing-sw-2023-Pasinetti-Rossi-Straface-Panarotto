@@ -119,7 +119,9 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
                     this.game.deleteListeners();
                     this.controller.getClients()
                             .forEach(client -> this.game.addListener(client));
-                    this.game.addListener(new MatchLog(this.controller.getMatchID()));
+                    MatchLog thisMatchLog = new MatchLog(this.controller.getMatchID());
+                    thisMatchLog.update(5);
+                    this.game.addListener(thisMatchLog);
                     for(Client c : this.controller.getClients())
                         for(Player player : this.game.getPlayers())
                             if(player.getNickname().equals(c.getNickname()))

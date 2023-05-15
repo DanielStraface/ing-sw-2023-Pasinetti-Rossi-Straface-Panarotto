@@ -22,7 +22,7 @@ public abstract class AppClient {
 
     protected static List<Integer> mainMenu(){
         System.out.print("\n\nThis is MyShelfie main menu, please choose from this menu list:\n" +
-                "1)Start a new game\n2)Join an existing game\n3)Load a previous game\n4)Quit from MyShelfie\n>>");
+                "1)Start a new game\n2)Join an existing game\n3)Quit from MyShelfie\n>>");
         int decision = scanner.nextInt();
         while(decision < 1 || decision > 4){
             System.out.print("\nInvalid selection from above menu! Please try again\n>>");
@@ -32,16 +32,12 @@ public abstract class AppClient {
         switch(decision){
             case 1 -> numbOfPlayers = askNumOfPlayer();
             case 3 -> {
-                displayResearch();
-            }
-            case 4 -> {
                 System.out.print("\nGoodbye player! See you soon\nTermination of MyShelfie...");
                 System.exit(CLOSE_APP_FROM_MAIN_MENU);
             }
             default -> {}
         }
         int guiChoice = askForGUI();
-        System.err.println("Decide CLI or GUI have not implemented yet");
         List<Integer> playersDecision = new ArrayList<>();
         playersDecision.add(decision);
         playersDecision.add(numbOfPlayers);
@@ -62,7 +58,6 @@ public abstract class AppClient {
 
     protected static void askNickname(){
         String input;
-        Scanner scanner = new Scanner(System.in);
         System.out.print("\nInsert your nickname >>");
         input = scanner.nextLine();
         while(input.contains("%") || input.contains("!") || input.contains("?") || input.contains("=") ||
@@ -76,7 +71,6 @@ public abstract class AppClient {
 
     private static int askNumOfPlayer() {
         final String insertNumberOfPlayer = "Insert the number of players of the match: >>";
-        Scanner scanner = new Scanner(System.in);
         int choice;
         System.out.print(insertNumberOfPlayer);
         choice = scanner.nextInt();

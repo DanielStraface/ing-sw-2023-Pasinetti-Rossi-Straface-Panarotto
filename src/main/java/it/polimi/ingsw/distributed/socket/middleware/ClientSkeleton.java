@@ -20,6 +20,7 @@ public class ClientSkeleton implements Client {
     private int clientID;
     private List<int[]> auxiliaryCoords;
     private Integer auxiliaryColumn;
+    private String nickname;
 
     public ClientSkeleton(Socket socket) throws RemoteException {
         try {
@@ -68,7 +69,7 @@ public class ClientSkeleton implements Client {
 
     @Override
     public String getNickname() throws RemoteException {
-        return null;
+        return this.nickname;
     }
 
     @Override
@@ -86,6 +87,10 @@ public class ClientSkeleton implements Client {
         } catch (ClassNotFoundException e) {
             throw new RemoteException("Cannot cast the client while understand which match it is " + e.getMessage());
         }
+    }
+
+    public void setNickname(String nickname){
+        this.nickname = nickname;
     }
 
     public void sendLogginResult(Boolean result) throws RemoteException{
@@ -120,7 +125,6 @@ public class ClientSkeleton implements Client {
     }
 
     public synchronized void receive(Server server) throws RemoteException, NotMessageFromClientYet {
-        Client client = null;
         Object o;
         Integer column = null;
         String msg;

@@ -106,7 +106,7 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
                             nicknameToLog = clientSkeleton.receiveNicknameToLog();
                             temp = instance.log(nicknameToLog);
                             clientSkeleton.sendLogginResult(temp);
-                            if(temp) break;
+                            if(temp) {clientSkeleton.setNickname(nicknameToLog); break;}
                         } catch (RemoteException ignored) {
                         }
                     }

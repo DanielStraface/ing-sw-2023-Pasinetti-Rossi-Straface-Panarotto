@@ -2,7 +2,9 @@ package it.polimi.ingsw.model.comcard;
 
 import it.polimi.ingsw.model.Item;
 
-public abstract class StrategyCheck {
+import java.io.Serializable;
+
+public abstract class StrategyCheck implements Serializable {
     protected int type;
 
     /**
