@@ -15,7 +15,7 @@ public class CommonObjCardReader {
     /* METHOD SECTION */
 
     /* -- constructors --*/
-    public CommonObjCardReader(){this.file = "commonObjCardDescription.json";}
+    public CommonObjCardReader(){this.file = "json/commonObjCardDescription.json";}
     public CommonObjCardReader(String file){this.file = file;}
 
     /**

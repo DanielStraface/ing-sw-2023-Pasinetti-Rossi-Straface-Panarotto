@@ -21,7 +21,7 @@ public class PersonalCardReader {
     /* METHOD SECTION */
 
     /* -- constructors --*/
-    public PersonalCardReader(){this.file = "personalObjectiveCards.json";}
+    public PersonalCardReader(){this.file = "json/personalObjectiveCards.json";}
     public PersonalCardReader(String file){this.file = file;}
 
     /**
