@@ -167,6 +167,13 @@ public class TextualUI extends ViewSubject implements Serializable {
         displayShelf(game.getCurrentPlayer().getMyShelf());
     }
 
+    public void displayInfo(GameView game, PlayerView ply){
+        System.out.println("=================================================================================");
+        System.out.println("Your points: " + ply.getScore());
+        displayCommonObjCard(game);
+        displayPersonalObjCard(ply);
+    }
+
     public void gameActionOnGameboard(GameBoardView gb) {
         SelectItemsCommand sic = (SelectItemsCommand) this.gameActionMenu.get(0);
         sic.setGameBoardView(gb);
