@@ -39,7 +39,7 @@ public class AppClientSocket extends AppClient {
                         System.exit(QUIT_IN_APPLCLIENTSOCKET_ERROR);
                     }
                 }
-                userClient = new ClientImpl(appServerStub, nickname);
+                userClient = new ClientImpl(appServerStub, nickname, decisions.get(decisions.size() - 1));
             }
             case JOIN_EXISTING_MATCH -> {
                 System.out.println("Joining an existing match in progress...");
@@ -52,7 +52,7 @@ public class AppClientSocket extends AppClient {
                         System.exit(NO_MATCH_IN_WAITING_NOW_ERROR);
                     }
                 }
-                userClient = new ClientImpl(appServerStub, nickname);
+                userClient = new ClientImpl(appServerStub, nickname, decisions.get(decisions.size() - 1));
             }
             default -> {
                 try{

@@ -4,7 +4,9 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.modelview.GameView;
 import it.polimi.ingsw.modelview.PlayerView;
 import it.polimi.ingsw.modelview.ShelfView;
+import it.polimi.ingsw.view.GUI;
 import it.polimi.ingsw.view.TextualUI;
+import it.polimi.ingsw.view.UI;
 
 import java.io.Serializable;
 import java.rmi.RemoteException;
@@ -17,14 +19,16 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Serializa
         LAUNCH, WAITING_IN_LOBBY, PLAYING, GAMEOVER
     }
     private transient ClientState clientState;
-    transient TextualUI view = new TextualUI();
+    transient UI view;
     transient String nickname;
     private int clientID;
 
-    public ClientImpl(Server server, String nickname) throws RemoteException {
+    public ClientImpl(Server server, String nickname, int guiChoice) throws RemoteException {
         super();
         this.clientState = ClientState.LAUNCH;
         this.nickname = nickname;
+        if(guiChoice == 1) this.view = new TextualUI();
+        else if(guiChoice == 2) this.view = new GUI();
         server.register(this, nickname);
         this.view.addListener(server);
     }

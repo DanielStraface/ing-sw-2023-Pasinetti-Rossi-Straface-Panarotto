@@ -40,11 +40,24 @@ public abstract class AppClient {
             }
             default -> {}
         }
+        int guiChoice = askForGUI();
         System.err.println("Decide CLI or GUI have not implemented yet");
         List<Integer> playersDecision = new ArrayList<>();
         playersDecision.add(decision);
         playersDecision.add(numbOfPlayers);
+        playersDecision.add(guiChoice);
         return playersDecision;
+    }
+
+    private static int askForGUI() {
+        int temp;
+        System.out.print("\nSelect the type of UI:\n1)CLI\n2)GUI\n>>");
+        temp = scanner.nextInt();
+        while(temp < 1 || temp > 2){
+            System.out.print("\nInvalid UI selection, please try again: >>");
+            temp = scanner.nextInt();
+        }
+        return temp;
     }
 
     protected static void askNickname(){

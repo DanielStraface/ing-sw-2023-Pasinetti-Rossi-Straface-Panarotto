@@ -34,7 +34,7 @@ public class AppClientRMI extends AppClient{
                             tom = t;
                     }
                     matchServerRef = serverApp.connect(tom);
-                    new ClientImpl(matchServerRef, nickname);
+                    new ClientImpl(matchServerRef, nickname, decisions.get(decisions.size() - 1));
                 } catch (NotSupportedMatchesException e) {
                     if (e instanceof TooManyMatchesException) {
                         serverApp.removeLoggedUser(nickname);
@@ -56,7 +56,7 @@ public class AppClientRMI extends AppClient{
                     serverApp.removeLoggedUser(nickname);
                     System.exit(NO_MATCH_IN_WAITING_NOW_ERROR);
                 }
-                new ClientImpl(matchServerRef, nickname);
+                new ClientImpl(matchServerRef, nickname, decisions.get(decisions.size() - 1));
             }
             default -> {
                 System.exit(QUIT_IN_APPCLIENTRMI_ERROR);

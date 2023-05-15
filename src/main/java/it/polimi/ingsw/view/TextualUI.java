@@ -17,7 +17,7 @@ import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.*;
 
-public class TextualUI extends ViewSubject implements Serializable {
+public class TextualUI extends UI implements Serializable {
     private transient List<int[]> coords;
     private transient List<Integer> columnReference;
     private transient Client refClient;
@@ -210,9 +210,7 @@ public class TextualUI extends ViewSubject implements Serializable {
     public void update(ShelfView shelf) {
         displayShelf(shelf);
     }
-    public void update(String msg) {
-        System.out.println(msg);
-    }
+    public void update(String msg) {System.out.println(msg);}
 
     public void setReferenceClient(Client client){
         this.refClient = client;
