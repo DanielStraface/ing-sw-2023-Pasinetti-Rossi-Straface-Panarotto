@@ -50,13 +50,36 @@ public class TextualUI extends ViewSubject implements Serializable {
     }
 
     private void displayPersonalObjCard(PlayerView player) {
-        System.out.println("Your personal objective card:");
+        System.out.println("\nYour personal objective card:");
         for(int i=0;i<player.getMyPersonalOBjCard().getCardGrid().length;i++){
+            System.out.print(i+1 + " ");
             for(int j=0;j<player.getMyPersonalOBjCard().getCardGrid()[i].length;j++){
-                System.out.print(player.getMyPersonalOBjCard().getCardGrid()[i][j].getCategoryType() + " ");
+                if(player.getMyPersonalOBjCard().getCardGrid()[i][j].getCategoryType()==Category.CAT){
+                    System.out.print("C ");
+                }
+                if(player.getMyPersonalOBjCard().getCardGrid()[i][j].getCategoryType()==Category.PLANT){
+                    System.out.print("P ");
+                }
+                if(player.getMyPersonalOBjCard().getCardGrid()[i][j].getCategoryType()==Category.FRAME){
+                    System.out.print("F ");
+                }
+                if(player.getMyPersonalOBjCard().getCardGrid()[i][j].getCategoryType()==Category.BOOK){
+                    System.out.print("B ");
+                }
+                if(player.getMyPersonalOBjCard().getCardGrid()[i][j].getCategoryType()==Category.TROPHY){
+                    System.out.print("T ");
+                }
+                if(player.getMyPersonalOBjCard().getCardGrid()[i][j].getCategoryType()==Category.GAME){
+                    System.out.print("G ");
+                }
+                if(player.getMyPersonalOBjCard().getCardGrid()[i][j].getCategoryType()==null){
+                    System.out.print("- ");
+                }
             }
             System.out.println();
         }
+        System.out.print("  ");
+        for(int j=0;j<player.getMyPersonalOBjCard().getCardGrid().length-1;j++) System.out.print(j+1 + " ");
         System.out.print("\n\n");
     }
 
