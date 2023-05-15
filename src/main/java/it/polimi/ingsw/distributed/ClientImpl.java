@@ -1,6 +1,8 @@
 package it.polimi.ingsw.distributed;
 
+import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.modelview.GameView;
+import it.polimi.ingsw.modelview.PlayerView;
 import it.polimi.ingsw.modelview.ShelfView;
 import it.polimi.ingsw.view.TextualUI;
 
@@ -78,7 +80,20 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Serializa
                 this.view.update("Your turn is finished! Please wait for the other players turn");
                 this.view.update(sh);
             }
+            PlayerView ply = game.getPlayers().stream()
+                    .filter(p -> {
+                        try {
+                            return p.getClientID() == this.getClientID();
+                        } catch (RemoteException e) {
+                            System.err.println("Cannot obtain the clientID from this Client");
+                        }
+                        return false;
+                    })
+                    .findFirst()
+                    .get();
+            this.view.displayInfo(game, ply);
             this.view.update(game.getGameBoard());
+            this.view.update(ply.getMyShelf());
             this.view.update(game.getCurrentPlayer().getNickname() + " is playing.");
         }
     }
