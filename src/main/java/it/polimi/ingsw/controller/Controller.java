@@ -3,8 +3,6 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.*;
-import it.polimi.ingsw.modelview.GameBoardView;
-import it.polimi.ingsw.modelview.ShelfView;
 
 import java.io.*;
 import java.rmi.RemoteException;
@@ -262,7 +260,7 @@ public class Controller {
                 try {
                     selectionChecker(coords, column);
                 } catch (InvalidSelectionException | FullColumnException e) {
-                    throw new RuntimeException(e);
+                    game.imposeException(e);
                 }
             game.getCurrentPlayer().pickItems(coords, game.getGameboard().getGameGrid(),
                     game.getGameboard().getValidGrid());

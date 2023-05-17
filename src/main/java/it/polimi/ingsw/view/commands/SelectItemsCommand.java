@@ -25,9 +25,6 @@ public class SelectItemsCommand implements Command{
         this.sortingCommand = new SelectOrderCommand();
     }
 
-    public void coordsToSelect(List<int[]> coords){
-        this.coords = coords;
-    }
     public void setGameBoardView(GameBoardView gb){this.gb = gb;}
 
     private void askUser(){

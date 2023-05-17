@@ -201,10 +201,8 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
                     return null;
                 }
                 match = waitingQueue.get(FIRST_WAITING_MATCH);
-                System.out.println("ALFA");
                 if(match == null) System.out.println("is nUlll");
                 int numberOfClientConnected = match.connectedClient;
-                System.out.println("BETA");
                 if(numberOfClientConnected == match.getPlayersGameNumber() - 1) {
                     matches.put(matches.size(), waitingQueue.remove(FIRST_WAITING_MATCH));
                     if(FIRST_WAITING_MATCH > 1) FIRST_WAITING_MATCH--;

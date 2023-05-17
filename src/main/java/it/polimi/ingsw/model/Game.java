@@ -17,15 +17,16 @@ public class Game extends ModelSubject implements Serializable {
     private static final int DIM_GAMEBOARD=9;
     private static final int PLAYABLE = 1;
     private static final int OCCUPIED = 2;
-    private int playersNumber;
-    private List<Player> players;
+    private final int playersNumber;
+    private final List<Player> players;
     private GameBoard gameboard;
     private int[][] validGrid = new int[DIM_GAMEBOARD][DIM_GAMEBOARD];
-    private Bag bag;
-    private List<CommonObjCard> commonObjCards;
+    private final Bag bag;
+    private final List<CommonObjCard> commonObjCards;
     private Player currentPlayer;
     private int prevClientID;
     private String gameOverFinalMessage;
+    private Exception exceptionToDisplay;
 
     /**
      * constructor for Game class
@@ -156,6 +157,14 @@ public class Game extends ModelSubject implements Serializable {
         this.gameOverFinalMessage = finalMessage;
         setChangedAndNotifyListeners(this);
     }
+    public void imposeException(Exception e){
+        this.exceptionToDisplay = e;
+        try {
+            setChangedAndNotifyListeners(this);
+        } catch (RemoteException ex) {
+            System.err.println("Cannot send the exception");
+        }
+    }
 
 
     /* get methods */
@@ -168,6 +177,7 @@ public class Game extends ModelSubject implements Serializable {
     public int getPrevClientID(){return this.prevClientID;}
     public int[][] getValidGrid(){return validGrid;}
     public String getGameOverFinalMessage(){return this.gameOverFinalMessage;}
+    public Exception getExceptionToDisplay(){return this.exceptionToDisplay;}
     private void setChangedAndNotifyListeners(Game gm) throws RemoteException{
         setChanged();
         notifyObservers(gm);
