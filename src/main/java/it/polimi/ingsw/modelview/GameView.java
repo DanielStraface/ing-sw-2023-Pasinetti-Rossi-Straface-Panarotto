@@ -16,6 +16,7 @@ public class GameView implements Serializable {
     private final PlayerView currentPlayer;
     private final int prevClientID;
     private final String gameOverFinalMessage;
+    private final Exception exceptionToDisplay;
 
     public GameView(Game game) {
         this.commonObjCards = new ArrayList<>();
@@ -29,6 +30,7 @@ public class GameView implements Serializable {
         this.currentPlayer = new PlayerView(game.getCurrentPlayer());
         this.prevClientID = game.getPrevClientID();
         this.gameOverFinalMessage = game.getGameOverFinalMessage();
+        this.exceptionToDisplay = game.getExceptionToDisplay();
     }
     public GameBoardView getGameBoard(){return this.gameBoard;}
     public List<CommonObjCardView> getCommonObjCard(){return this.commonObjCards;}
@@ -36,4 +38,5 @@ public class GameView implements Serializable {
     public PlayerView getCurrentPlayer(){return this.currentPlayer;}
     public int getPrevClientID(){return this.prevClientID;}
     public String getGameOverFinalMessage(){return this.gameOverFinalMessage;}
+    public Exception getExceptionToDisplay(){return this.exceptionToDisplay;}
 }
