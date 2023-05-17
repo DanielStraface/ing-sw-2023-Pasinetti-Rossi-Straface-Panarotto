@@ -27,8 +27,10 @@ public class MatchLog implements Client {
             System.out.print(" got an error: " + game.getExceptionToDisplay().getMessage() +
                     "\nThe turn must be repeated");
             return;
-        } else System.out.print(game.getCurrentPlayer().getClientID() + " is currently playing.");
-        turnCounter++;
+        } else {
+            System.out.print(game.getCurrentPlayer().getClientID() + " is currently playing.");
+            turnCounter++;
+        }
     }
 
     @Override

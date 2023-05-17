@@ -258,16 +258,19 @@ public class Controller {
                     + o.getClientID() + " clientID number in update");
         } else {
                 try {
+                    //reset the exception reference in game at null value
+                    game.imposeException(null);
+                    //do check
                     selectionChecker(coords, column);
+                    game.getCurrentPlayer().pickItems(coords, game.getGameboard().getGameGrid(),
+                            game.getGameboard().getValidGrid());
+                    game.getCurrentPlayer().putItemInShelf(column);
+                    for(Client c : this.clients)
+                        if(c.getClientID() == o.getClientID())
+                            this.turnHandler.manageTurn(this.getMatchID(), c);
                 } catch (InvalidSelectionException | FullColumnException e) {
                     game.imposeException(e);
                 }
-            game.getCurrentPlayer().pickItems(coords, game.getGameboard().getGameGrid(),
-                    game.getGameboard().getValidGrid());
-            game.getCurrentPlayer().putItemInShelf(column);
-            for(Client c : this.clients)
-                if(c.getClientID() == o.getClientID())
-                    this.turnHandler.manageTurn(this.getMatchID(), c);
         }
     }
 }

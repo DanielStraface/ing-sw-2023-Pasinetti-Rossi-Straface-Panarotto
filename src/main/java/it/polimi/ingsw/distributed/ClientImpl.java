@@ -54,7 +54,8 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Serializa
             if(this.clientID == game.getCurrentPlayer().getClientID()){
                 System.out.println("Repeat the turn, please");
                 this.view.run(game);
-            } else return;
+            }
+            return;
         }
         if(game.getGameOverFinalMessage() != null){
             this.view.update("THE MATCH IS FINISHED, THE GAMEOVER IS REACHED!\n" +

@@ -164,6 +164,7 @@ public class Game extends ModelSubject implements Serializable {
     }
     public void imposeException(Exception e){
         this.exceptionToDisplay = e;
+        if(e == null) return;
         try {
             setChangedAndNotifyListeners(this);
         } catch (RemoteException ex) {
