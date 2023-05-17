@@ -3,7 +3,6 @@ package it.polimi.ingsw.view.commands;
 import it.polimi.ingsw.modelview.GameBoardView;
 
 import it.polimi.ingsw.exceptions.*;
-import it.polimi.ingsw.modelview.GameBoardView;
 
 import java.util.List;
 import java.util.Scanner;
