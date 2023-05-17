@@ -20,6 +20,10 @@ public abstract class AppClient {
     protected static String nickname;
     private static final Scanner scanner = new Scanner(System.in);
 
+    /**
+     * method for asking the player's match setup choices
+     * @return the list with all the choices made
+     */
     protected static List<Integer> mainMenu(){
         System.out.print("\n\nThis is MyShelfie main menu, please choose from this menu list:\n" +
                 "1)Start a new game\n2)Join an existing game\n3)Quit from MyShelfie\n>>");
@@ -45,6 +49,10 @@ public abstract class AppClient {
         return playersDecision;
     }
 
+    /**
+     * method to ask the player to choose between TUI or GUI
+     * @return the choice made
+     */
     private static int askForGUI() {
         int temp;
         System.out.print("\nSelect the type of UI:\n1)CLI\n2)GUI\n>>");
@@ -56,6 +64,9 @@ public abstract class AppClient {
         return temp;
     }
 
+    /**
+     * method to ask the player to choose a nickname with no special characters
+     */
     protected static void askNickname(){
         String input;
         System.out.print("\nInsert your nickname >>");
@@ -69,6 +80,10 @@ public abstract class AppClient {
         nickname = input;
     }
 
+    /**
+     * method to ask how many players are/will be in the type of match selected
+     * @return the number of players
+     */
     private static int askNumOfPlayer() {
         final String insertNumberOfPlayer = "Insert the number of players of the match: >>";
         int choice;
@@ -82,6 +97,12 @@ public abstract class AppClient {
         return choice;
     }
 
+    /**
+     * method that checks if the nickname is already taken, if not so it registers the client to the server
+     * @param appS the match Server App
+     * @param stub the corresponding ServerStub
+     * @throws RemoteException
+     */
     protected static void logginToAppServer(AppServer appS, ServerStub stub) throws RemoteException {
 
         while(true){
@@ -97,7 +118,4 @@ public abstract class AppClient {
         System.out.print("Log successfully completed!");
     }
 
-    private static void displayResearch() {
-        System.out.print("Searching for a previous game...It may take a while");
-    }
 }

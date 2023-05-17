@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+
+
+<ImageView fitHeight="500.0" fitWidth="500.0" pickOnBounds="true" preserveRatio="true" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
+   <image>
+      <Image url="@graphics/boards/livingroom.png" />
+   </image>
+</ImageView>
