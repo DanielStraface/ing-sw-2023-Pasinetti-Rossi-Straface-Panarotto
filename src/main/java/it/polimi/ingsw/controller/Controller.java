@@ -234,8 +234,8 @@ public class Controller {
             }
         }
     }
-    private void columnCheck(int columnSelected) throws FullColumnException {
-        int[] lastRows = shelfView.getLastRow();
+    private void columnCheck(int columnSelected,int numOfItems) throws FullColumnException {
+        int[] lastRows = game.getCurrentPlayer().getMyShelf().getLastRow();
         if(numOfItems > lastRows[columnSelected]+1){
             throw new FullColumnException();
         }
@@ -244,7 +244,7 @@ public class Controller {
         noItemSelectedChecker(coords);
         freeSideChecker(coords);
         rowAndColChecker(coords);
-        columnCheck(col);
+        columnCheck(col,coords.size());
     }
 
     /* update methods */
