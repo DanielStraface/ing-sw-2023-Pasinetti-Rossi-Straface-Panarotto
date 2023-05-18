@@ -1,0 +1,15 @@
+@font-face {
+    -fx-font-family: "Accio Dollaro";
+    src: url("../fonts/Accio_Dollaro.ttf");
+}
+
+.button {
+    -fx-font-family: "Accio Dollaro";
+    -fx-font-size: 21px;
+}
+
+.label{
+    -fx-alignment: center;
+    -fx-font-family: "Accio Dollaro";
+    -fx-font-size: 20px;
+}

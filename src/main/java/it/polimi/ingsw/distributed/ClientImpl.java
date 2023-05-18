@@ -1,11 +1,10 @@
 package it.polimi.ingsw.distributed;
 
-import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.modelview.GameView;
 import it.polimi.ingsw.modelview.PlayerView;
 import it.polimi.ingsw.modelview.ShelfView;
-import it.polimi.ingsw.view.GUI;
-import it.polimi.ingsw.view.TextualUI;
+import it.polimi.ingsw.view.GUI.GUI;
+import it.polimi.ingsw.view.CLI.TextualUI;
 import it.polimi.ingsw.view.UI;
 
 import java.io.Serializable;

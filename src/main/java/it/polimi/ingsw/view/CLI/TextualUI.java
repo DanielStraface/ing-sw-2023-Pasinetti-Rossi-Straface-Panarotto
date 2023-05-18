@@ -1,17 +1,17 @@
-package it.polimi.ingsw.view;
+package it.polimi.ingsw.view.CLI;
 
 import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.exceptions.FullColumnException;
 import it.polimi.ingsw.exceptions.InvalidSelectionException;
-import it.polimi.ingsw.listeners.ViewSubject;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.modelview.GameBoardView;
 import it.polimi.ingsw.modelview.GameView;
 import it.polimi.ingsw.modelview.PlayerView;
 import it.polimi.ingsw.modelview.ShelfView;
-import it.polimi.ingsw.view.commands.Command;
-import it.polimi.ingsw.view.commands.SelectColumnCommand;
-import it.polimi.ingsw.view.commands.SelectItemsCommand;
+import it.polimi.ingsw.view.CLI.commands.Command;
+import it.polimi.ingsw.view.CLI.commands.SelectColumnCommand;
+import it.polimi.ingsw.view.CLI.commands.SelectItemsCommand;
+import it.polimi.ingsw.view.UI;
 
 import java.io.Serializable;
 import java.rmi.RemoteException;

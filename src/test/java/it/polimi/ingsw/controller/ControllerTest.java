@@ -5,7 +5,6 @@ import it.polimi.ingsw.distributed.Server;
 import it.polimi.ingsw.distributed.ClientImpl;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.view.TextualUI;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
