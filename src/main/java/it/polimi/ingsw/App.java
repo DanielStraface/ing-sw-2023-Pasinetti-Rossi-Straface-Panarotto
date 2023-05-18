@@ -9,7 +9,7 @@ import java.util.Scanner;
 public class App {
     public static void main( String[] args ) throws RemoteException {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("\nWelcome to MyShelfie!\nWhat do you want to launch?\n1)Server\n2)CLI\n3)GUI\n>>");
+        System.out.print("Welcome to MyShelfie!\nWhat do you want to launch?\n1)Server\n2)CLI\n3)GUI\n>>");
         int decision = scanner.nextInt();
         while(decision < 1 || decision > 3){
             System.out.print("\nWrong selection, try again: >>");
