@@ -25,11 +25,12 @@ public class MainMenuController implements GUIController{
     private Stage stage;
     private Scene scene;
     private GUI gui;
+    private String MenuSelection = "sounds/MenuSelection.mp3";
     private MediaPlayer mediaPlayer;
 
     public void playButtonAction(ActionEvent event) throws IOException {
         System.out.println("Play button pressed, application start");
-        playSelectionSound();
+        playSound(MenuSelection);
         //Parent root = FXMLLoader.load(getClass().getResource("/fxml/ChoicesMenu.fxml"));
         //stage = (Stage) (((Node) event.getSource()).getScene().getWindow());
         gui.changeScene("ChoicesMenu.fxml");
@@ -41,7 +42,7 @@ public class MainMenuController implements GUIController{
     }
 
     public void quitButtonAction(ActionEvent event){
-        playSelectionSound();
+        playSound(MenuSelection);
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Close application");
         alert.setHeaderText("You're about to close MyShelfie");
@@ -53,9 +54,10 @@ public class MainMenuController implements GUIController{
         }
     }
 
-    private void playSelectionSound(){
+    @Override
+    public void playSound(String filePath) {
         Media pick = new Media(Objects.requireNonNull(getClass().getClassLoader()
-                .getResource("sounds/MenuSelection.mp3")).toExternalForm());
+                .getResource(filePath)).toExternalForm());
         mediaPlayer = new MediaPlayer(pick);
         mediaPlayer.setAutoPlay(true);
         mediaPlayer.setVolume(25);
@@ -65,9 +67,10 @@ public class MainMenuController implements GUIController{
         });
     }
 
-
     @Override
     public void setGUI(GUI gui) {
         this.gui = gui;
     }
+
+
 }

@@ -34,14 +34,17 @@ public class ChoicesMenuController implements GUIController, Initializable {
     private Scene scene;
     private String[] networks = {"", "RMI", "SOCKET"};
     private GUI gui;
+    private String MenuSelection = "sounds/MenuSelection.mp3";
     private MediaPlayer mediaPlayer;
 
 
     public void setGUI(GUI gui){this.gui = gui;}
 
+
+
     public void backButtonAction(ActionEvent event) {
 
-        playSelectionSound();
+        playSound(MenuSelection);
         System.out.println("Back button pressed, go back to main menu");
         networkChoices.setValue("");
         gui.changeScene("MainMenu.fxml");
@@ -50,14 +53,14 @@ public class ChoicesMenuController implements GUIController, Initializable {
     public void confirmButtonAction(ActionEvent event){
         String choice = networkChoices.getValue();
         if(choice == null || choice.equals("")){
-            playSelectionSound();
+            playSound(MenuSelection);
             System.out.println("Wrong selection");
             return;
         }
         System.out.println("The choice is " + choice);
         String[] mainArgs = {"GUI"};
         if(choice.equals("RMI")) {
-            playSelectionSound();
+            playSound(MenuSelection);
             new Thread(() -> {
                 try {
                     AppClientRMI.main(mainArgs);
@@ -69,7 +72,7 @@ public class ChoicesMenuController implements GUIController, Initializable {
             }).start();
         }
         if(choice.equals("SOCKET")){
-            playSelectionSound();
+            playSound(MenuSelection);
             new Thread(() -> {
                 try {
                     AppClientSocket.main(mainArgs);
@@ -92,9 +95,10 @@ public class ChoicesMenuController implements GUIController, Initializable {
 
     }
 
-    private void playSelectionSound(){
+    @Override
+    public void playSound(String filePath) {
         Media pick = new Media(Objects.requireNonNull(getClass().getClassLoader()
-                .getResource("sounds/MenuSelection.mp3")).toExternalForm());
+                .getResource(filePath)).toExternalForm());
         mediaPlayer = new MediaPlayer(pick);
         mediaPlayer.setAutoPlay(true);
         mediaPlayer.setVolume(25);
@@ -103,8 +107,6 @@ public class ChoicesMenuController implements GUIController, Initializable {
             mediaPlayer.stop();
         });
     }
-
-
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

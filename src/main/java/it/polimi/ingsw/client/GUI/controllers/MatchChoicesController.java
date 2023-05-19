@@ -32,21 +32,21 @@ public class MatchChoicesController implements GUIController, Initializable {
     private final String[] typeOfMatch = {"", "Create a new match", "Join an existing match"};
     private final String[] numOfPlayers = {"", "2 players", "3 players", "4 players"};
     private GUI gui;
-    @Override
-    public void setGUI(GUI gui) {
-        this.gui = gui;
-    }
+
+
     private enum State {NICKNAME, TYPE_OF_MATCH, NUM_OF_PLAYER}
     private State flag = State.NICKNAME;
     private String userNickname;
     private String typeOfMatchChoice;
+    private String MenuSelection = "sounds/MenuSelection.mp3";
     private MediaPlayer mediaPlayer;
+
 
     public void confirmButtonAction(ActionEvent event){
         System.out.println("Confirm button press");
         switch (flag){
             case NICKNAME -> {
-                playSelectionSound();
+                playSound(MenuSelection);
                 String nicknameValue = textField.getText();
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 if(nicknameValue.length() > 1){
@@ -62,7 +62,7 @@ public class MatchChoicesController implements GUIController, Initializable {
                 }
             }
             case TYPE_OF_MATCH -> {
-                playSelectionSound();
+                playSound(MenuSelection);
                 String typeOfMatchValue = typeOfMatchBox.getValue();
                 if(typeOfMatchValue.equals("")) return;
                 if(typeOfMatchValue.equals("Create a new match")){
@@ -79,7 +79,7 @@ public class MatchChoicesController implements GUIController, Initializable {
                 System.out.println(typeOfMatchValue);
             }
             case NUM_OF_PLAYER -> {
-                playSelectionSound();
+                playSound(MenuSelection);
                 String numOfPlayersBoxValue = numOfPlayersBox.getValue();
                 if(numOfPlayersBoxValue.equals("")) return;
                 System.out.println(numOfPlayersBoxValue);
@@ -108,7 +108,7 @@ public class MatchChoicesController implements GUIController, Initializable {
     }
 
     public void prevButtonAction(ActionEvent event){
-        playSelectionSound();
+        playSound(MenuSelection);
         if(flag == State.NICKNAME){
             this.userNickname = null;
             textField.setText("");
@@ -142,7 +142,7 @@ public class MatchChoicesController implements GUIController, Initializable {
     }
 
     public void backButtonAction(ActionEvent event){
-        playSelectionSound();
+        playSound(MenuSelection);
         System.out.println("Back button pressed, go back to main menu");
         this.userNickname = null;
         this.typeOfMatchChoice = null;
@@ -162,9 +162,16 @@ public class MatchChoicesController implements GUIController, Initializable {
         gui.changeScene("MainMenu.fxml");
     }
 
-    private void playSelectionSound(){
+
+    @Override
+    public void setGUI(GUI gui) {
+        this.gui = gui;
+    }
+
+    @Override
+    public void playSound(String filePath) {
         Media pick = new Media(Objects.requireNonNull(getClass().getClassLoader()
-                .getResource("sounds/MenuSelection.mp3")).toExternalForm());
+                .getResource(filePath)).toExternalForm());
         mediaPlayer = new MediaPlayer(pick);
         mediaPlayer.setAutoPlay(true);
         mediaPlayer.setVolume(25);
@@ -173,7 +180,6 @@ public class MatchChoicesController implements GUIController, Initializable {
             mediaPlayer.stop();
         });
     }
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         typeOfMatchBox.getItems().addAll(typeOfMatch);
