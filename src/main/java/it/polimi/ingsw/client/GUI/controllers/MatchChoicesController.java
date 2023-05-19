@@ -8,8 +8,12 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.util.Duration;
 
 import java.net.URL;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class MatchChoicesController implements GUIController, Initializable {
@@ -36,11 +40,13 @@ public class MatchChoicesController implements GUIController, Initializable {
     private State flag = State.NICKNAME;
     private String userNickname;
     private String typeOfMatchChoice;
+    private MediaPlayer mediaPlayer;
 
     public void confirmButtonAction(ActionEvent event){
         System.out.println("Confirm button press");
         switch (flag){
             case NICKNAME -> {
+                playSelectionSound();
                 String nicknameValue = textField.getText();
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 if(nicknameValue.length() > 1){
@@ -56,6 +62,7 @@ public class MatchChoicesController implements GUIController, Initializable {
                 }
             }
             case TYPE_OF_MATCH -> {
+                playSelectionSound();
                 String typeOfMatchValue = typeOfMatchBox.getValue();
                 if(typeOfMatchValue.equals("")) return;
                 if(typeOfMatchValue.equals("Create a new match")){
@@ -72,6 +79,7 @@ public class MatchChoicesController implements GUIController, Initializable {
                 System.out.println(typeOfMatchValue);
             }
             case NUM_OF_PLAYER -> {
+                playSelectionSound();
                 String numOfPlayersBoxValue = numOfPlayersBox.getValue();
                 if(numOfPlayersBoxValue.equals("")) return;
                 System.out.println(numOfPlayersBoxValue);
@@ -100,6 +108,7 @@ public class MatchChoicesController implements GUIController, Initializable {
     }
 
     public void prevButtonAction(ActionEvent event){
+        playSelectionSound();
         if(flag == State.NICKNAME){
             this.userNickname = null;
             textField.setText("");
@@ -133,6 +142,7 @@ public class MatchChoicesController implements GUIController, Initializable {
     }
 
     public void backButtonAction(ActionEvent event){
+        playSelectionSound();
         System.out.println("Back button pressed, go back to main menu");
         this.userNickname = null;
         this.typeOfMatchChoice = null;
@@ -150,6 +160,18 @@ public class MatchChoicesController implements GUIController, Initializable {
         numOfPlayersBox.setDisable(true);
         flag = State.NICKNAME;
         gui.changeScene("MainMenu.fxml");
+    }
+
+    private void playSelectionSound(){
+        Media pick = new Media(Objects.requireNonNull(getClass().getClassLoader()
+                .getResource("sounds/MenuSelection.mp3")).toExternalForm());
+        mediaPlayer = new MediaPlayer(pick);
+        mediaPlayer.setAutoPlay(true);
+        mediaPlayer.setVolume(25);
+        mediaPlayer.setOnEndOfMedia(() -> {
+            mediaPlayer.seek(Duration.ZERO);
+            mediaPlayer.stop();
+        });
     }
 
     @Override

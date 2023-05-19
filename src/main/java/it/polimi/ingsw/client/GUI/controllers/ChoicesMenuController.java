@@ -12,12 +12,17 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class ChoicesMenuController implements GUIController, Initializable {
@@ -29,10 +34,14 @@ public class ChoicesMenuController implements GUIController, Initializable {
     private Scene scene;
     private String[] networks = {"", "RMI", "SOCKET"};
     private GUI gui;
+    private MediaPlayer mediaPlayer;
+
 
     public void setGUI(GUI gui){this.gui = gui;}
 
     public void backButtonAction(ActionEvent event) {
+
+        playSelectionSound();
         System.out.println("Back button pressed, go back to main menu");
         networkChoices.setValue("");
         gui.changeScene("MainMenu.fxml");
@@ -41,12 +50,14 @@ public class ChoicesMenuController implements GUIController, Initializable {
     public void confirmButtonAction(ActionEvent event){
         String choice = networkChoices.getValue();
         if(choice == null || choice.equals("")){
+            playSelectionSound();
             System.out.println("Wrong selection");
             return;
         }
         System.out.println("The choice is " + choice);
         String[] mainArgs = {"GUI"};
         if(choice.equals("RMI")) {
+            playSelectionSound();
             new Thread(() -> {
                 try {
                     AppClientRMI.main(mainArgs);
@@ -58,6 +69,7 @@ public class ChoicesMenuController implements GUIController, Initializable {
             }).start();
         }
         if(choice.equals("SOCKET")){
+            playSelectionSound();
             new Thread(() -> {
                 try {
                     AppClientSocket.main(mainArgs);
@@ -79,6 +91,20 @@ public class ChoicesMenuController implements GUIController, Initializable {
         }*/
 
     }
+
+    private void playSelectionSound(){
+        Media pick = new Media(Objects.requireNonNull(getClass().getClassLoader()
+                .getResource("sounds/MenuSelection.mp3")).toExternalForm());
+        mediaPlayer = new MediaPlayer(pick);
+        mediaPlayer.setAutoPlay(true);
+        mediaPlayer.setVolume(25);
+        mediaPlayer.setOnEndOfMedia(() -> {
+            mediaPlayer.seek(Duration.ZERO);
+            mediaPlayer.stop();
+        });
+    }
+
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
