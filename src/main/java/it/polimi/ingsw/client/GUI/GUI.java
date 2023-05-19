@@ -1,7 +1,9 @@
 package it.polimi.ingsw.client.GUI;
 
 import it.polimi.ingsw.App;
+import it.polimi.ingsw.client.GUI.controllers.ChoicesMenuController;
 import it.polimi.ingsw.client.GUI.controllers.GUIController;
+import it.polimi.ingsw.client.GUI.controllers.MatchChoicesController;
 import it.polimi.ingsw.client.UI;
 import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.distributed.Server;
@@ -33,6 +35,10 @@ public class GUI extends Application implements UI {
     private final HashMap<String, GUIController> guiControllers = new HashMap<String, GUIController>();
     private Stage stage;
     private final String css = this.getClass().getResource("/css/MainMenu.css").toExternalForm();
+
+    public void imposeTheTypeOfConnection(String connectionType){
+        ((MatchChoicesController) guiControllers.get("MatchChoices.fxml")).setConnectionType(connectionType);
+    }
 
     public void changeScene(String nextScene){
         Scene currentScene = scenes.get(nextScene);

@@ -17,7 +17,7 @@ public class AppClientSocket extends AppClient {
     public static void main(String[] args) throws RemoteException {
         ServerStub appServerStub = new ServerStub(SERVER_ADDRESS, SERVER_PORT);
         System.out.print("\nConnection successfully created!\nPlease log in with your nickname before play:");
-        logginToAppServer(null, appServerStub);
+        logginToAppServer(false,null, appServerStub);
         ClientImpl userClient = null;
         //List<Integer> decisions = mainMenu();
         List<Integer> decisions = TextualUI.setupConnectionByUser();

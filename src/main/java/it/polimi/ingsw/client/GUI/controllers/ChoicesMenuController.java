@@ -5,10 +5,7 @@ import it.polimi.ingsw.client.CLI.AppClientSocket;
 import it.polimi.ingsw.client.GUI.GUI;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
@@ -17,8 +14,6 @@ import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -43,7 +38,6 @@ public class ChoicesMenuController implements GUIController, Initializable {
 
 
     public void backButtonAction(ActionEvent event) {
-
         playSound(MenuSelection);
         System.out.println("Back button pressed, go back to main menu");
         networkChoices.setValue("");
@@ -51,47 +45,17 @@ public class ChoicesMenuController implements GUIController, Initializable {
     }
 
     public void confirmButtonAction(ActionEvent event){
+        playSound(MenuSelection);
         String choice = networkChoices.getValue();
         if(choice == null || choice.equals("")){
-            playSound(MenuSelection);
             System.out.println("Wrong selection");
             return;
         }
         System.out.println("The choice is " + choice);
-        String[] mainArgs = {"GUI"};
-        if(choice.equals("RMI")) {
-            playSound(MenuSelection);
-            new Thread(() -> {
-                try {
-                    AppClientRMI.main(mainArgs);
-                } catch (RemoteException e) {
-                    System.err.println("Cannot launch AppRMI");
-                } catch (NotBoundException e) {
-                    throw new RuntimeException(e);
-                }
-            }).start();
-        }
-        if(choice.equals("SOCKET")){
-            playSound(MenuSelection);
-            new Thread(() -> {
-                try {
-                    AppClientSocket.main(mainArgs);
-                } catch (RemoteException e) {
-                    System.err.println("Cannot launch AppRMI");
-                }
-            }).start();
-        }
+        this.gui.imposeTheTypeOfConnection(choice);
+
         networkChoices.setValue("");
         gui.changeScene("MatchChoices.fxml");
-        /*if(choice.equals("RMI")) {
-            try {
-                //AppClientRMI.main(null);
-            } catch (RemoteException e) {
-                System.err.println("ERROR");
-            } catch (NotBoundException e) {
-                throw new RuntimeException(e);
-            }
-        }*/
 
     }
 

@@ -103,10 +103,9 @@ public abstract class AppClient {
      * @param stub the corresponding ServerStub
      * @throws RemoteException
      */
-    protected static void logginToAppServer(AppServer appS, ServerStub stub) throws RemoteException {
-
+    protected static void logginToAppServer(boolean fromGui, AppServer appS, ServerStub stub) throws RemoteException {
         while(true){
-            askNickname();
+            if(!fromGui) askNickname();
             if(appS != null){
                 if(appS.log(nickname)) break;
                 else System.out.print("\nThis nickname is already used by another user, you must choose another one.");
@@ -117,5 +116,20 @@ public abstract class AppClient {
         }
         System.out.print("Log successfully completed!");
     }
+
+    /*public static void readyToLog(String nickname, String typeOfMatch, String numOfPlayers){
+        logginToAppServer();
+        while(true){
+            if(!fromGUI) askNickname();
+            if(appS != null){
+                if(appS.log(nickname)) break;
+                else System.out.print("\nThis nickname is already used by another user, you must choose another one.");
+            } else {
+                if(stub.log(nickname)) break;
+                else System.out.print("\nThis nickname is already used by another user, you must choose another one.");
+            }
+        }
+        System.out.print("Log successfully completed!");
+    }*/
 
 }

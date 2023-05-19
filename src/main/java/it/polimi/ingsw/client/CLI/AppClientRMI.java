@@ -11,6 +11,7 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.ArrayList;
 import java.util.List;
 
 public class AppClientRMI extends AppClient{
@@ -23,18 +24,23 @@ public class AppClientRMI extends AppClient{
         System.out.print("\nConnection successfully created!\nPlease log in with your nickname before play:");
         List<Integer> decisions = null;
         if(args[0].equals("CLI")){
-            AppClient.logginToAppServer(serverApp, null);
+            boolean isGui = false;
+            logginToAppServer(isGui, serverApp, null);
             //logginToAppServer(serverApp, null);
             //List<Integer> decisions = mainMenu();
             decisions = TextualUI.setupConnectionByUser();
         }
         if(args[0].equals("GUI")){
-            return;
-            //logginToAppServer(serverApp, null);
-            //List<Integer> decisions = mainMenu();
-            //decisions = GUI.setupConnectionByUser();
+            decisions = new ArrayList<>();
+            System.out.println("Wait for user match choices");
+            nickname = args[1];
+            logginToAppServer(true, serverApp, null);
+            if(args[2].equals("Create a new match")){
+                decisions.add(CREATE_A_NEW_MATCH);
+                decisions.add(Integer.parseInt(args[3].substring(0, 1)));
+            }
+            else decisions.add(JOIN_EXISTING_MATCH);
         }
-
         /* -- create or join a match -- */
         switch (decisions.get(TYPE_OF_MATCH_POSITION)) {
             case CREATE_A_NEW_MATCH -> {

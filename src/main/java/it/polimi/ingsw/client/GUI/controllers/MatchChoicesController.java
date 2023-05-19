@@ -1,10 +1,12 @@
 package it.polimi.ingsw.client.GUI.controllers;
 
+import it.polimi.ingsw.client.CLI.AppClient;
+import it.polimi.ingsw.client.CLI.AppClientRMI;
+import it.polimi.ingsw.client.CLI.AppClientSocket;
 import it.polimi.ingsw.client.GUI.GUI;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -13,6 +15,8 @@ import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 
 import java.net.URL;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -34,21 +38,24 @@ public class MatchChoicesController implements GUIController, Initializable {
     private GUI gui;
 
 
-    private enum State {NICKNAME, TYPE_OF_MATCH, NUM_OF_PLAYER}
+    private enum State {NICKNAME, TYPE_OF_MATCH, NUM_OF_PLAYER, CHOICE_OBTAIN}
     private State flag = State.NICKNAME;
     private String userNickname;
     private String typeOfMatchChoice;
     private String MenuSelection = "sounds/MenuSelection.mp3";
     private MediaPlayer mediaPlayer;
+    private String typeOfConnection;
+
+    public void setConnectionType(String typeOfConnection){this.typeOfConnection = typeOfConnection;}
 
 
     public void confirmButtonAction(ActionEvent event){
         System.out.println("Confirm button press");
+        String numOfPlayersBoxValue = null;
         switch (flag){
             case NICKNAME -> {
                 playSound(MenuSelection);
                 String nicknameValue = textField.getText();
-                Alert alert = new Alert(Alert.AlertType.ERROR);
                 if(nicknameValue.length() > 1){
                     this.userNickname = nicknameValue;
                     typeOfMatchLabel.setOpacity(1);
@@ -76,14 +83,42 @@ public class MatchChoicesController implements GUIController, Initializable {
                     flag = State.NUM_OF_PLAYER;
                     return;
                 }
-                System.out.println(typeOfMatchValue);
             }
             case NUM_OF_PLAYER -> {
                 playSound(MenuSelection);
-                String numOfPlayersBoxValue = numOfPlayersBox.getValue();
+                numOfPlayersBoxValue = numOfPlayersBox.getValue();
                 if(numOfPlayersBoxValue.equals("")) return;
+                flag = State.CHOICE_OBTAIN;
                 System.out.println(numOfPlayersBoxValue);
             }
+        }
+        if(flag == State.CHOICE_OBTAIN){
+            System.out.print("\nThe user choice is : \n\tnickname := " + userNickname +
+                    ", typeOFMatch := " + typeOfMatchChoice);
+            if(typeOfMatchChoice.equals("Create a new match"))
+                System.out.print(", numOfPlayers := " + numOfPlayersBoxValue + "\n");
+            String[] parameters = {"GUI", userNickname, typeOfMatchChoice, numOfPlayersBoxValue};
+            if(typeOfConnection.equals("RMI")){
+                new Thread(() -> {
+                    try {
+                        AppClientRMI.main(parameters);
+                    } catch (RemoteException e) {
+                        System.err.println("Error while running the AppClientRMI");
+                    } catch (NotBoundException e) {
+                        System.err.println("Error on registry");
+                    }
+                }).start();
+            }
+            if(typeOfConnection.equals("SOCKET")){
+                new Thread(() -> {
+                    try {
+                        AppClientSocket.main(null);
+                    } catch (RemoteException e) {
+                        System.err.println("Error while running the AppClientSocket");
+                    }
+                }).start();
+            }
+
         }
 
         /*type
