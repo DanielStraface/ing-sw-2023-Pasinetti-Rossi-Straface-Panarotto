@@ -1,7 +1,8 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.client.MyShelfieAppClient;
+import it.polimi.ingsw.client.CLI.MyShelfieAppClient;
 import it.polimi.ingsw.server.AppServerImpl;
+import it.polimi.ingsw.client.GUI.GUI;
 
 import java.rmi.RemoteException;
 import java.util.Scanner;
@@ -18,7 +19,7 @@ public class App {
         switch (decision){
             case 1 -> AppServerImpl.main(null);
             case 2 -> MyShelfieAppClient.startClient();
-            //case 3 -> new Thread(MyShelfieAppClient::startClient).start();
+            case 3 -> GUI.main(null);
         }
         //new Thread(MyShelfieAppClient::startClient).start();
     }

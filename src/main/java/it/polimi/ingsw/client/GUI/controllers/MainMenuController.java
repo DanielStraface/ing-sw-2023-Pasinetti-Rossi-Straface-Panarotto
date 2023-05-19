@@ -1,5 +1,6 @@
-package it.polimi.ingsw.view.GUI.controllers;
+package it.polimi.ingsw.client.GUI.controllers;
 
+import it.polimi.ingsw.client.GUI.GUI;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,20 +14,22 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class MainMenuController {
+public class MainMenuController implements GUIController{
     @FXML
     private AnchorPane scenePane;
     private Stage stage;
     private Scene scene;
+    private GUI gui;
     public void playButtonAction(ActionEvent event) throws IOException {
         System.out.println("Play button pressed, application start");
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/ChoicesMenu.fxml"));
-        stage = (Stage) (((Node) event.getSource()).getScene().getWindow());
-        scene = new Scene(root);
-        stage.setScene(scene);
-        String css = this.getClass().getResource("/css/MainMenu.css").toExternalForm();
-        scene.getStylesheets().add(css);
-        stage.show();
+        //Parent root = FXMLLoader.load(getClass().getResource("/fxml/ChoicesMenu.fxml"));
+        //stage = (Stage) (((Node) event.getSource()).getScene().getWindow());
+        gui.changeScene("ChoicesMenu.fxml");
+        //scene = new Scene(root);
+        //stage.setScene(scene);
+        //String css = this.getClass().getResource("/css/MainMenu.css").toExternalForm();
+        //scene.getStylesheets().add(css);
+        //stage.show();
     }
 
     public void quitButtonAction(ActionEvent event){
@@ -41,4 +44,8 @@ public class MainMenuController {
         }
     }
 
+    @Override
+    public void setGUI(GUI gui) {
+        this.gui = gui;
+    }
 }

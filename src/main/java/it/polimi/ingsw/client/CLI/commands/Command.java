@@ -1,4 +1,4 @@
-package it.polimi.ingsw.view.CLI.commands;
+package it.polimi.ingsw.client.CLI.commands;
 
 import it.polimi.ingsw.exceptions.FullColumnException;
 import it.polimi.ingsw.exceptions.InvalidSelectionException;

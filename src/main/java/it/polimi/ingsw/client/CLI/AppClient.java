@@ -1,4 +1,4 @@
-package it.polimi.ingsw.client;
+package it.polimi.ingsw.client.CLI;
 
 import it.polimi.ingsw.distributed.socket.middleware.ServerStub;
 import it.polimi.ingsw.server.AppServer;
@@ -41,11 +41,11 @@ public abstract class AppClient {
             }
             default -> {}
         }
-        int guiChoice = askForGUI();
+        //int guiChoice = askForGUI();
         List<Integer> playersDecision = new ArrayList<>();
         playersDecision.add(decision);
         playersDecision.add(numbOfPlayers);
-        playersDecision.add(guiChoice);
+        //playersDecision.add(guiChoice);
         return playersDecision;
     }
 

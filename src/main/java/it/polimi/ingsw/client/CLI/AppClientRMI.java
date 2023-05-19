@@ -1,4 +1,4 @@
-package it.polimi.ingsw.client;
+package it.polimi.ingsw.client.CLI;
 
 import it.polimi.ingsw.distributed.Server;
 import it.polimi.ingsw.distributed.ClientImpl;
@@ -21,8 +21,20 @@ public class AppClientRMI extends AppClient{
         Registry registry = LocateRegistry.getRegistry();
         AppServer serverApp = (AppServer) registry.lookup(APPSERVER_REGISTRY_NAME);
         System.out.print("\nConnection successfully created!\nPlease log in with your nickname before play:");
-        logginToAppServer(serverApp, null);
-        List<Integer> decisions = mainMenu();
+        List<Integer> decisions = null;
+        if(args[0].equals("CLI")){
+            AppClient.logginToAppServer(serverApp, null);
+            //logginToAppServer(serverApp, null);
+            //List<Integer> decisions = mainMenu();
+            decisions = TextualUI.setupConnectionByUser();
+        }
+        if(args[0].equals("GUI")){
+            return;
+            //logginToAppServer(serverApp, null);
+            //List<Integer> decisions = mainMenu();
+            //decisions = GUI.setupConnectionByUser();
+        }
+
         /* -- create or join a match -- */
         switch (decisions.get(TYPE_OF_MATCH_POSITION)) {
             case CREATE_A_NEW_MATCH -> {
@@ -34,7 +46,7 @@ public class AppClientRMI extends AppClient{
                             tom = t;
                     }
                     matchServerRef = serverApp.connect(tom);
-                    new ClientImpl(matchServerRef, nickname, decisions.get(decisions.size() - 1));
+                    new ClientImpl(matchServerRef, nickname);
                 } catch (NotSupportedMatchesException e) {
                     if (e instanceof TooManyMatchesException) {
                         serverApp.removeLoggedUser(nickname);
@@ -56,7 +68,7 @@ public class AppClientRMI extends AppClient{
                     serverApp.removeLoggedUser(nickname);
                     System.exit(NO_MATCH_IN_WAITING_NOW_ERROR);
                 }
-                new ClientImpl(matchServerRef, nickname, decisions.get(decisions.size() - 1));
+                new ClientImpl(matchServerRef, nickname);
             }
             default -> {
                 System.exit(QUIT_IN_APPCLIENTRMI_ERROR);

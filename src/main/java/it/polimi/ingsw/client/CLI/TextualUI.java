@@ -1,6 +1,8 @@
-package it.polimi.ingsw.view.CLI;
+package it.polimi.ingsw.client.CLI;
 
 import it.polimi.ingsw.distributed.Client;
+import it.polimi.ingsw.distributed.Server;
+import it.polimi.ingsw.distributed.socket.middleware.ServerStub;
 import it.polimi.ingsw.exceptions.FullColumnException;
 import it.polimi.ingsw.exceptions.InvalidSelectionException;
 import it.polimi.ingsw.model.*;
@@ -8,16 +10,25 @@ import it.polimi.ingsw.modelview.GameBoardView;
 import it.polimi.ingsw.modelview.GameView;
 import it.polimi.ingsw.modelview.PlayerView;
 import it.polimi.ingsw.modelview.ShelfView;
-import it.polimi.ingsw.view.CLI.commands.Command;
-import it.polimi.ingsw.view.CLI.commands.SelectColumnCommand;
-import it.polimi.ingsw.view.CLI.commands.SelectItemsCommand;
-import it.polimi.ingsw.view.UI;
+import it.polimi.ingsw.client.CLI.commands.Command;
+import it.polimi.ingsw.client.CLI.commands.SelectColumnCommand;
+import it.polimi.ingsw.client.CLI.commands.SelectItemsCommand;
+import it.polimi.ingsw.client.UI;
+import it.polimi.ingsw.server.AppServer;
 
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.*;
 
-public class TextualUI extends UI implements Serializable {
+public class TextualUI implements UI, Serializable {
+
+    private transient boolean changed = false;
+    private transient final Vector<Server> observers = new Vector<>();
+
+    public static List<Integer> setupConnectionByUser(){
+        return AppClient.mainMenu();
+    }
+
     private transient List<int[]> coords;
     private transient List<Integer> columnReference;
     private transient Client refClient;
@@ -219,5 +230,37 @@ public class TextualUI extends UI implements Serializable {
     private void setChangedAndNotifyListener() throws RemoteException{
         setChanged();
         notifyObservers(this.refClient, this.coords, this.columnReference.remove(0));
+    }
+
+    @Override
+    public void addListener(Server o) {
+        if (o == null)
+            throw new NullPointerException();
+        if (!observers.contains(o)) {
+            observers.addElement(o);
+        }
+    }
+
+    @Override
+    public void notifyObservers(Client o, List<int[]> arg1, Integer arg2) throws RemoteException {
+        Object[] arrLocal;
+        synchronized (this){
+            if (!changed)
+                return;
+            arrLocal = observers.toArray();
+            clearChanged();
+        }
+        for (int i = arrLocal.length-1; i>=0; i--){
+            Server vl = (Server) arrLocal[i];
+            vl.update(o, arg1, arg2);
+        }
+    }
+
+    public void setChanged() {
+        changed = true;
+    }
+
+    public void clearChanged() {
+        changed = false;
     }
 }

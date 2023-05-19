@@ -1,4 +1,4 @@
-package it.polimi.ingsw.client;
+package it.polimi.ingsw.client.CLI;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -11,10 +11,11 @@ public class MyShelfieAppClient {
     private static final int QUIT_IN_MYSHELFIE_APP_CLIENT_ERROR = -1;
     public static void startClient() {
         int connectionDecision = welcome();
+        String[] mainArgs = {"CLI"};
         switch (connectionDecision){
             case RMI_NETWORK -> {
                 try{
-                    AppClientRMI.main(null);
+                    AppClientRMI.main(mainArgs);
                 } catch (RemoteException | NotBoundException e) {
                     System.err.println("Something went wrong with network connections: " + e.getMessage());
                     terminationError();
@@ -22,7 +23,7 @@ public class MyShelfieAppClient {
             }
             case SOCKET_NETWORK -> {
                 try {
-                    AppClientSocket.main(null);
+                    AppClientSocket.main(mainArgs);
                 } catch (RemoteException e) {
                     System.err.println("Something went wrong with network connections: " + e.getMessage());
                     terminationError();

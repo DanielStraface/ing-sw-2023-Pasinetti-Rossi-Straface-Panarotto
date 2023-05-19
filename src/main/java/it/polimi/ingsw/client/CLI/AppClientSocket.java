@@ -1,6 +1,5 @@
-package it.polimi.ingsw.client;
+package it.polimi.ingsw.client.CLI;
 
-import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.distributed.ClientImpl;
 import it.polimi.ingsw.distributed.socket.middleware.ServerStub;
 import it.polimi.ingsw.exceptions.NoMatchException;
@@ -20,7 +19,8 @@ public class AppClientSocket extends AppClient {
         System.out.print("\nConnection successfully created!\nPlease log in with your nickname before play:");
         logginToAppServer(null, appServerStub);
         ClientImpl userClient = null;
-        List<Integer> decisions = mainMenu();
+        //List<Integer> decisions = mainMenu();
+        List<Integer> decisions = TextualUI.setupConnectionByUser();
         /* -- create or join a match -- */
         switch (decisions.get(TYPE_OF_MATCH_POSITION)) {
             case CREATE_A_NEW_MATCH -> {
@@ -39,7 +39,7 @@ public class AppClientSocket extends AppClient {
                         System.exit(QUIT_IN_APPLCLIENTSOCKET_ERROR);
                     }
                 }
-                userClient = new ClientImpl(appServerStub, nickname, decisions.get(decisions.size() - 1));
+                userClient = new ClientImpl(appServerStub, nickname);
             }
             case JOIN_EXISTING_MATCH -> {
                 System.out.println("Joining an existing match in progress...");
@@ -52,7 +52,7 @@ public class AppClientSocket extends AppClient {
                         System.exit(NO_MATCH_IN_WAITING_NOW_ERROR);
                     }
                 }
-                userClient = new ClientImpl(appServerStub, nickname, decisions.get(decisions.size() - 1));
+                userClient = new ClientImpl(appServerStub, nickname);
             }
             default -> {
                 try{
