@@ -20,15 +20,18 @@ public class AppClientSocket extends AppClient {
         System.out.print("\nConnection successfully created!\nPlease log in with your nickname before play:");
         ClientImpl userClient = null;
         List<Integer> decisions = null;
+        UIType uiType = null;
         if(args[0].equals("CLI")){
-            logginToAppServer(false,null, appServerStub);
+            uiType = UIType.CLI;
+            logginToAppServer(uiType,null, appServerStub);
             decisions = TextualUI.setupConnectionByUser();
         }
         if(args[0].equals("GUI")){
+            uiType = UIType.GUI;
             decisions = new ArrayList<>();
             System.out.println("Wait for user match choices");
             nickname = args[1];
-            logginToAppServer(true, null, appServerStub);
+            logginToAppServer(uiType, null, appServerStub);
             if(args[2].equals("Create a new match")){
                 decisions.add(CREATE_A_NEW_MATCH);
                 decisions.add(Integer.parseInt(args[3].substring(0, 1)));
@@ -53,7 +56,7 @@ public class AppClientSocket extends AppClient {
                         System.exit(QUIT_IN_APPLCLIENTSOCKET_ERROR);
                     }
                 }
-                userClient = new ClientImpl(appServerStub, nickname);
+                userClient = new ClientImpl(appServerStub, nickname, uiType);
             }
             case JOIN_EXISTING_MATCH -> {
                 System.out.println("Joining an existing match in progress...");
@@ -66,7 +69,7 @@ public class AppClientSocket extends AppClient {
                         System.exit(NO_MATCH_IN_WAITING_NOW_ERROR);
                     }
                 }
-                userClient = new ClientImpl(appServerStub, nickname);
+                userClient = new ClientImpl(appServerStub, nickname, uiType);
             }
             default -> {
                 try{

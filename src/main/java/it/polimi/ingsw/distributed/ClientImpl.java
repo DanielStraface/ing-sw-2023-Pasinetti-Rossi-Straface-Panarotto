@@ -1,5 +1,7 @@
 package it.polimi.ingsw.distributed;
 
+import it.polimi.ingsw.client.CLI.AppClient;
+import it.polimi.ingsw.client.GUI.GUI;
 import it.polimi.ingsw.modelview.GameView;
 import it.polimi.ingsw.modelview.PlayerView;
 import it.polimi.ingsw.modelview.ShelfView;
@@ -21,13 +23,12 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Serializa
     transient String nickname;
     private int clientID;
 
-    public ClientImpl(Server server, String nickname) throws RemoteException {
+    public ClientImpl(Server server, String nickname, AppClient.UIType uiType) throws RemoteException {
         super();
         this.clientState = ClientState.LAUNCH;
         this.nickname = nickname;
-        /*if(guiChoice == 1) this.view = new TextualUI();
-        else if(guiChoice == 2) this.view = new GUI();*/
-        this.view = new TextualUI();
+        if(uiType == AppClient.UIType.CLI) this.view = new TextualUI();
+        if(uiType == AppClient.UIType.GUI) this.view = new GUI();
         server.register(this, nickname);
         this.view.addListener(server);
     }

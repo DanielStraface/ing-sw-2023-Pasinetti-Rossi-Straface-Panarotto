@@ -19,6 +19,7 @@ public abstract class AppClient {
     protected static final int QUIT_IN_APPLCLIENTSOCKET_ERROR = -4;;
     protected static String nickname;
     private static final Scanner scanner = new Scanner(System.in);
+    public enum UIType {CLI, GUI}
 
     /**
      * method for asking the player's match setup choices
@@ -103,9 +104,9 @@ public abstract class AppClient {
      * @param stub the corresponding ServerStub
      * @throws RemoteException
      */
-    protected static void logginToAppServer(boolean fromGui, AppServer appS, ServerStub stub) throws RemoteException {
+    protected static void logginToAppServer(AppClient.UIType uiType, AppServer appS, ServerStub stub) throws RemoteException {
         while(true){
-            if(!fromGui) askNickname();
+            if(uiType == AppClient.UIType.CLI) askNickname();
             if(appS != null){
                 if(appS.log(nickname)) break;
                 else System.out.print("\nThis nickname is already used by another user, you must choose another one.");

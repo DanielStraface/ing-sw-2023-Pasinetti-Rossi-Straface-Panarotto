@@ -23,18 +23,20 @@ public class AppClientRMI extends AppClient{
         AppServer serverApp = (AppServer) registry.lookup(APPSERVER_REGISTRY_NAME);
         System.out.print("\nConnection successfully created!\nPlease log in with your nickname before play:");
         List<Integer> decisions = null;
+        UIType uiType = null;
         if(args[0].equals("CLI")){
-            boolean isGui = false;
-            logginToAppServer(isGui, serverApp, null);
+            uiType = UIType.CLI;
+            logginToAppServer(uiType, serverApp, null);
             //logginToAppServer(serverApp, null);
             //List<Integer> decisions = mainMenu();
             decisions = TextualUI.setupConnectionByUser();
         }
         if(args[0].equals("GUI")){
+            uiType = UIType.GUI;
             decisions = new ArrayList<>();
             System.out.println("Wait for user match choices");
             nickname = args[1];
-            logginToAppServer(true, serverApp, null);
+            logginToAppServer(uiType, serverApp, null);
             if(args[2].equals("Create a new match")){
                 decisions.add(CREATE_A_NEW_MATCH);
                 decisions.add(Integer.parseInt(args[3].substring(0, 1)));
@@ -52,7 +54,7 @@ public class AppClientRMI extends AppClient{
                             tom = t;
                     }
                     matchServerRef = serverApp.connect(tom);
-                    new ClientImpl(matchServerRef, nickname);
+                    new ClientImpl(matchServerRef, nickname, uiType);
                 } catch (NotSupportedMatchesException e) {
                     if (e instanceof TooManyMatchesException) {
                         serverApp.removeLoggedUser(nickname);
@@ -74,7 +76,7 @@ public class AppClientRMI extends AppClient{
                     serverApp.removeLoggedUser(nickname);
                     System.exit(NO_MATCH_IN_WAITING_NOW_ERROR);
                 }
-                new ClientImpl(matchServerRef, nickname);
+                new ClientImpl(matchServerRef, nickname, uiType);
             }
             default -> {
                 System.exit(QUIT_IN_APPCLIENTRMI_ERROR);
