@@ -82,6 +82,12 @@ public class MatchChoicesController implements GUIController, Initializable {
                     typeOfMatchLabel.setOpacity(0.5);
                     flag = State.NUM_OF_PLAYER;
                     return;
+                } else {
+                    this.typeOfMatchChoice = typeOfMatchValue;
+                    typeOfMatchBox.setOpacity(0.5);
+                    typeOfMatchBox.setDisable(true);
+                    typeOfMatchLabel.setOpacity(0.5);
+                    flag = State.CHOICE_OBTAIN;
                 }
             }
             case NUM_OF_PLAYER -> {
@@ -98,6 +104,7 @@ public class MatchChoicesController implements GUIController, Initializable {
             if(typeOfMatchChoice.equals("Create a new match"))
                 System.out.print(", numOfPlayers := " + numOfPlayersBoxValue + "\n");
             String[] parameters = {"GUI", userNickname, typeOfMatchChoice, numOfPlayersBoxValue};
+            System.out.println("n := " + numOfPlayersBoxValue);
             if(typeOfConnection.equals("RMI")){
                 new Thread(() -> {
                     try {
@@ -112,7 +119,7 @@ public class MatchChoicesController implements GUIController, Initializable {
             if(typeOfConnection.equals("SOCKET")){
                 new Thread(() -> {
                     try {
-                        AppClientSocket.main(null);
+                        AppClientSocket.main(parameters);
                     } catch (RemoteException e) {
                         System.err.println("Error while running the AppClientSocket");
                     }

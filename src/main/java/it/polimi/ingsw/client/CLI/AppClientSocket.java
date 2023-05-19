@@ -9,6 +9,7 @@ import it.polimi.ingsw.exceptions.TooManyMatchesException;
 import it.polimi.ingsw.server.AppServer;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class AppClientSocket extends AppClient {
@@ -17,10 +18,23 @@ public class AppClientSocket extends AppClient {
     public static void main(String[] args) throws RemoteException {
         ServerStub appServerStub = new ServerStub(SERVER_ADDRESS, SERVER_PORT);
         System.out.print("\nConnection successfully created!\nPlease log in with your nickname before play:");
-        logginToAppServer(false,null, appServerStub);
         ClientImpl userClient = null;
-        //List<Integer> decisions = mainMenu();
-        List<Integer> decisions = TextualUI.setupConnectionByUser();
+        List<Integer> decisions = null;
+        if(args[0].equals("CLI")){
+            logginToAppServer(false,null, appServerStub);
+            decisions = TextualUI.setupConnectionByUser();
+        }
+        if(args[0].equals("GUI")){
+            decisions = new ArrayList<>();
+            System.out.println("Wait for user match choices");
+            nickname = args[1];
+            logginToAppServer(true, null, appServerStub);
+            if(args[2].equals("Create a new match")){
+                decisions.add(CREATE_A_NEW_MATCH);
+                decisions.add(Integer.parseInt(args[3].substring(0, 1)));
+            }
+            else decisions.add(JOIN_EXISTING_MATCH);
+        }
         /* -- create or join a match -- */
         switch (decisions.get(TYPE_OF_MATCH_POSITION)) {
             case CREATE_A_NEW_MATCH -> {
