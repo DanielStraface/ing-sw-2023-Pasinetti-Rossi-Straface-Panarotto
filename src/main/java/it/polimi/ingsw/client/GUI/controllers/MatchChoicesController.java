@@ -1,19 +1,27 @@
 package it.polimi.ingsw.client.GUI.controllers;
 
-import it.polimi.ingsw.client.CLI.AppClient;
 import it.polimi.ingsw.client.CLI.AppClientRMI;
 import it.polimi.ingsw.client.CLI.AppClientSocket;
 import it.polimi.ingsw.client.GUI.GUI;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.text.Font;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.io.IOException;
 import java.net.URL;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -33,6 +41,8 @@ public class MatchChoicesController implements GUIController, Initializable {
     private Label numOfItemsLabel;
     @FXML
     private Label typeOfMatchLabel;
+    @FXML
+    private Label textLabelDisplay;
     private final String[] typeOfMatch = {"", "Create a new match", "Join an existing match"};
     private final String[] numOfPlayers = {"", "2 players", "3 players", "4 players"};
     private GUI gui;
@@ -103,12 +113,12 @@ public class MatchChoicesController implements GUIController, Initializable {
                     ", typeOFMatch := " + typeOfMatchChoice);
             if(typeOfMatchChoice.equals("Create a new match"))
                 System.out.print(", numOfPlayers := " + numOfPlayersBoxValue + "\n");
-            String[] parameters = {"GUI", userNickname, typeOfMatchChoice, numOfPlayersBoxValue};
+            Object[] parameters = {"GUI", userNickname, typeOfMatchChoice, numOfPlayersBoxValue, this.gui};
             System.out.println("n := " + numOfPlayersBoxValue);
             if(typeOfConnection.equals("RMI")){
                 new Thread(() -> {
                     try {
-                        AppClientRMI.main(parameters);
+                        AppClientRMI.launchClient(parameters);
                     } catch (RemoteException e) {
                         System.err.println("Error while running the AppClientRMI");
                     } catch (NotBoundException e) {
@@ -119,13 +129,13 @@ public class MatchChoicesController implements GUIController, Initializable {
             if(typeOfConnection.equals("SOCKET")){
                 new Thread(() -> {
                     try {
-                        AppClientSocket.main(parameters);
+                        AppClientSocket.launchClient(parameters);
                     } catch (RemoteException e) {
                         System.err.println("Error while running the AppClientSocket");
                     }
                 }).start();
             }
-
+            gui.changeScene("MainGame.fxml");
         }
 
         /*type
@@ -202,6 +212,11 @@ public class MatchChoicesController implements GUIController, Initializable {
         numOfPlayersBox.setDisable(true);
         flag = State.NICKNAME;
         gui.changeScene("MainMenu.fxml");
+    }
+
+    public void displayMsgInfo(String msg){
+        textLabelDisplay.setText(msg);
+        textLabelDisplay.setOpacity(1);
     }
 
 

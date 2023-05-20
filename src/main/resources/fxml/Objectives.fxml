@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.GUI.controllers.ObjectivesController">
+   <children>
+      <ImageView fitHeight="600.0" fitWidth="800.0" layoutX="-1.0" pickOnBounds="true">
+         <image>
+            <Image url="@../graphics/misc/base_pagina2.jpg" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="300.0" layoutY="29.0" pickOnBounds="true" preserveRatio="true" />
+      <AnchorPane layoutX="31.0" layoutY="29.0" prefHeight="260.0" prefWidth="300.0" styleClass="ObjectiveCardPane" stylesheets="@../css/ObjectiveCardPane.css">
+         <children>
+            <ImageView fitHeight="179.0" fitWidth="235.0" layoutX="33.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true" styleClass="objectiveImg" />
+            <Label layoutX="29.0" layoutY="16.0" prefHeight="160.0" prefWidth="235.0" styleClass="objectiveImg" />
+            <Label layoutX="1.0" prefHeight="260.0" prefWidth="300.0" styleClass="objectiveImg" />
+            <Label layoutX="29.0" layoutY="189.0" prefHeight="50.0" prefWidth="242.0" text="Description" />
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="32.0" layoutY="300.0" prefHeight="260.0" prefWidth="300.0" styleClass="ObjectiveCardPane" stylesheets="@../css/ObjectiveCardPane.css">
+         <children>
+            <ImageView fitHeight="179.0" fitWidth="235.0" layoutX="33.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true" styleClass="objectiveImg" />
+            <Label layoutX="29.0" layoutY="16.0" prefHeight="160.0" prefWidth="235.0" styleClass="objectiveImg" />
+            <Label prefHeight="260.0" prefWidth="300.0" styleClass="objectiveImg" />
+            <Label layoutX="29.0" layoutY="187.0" prefHeight="50.0" prefWidth="242.0" text="Description" />
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="389.0" layoutY="72.0" prefHeight="451.0" prefWidth="322.0" styleClass="ObjectiveCardPane" stylesheets="@../css/ObjectiveCardPane.css">
+         <children>
+            <ImageView fitHeight="430.0" fitWidth="315.0" layoutX="19.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true" />
+            <Label prefHeight="451.0" prefWidth="334.0" styleClass="objectiveImg" />
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

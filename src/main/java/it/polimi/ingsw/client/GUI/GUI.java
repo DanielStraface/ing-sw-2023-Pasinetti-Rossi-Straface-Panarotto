@@ -13,12 +13,16 @@ import it.polimi.ingsw.modelview.GameView;
 import it.polimi.ingsw.modelview.PlayerView;
 import it.polimi.ingsw.modelview.ShelfView;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
 
@@ -31,10 +35,13 @@ public class GUI extends Application implements UI {
     private static final String MAIN_MENU = "MainMenu.fxml";
     private static final String SETUP_CHOICES = "ChoicesMenu.fxml";
     private static final String MATCH_CHOICES = "MatchChoices.fxml";
+    private static final String MAIN_GAME = "MainGame.fxml";
+    private static final String OBJECTIVES = "Objectives.fxml";
     private final HashMap<String, Scene> scenes = new HashMap<>();
     private final HashMap<String, GUIController> guiControllers = new HashMap<String, GUIController>();
     private Stage stage;
     private final String css = this.getClass().getResource("/css/MainMenu.css").toExternalForm();
+    private boolean objectivesWinIsOpen = false;
 
     public void imposeTheTypeOfConnection(String connectionType){
         ((MatchChoicesController) guiControllers.get("MatchChoices.fxml")).setConnectionType(connectionType);
@@ -44,7 +51,13 @@ public class GUI extends Application implements UI {
         Scene currentScene = scenes.get(nextScene);
         currentScene.getStylesheets().add(css);
         stage.setScene(currentScene);
+        if(nextScene.equals("MainGame.fxml")){
+            stage.setWidth(1420);
+        }
         stage.show();
+        Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+        stage.setX((screenBounds.getWidth() - stage.getWidth()) / 2);
+        stage.setY((screenBounds.getHeight() - stage.getHeight()) / 2);
     }
     private boolean changed;
     private final Vector<Server> observers = new Vector<>();
@@ -92,19 +105,43 @@ public class GUI extends Application implements UI {
     }
 
     private void setup(){
-        List<String> fxlms = new ArrayList<>(Arrays.asList(MAIN_MENU, SETUP_CHOICES, MATCH_CHOICES));
+        List<String> fxlms = new ArrayList<>(
+                Arrays.asList(MAIN_MENU, SETUP_CHOICES, MATCH_CHOICES, MAIN_GAME, OBJECTIVES));
         try{
             for(String fxml : fxlms){
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/" + fxml));
                 scenes.put(fxml, new Scene(fxmlLoader.load()));
                 GUIController ctrl = fxmlLoader.getController();
                 ctrl.setGUI(this);
-                System.out.println();
                 guiControllers.put(fxml, ctrl);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void openNewWindow(String newPath){
+        if(newPath.equals(OBJECTIVES)){
+            if(objectivesWinIsOpen) return;
+            else objectivesWinIsOpen = true;
+        }
+        Stage newStage = new Stage();
+        Scene newWindowScene = scenes.get(newPath);
+        newStage.setTitle(newPath.substring(0, newPath.indexOf(".")));
+        newStage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream(
+                "/graphics/Publisher material/Icon 50x50px.png"))));
+        newStage.setScene(newWindowScene);
+        newStage.setResizable(false);
+        newStage.setOnCloseRequest(event -> {
+            event.consume();
+            newWindowClose(newStage);
+        });
+        newStage.show();
+    }
+
+    private void newWindowClose(Stage stage){
+        objectivesWinIsOpen = false;
+        stage.close();
     }
 
 
@@ -130,7 +167,8 @@ public class GUI extends Application implements UI {
 
     @Override
     public void update(String msg) {
-
+        MatchChoicesController controller = ((MatchChoicesController) guiControllers.get("MatchChoices.fxml"));
+        Platform.runLater(() -> controller.displayMsgInfo(msg));
     }
 
     @Override

@@ -17,7 +17,7 @@ import java.util.List;
 public class AppClientRMI extends AppClient{
     private static final String APPSERVER_REGISTRY_NAME = "it.polimi.ingsw.server.AppServer";
 
-    public static void main(String[] args) throws RemoteException, NotBoundException {
+    public static void launchClient(Object[] args) throws RemoteException, NotBoundException {
         Server matchServerRef = null;
         Registry registry = LocateRegistry.getRegistry();
         AppServer serverApp = (AppServer) registry.lookup(APPSERVER_REGISTRY_NAME);
@@ -35,11 +35,12 @@ public class AppClientRMI extends AppClient{
             uiType = UIType.GUI;
             decisions = new ArrayList<>();
             System.out.println("Wait for user match choices");
-            nickname = args[1];
+            nickname = (String) args[1];
             logginToAppServer(uiType, serverApp, null);
             if(args[2].equals("Create a new match")){
                 decisions.add(CREATE_A_NEW_MATCH);
-                decisions.add(Integer.parseInt(args[3].substring(0, 1)));
+                String temp = (String) args[3];
+                decisions.add(Integer.parseInt(temp.substring(0, 1)));
             }
             else decisions.add(JOIN_EXISTING_MATCH);
         }
@@ -54,7 +55,7 @@ public class AppClientRMI extends AppClient{
                             tom = t;
                     }
                     matchServerRef = serverApp.connect(tom);
-                    new ClientImpl(matchServerRef, nickname, uiType);
+                    new ClientImpl(matchServerRef, nickname, uiType, args[4]);
                 } catch (NotSupportedMatchesException e) {
                     if (e instanceof TooManyMatchesException) {
                         serverApp.removeLoggedUser(nickname);
@@ -76,7 +77,7 @@ public class AppClientRMI extends AppClient{
                     serverApp.removeLoggedUser(nickname);
                     System.exit(NO_MATCH_IN_WAITING_NOW_ERROR);
                 }
-                new ClientImpl(matchServerRef, nickname, uiType);
+                new ClientImpl(matchServerRef, nickname, uiType, args[4]);
             }
             default -> {
                 System.exit(QUIT_IN_APPCLIENTRMI_ERROR);

@@ -3,6 +3,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -30,5 +31,7 @@
       <Button fx:id="confirmButton" layoutX="423.0" layoutY="397.0" mnemonicParsing="false" onAction="#confirmButtonAction" prefHeight="60.0" prefWidth="160.0" text="Confirm" />
       <Button fx:id="backButton" layoutX="14.0" layoutY="397.0" mnemonicParsing="false" onAction="#backButtonAction" prefHeight="60.0" prefWidth="190.0" text="Go to Main Menu" />
       <Button fx:id="prevButton" layoutX="218.0" layoutY="397.0" mnemonicParsing="false" onAction="#prevButtonAction" prefHeight="60.0" prefWidth="190.0" text="Previous selection" />
+      <Label fx:id="textLabelDisplay" layoutX="-8.0" layoutY="478.0" prefHeight="18.0" prefWidth="615.0" text="Label" />
+      <ProgressBar layoutX="24.0" layoutY="519.0" prefHeight="18.0" prefWidth="550.0" progress="0.0" />
    </children>
 </AnchorPane>

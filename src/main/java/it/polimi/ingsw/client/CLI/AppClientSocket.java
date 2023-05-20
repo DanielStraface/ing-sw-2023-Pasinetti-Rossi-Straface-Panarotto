@@ -15,7 +15,7 @@ import java.util.List;
 public class AppClientSocket extends AppClient {
     private static final String SERVER_ADDRESS = "localhost";
     private static final int SERVER_PORT = 1234;
-    public static void main(String[] args) throws RemoteException {
+    public static void launchClient(Object[] args) throws RemoteException {
         ServerStub appServerStub = new ServerStub(SERVER_ADDRESS, SERVER_PORT);
         System.out.print("\nConnection successfully created!\nPlease log in with your nickname before play:");
         ClientImpl userClient = null;
@@ -30,11 +30,12 @@ public class AppClientSocket extends AppClient {
             uiType = UIType.GUI;
             decisions = new ArrayList<>();
             System.out.println("Wait for user match choices");
-            nickname = args[1];
+            nickname = (String) args[1];
             logginToAppServer(uiType, null, appServerStub);
             if(args[2].equals("Create a new match")){
                 decisions.add(CREATE_A_NEW_MATCH);
-                decisions.add(Integer.parseInt(args[3].substring(0, 1)));
+                String temp = (String) args[3];
+                decisions.add(Integer.parseInt(temp.substring(0, 1)));
             }
             else decisions.add(JOIN_EXISTING_MATCH);
         }
@@ -56,7 +57,7 @@ public class AppClientSocket extends AppClient {
                         System.exit(QUIT_IN_APPLCLIENTSOCKET_ERROR);
                     }
                 }
-                userClient = new ClientImpl(appServerStub, nickname, uiType);
+                userClient = new ClientImpl(appServerStub, nickname, uiType, args[4]);
             }
             case JOIN_EXISTING_MATCH -> {
                 System.out.println("Joining an existing match in progress...");
@@ -69,7 +70,7 @@ public class AppClientSocket extends AppClient {
                         System.exit(NO_MATCH_IN_WAITING_NOW_ERROR);
                     }
                 }
-                userClient = new ClientImpl(appServerStub, nickname, uiType);
+                userClient = new ClientImpl(appServerStub, nickname, uiType, args[4]);
             }
             default -> {
                 try{

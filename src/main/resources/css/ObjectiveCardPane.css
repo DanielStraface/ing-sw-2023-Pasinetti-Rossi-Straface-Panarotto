@@ -1,0 +1,8 @@
+.ObjectiveCardPane {
+    -fx-background-color: #c19a6b;
+}
+
+.objectiveImg {
+    -fx-border-color: BLACK;
+    -fx-border-width: 2px;
+}

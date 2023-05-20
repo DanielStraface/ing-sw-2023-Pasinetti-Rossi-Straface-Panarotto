@@ -15,7 +15,7 @@ public class MyShelfieAppClient {
         switch (connectionDecision){
             case RMI_NETWORK -> {
                 try{
-                    AppClientRMI.main(mainArgs);
+                    AppClientRMI.launchClient(mainArgs);
                 } catch (RemoteException | NotBoundException e) {
                     System.err.println("Something went wrong with network connections: " + e.getMessage());
                     terminationError();
@@ -23,7 +23,7 @@ public class MyShelfieAppClient {
             }
             case SOCKET_NETWORK -> {
                 try {
-                    AppClientSocket.main(mainArgs);
+                    AppClientSocket.launchClient(mainArgs);
                 } catch (RemoteException e) {
                     System.err.println("Something went wrong with network connections: " + e.getMessage());
                     terminationError();

@@ -23,12 +23,13 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Serializa
     transient String nickname;
     private int clientID;
 
-    public ClientImpl(Server server, String nickname, AppClient.UIType uiType) throws RemoteException {
+    public ClientImpl(Server server, String nickname, AppClient.UIType uiType, Object guiReference)
+            throws RemoteException {
         super();
         this.clientState = ClientState.LAUNCH;
         this.nickname = nickname;
         if(uiType == AppClient.UIType.CLI) this.view = new TextualUI();
-        if(uiType == AppClient.UIType.GUI) this.view = new GUI();
+        if(uiType == AppClient.UIType.GUI) this.view = (GUI) guiReference;
         server.register(this, nickname);
         this.view.addListener(server);
     }
