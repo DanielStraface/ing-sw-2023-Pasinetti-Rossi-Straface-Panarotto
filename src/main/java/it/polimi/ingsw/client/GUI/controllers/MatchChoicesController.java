@@ -6,22 +6,14 @@ import it.polimi.ingsw.client.GUI.GUI;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
+import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javafx.scene.text.Font;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import java.io.IOException;
 import java.net.URL;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -29,6 +21,14 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class MatchChoicesController implements GUIController, Initializable {
+    @FXML
+    private Button confirmButton;
+    @FXML
+    private Button prevButton;
+    @FXML
+    private Pane loadingPane;
+    @FXML
+    private ProgressBar progressBar;
     @FXML
     private ChoiceBox<String > typeOfMatchBox;
     @FXML
@@ -43,18 +43,24 @@ public class MatchChoicesController implements GUIController, Initializable {
     private Label typeOfMatchLabel;
     @FXML
     private Label textLabelDisplay;
+    @FXML
+    private ImageView loadingImage;
+    @FXML
+    private Label notifyLabel;
     private final String[] typeOfMatch = {"", "Create a new match", "Join an existing match"};
     private final String[] numOfPlayers = {"", "2 players", "3 players", "4 players"};
     private GUI gui;
 
 
-    private enum State {NICKNAME, TYPE_OF_MATCH, NUM_OF_PLAYER, CHOICE_OBTAIN}
+    private enum State {NICKNAME, TYPE_OF_MATCH, NUM_OF_PLAYER, CHOICE_OBTAIN, WAIT_IN_LOBBY, MATCH_START}
     private State flag = State.NICKNAME;
     private String userNickname;
     private String typeOfMatchChoice;
     private String MenuSelection = "sounds/MenuSelection.mp3";
     private MediaPlayer mediaPlayer;
     private String typeOfConnection;
+    double denominator;
+    double connectedPlayers;
 
     public void setConnectionType(String typeOfConnection){this.typeOfConnection = typeOfConnection;}
 
@@ -74,6 +80,7 @@ public class MatchChoicesController implements GUIController, Initializable {
                     nicknameLabel.setOpacity(0.5);
                     textField.setOpacity(0.5);
                     textField.setDisable(true);
+                    notifyLabel.setVisible(false);
                     flag = State.TYPE_OF_MATCH;
                     return;
                 }
@@ -135,7 +142,7 @@ public class MatchChoicesController implements GUIController, Initializable {
                     }
                 }).start();
             }
-            gui.changeScene("MainGame.fxml");
+            //gui.changeScene("MainGame.fxml");
         }
 
         /*type
@@ -198,7 +205,7 @@ public class MatchChoicesController implements GUIController, Initializable {
         System.out.println("Back button pressed, go back to main menu");
         this.userNickname = null;
         this.typeOfMatchChoice = null;
-        nicknameLabel.setOpacity(1);
+        /*nicknameLabel.setOpacity(1);
         textField.setOpacity(1);
         textField.setText("");
         textField.setDisable(false);
@@ -210,13 +217,64 @@ public class MatchChoicesController implements GUIController, Initializable {
         numOfPlayersBox.setOpacity(0.5);
         numOfPlayersBox.setValue("");
         numOfPlayersBox.setDisable(true);
+        notifyLabel.setVisible(false);
+        confirmButton.setOpacity(1);
+        confirmButton.setDisable(false);
+        prevButton.setOpacity(1);
+        prevButton.setDisable(false);*/
+        resetSceneAtBeginning();
         flag = State.NICKNAME;
         gui.changeScene("MainMenu.fxml");
     }
 
     public void displayMsgInfo(String msg){
-        textLabelDisplay.setText(msg);
-        textLabelDisplay.setOpacity(1);
+        if(msg.contains("searching")){
+            int remainNumOfPlayers = 0;
+            char[] chars = msg.toCharArray();
+            StringBuilder sb = new StringBuilder();
+            for(char c : chars){
+                if(Character.isDigit(c))
+                    sb.append(c);
+            }
+            if(sb.toString().equals("1") || sb.toString().equals("2") || sb.toString().equals("3"))
+                remainNumOfPlayers = Integer.parseInt(sb.toString());
+            textLabelDisplay.setText(msg);
+            if(flag != State.WAIT_IN_LOBBY){
+                loadingPane.setVisible(true);
+                loadingImage.setVisible(true);
+                if(msg.contains("TWO")) this.denominator = 2;
+                if(msg.contains("THREE")) this.denominator = 3;
+                if(msg.contains("FOUR")) this.denominator = 4;
+                if(this.denominator - 1 == remainNumOfPlayers) this.connectedPlayers = 1;
+                else this.connectedPlayers = this.denominator - remainNumOfPlayers;
+                flag = State.WAIT_IN_LOBBY;
+            } else this.connectedPlayers += 1;
+            double loadingPercentage = connectedPlayers / this.denominator;
+            progressBar.setProgress(loadingPercentage);
+        } else if (msg.contains("Correct")){
+            if(flag == State.WAIT_IN_LOBBY) flag = State.MATCH_START;
+            else {
+                loadingPane.setVisible(true);
+                loadingImage.setVisible(true);
+            }
+            textLabelDisplay.setText(msg);
+            progressBar.setProgress(1);
+            gui.changeScene("MainGame.fxml");
+        } else if(!msg.equals("Joining a lobby...")) {
+            notifyLabel.setText(msg);
+            notifyLabel.setVisible(true);
+            confirmButton.setDisable(true);
+            confirmButton.setOpacity(0.5);
+            prevButton.setDisable(true);
+            prevButton.setOpacity(0.5);
+        }
+    }
+
+    public void wrongNickname(){
+        flag = State.NICKNAME;
+        resetSceneAtBeginning();
+        notifyLabel.setText("This nickname is already used!\nPlease choose another one");
+        notifyLabel.setVisible(true);
     }
 
 
@@ -241,5 +299,25 @@ public class MatchChoicesController implements GUIController, Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         typeOfMatchBox.getItems().addAll(typeOfMatch);
         numOfPlayersBox.getItems().addAll(numOfPlayers);
+    }
+
+    private void resetSceneAtBeginning(){
+        nicknameLabel.setOpacity(1);
+        textField.setOpacity(1);
+        textField.setText("");
+        textField.setDisable(false);
+        typeOfMatchLabel.setOpacity(0.5);
+        typeOfMatchBox.setOpacity(0.5);
+        typeOfMatchBox.setValue("");
+        typeOfMatchBox.setDisable(true);
+        numOfItemsLabel.setOpacity(0.5);
+        numOfPlayersBox.setOpacity(0.5);
+        numOfPlayersBox.setValue("");
+        numOfPlayersBox.setDisable(true);
+        notifyLabel.setVisible(false);
+        confirmButton.setOpacity(1);
+        confirmButton.setDisable(false);
+        prevButton.setOpacity(1);
+        prevButton.setDisable(false);
     }
 }

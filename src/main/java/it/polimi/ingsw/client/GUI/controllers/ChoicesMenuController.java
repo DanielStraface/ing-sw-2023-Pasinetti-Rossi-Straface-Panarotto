@@ -1,7 +1,5 @@
 package it.polimi.ingsw.client.GUI.controllers;
 
-import it.polimi.ingsw.client.CLI.AppClientRMI;
-import it.polimi.ingsw.client.CLI.AppClientSocket;
 import it.polimi.ingsw.client.GUI.GUI;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,8 +13,6 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.net.URL;
-import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
 import java.util.Objects;
 import java.util.ResourceBundle;
 

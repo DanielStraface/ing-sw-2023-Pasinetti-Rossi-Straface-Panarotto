@@ -9,8 +9,10 @@ public class PersonalObjCardView implements Serializable {
     @Serial
     private static final long serialVersionUID = 2L;
     private final Item[][] cardGrid;
+    private final String description;
 
-    public PersonalObjCardView(Item[][] cardGrid) {
+    public PersonalObjCardView(Item[][] cardGrid, String desc) {
+        this.description = desc;
         this.cardGrid = new Item[cardGrid.length][cardGrid[0].length];
         for(int i=0;i<cardGrid.length;i++){
             for(int j=0;j<cardGrid[0].length;j++){
@@ -22,4 +24,5 @@ public class PersonalObjCardView implements Serializable {
     public Item[][] getCardGrid(){
         return this.cardGrid;
     }
+    public String getDescription(){return this.description;}
 }

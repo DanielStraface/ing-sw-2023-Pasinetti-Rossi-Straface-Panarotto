@@ -9,6 +9,7 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 /**
  * This class represent the top of the controller section (the CONTROLLER in MVC). It has got three references:
@@ -50,11 +51,20 @@ public class Controller {
                                 .findFirst()
                                         .get();
         p.setIsFirstPlayer();
-        String msg;
+        String msg = null;
+        StringBuilder message = new StringBuilder();
+        message.append("The game will start in 5 seconds\nThe players' nickname are:\n%");
+        for(Player player : game.getPlayers())
+            message.append(player.getNickname()).append("!");
         for(Client client : this.getClients()){
-            if(client.getClientID() == p.getClientID()) msg = "You are the first player.";
-            else msg = p.getNickname() + " is the first player. Wait your turn!";
-            client.update(msg + " Enjoy!");
+            if(client.getClientID() == p.getClientID()) msg = "$You are the first player.";
+            else msg = "$" + p.getNickname() + " is the first player. Wait your turn!";
+            client.update(message + msg + " Enjoy!");
+        }
+        try {
+            TimeUnit.SECONDS.sleep(5);
+        } catch (InterruptedException e) {
+            System.err.println("No sleep time occurred");
         }
         game.setCurrentPlayer(p);
     }

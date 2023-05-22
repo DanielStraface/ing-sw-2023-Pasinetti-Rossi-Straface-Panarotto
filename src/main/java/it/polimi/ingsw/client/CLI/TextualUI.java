@@ -28,6 +28,19 @@ public class TextualUI implements UI, Serializable {
     public static List<Integer> setupConnectionByUser(){
         return AppClient.mainMenu();
     }
+    public static String askNickname(){
+        String input;
+        System.out.print("\nInsert your nickname >>");
+        Scanner scanner = new Scanner(System.in);
+        input = scanner.nextLine();
+        while(input.contains("%") || input.contains("!") || input.contains("?") || input.contains("=") ||
+                input.contains("(") || input.contains(")") || input.contains("'") ||
+                input.contains("/") || input.contains("£") || input.contains("$") || input.contains("€")){
+            System.out.print("\nThis chars are not allowed !£$%&/()=?' , please try again\n>>");
+            input = scanner.nextLine();
+        }
+        return input;
+    }
 
     private transient List<int[]> coords;
     private transient List<Integer> columnReference;

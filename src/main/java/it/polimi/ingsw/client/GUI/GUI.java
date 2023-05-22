@@ -1,9 +1,7 @@
 package it.polimi.ingsw.client.GUI;
 
 import it.polimi.ingsw.App;
-import it.polimi.ingsw.client.GUI.controllers.ChoicesMenuController;
-import it.polimi.ingsw.client.GUI.controllers.GUIController;
-import it.polimi.ingsw.client.GUI.controllers.MatchChoicesController;
+import it.polimi.ingsw.client.GUI.controllers.*;
 import it.polimi.ingsw.client.UI;
 import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.distributed.Server;
@@ -14,6 +12,7 @@ import it.polimi.ingsw.modelview.PlayerView;
 import it.polimi.ingsw.modelview.ShelfView;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
@@ -40,11 +39,22 @@ public class GUI extends Application implements UI {
     private final HashMap<String, Scene> scenes = new HashMap<>();
     private final HashMap<String, GUIController> guiControllers = new HashMap<String, GUIController>();
     private Stage stage;
+    private GUIController currentController;
+    private MainGameController mainGameController;
     private final String css = this.getClass().getResource("/css/MainMenu.css").toExternalForm();
     private boolean objectivesWinIsOpen = false;
+    private Client refClient;
+    private enum State {SETUP, IN_GAME}
+    private State state = State.SETUP;
+    private boolean areCardsSet;
 
     public void imposeTheTypeOfConnection(String connectionType){
-        ((MatchChoicesController) guiControllers.get("MatchChoices.fxml")).setConnectionType(connectionType);
+        ((MatchChoicesController) currentController).setConnectionType(connectionType);
+    }
+
+    public void askNicknameManager(){
+        MatchChoicesController ctrl = ((MatchChoicesController) guiControllers.get("MatchChoices.fxml"));
+        Platform.runLater(ctrl::wrongNickname);
     }
 
     public void changeScene(String nextScene){
@@ -53,11 +63,16 @@ public class GUI extends Application implements UI {
         stage.setScene(currentScene);
         if(nextScene.equals("MainGame.fxml")){
             stage.setWidth(1420);
+            Platform.runLater(() -> {
+                try {
+                    mainGameController.updateYourNameLabel(this.refClient.getNickname());
+                } catch (RemoteException e) {
+                    System.err.println("Cannot read refClient value");
+                }
+            });
         }
         stage.show();
-        Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
-        stage.setX((screenBounds.getWidth() - stage.getWidth()) / 2);
-        stage.setY((screenBounds.getHeight() - stage.getHeight()) / 2);
+        centerWindow(stage);
     }
     private boolean changed;
     private final Vector<Server> observers = new Vector<>();
@@ -115,6 +130,7 @@ public class GUI extends Application implements UI {
                 ctrl.setGUI(this);
                 guiControllers.put(fxml, ctrl);
             }
+            currentController = guiControllers.get("MatchChoices.fxml");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -130,6 +146,8 @@ public class GUI extends Application implements UI {
         newStage.setTitle(newPath.substring(0, newPath.indexOf(".")));
         newStage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream(
                 "/graphics/Publisher material/Icon 50x50px.png"))));
+        String css = this.getClass().getResource("/css/MainMenu.css").toExternalForm();
+        newWindowScene.getStylesheets().add(css);
         newStage.setScene(newWindowScene);
         newStage.setResizable(false);
         newStage.setOnCloseRequest(event -> {
@@ -142,6 +160,12 @@ public class GUI extends Application implements UI {
     private void newWindowClose(Stage stage){
         objectivesWinIsOpen = false;
         stage.close();
+    }
+
+    private void centerWindow(Stage stage){
+        Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+        stage.setX((screenBounds.getWidth() - stage.getWidth()) / 2);
+        stage.setY((screenBounds.getHeight() - stage.getHeight()) / 2);
     }
 
 
@@ -167,8 +191,40 @@ public class GUI extends Application implements UI {
 
     @Override
     public void update(String msg) {
-        MatchChoicesController controller = ((MatchChoicesController) guiControllers.get("MatchChoices.fxml"));
-        Platform.runLater(() -> controller.displayMsgInfo(msg));
+        if(msg.contains("Enjoy!")){
+            state = State.IN_GAME;
+            //currentController = guiControllers.get("MainGame.fxml");
+            mainGameController = (MainGameController) guiControllers.get("MainGame.fxml");
+        }
+        String finalMsg = msg;
+        switch (state){
+            case SETUP -> {
+                //Platform.runLater(() -> currentController.executeRequest(msg));
+                //currentController.executeRequest(msg);
+                MatchChoicesController controller = ((MatchChoicesController) guiControllers.get("MatchChoices.fxml"));
+                Platform.runLater(() -> controller.displayMsgInfo(finalMsg));
+            }
+            case IN_GAME -> {
+                if(msg.contains("is playing")){
+                    String  playerName = msg.substring(0, msg.indexOf(" is playing"));
+                    Platform.runLater(() -> mainGameController.updateCurrentTurnLabel(playerName));
+                } else {
+                    if(msg.contains("%") && msg.contains("$")){
+                        int startPlayersName = msg.indexOf("%");
+                        int endPlayersName = msg.indexOf("$");
+                        String substring = msg.substring(startPlayersName, endPlayersName);
+                        String finalMsg1 = msg.substring(0, startPlayersName) + msg.substring(endPlayersName + 1);
+                        Platform.runLater(() -> {
+                            mainGameController.updateCurrentTurnLabel(substring);
+                            mainGameController.updateMessageBox(finalMsg1);
+                        });
+                    } else Platform.runLater(() -> mainGameController.updateMessageBox(finalMsg));
+                }
+                //currentController.executeRequest(msg);
+                /*MainGameController controller = ((MainGameController) guiControllers.get("MainGame.fxml"));
+                Platform.runLater(() -> controller.update(msg));*/
+            }
+        }
     }
 
     @Override
@@ -178,12 +234,21 @@ public class GUI extends Application implements UI {
 
     @Override
     public void displayInfo(GameView gameView, PlayerView playerView) {
-
+        Platform.runLater(() -> mainGameController.updateScoreLabel(playerView.getScore()));
+        if(!areCardsSet){
+            ObjectivesController ctrl = (ObjectivesController) guiControllers.get("Objectives.fxml");
+            Platform.runLater(() -> {
+                ctrl.updateComObjCards(gameView.getCommonObjCard());
+                ctrl.updatePersonalObjCard(playerView.getMyPersonalOBjCard());
+            });
+            areCardsSet = true;
+        }
+        //comObjCardPoints
     }
 
     @Override
     public void setReferenceClient(Client client) {
-
+        this.refClient = client;
     }
 
     @Override

@@ -161,6 +161,12 @@ public class CommonObjCard implements Serializable {
         return -1;
     }
 
+    public int[] copyPointsArray(){
+        int[] temp = new int[4];
+        System.arraycopy(this.objPoints, 0, temp, 0, this.objPoints.length);
+        return temp;
+    }
+
 }
 
 

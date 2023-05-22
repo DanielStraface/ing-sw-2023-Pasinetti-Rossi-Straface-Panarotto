@@ -1,5 +1,7 @@
 package it.polimi.ingsw.client.CLI;
 
+import it.polimi.ingsw.client.GUI.GUI;
+import it.polimi.ingsw.client.UI;
 import it.polimi.ingsw.distributed.Server;
 import it.polimi.ingsw.distributed.ClientImpl;
 import it.polimi.ingsw.exceptions.NoMatchException;
@@ -24,9 +26,15 @@ public class AppClientRMI extends AppClient{
         System.out.print("\nConnection successfully created!\nPlease log in with your nickname before play:");
         List<Integer> decisions = null;
         UIType uiType = null;
+        Object uiReference = null;
+        boolean isOk;
         if(args[0].equals("CLI")){
             uiType = UIType.CLI;
-            logginToAppServer(uiType, serverApp, null);
+            do {
+                isOk = logginToAppServer(uiType, serverApp, null);
+                if(!isOk) System.out.print("\nThis nickname is already used by another user, you must choose another one.");
+            } while (!isOk);
+            System.out.print("Log successfully completed!");
             //logginToAppServer(serverApp, null);
             //List<Integer> decisions = mainMenu();
             decisions = TextualUI.setupConnectionByUser();
@@ -36,13 +44,17 @@ public class AppClientRMI extends AppClient{
             decisions = new ArrayList<>();
             System.out.println("Wait for user match choices");
             nickname = (String) args[1];
-            logginToAppServer(uiType, serverApp, null);
+            if(!logginToAppServer(uiType, serverApp, null)){
+                ((GUI) args[4]).askNicknameManager();
+                return;
+            }
             if(args[2].equals("Create a new match")){
                 decisions.add(CREATE_A_NEW_MATCH);
                 String temp = (String) args[3];
                 decisions.add(Integer.parseInt(temp.substring(0, 1)));
             }
             else decisions.add(JOIN_EXISTING_MATCH);
+            uiReference = args[4];
         }
         /* -- create or join a match -- */
         switch (decisions.get(TYPE_OF_MATCH_POSITION)) {
@@ -55,7 +67,7 @@ public class AppClientRMI extends AppClient{
                             tom = t;
                     }
                     matchServerRef = serverApp.connect(tom);
-                    new ClientImpl(matchServerRef, nickname, uiType, args[4]);
+                    new ClientImpl(matchServerRef, nickname, uiType, uiReference);
                 } catch (NotSupportedMatchesException e) {
                     if (e instanceof TooManyMatchesException) {
                         serverApp.removeLoggedUser(nickname);
@@ -72,12 +84,18 @@ public class AppClientRMI extends AppClient{
                     if(e instanceof NoMatchException) System.err.println("Something went wrong, not reachable section");
                 }
                 if(matchServerRef == null){
-                    System.out.println("There are no match at this moment for you..\nPlease, reboot application and" +
-                            " choose 'to Start a new game'.");
+                    String msgToSend = "There are no match at this moment for you.." +
+                            "\nPlease, reboot application and choose 'to Start a new game'.";
                     serverApp.removeLoggedUser(nickname);
-                    System.exit(NO_MATCH_IN_WAITING_NOW_ERROR);
+                    if(args[0].equals("CLI")){
+                        System.out.println(msgToSend);
+                        System.exit(NO_MATCH_IN_WAITING_NOW_ERROR);
+                    }
+                    if(args[0].equals("GUI"))
+                        ((UI) args[4]).update(msgToSend);
+                    return;
                 }
-                new ClientImpl(matchServerRef, nickname, uiType, args[4]);
+                new ClientImpl(matchServerRef, nickname, uiType, uiReference);
             }
             default -> {
                 System.exit(QUIT_IN_APPCLIENTRMI_ERROR);

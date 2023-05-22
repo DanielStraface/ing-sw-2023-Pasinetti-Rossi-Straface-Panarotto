@@ -50,7 +50,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
             if(checkIfPrevGame()){
                 for(Client c : this.controller.getClients())
                     c.update("Old unfinished match found!\nThe game will resume at that point. " +
-                            "If you want to join a new game consider to changed your nickname");
+                            "\nIf you want to join a new game consider to changed your nickname");
                 this.controller.substituteGameModel(this.game);
                 this.game.setCurrentPlayer(this.game.getCurrentPlayer());
             } else {
@@ -66,9 +66,11 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
                 if (!b)
                     temp++;
             }
+            String[] matchPlayersNumberStrings= {"TWO", "THREE", "FOUR"};
             for(Client client : this.controller.getClients()){
-                 client.update("Lobby joined but the match lobby is not full. Please wait..." +
-                         "\nSearching for " + temp + " other players");
+                client.update(matchPlayersNumberStrings[getPlayersGameNumber() - 2] + " PLAYERS MATCH" +
+                 "\nLobby joined but the match lobby is not full.\nPlease wait..." +
+                        "searching for " + temp + " other players");
             }
         }
     }

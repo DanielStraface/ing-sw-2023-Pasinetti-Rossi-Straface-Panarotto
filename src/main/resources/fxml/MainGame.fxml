@@ -25,18 +25,18 @@
                   <Image url="@../graphics/boards/livingroom.png" />
                </image>
             </ImageView>
-            <ImageView fitHeight="581.0" fitWidth="552.0" layoutX="727.0" layoutY="152.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="560.0" fitWidth="552.0" layoutX="727.0" layoutY="160.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../graphics/boards/bookshelf_orth.png" />
                </image>
             </ImageView>
             <Label layoutX="1283.0" layoutY="196.0" prefHeight="40.0" prefWidth="95.0" text="YOUR NAME:" />
             <Button fx:id="objectivesButton" layoutX="1257.0" layoutY="48.0" mnemonicParsing="false" onAction="#objectivesButtonAction" prefHeight="59.0" prefWidth="140.0" text="Objectives" />
-            <Label layoutX="1313.0" layoutY="255.0" text="NAME" />
+            <Label fx:id="yourNameLabel" layoutX="1313.0" layoutY="255.0" visible="false" />
             <Label layoutX="1299.0" layoutY="310.0" text="Your score:" />
-            <Label layoutX="1317.0" layoutY="347.0" text="POINTS" />
-            <Label layoutX="1260.0" layoutY="418.0" text="TURNO DI CHI" />
-            <Label layoutX="989.0" layoutY="69.0" text="MessageBox" />
+            <Label fx:id="scoreLabel" layoutX="1317.0" layoutY="347.0" text="0" />
+            <Label fx:id="player1Label" layoutX="1240.0" layoutY="470.0" prefHeight="25.0" prefWidth="175.0" text="\%DEFAULT%" visible="false" />
+            <Label fx:id="messageBox" layoutX="811.0" layoutY="4.0" prefHeight="146.0" prefWidth="380.0" text="MessageBox" />
             <ImageView fitHeight="167.0" fitWidth="186.0" layoutX="6.0" layoutY="545.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../graphics/misc/Sacchetto%20Chiuso.png" />
@@ -61,6 +61,10 @@
                   <Image url="@../graphics/misc/Sacchetto%20Aperto.png" />
                </image>
             </ImageView>
+            <Label layoutX="1238.0" layoutY="430.0" prefHeight="18.0" prefWidth="160.0" text="PLAYERS" />
+            <Label fx:id="player2Label" layoutX="1240.0" layoutY="510.0" prefHeight="25.0" prefWidth="175.0" text="\%DEFAULT%" visible="false" />
+            <Label fx:id="player3Label" layoutX="1240.0" layoutY="550.0" prefHeight="25.0" prefWidth="175.0" text="\%DEFAULT%" visible="false" />
+            <Label fx:id="player4Label" layoutX="1240.0" layoutY="590.0" prefHeight="25.0" prefWidth="175.0" text="\%DEFAULT%" visible="false" />
          </children>
       </AnchorPane>
    </children>

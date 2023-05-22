@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.CLI;
 
+import it.polimi.ingsw.client.GUI.GUI;
 import it.polimi.ingsw.distributed.socket.middleware.ServerStub;
 import it.polimi.ingsw.server.AppServer;
 
@@ -104,9 +105,18 @@ public abstract class AppClient {
      * @param stub the corresponding ServerStub
      * @throws RemoteException
      */
-    protected static void logginToAppServer(AppClient.UIType uiType, AppServer appS, ServerStub stub) throws RemoteException {
-        while(true){
-            if(uiType == AppClient.UIType.CLI) askNickname();
+    protected static boolean logginToAppServer(AppClient.UIType uiType, AppServer appS, ServerStub stub)
+            throws RemoteException {
+        if(uiType == UIType.CLI) nickname = TextualUI.askNickname();
+        if(appS != null){
+            return appS.log(nickname);
+            //else System.out.print("\nThis nickname is already used by another user, you must choose another one.");
+        } else {
+            return stub.log(nickname);
+            //else System.out.print("\nThis nickname is already used by another user, you must choose another one.");
+        }
+        /*while(true){
+            if(uiType == AppClient.UIType.CLI) nickname = TextualUI.askNickname();
             if(appS != null){
                 if(appS.log(nickname)) break;
                 else System.out.print("\nThis nickname is already used by another user, you must choose another one.");
@@ -115,7 +125,7 @@ public abstract class AppClient {
                 else System.out.print("\nThis nickname is already used by another user, you must choose another one.");
             }
         }
-        System.out.print("Log successfully completed!");
+        System.out.print("Log successfully completed!");*/
     }
 
     /*public static void readyToLog(String nickname, String typeOfMatch, String numOfPlayers){

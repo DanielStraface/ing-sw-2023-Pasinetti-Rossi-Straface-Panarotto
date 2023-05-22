@@ -8,10 +8,11 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 
-<AnchorPane fx:id="matchChoicesScene" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.GUI.controllers.MatchChoicesController">
+<AnchorPane fx:id="matchChoicesScene" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" styleClass=".loadingPoint" stylesheets="@../css/ObjectiveCardPane.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.GUI.controllers.MatchChoicesController">
    <children>
-      <ImageView fitHeight="600.0" fitWidth="600.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="matchChoicesBackground" fitHeight="600.0" fitWidth="600.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../graphics/misc/sfondo%20parquet.jpg" />
          </image>
@@ -31,7 +32,17 @@
       <Button fx:id="confirmButton" layoutX="423.0" layoutY="397.0" mnemonicParsing="false" onAction="#confirmButtonAction" prefHeight="60.0" prefWidth="160.0" text="Confirm" />
       <Button fx:id="backButton" layoutX="14.0" layoutY="397.0" mnemonicParsing="false" onAction="#backButtonAction" prefHeight="60.0" prefWidth="190.0" text="Go to Main Menu" />
       <Button fx:id="prevButton" layoutX="218.0" layoutY="397.0" mnemonicParsing="false" onAction="#prevButtonAction" prefHeight="60.0" prefWidth="190.0" text="Previous selection" />
-      <Label fx:id="textLabelDisplay" layoutX="-8.0" layoutY="478.0" prefHeight="18.0" prefWidth="615.0" text="Label" />
-      <ProgressBar layoutX="24.0" layoutY="519.0" prefHeight="18.0" prefWidth="550.0" progress="0.0" />
+      <Pane fx:id="loadingPane" prefHeight="323.0" prefWidth="600.0" styleClass="loadingPoint" stylesheets="@../css/ObjectiveCardPane.css" visible="false">
+         <children>
+            <ProgressBar fx:id="progressBar" layoutX="25.0" layoutY="135.0" prefHeight="18.0" prefWidth="550.0" progress="0.0" />
+            <Label fx:id="textLabelDisplay" layoutY="25.0" prefHeight="85.0" prefWidth="609.0" text="Label" />
+         </children>
+      </Pane>
+      <ImageView fx:id="loadingImage" fitHeight="600.0" fitWidth="600.0" layoutY="197.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../graphics/Publisher%20material/Display_1.jpg" />
+         </image>
+      </ImageView>
+      <Label fx:id="notifyLabel" layoutX="5.0" layoutY="508.0" prefHeight="80.0" prefWidth="594.0" text="Label" visible="false" />
    </children>
 </AnchorPane>
