@@ -14,12 +14,12 @@
    <children>
       <ImageView fx:id="matchChoicesBackground" fitHeight="600.0" fitWidth="600.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../graphics/misc/sfondo%20parquet.jpg" />
+            <Image url="@../graphics/misc/sfondo_parquet.jpg" />
          </image>
       </ImageView>
       <ImageView fitHeight="160.0" fitWidth="400.0" layoutX="100.0" layoutY="70.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../graphics/Publisher%20material/Title%202000x618px.png" />
+            <Image url="@../graphics/Publisher_material/Title_2000x618px.png" />
          </image>
       </ImageView>
       <Label layoutX="177.0" layoutY="229.0" text="Insert the following information:" textAlignment="CENTER" />
@@ -40,7 +40,7 @@
       </Pane>
       <ImageView fx:id="loadingImage" fitHeight="600.0" fitWidth="600.0" layoutY="197.0" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
-            <Image url="@../graphics/Publisher%20material/Display_1.jpg" />
+            <Image url="@../graphics/Publisher_material/Display_1.jpg" />
          </image>
       </ImageView>
       <Label fx:id="notifyLabel" layoutX="5.0" layoutY="508.0" prefHeight="80.0" prefWidth="594.0" text="Label" visible="false" />

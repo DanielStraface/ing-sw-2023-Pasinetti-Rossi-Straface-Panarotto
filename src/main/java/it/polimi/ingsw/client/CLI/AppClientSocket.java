@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AppClientSocket extends AppClient {
-    private static final String SERVER_ADDRESS = "localhost";
+    private static final String SERVER_ADDRESS = "172.20.10.11";
     private static final int SERVER_PORT = 1234;
     public static void launchClient(Object[] args) throws RemoteException {
         ServerStub appServerStub = new ServerStub(SERVER_ADDRESS, SERVER_PORT);

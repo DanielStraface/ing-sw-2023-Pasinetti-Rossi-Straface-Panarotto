@@ -21,7 +21,7 @@ public class AppClientRMI extends AppClient{
 
     public static void launchClient(Object[] args) throws RemoteException, NotBoundException {
         Server matchServerRef = null;
-        Registry registry = LocateRegistry.getRegistry();
+        Registry registry = LocateRegistry.getRegistry("172.20.10.11",1099);
         AppServer serverApp = (AppServer) registry.lookup(APPSERVER_REGISTRY_NAME);
         System.out.print("\nConnection successfully created!\nPlease log in with your nickname before play:");
         List<Integer> decisions = null;

@@ -9,17 +9,17 @@
    <children>
       <ImageView fitHeight="600.0" fitWidth="600.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../graphics/misc/sfondo%20parquet.jpg" />
+            <Image url="@../graphics/misc/sfondo_parquet.jpg" />
          </image>
       </ImageView>
       <ImageView fitHeight="160.0" fitWidth="400.0" layoutX="100.0" layoutY="70.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../graphics/Publisher%20material/Title%202000x618px.png" />
+            <Image url="@../graphics/Publisher_material/Title_2000x618px.png" />
          </image>
       </ImageView>
       <ImageView fitHeight="106.0" fitWidth="83.0" layoutX="503.0" layoutY="503.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../graphics/Publisher%20material/Publisher.png" />
+            <Image url="@../graphics/Publisher_material/Publisher.png" />
          </image>
       </ImageView>
       <Button fx:id="playButton" layoutX="220.0" layoutY="270.0" mnemonicParsing="false" onAction="#playButtonAction" prefHeight="60.0" prefWidth="160.0" text="Play" />

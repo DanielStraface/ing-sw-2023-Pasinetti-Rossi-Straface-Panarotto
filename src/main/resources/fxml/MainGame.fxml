@@ -10,12 +10,12 @@
    <children>
       <ImageView fitHeight="720.0" fitWidth="796.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../graphics/misc/sfondo%20parquet.jpg" />
+            <Image url="@../graphics/misc/sfondo_parquet.jpg" />
          </image>
       </ImageView>
       <ImageView fitHeight="720.0" fitWidth="700.0" layoutX="720.0" pickOnBounds="true">
          <image>
-            <Image url="@../graphics/misc/sfondo%20parquet.jpg" />
+            <Image url="@../graphics/misc/sfondo_parquet.jpg" />
          </image>
       </ImageView>
       <AnchorPane layoutX="5.0" layoutY="5.0" prefHeight="711.0" prefWidth="1405.0">
@@ -39,7 +39,7 @@
             <Label fx:id="messageBox" layoutX="811.0" layoutY="4.0" prefHeight="146.0" prefWidth="380.0" text="MessageBox" />
             <ImageView fitHeight="167.0" fitWidth="186.0" layoutX="6.0" layoutY="545.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../graphics/misc/Sacchetto%20Chiuso.png" />
+                  <Image url="@../graphics/misc/Sacchetto_Chiuso.png" />
                </image>
             </ImageView>
             <ImageView fitHeight="155.0" fitWidth="125.0" layoutX="728.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true" visible="false">
@@ -48,7 +48,7 @@
                </image></ImageView>
             <ImageView fitHeight="78.0" fitWidth="71.0" layoutX="577.0" layoutY="498.0" pickOnBounds="true" preserveRatio="true" rotate="9.0">
                <image>
-                  <Image url="@../graphics/scoring%20tokens/end%20game.jpg" />
+                  <Image url="@../graphics/scoring_tokens/end_game.jpg" />
                </image>
             </ImageView>
             <ImageView fitHeight="581.0" fitWidth="552.0" layoutX="727.0" layoutY="148.0" pickOnBounds="true" preserveRatio="true" visible="false">
@@ -58,7 +58,7 @@
             </ImageView>
             <ImageView fitHeight="167.0" fitWidth="186.0" layoutX="6.0" layoutY="545.0" pickOnBounds="true" preserveRatio="true" visible="false">
                <image>
-                  <Image url="@../graphics/misc/Sacchetto%20Aperto.png" />
+                  <Image url="@../graphics/misc/Sacchetto_Aperto.png" />
                </image>
             </ImageView>
             <Label layoutX="1238.0" layoutY="430.0" prefHeight="18.0" prefWidth="160.0" text="PLAYERS" />
