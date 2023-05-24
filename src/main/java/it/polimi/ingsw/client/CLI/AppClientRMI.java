@@ -18,7 +18,7 @@ import java.util.List;
 
 public class AppClientRMI extends AppClient{
     private static final String APPSERVER_REGISTRY_NAME = "it.polimi.ingsw.server.AppServer";
-    private static final String SERVER_ADRESS = "192.168.0.61";
+    private static final String SERVER_ADDRESS = "192.168.0.61";
     private static final int SERVER_PORT = 1099;
 
     /**
