@@ -88,7 +88,7 @@ public class GUI extends Application implements UI {
             Font.loadFont(getClass().getResourceAsStream("/fonts/Accio_Dollaro.ttf"), 14);
             stage.setTitle("MyShelfie");
             stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream(
-                    "/graphics/Publisher material/Icon 50x50px.png"))));
+                    "/graphics/Publisher_material/Icon 50x50px.png"))));
             stage.setResizable(false);
             stage.setScene(scene);
 
@@ -145,7 +145,7 @@ public class GUI extends Application implements UI {
         Scene newWindowScene = scenes.get(newPath);
         newStage.setTitle(newPath.substring(0, newPath.indexOf(".")));
         newStage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream(
-                "/graphics/Publisher material/Icon 50x50px.png"))));
+                "/graphics/Publisher_material/Icon 50x50px.png"))));
         String css = this.getClass().getResource("/css/MainMenu.css").toExternalForm();
         newWindowScene.getStylesheets().add(css);
         newStage.setScene(newWindowScene);
