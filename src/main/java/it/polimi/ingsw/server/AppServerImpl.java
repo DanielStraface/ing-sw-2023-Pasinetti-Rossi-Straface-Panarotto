@@ -31,7 +31,7 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
     private static int FIRST_WAITING_MATCH;
     private static final int SERVER_PORT = 1234;
     private static final String APPSERVER_REGISTRY_NAME = "it.polimi.ingsw.server.AppServer";
-    public static final int MAX_MATCHES_MANAGED = 10;
+    public static final int MAX_MATCHES_MANAGED = 100;
     private static final int ERROR_WHILE_CREATING_SERVER_SOCKET = 1;
     protected AppServerImpl() throws RemoteException {
     }
@@ -80,7 +80,7 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
     public static void startRMI() throws RemoteException {
         AppServerImpl server = getInstance();
         System.out.println("Server is ready to receive clients requests via RMI (Remote Method Invocation)");
-        Registry registry = LocateRegistry.getRegistry();
+        Registry registry = LocateRegistry.createRegistry(1099);
         registry.rebind(APPSERVER_REGISTRY_NAME, server);
     }
 

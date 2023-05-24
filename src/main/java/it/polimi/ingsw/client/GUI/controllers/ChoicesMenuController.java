@@ -7,6 +7,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
@@ -21,6 +22,10 @@ public class ChoicesMenuController implements GUIController, Initializable {
     private Label networkLabel;
     @FXML
     private ChoiceBox<String> networkChoices;
+    @FXML
+    private Label serverAddressLabel;
+    @FXML
+    private TextField serverAddressTextField;
     private Stage stage;
     private Scene scene;
     private String[] networks = {"", "RMI", "SOCKET"};
@@ -37,20 +42,23 @@ public class ChoicesMenuController implements GUIController, Initializable {
         playSound(MenuSelection);
         System.out.println("Back button pressed, go back to main menu");
         networkChoices.setValue("");
+        serverAddressTextField.setText("");
         gui.changeScene("MainMenu.fxml");
     }
 
     public void confirmButtonAction(ActionEvent event){
         playSound(MenuSelection);
-        String choice = networkChoices.getValue();
-        if(choice == null || choice.equals("")){
+        String netChoice = networkChoices.getValue();
+        String address = serverAddressTextField.getText();
+        if(netChoice == null || netChoice.equals("") || address == null || address.equals("")){
             System.out.println("Wrong selection");
             return;
         }
-        System.out.println("The choice is " + choice);
-        this.gui.imposeTheTypeOfConnection(choice);
+        System.out.println("The choice is " + netChoice + ", address " + address);
+        this.gui.imposeTheTypeOfConnection(netChoice, address);
 
         networkChoices.setValue("");
+        serverAddressTextField.setText("");
         gui.changeScene("MatchChoices.fxml");
 
     }

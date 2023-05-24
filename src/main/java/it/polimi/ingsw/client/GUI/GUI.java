@@ -1,6 +1,5 @@
 package it.polimi.ingsw.client.GUI;
 
-import it.polimi.ingsw.App;
 import it.polimi.ingsw.client.GUI.controllers.*;
 import it.polimi.ingsw.client.UI;
 import it.polimi.ingsw.distributed.Client;
@@ -12,14 +11,11 @@ import it.polimi.ingsw.modelview.PlayerView;
 import it.polimi.ingsw.modelview.ShelfView;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.concurrent.Task;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -48,8 +44,8 @@ public class GUI extends Application implements UI {
     private State state = State.SETUP;
     private boolean areCardsSet;
 
-    public void imposeTheTypeOfConnection(String connectionType){
-        ((MatchChoicesController) currentController).setConnectionType(connectionType);
+    public void imposeTheTypeOfConnection(String connectionType, String address){
+        ((MatchChoicesController) currentController).setConnectionType(connectionType, address);
     }
 
     public void askNicknameManager(){
@@ -88,7 +84,7 @@ public class GUI extends Application implements UI {
             Font.loadFont(getClass().getResourceAsStream("/fonts/Accio_Dollaro.ttf"), 14);
             stage.setTitle("MyShelfie");
             stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream(
-                    "/graphics/Publisher material/Icon 50x50px.png"))));
+                    "/graphics/Publisher_material/Icon_50x50px.png"))));
             stage.setResizable(false);
             stage.setScene(scene);
 
@@ -145,7 +141,7 @@ public class GUI extends Application implements UI {
         Scene newWindowScene = scenes.get(newPath);
         newStage.setTitle(newPath.substring(0, newPath.indexOf(".")));
         newStage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream(
-                "/graphics/Publisher material/Icon 50x50px.png"))));
+                "/graphics/Publisher_material/Icon_50x50px.png"))));
         String css = this.getClass().getResource("/css/MainMenu.css").toExternalForm();
         newWindowScene.getStylesheets().add(css);
         newStage.setScene(newWindowScene);
@@ -220,9 +216,6 @@ public class GUI extends Application implements UI {
                         });
                     } else Platform.runLater(() -> mainGameController.updateMessageBox(finalMsg));
                 }
-                //currentController.executeRequest(msg);
-                /*MainGameController controller = ((MainGameController) guiControllers.get("MainGame.fxml"));
-                Platform.runLater(() -> controller.update(msg));*/
             }
         }
     }

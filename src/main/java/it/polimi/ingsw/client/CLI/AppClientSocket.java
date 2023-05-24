@@ -15,10 +15,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AppClientSocket extends AppClient {
-    private static final String SERVER_ADDRESS = "172.20.10.11";
+    private static final String SERVER_ADDRESS = "192.168.0.61";
     private static final int SERVER_PORT = 1234;
     public static void launchClient(Object[] args) throws RemoteException {
-        ServerStub appServerStub = new ServerStub(SERVER_ADDRESS, SERVER_PORT);
+        String serverAddress = (String) args[1];
+        ServerStub appServerStub = new ServerStub(serverAddress, SERVER_PORT);
         System.out.print("\nConnection successfully created!\nPlease log in with your nickname before play:");
         ClientImpl userClient = null;
         List<Integer> decisions = null;
@@ -33,9 +34,9 @@ public class AppClientSocket extends AppClient {
             uiType = UIType.GUI;
             decisions = new ArrayList<>();
             System.out.println("Wait for user match choices");
-            nickname = (String) args[1];
+            nickname = (String) args[2];
             if(!logginToAppServer(uiType, null, appServerStub)){
-                ((GUI) args[4]).askNicknameManager();
+                ((GUI) args[5]).askNicknameManager();
                 try{
                     appServerStub.close();
                 } catch (RemoteException e) {
@@ -43,13 +44,13 @@ public class AppClientSocket extends AppClient {
                 }
                 return;
             }
-            if(args[2].equals("Create a new match")){
+            if(args[3].equals("Create a new match")){
                 decisions.add(CREATE_A_NEW_MATCH);
-                String temp = (String) args[3];
+                String temp = (String) args[4];
                 decisions.add(Integer.parseInt(temp.substring(0, 1)));
             }
             else decisions.add(JOIN_EXISTING_MATCH);
-            uiReference = args[4];
+            uiReference = args[5];
         }
         /* -- create or join a match -- */
         switch (decisions.get(TYPE_OF_MATCH_POSITION)) {
@@ -84,9 +85,8 @@ public class AppClientSocket extends AppClient {
                             System.exit(NO_MATCH_IN_WAITING_NOW_ERROR);
                         }
                         if(args[0].equals("GUI"))
-                            ((UI) args[4]).update(msgToSend);
+                            ((UI) args[5]).update(msgToSend);
                         return;
-
                     }
                 }
                 userClient = new ClientImpl(appServerStub, nickname, uiType, uiReference);

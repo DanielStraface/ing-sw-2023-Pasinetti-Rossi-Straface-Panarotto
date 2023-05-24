@@ -28,13 +28,13 @@ public class ObjectivesController implements GUIController {
         Object[] imgs = {comObjCard1, comObjCard2, comObjCardDesc1, comObjCardDesc2};
         for(int i=0;i<comObjCards.size();i++){
             cardType = comObjCards.get(i).getType();
-            ((ImageView) imgs[i]).setImage(new Image("/graphics/common goal cards/" + cardType + ".jpg"));
+            ((ImageView) imgs[i]).setImage(new Image("/graphics/common_goal_cards/" + cardType + ".jpg"));
             ((Label) imgs[i+2]).setText(comObjCards.get(i).getDescription());
         }
     }
 
     public void updatePersonalObjCard(PersonalObjCardView perObjCard){
-        personalObjCard.setImage(new Image("/graphics/personal goal cards/" + perObjCard.getDescription() + ".png"));
+        personalObjCard.setImage(new Image("/graphics/personal_goal_cards/" + perObjCard.getDescription() + ".png"));
     }
 
     @Override

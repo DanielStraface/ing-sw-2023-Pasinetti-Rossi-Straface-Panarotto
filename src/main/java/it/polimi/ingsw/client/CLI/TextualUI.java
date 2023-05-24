@@ -33,10 +33,12 @@ public class TextualUI implements UI, Serializable {
         System.out.print("\nInsert your nickname >>");
         Scanner scanner = new Scanner(System.in);
         input = scanner.nextLine();
-        while(input.contains("%") || input.contains("!") || input.contains("?") || input.contains("=") ||
-                input.contains("(") || input.contains(")") || input.contains("'") ||
-                input.contains("/") || input.contains("£") || input.contains("$") || input.contains("€")){
-            System.out.print("\nThis chars are not allowed !£$%&/()=?' , please try again\n>>");
+        while(!UI.nicknameController(input)) {
+            System.out.print("""
+                    
+                    The max nickname length must be 20 chars.
+                    This chars are not allowed !£$%&/()=?' , please try again
+                    >>""");
             input = scanner.nextLine();
         }
         return input;

@@ -100,23 +100,21 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
 
     private boolean checkIfPrevGame() {
         Game game;
-        boolean isPrevGame = true;
         for(int i=0;i<AppServerImpl.MAX_MATCHES_MANAGED;i++){
             try{
                 game = Controller.loadGame("match" + i + ".ser");
                 if(game == null) return false;
                 else {
-                    List<String> nicknames = this.game.getPlayers().stream()
+                    List<String> newGameNicknames = this.game.getPlayers().stream()
                             .map(Player::getNickname)
                             .toList();
-                    for(Player p : game.getPlayers())
-                        if (!nicknames.contains(p.getNickname())) {
-                            isPrevGame = false;
-                            break;
-                        }
-                }
-                if(!isPrevGame) return false;
-                else {
+                    List<String> prevGameNicknames = game.getPlayers().stream()
+                            .map(Player::getNickname)
+                            .toList();
+                    if(newGameNicknames.size() != prevGameNicknames.size()) return false;
+                    for(String nickname : prevGameNicknames)
+                        if(!newGameNicknames.contains(nickname))
+                            return false;
                     this.game = game;
                     this.game.deleteListeners();
                     this.controller.getClients()

@@ -43,6 +43,6 @@
             <Image url="@../graphics/Publisher_material/Display_1.jpg" />
          </image>
       </ImageView>
-      <Label fx:id="notifyLabel" layoutX="5.0" layoutY="508.0" prefHeight="80.0" prefWidth="594.0" text="Label" visible="false" />
+      <Label fx:id="notifyLabel" layoutX="5.0" layoutY="480.0" prefHeight="80.0" prefWidth="594.0" text="Label" visible="false" />
    </children>
 </AnchorPane>

@@ -3,7 +3,7 @@ package it.polimi.ingsw.client.GUI.controllers;
 import it.polimi.ingsw.client.CLI.AppClientRMI;
 import it.polimi.ingsw.client.CLI.AppClientSocket;
 import it.polimi.ingsw.client.GUI.GUI;
-import javafx.application.Platform;
+import it.polimi.ingsw.client.UI;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -21,6 +21,7 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class MatchChoicesController implements GUIController, Initializable {
+    private boolean done;
     @FXML
     private Button confirmButton;
     @FXML
@@ -59,20 +60,25 @@ public class MatchChoicesController implements GUIController, Initializable {
     private String MenuSelection = "sounds/MenuSelection.mp3";
     private MediaPlayer mediaPlayer;
     private String typeOfConnection;
+    private String address;
     double denominator;
     double connectedPlayers;
 
-    public void setConnectionType(String typeOfConnection){this.typeOfConnection = typeOfConnection;}
+    public void setConnectionType(String typeOfConnection, String address){
+        this.typeOfConnection = typeOfConnection;
+        this.address = address;
+    }
 
 
     public void confirmButtonAction(ActionEvent event){
+        if(done) return;
         System.out.println("Confirm button press");
         String numOfPlayersBoxValue = null;
         switch (flag){
             case NICKNAME -> {
                 playSound(MenuSelection);
                 String nicknameValue = textField.getText();
-                if(nicknameValue.length() > 1){
+                if(UI.nicknameController(nicknameValue)){
                     this.userNickname = nicknameValue;
                     typeOfMatchLabel.setOpacity(1);
                     typeOfMatchBox.setOpacity(1);
@@ -82,6 +88,13 @@ public class MatchChoicesController implements GUIController, Initializable {
                     textField.setDisable(true);
                     notifyLabel.setVisible(false);
                     flag = State.TYPE_OF_MATCH;
+                    return;
+                } else {
+                    notifyLabel.setText("""
+                    Invalid nickname selection.
+                    The max nickname length must be 20 chars.
+                    This chars are not allowed !£$%&/()=?'""");
+                    notifyLabel.setVisible(true);
                     return;
                 }
             }
@@ -120,7 +133,7 @@ public class MatchChoicesController implements GUIController, Initializable {
                     ", typeOFMatch := " + typeOfMatchChoice);
             if(typeOfMatchChoice.equals("Create a new match"))
                 System.out.print(", numOfPlayers := " + numOfPlayersBoxValue + "\n");
-            Object[] parameters = {"GUI", userNickname, typeOfMatchChoice, numOfPlayersBoxValue, this.gui};
+            Object[] parameters = {"GUI", address, userNickname, typeOfMatchChoice, numOfPlayersBoxValue, this.gui};
             System.out.println("n := " + numOfPlayersBoxValue);
             if(typeOfConnection.equals("RMI")){
                 new Thread(() -> {
@@ -142,6 +155,7 @@ public class MatchChoicesController implements GUIController, Initializable {
                     }
                 }).start();
             }
+            done = true;
             //gui.changeScene("MainGame.fxml");
         }
 
