@@ -10,16 +10,27 @@ public class SelectOrderCommand implements Command{
     private List<int[]> coordsToOrder;
     private List<Integer> sortingOrder;
 
+    /**
+     * Constructor method
+     */
     public SelectOrderCommand(){
         this.scanner = new Scanner(System.in);
         this.cardinalNumberOfSelectedItems = new ArrayList<Integer>();
         this.sortingOrder = null;
     }
 
+    /**
+     * Sets the list of the tiles' coordinates
+     * @param coords an int List of the tiles' coordinates chosen
+     */
     public void itemToOrder(List<int[]> coords){
         this.coordsToOrder = coords;
     }
 
+    /**
+     * Prints to the player a question about the tiles' order for when they're put in the shelf and saves the choice
+     * (all invalid numbers are not accepted)
+     */
     public void askUser(){
         for(int i=0;i<this.coordsToOrder.size();i++){
             this.cardinalNumberOfSelectedItems.add(i);
@@ -44,6 +55,9 @@ public class SelectOrderCommand implements Command{
         this.sortingOrder = sorting;
     }
 
+    /**
+     * Invokes methods to ask the tiles' order and saves the choice made in a List of an int array
+     */
     @Override
     public void execute() {
         this.askUser();

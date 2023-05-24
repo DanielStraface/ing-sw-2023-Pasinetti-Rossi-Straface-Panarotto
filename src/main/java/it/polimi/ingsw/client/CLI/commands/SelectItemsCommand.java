@@ -19,12 +19,19 @@ public class SelectItemsCommand implements Command{
     private static final int OCCUPIED = 2;
 
 
+    /**
+     * Constructor method
+     */
     public SelectItemsCommand(List<int[]> param){
         this.scanner = new Scanner(System.in);
         this.coords = param;
         this.sortingCommand = new SelectOrderCommand();
     }
 
+    /**
+     * Prints to the player a question about how many tiles have to be picked up and which ones to pick by using
+     * their coordinates and saves the choices (all invalid numbers are not accepted)
+     */
     private void askUser(){
         numOfPickItems = 0;
         System.out.print("\nHow many items do you want to pick up? >>");
@@ -60,6 +67,12 @@ public class SelectItemsCommand implements Command{
             }
         }
     }
+
+    /**
+     * Checks if all the coordinates selected contain a tile
+     * @param validGrid an int Matrix with all the GameBoard's coordinates' info
+     * @throws InvalidSelectionException
+     */
     private void noItemSelectedChecker(int[][] validGrid) throws InvalidSelectionException {
         for(int i=0;i<coords.size();i++){
             if(validGrid[coords.get(i)[0]][coords.get(i)[1]] == INVALID)
@@ -68,6 +81,12 @@ public class SelectItemsCommand implements Command{
                 throw new SelectionInvalidOrEmptySlotException("selected item in empty slot");
         }
     }
+
+    /**
+     * Checks if all coordinates selected have at least one free side
+     * @param validGrid an int Matrix with all the GameBoard's coordinates' info
+     * @throws InvalidSelectionException
+     */
     private void freeSideChecker(int[][] validGrid) throws InvalidSelectionException {
         for (int i = 0; i < coords.size(); i++) {
             final int FIRST_ROW = 0;
@@ -84,6 +103,11 @@ public class SelectItemsCommand implements Command{
             }
         }
     }
+
+    /**
+     * Checks if all the coordinates chosen are from either the same row or column
+     * @throws InvalidSelectionException
+     */
     private void rowAndColChecker() throws InvalidSelectionException {
         boolean sameX = true;
         boolean sameY = true;
@@ -164,16 +188,35 @@ public class SelectItemsCommand implements Command{
             }
         }
     }
+
+    /**
+     * Invokes all methods that check if the coordinates chosen are valid
+     * @throws InvalidSelectionException
+     */
     public void selectionChecker()throws InvalidSelectionException{
         noItemSelectedChecker(gb.getValidGrid());
         freeSideChecker(gb.getValidGrid());
         rowAndColChecker();
     }
 
+    /**
+     * Set method for the GameBoardView
+     * @param gb GameBoardView
+     */
     public void setGameBoardView(GameBoardView gb){this.gb = gb;}
 
+    /**
+     * Get method for the number of tiles chosen
+     * @return int -> number of tiles chosen
+     */
     public int getNumOfItems(){ return numOfPickItems; }
 
+    /**
+     * Invokes methods to ask the number of tiles, their coordinates and their order for when
+     * they're put in the shelf and to check if the choices made are valid
+     *
+     * @throws InvalidSelectionException
+     */
     @Override
     public void execute() throws InvalidSelectionException{
         this.askUser();

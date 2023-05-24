@@ -25,9 +25,18 @@ public class TextualUI implements UI, Serializable {
     private transient boolean changed = false;
     private transient final Vector<Server> observers = new Vector<>();
 
+    /**
+     * A method that invokes another method to continue reading choices from the client (from connection to match choices)
+     * @return a list of Integers containing the connection and match choices made by the client
+     */
     public static List<Integer> setupConnectionByUser(){
         return AppClient.mainMenu();
     }
+
+    /**
+     * A method that saves the nickname chosen by the client (while making sure that the one entered is valid)
+     * @return the nickname String chosen by the client
+     */
     public static String askNickname(){
         String input;
         System.out.print("\nInsert your nickname >>");
@@ -49,6 +58,9 @@ public class TextualUI implements UI, Serializable {
     private transient Client refClient;
     private transient List<Command> gameActionMenu;
 
+    /**
+     * Constructor method for TextualUI
+     */
     public TextualUI(){
         this.coords = new ArrayList<>();
         this.columnReference = new ArrayList<>();
@@ -56,6 +68,11 @@ public class TextualUI implements UI, Serializable {
                 new SelectColumnCommand(this.columnReference));
     }
 
+    /**
+     * Method for the start of a turn
+     * @param gameView to get and display the GameBoard and to check if the tiles and Shelf column selected are valid
+     * @throws RemoteException
+     */
     public void run(GameView gameView) throws RemoteException{
         this.displayNewTurn(gameView);
         System.out.println("-----------------------------------------------------------------------------------------");
@@ -75,6 +92,10 @@ public class TextualUI implements UI, Serializable {
         }
     }
 
+    /**
+     * Method to display a player's personal objective card
+     * @param player PlayerView to get the player's personal objective card
+     */
     private void displayPersonalObjCard(PlayerView player) {
         System.out.println("\nYour personal objective card:");
         for(int i=0;i<player.getMyPersonalOBjCard().getCardGrid().length;i++){
@@ -109,6 +130,10 @@ public class TextualUI implements UI, Serializable {
         System.out.print("\n\n");
     }
 
+    /**
+     * Method to display both common objective cards
+     * @param game GameView to get the common objective cards
+     */
     private void displayCommonObjCard(GameView game) {
         System.out.println("The first common obj card is " + game.getCommonObjCard().get(0).getType() +
                 "\nCard description: " + game.getCommonObjCard().get(0).getDescription());
@@ -116,6 +141,10 @@ public class TextualUI implements UI, Serializable {
                 "\nCard description: " + game.getCommonObjCard().get(1).getDescription());
     }
 
+    /**
+     * Method to display a player's shelf
+     * @param shelf ShelfView to get the shelf's grid
+     */
     private void displayShelf(ShelfView shelf) {
         System.out.println("Your shelf: ");
         for(int i=0; i<6; i++){
@@ -150,6 +179,10 @@ public class TextualUI implements UI, Serializable {
         System.out.print("\n\n");
     }
 
+    /**
+     * Method to display the GameBoard
+     * @param gameGrid an Item matrix so it can be displayed
+     */
     private void displayGameBoard(Item[][] gameGrid){
         System.out.println("The gameboard is ");
         for(int i=0;i<gameGrid.length;i++){
@@ -184,6 +217,10 @@ public class TextualUI implements UI, Serializable {
         System.out.print("\n\n");
     }
 
+    /**
+     * All the player's information that is displayed before the same player's turn
+     * @param game GameView to get all the players' information
+     */
     private void displayNewTurn(GameView game){
         System.out.println("=================================================================================");
         System.out.println("Your points: " + game.getCurrentPlayer().getScore());
@@ -193,6 +230,11 @@ public class TextualUI implements UI, Serializable {
         displayShelf(game.getCurrentPlayer().getMyShelf());
     }
 
+    /**
+     * The info displayed at the end of a player's turn
+     * @param game GameView to get the common objective cards
+     * @param ply PlayerView to get the players' information
+     */
     public void displayInfo(GameView game, PlayerView ply){
         System.out.println("=================================================================================");
         System.out.println("Your points: " + ply.getScore());
@@ -200,6 +242,10 @@ public class TextualUI implements UI, Serializable {
         displayPersonalObjCard(ply);
     }
 
+    /**
+     * Method that gets the tiles chosen by the player and checks if the choice is valid
+     * @param gb GameBoardView to get the GameBoard's grid
+     */
     public void gameActionOnGameboard(GameBoardView gb) {
         SelectItemsCommand sic = (SelectItemsCommand) this.gameActionMenu.get(0);
         sic.setGameBoardView(gb);
@@ -215,6 +261,12 @@ public class TextualUI implements UI, Serializable {
         //setChangedAndNotifyListener(this.coords);
     }
 
+    /**
+     * Invokes all methods to check if the shelf's column choice is valid
+     * @param sh ShelfView to modify the shelf's grid
+     * @throws RemoteException
+     * @throws FullColumnException
+     */
     public void gameActionOnShelf(ShelfView sh) throws RemoteException, FullColumnException {
         SelectColumnCommand scc = (SelectColumnCommand) this.gameActionMenu.get(1);
         SelectItemsCommand sic = (SelectItemsCommand) this.gameActionMenu.get(0);
@@ -223,30 +275,64 @@ public class TextualUI implements UI, Serializable {
         scc.execute();
     }
 
+    /**
+     * Invokes a method to display the GameBoard
+     * @param gb GameBoardView
+     */
     public void update(GameBoardView gb) {displayGameBoard(gb.getGameGrid());}
 
+    /**
+     * Invokes a method to display the new turn's info
+     * @param game GameView
+     */
     public void update(GameView game) {
         displayNewTurn(game);
     }
 
+    /**
+     * Invokes a method to display the GameBoard
+     * @param gameGrid Item matrix
+     */
     public void update(Item[][] gameGrid) {
         displayGameBoard(gameGrid);
     }
 
+    /**
+     * Invokes a method to display the player's shelf
+     * @param shelf ShelfView
+     */
     public void update(ShelfView shelf) {
         displayShelf(shelf);
     }
+
+    /**
+     * Invokes a method to display a given message
+     * @param msg String given
+     */
     public void update(String msg) {System.out.println(msg);}
 
+    /**
+     * Sets a reference flag to a client
+     * @param client Client to be referenced
+     */
     public void setReferenceClient(Client client){
         this.refClient = client;
     }
 
+    /**
+     * Invokes methods that set the "changed" flag to true and notifies observers about the client
+     * and its tiles and the shelf's column choices
+     * @throws RemoteException
+     */
     private void setChangedAndNotifyListener() throws RemoteException{
         setChanged();
         notifyObservers(this.refClient, this.coords, this.columnReference.remove(0));
     }
 
+    /**
+     * Method that adds a Server to a Server Vector
+     * @param o Server to be added
+     */
     @Override
     public void addListener(Server o) {
         if (o == null)
@@ -256,6 +342,13 @@ public class TextualUI implements UI, Serializable {
         }
     }
 
+    /**
+     * Notifies observers about the client and its tiles and the shelf's column choices
+     * @param o Client that made the choices
+     * @param arg1 Tiles' coordinates chosen
+     * @param arg2 Column chosen
+     * @throws RemoteException
+     */
     @Override
     public void notifyObservers(Client o, List<int[]> arg1, Integer arg2) throws RemoteException {
         Object[] arrLocal;
@@ -271,10 +364,16 @@ public class TextualUI implements UI, Serializable {
         }
     }
 
+    /**
+     * Sets the "changed" flag to true
+     */
     public void setChanged() {
         changed = true;
     }
 
+    /**
+     * Sets the "changed" flag to false
+     */
     public void clearChanged() {
         changed = false;
     }

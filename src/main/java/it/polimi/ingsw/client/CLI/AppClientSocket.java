@@ -17,6 +17,12 @@ import java.util.List;
 public class AppClientSocket extends AppClient {
     private static final String SERVER_ADDRESS = "192.168.0.61";
     private static final int SERVER_PORT = 1234;
+
+    /**
+     * Manages all aspects of socket connection, the choice bewteen CLI/GUI and to either create or join a match
+     * @param args
+     * @throws RemoteException
+     */
     public static void launchClient(Object[] args) throws RemoteException {
         String serverAddress = (String) args[1];
         ServerStub appServerStub = new ServerStub(serverAddress, SERVER_PORT);

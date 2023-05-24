@@ -13,6 +13,10 @@ public class MyShelfieAppClient {
     private static final int RMI_PORT = 1099;
     private static final int SOCKET_PORT = 1234;
     private static final int QUIT_IN_MYSHELFIE_APP_CLIENT_ERROR = -1;
+
+    /**
+     * Makes the client connect to RMI or Socket based on the choice taken
+     */
     public static void startClient() {
         List<Object> connectionDecisions = welcome();
         Object[] mainArgs = {"CLI", connectionDecisions.get(1), connectionDecisions.get(2)};
@@ -40,6 +44,11 @@ public class MyShelfieAppClient {
         }
     }
 
+    /**
+     * Prints a "welcome" message, makes the client choose between RMI or socket connection and type the IP address and
+     * saves all the choices made
+     * @return an Object List with all the choices made
+     */
     private static List<Object> welcome() {
         List<Object> selections = new ArrayList<>();
         int in;
@@ -66,6 +75,9 @@ public class MyShelfieAppClient {
         return selections;
     }
 
+    /**
+     * Prints an error message in case a connection has gone wrong
+     */
     private static void terminationError(){
         System.err.println("Something went wrong! Closing...\nTERMINATED");
         System.exit(QUIT_IN_MYSHELFIE_APP_CLIENT_ERROR);

@@ -21,6 +21,12 @@ public class AppClientRMI extends AppClient{
     private static final String SERVER_ADRESS = "192.168.0.61";
     private static final int SERVER_PORT = 1099;
 
+    /**
+     * Manages all aspects of RMI connection, the choice bewteen CLI/GUI and to either create or join a match
+     * @param args
+     * @throws RemoteException
+     * @throws NotBoundException
+     */
     public static void launchClient(Object[] args) throws RemoteException, NotBoundException {
         Server matchServerRef = null;
         String serverAddress = (String) args[1];

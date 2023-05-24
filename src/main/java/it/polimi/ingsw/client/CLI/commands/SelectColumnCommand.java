@@ -13,11 +13,17 @@ public class SelectColumnCommand implements Command{
     private ShelfView shelfView;
     private int numOfItems;
 
+    /**
+     * Constructor method
+     */
     public SelectColumnCommand(List<Integer> param){
         this.scanner = new Scanner(System.in);
         this.columnReference = param;
     }
 
+    /**
+     * Prints to the player a question about the shelf's column where the tiles will be put in and saves the choice made
+     */
     public void askUser(){
         System.out.print("\nIn what column do you want to insert your items (from 1 to 5) ? >>");
         this.col = this.scanner.nextInt();
@@ -28,19 +34,38 @@ public class SelectColumnCommand implements Command{
         this.col = this.col - 1;
     }
 
+    /**
+     * Checks if the shelf's column selected is valid
+     * @param columnSelected the shelf's column selected
+     * @throws FullColumnException
+     */
     private void columnCheck(int columnSelected) throws FullColumnException {
         int[] lastRows = shelfView.getLastRow();
         if(numOfItems > lastRows[columnSelected]+1){
             throw new FullColumnException();
         }
     }
+
+    /**
+     * Set method for the ShelfView
+     * @param shelf ShelfView
+     */
     public void setShelfView(ShelfView shelf){
         this.shelfView= shelf;
     }
+
+    /**
+     * Set method for the numOfItems (number of tiles taken)
+     * @param numOfItems int -> number of tiles taken
+     */
     public void setMaxNumOfItems(int numOfItems){
         this.numOfItems=numOfItems;
     }
 
+    /**
+     * Invokes all methods to ask the shelf's column, check if it is valid and saves it in an Integer List
+     * @throws FullColumnException
+     */
     @Override
     public void execute() throws FullColumnException {
         this.askUser();
