@@ -1,18 +1,26 @@
 package it.polimi.ingsw.client.GUI.controllers;
 
+import it.polimi.ingsw.client.CLI.commands.Command;
+import it.polimi.ingsw.client.CLI.commands.SelectColumnCommand;
+import it.polimi.ingsw.client.CLI.commands.SelectItemsCommand;
 import it.polimi.ingsw.client.GUI.GUI;
+import it.polimi.ingsw.exceptions.FullColumnException;
+import it.polimi.ingsw.exceptions.InvalidSelectionException;
+import it.polimi.ingsw.modelview.GameBoardView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class MainGameController implements GUIController{
     @FXML
@@ -31,10 +39,34 @@ public class MainGameController implements GUIController{
     private Label player4Label;
     @FXML
     private Label yourNameLabel;
+    @FXML
+    private Button confirmSelection;
+    @FXML
+    private List<ImageView> imgsList;
+    @FXML
+    private List<BorderPane> wrappersList;
+    private Map<String, BorderPane> wrapperMap = new HashMap<>();
+    @FXML
+    private List<Button> itemsList;
+    private int numOfItems = 0;
+    private boolean[][] gameboardItemMatrix = new boolean[9][9];
+    private List<int[]> selectedCoords = new ArrayList<>();
+    private List<Integer> columnReference = new ArrayList<>();
+    private List<Command> commands = Arrays.asList(new SelectItemsCommand(this.selectedCoords),
+            new SelectColumnCommand(this.columnReference));
     private GUI gui;
-    private List<Label> activeLabels = new ArrayList<>();
+    private final List<Label> activeLabels = new ArrayList<>();
+    private String warning = "sounds/Warning.mp3";
     private String MenuSelection = "sounds/MenuSelection.mp3";
     private MediaPlayer mediaPlayer;
+
+    public void initialize(){
+        int counter = 0;
+        for(BorderPane bp : wrappersList){
+            wrapperMap.put(itemsList.get(counter).toString(), bp);
+            counter++;
+        }
+    }
 
     public void objectivesButtonAction(ActionEvent event){
         System.out.println("Objectives button pressed");
@@ -49,8 +81,9 @@ public class MainGameController implements GUIController{
     public void updateScoreLabel(int score){
         scoreLabel.setText(Integer.toString(score));
     }
-    public void updateGameboard(){
-
+    public void updateGameboard(GameBoardView gameBoardView){
+        SelectItemsCommand sic = (SelectItemsCommand) this.commands.get(0);
+        sic.setGameBoardView(gameBoardView);
     }
     public void updateShelf(){
 
@@ -86,6 +119,52 @@ public class MainGameController implements GUIController{
         yourNameLabel.setText(name);
     }
 
+    public void itemClick(ActionEvent event){
+        System.out.println("Item click");
+        System.out.println(event.getSource().toString());
+        String temp = event.getSource().toString();
+        String[] stringArray = temp.split("_");
+        int row = Integer.parseInt(stringArray[1]);
+        int col = Integer.parseInt(stringArray[2]);
+        if(!gameboardItemMatrix[row][col]){
+            if(numOfItems >= 3) return;
+            //da aggiungere
+            gameboardItemMatrix[row][col] = true;
+            numOfItems++;
+            int[] coords = {row, col};
+            selectedCoords.add(coords);
+            wrapperMap.get(event.getSource().toString()).getStyleClass().add("image-view-wrapper");
+            if(numOfItems == 1) {
+                confirmSelection.setOpacity(1);
+                confirmSelection.setDisable(false);
+            }
+        }
+        else {
+            if(numOfItems >= 0){
+                gameboardItemMatrix[row][col] = false;
+                numOfItems--;
+                wrapperMap.get(event.getSource().toString()).getStyleClass().clear();
+                if(numOfItems == 0) {
+                    confirmSelection.setOpacity(0.6);
+                    confirmSelection.setDisable(true);
+                }
+            }
+        }
+        //_1_3
+        //imgsList.get(0).setImage(new Image("/graphics/item_tiles/Libri1.1.png"));
+        //wrapper13.getStyleClass().add("image-view-wrapper");
+    }
+
+    public void confirmSelectionAction(ActionEvent event){
+        try{
+
+            this.commands.get(0).check();
+        } catch (InvalidSelectionException e) {
+            playSound(warning);
+            this.updateMessageBox("Invalid items selection:\n" + e.getMessage());
+        } catch (FullColumnException ignored) {
+        }
+    }
 
     @Override
     public void setGUI(GUI gui) {

@@ -13,17 +13,17 @@
          </image>
       </ImageView>
       <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="300.0" layoutY="29.0" pickOnBounds="true" preserveRatio="true" />
-      <AnchorPane layoutX="31.0" layoutY="29.0" prefHeight="260.0" prefWidth="420.0" styleClass="ObjectiveCardPane" stylesheets="@../css/ObjectiveCardPane.css">
+      <AnchorPane layoutX="31.0" layoutY="15.0" prefHeight="275.0" prefWidth="420.0" styleClass="ObjectiveCardPane" stylesheets="@../css/ObjectiveCardPane.css">
          <children>
             <ImageView fx:id="comObjCard1" fitHeight="179.0" fitWidth="235.0" layoutX="100.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true" styleClass="objectiveImg" />
             <Label layoutX="96.0" layoutY="16.0" prefHeight="161.0" prefWidth="238.0" styleClass="objectiveImg" />
-            <Label layoutX="1.0" prefHeight="260.0" prefWidth="420.0" styleClass="objectiveImg" />
+            <Label layoutX="1.0" prefHeight="275.0" prefWidth="420.0" styleClass="objectiveImg" />
             <ImageView fx:id="topTwo" fitHeight="66.0" fitWidth="65.0" layoutX="238.0" layoutY="61.0" pickOnBounds="true" preserveRatio="true" rotate="-8.0" visible="false">
                <image>
                   <Image url="@../graphics/scoring_tokens/scoring_2.jpg" />
                </image>
             </ImageView>
-            <Label fx:id="comObjCardDesc1" layoutX="10.0" layoutY="189.0" prefHeight="66.0" prefWidth="405.0" styleClass="descriptions" stylesheets="@../css/ObjectiveCardPane.css" text="Description" />
+            <Label fx:id="comObjCardDesc1" layoutX="10.0" layoutY="189.0" prefHeight="75.0" prefWidth="405.0" styleClass="descriptions" stylesheets="@../css/ObjectiveCardPane.css" text="Description" />
             <ImageView fx:id="topFour" fitHeight="66.0" fitWidth="65.0" layoutX="238.0" layoutY="61.0" pickOnBounds="true" preserveRatio="true" rotate="-8.0" visible="false">
                <image>
                   <Image url="@../graphics/scoring_tokens/scoring_4.jpg" />
@@ -41,12 +41,12 @@
             </ImageView>
          </children>
       </AnchorPane>
-      <AnchorPane layoutX="32.0" layoutY="300.0" prefHeight="260.0" prefWidth="420.0" styleClass="ObjectiveCardPane" stylesheets="@../css/ObjectiveCardPane.css">
+      <AnchorPane layoutX="32.0" layoutY="305.0" prefHeight="275.0" prefWidth="420.0" styleClass="ObjectiveCardPane" stylesheets="@../css/ObjectiveCardPane.css">
          <children>
             <ImageView fx:id="comObjCard2" fitHeight="179.0" fitWidth="235.0" layoutX="100.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true" styleClass="objectiveImg" />
             <Label layoutX="96.0" layoutY="16.0" prefHeight="161.0" prefWidth="238.0" styleClass="objectiveImg" />
-            <Label prefHeight="260.0" prefWidth="420.0" styleClass="objectiveImg" />
-            <Label fx:id="comObjCardDesc2" layoutX="10.0" layoutY="187.0" prefHeight="66.0" prefWidth="405.0" styleClass="descriptions" stylesheets="@../css/ObjectiveCardPane.css" text="Description" />
+            <Label prefHeight="280.0" prefWidth="420.0" styleClass="objectiveImg" />
+            <Label fx:id="comObjCardDesc2" layoutX="10.0" layoutY="187.0" prefHeight="75.0" prefWidth="405.0" styleClass="descriptions" stylesheets="@../css/ObjectiveCardPane.css" text="Description" />
             <ImageView fx:id="bottomTwo" fitHeight="66.0" fitWidth="65.0" layoutX="238.0" layoutY="61.0" pickOnBounds="true" preserveRatio="true" rotate="-8.0" visible="false">
                <image>
                   <Image url="@../graphics/scoring_tokens/scoring_2.jpg" />

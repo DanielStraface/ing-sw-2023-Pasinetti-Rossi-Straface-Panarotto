@@ -45,7 +45,7 @@ public class TextualUI implements UI, Serializable {
         while(!UI.nicknameController(input)) {
             System.out.print("""
                     
-                    The max nickname length must be 20 chars.
+                    The max nickname length must be 15 chars.
                     This chars are not allowed !£$%&/()=?' , please try again
                     >>""");
             input = scanner.nextLine();
@@ -256,6 +256,7 @@ public class TextualUI implements UI, Serializable {
                 break;
             } catch (InvalidSelectionException e) {
                 System.out.println("Wrong item selection: " + e.getMessage());
+            } catch (FullColumnException ignored) {
             }
         }
         //setChangedAndNotifyListener(this.coords);
@@ -272,7 +273,10 @@ public class TextualUI implements UI, Serializable {
         SelectItemsCommand sic = (SelectItemsCommand) this.gameActionMenu.get(0);
         scc.setShelfView(sh);
         scc.setMaxNumOfItems(sic.getNumOfItems());
-        scc.execute();
+        try {
+            scc.execute();
+        } catch (InvalidSelectionException ignored) {
+        }
     }
 
     /**

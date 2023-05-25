@@ -11,8 +11,9 @@ import it.polimi.ingsw.modelview.ShelfView;
 import java.rmi.RemoteException;
 
 public interface UI extends ViewSubject {
+    int MAX_NICKNAME_LEN = 15;
     static boolean nicknameController(String input){
-        if(input.length() > 20 | input.contains("%") || input.contains("!") || input.contains("?") || input.contains("=") ||
+        if(input.length() > MAX_NICKNAME_LEN | input.contains("%") || input.contains("!") || input.contains("?") || input.contains("=") ||
                 input.contains("(") || input.contains(")") || input.contains("'") ||
                 input.contains("/") || input.contains("£") || input.contains("$") || input.contains("€"))
             return false;

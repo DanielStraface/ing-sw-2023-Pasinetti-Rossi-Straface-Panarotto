@@ -11,4 +11,5 @@ public interface Command {
      * @throws FullColumnException
      */
     void execute() throws InvalidSelectionException, FullColumnException;
+    void check() throws InvalidSelectionException, FullColumnException;
 }

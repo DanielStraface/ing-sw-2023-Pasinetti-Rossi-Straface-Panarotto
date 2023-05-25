@@ -58,7 +58,7 @@ public class Controller {
             message.append(player.getNickname()).append("!");
         for(Client client : this.getClients()){
             if(client.getClientID() == p.getClientID()) msg = "$You are the first player.";
-            else msg = "$" + p.getNickname() + " is the first player. Wait your turn!";
+            else msg = "$" + p.getNickname() + " is the first player.\nWait your turn!";
             client.update(message + msg + " Enjoy!");
         }
         try {

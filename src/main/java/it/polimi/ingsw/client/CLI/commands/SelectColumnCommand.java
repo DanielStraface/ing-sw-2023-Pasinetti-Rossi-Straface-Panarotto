@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client.CLI.commands;
 
 import it.polimi.ingsw.exceptions.FullColumnException;
+import it.polimi.ingsw.exceptions.InvalidSelectionException;
 import it.polimi.ingsw.modelview.ShelfView;
 
 import java.util.List;
@@ -67,8 +68,13 @@ public class SelectColumnCommand implements Command{
      * @throws FullColumnException
      */
     @Override
-    public void execute() throws FullColumnException {
+    public void execute() throws FullColumnException, InvalidSelectionException {
         this.askUser();
+        this.check();
+    }
+
+    @Override
+    public void check() throws InvalidSelectionException, FullColumnException {
         columnCheck(this.col);
         this.columnReference.add(Integer.valueOf(this.col));
     }

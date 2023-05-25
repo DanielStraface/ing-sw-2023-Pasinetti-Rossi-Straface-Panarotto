@@ -1,5 +1,8 @@
 package it.polimi.ingsw.client.CLI.commands;
 
+import it.polimi.ingsw.exceptions.FullColumnException;
+import it.polimi.ingsw.exceptions.InvalidSelectionException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -59,8 +62,13 @@ public class SelectOrderCommand implements Command{
      * Invokes methods to ask the tiles' order and saves the choice made in a List of an int array
      */
     @Override
-    public void execute() {
+    public void execute() throws InvalidSelectionException, FullColumnException {
         this.askUser();
+        this.check();
+    }
+
+    @Override
+    public void check() throws InvalidSelectionException, FullColumnException {
         List<int[]> temp = new ArrayList<>();
         for(Integer i : this.sortingOrder)
             temp.add(this.coordsToOrder.get(i));

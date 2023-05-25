@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.GUI;
 
+import it.polimi.ingsw.client.CLI.commands.SelectItemsCommand;
 import it.polimi.ingsw.client.GUI.controllers.*;
 import it.polimi.ingsw.client.UI;
 import it.polimi.ingsw.distributed.Client;
@@ -167,7 +168,7 @@ public class GUI extends Application implements UI {
 
     @Override
     public void update(GameBoardView gb) {
-
+        Platform.runLater(() -> mainGameController.updateGameboard(gb));
     }
 
     @Override
@@ -209,7 +210,9 @@ public class GUI extends Application implements UI {
                         int startPlayersName = msg.indexOf("%");
                         int endPlayersName = msg.indexOf("$");
                         String substring = msg.substring(startPlayersName, endPlayersName);
-                        String finalMsg1 = msg.substring(0, startPlayersName) + msg.substring(endPlayersName + 1);
+                        int thePlayersPos = msg.indexOf("The players'");
+                        String finalMsg1 = msg.substring(0, thePlayersPos) +
+                                msg.substring(endPlayersName + 1);
                         Platform.runLater(() -> {
                             mainGameController.updateCurrentTurnLabel(substring);
                             mainGameController.updateMessageBox(finalMsg1);
@@ -222,7 +225,8 @@ public class GUI extends Application implements UI {
 
     @Override
     public void run(GameView gameView) {
-
+        Platform.runLater(() -> mainGameController.updateCurrentTurnLabel(gameView.getCurrentPlayer().getNickname()));
+        this.update(gameView.getGameBoard());
     }
 
     @Override
@@ -236,7 +240,6 @@ public class GUI extends Application implements UI {
             });
             areCardsSet = true;
         }
-        //comObjCardPoints
     }
 
     @Override

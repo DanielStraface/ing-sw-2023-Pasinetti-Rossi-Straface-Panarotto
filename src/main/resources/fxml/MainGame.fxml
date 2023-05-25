@@ -5,7 +5,9 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 
+<?import java.util.ArrayList?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="719.0" prefWidth="1420.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.GUI.controllers.MainGameController">
    <children>
       <ImageView fitHeight="720.0" fitWidth="796.0" pickOnBounds="true" preserveRatio="true">
@@ -20,45 +22,25 @@
       </ImageView>
       <AnchorPane layoutX="5.0" layoutY="5.0" prefHeight="711.0" prefWidth="1405.0">
          <children>
-            <ImageView fitHeight="738.0" fitWidth="711.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../graphics/boards/livingroom.png" />
-               </image>
-            </ImageView>
             <ImageView fitHeight="560.0" fitWidth="552.0" layoutX="727.0" layoutY="160.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../graphics/boards/bookshelf_orth.png" />
                </image>
             </ImageView>
-            <Label layoutX="1283.0" layoutY="196.0" prefHeight="40.0" prefWidth="95.0" text="YOUR NAME:" />
+            <Label layoutX="1280.0" layoutY="196.0" prefHeight="40.0" prefWidth="95.0" text="YOUR NAME:" />
             <Button fx:id="objectivesButton" layoutX="1257.0" layoutY="48.0" mnemonicParsing="false" onAction="#objectivesButtonAction" prefHeight="59.0" prefWidth="140.0" text="Objectives" />
-            <Label fx:id="yourNameLabel" layoutX="1313.0" layoutY="255.0" visible="false" />
-            <Label layoutX="1299.0" layoutY="310.0" text="Your score:" />
-            <Label fx:id="scoreLabel" layoutX="1317.0" layoutY="347.0" text="0" />
+            <Label fx:id="yourNameLabel" layoutX="1280.0" layoutY="255.0" visible="false" />
+            <Label layoutX="1280.0" layoutY="310.0" text="YOUR SCORE:" />
+            <Label fx:id="scoreLabel" layoutX="1309.0" layoutY="347.0" text="0" />
             <Label fx:id="player1Label" layoutX="1240.0" layoutY="470.0" prefHeight="25.0" prefWidth="175.0" text="\%DEFAULT%" visible="false" />
             <Label fx:id="messageBox" layoutX="811.0" layoutY="4.0" prefHeight="146.0" prefWidth="380.0" text="MessageBox" />
-            <ImageView fitHeight="167.0" fitWidth="186.0" layoutX="6.0" layoutY="545.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../graphics/misc/Sacchetto_Chiuso.png" />
-               </image>
-            </ImageView>
             <ImageView fitHeight="155.0" fitWidth="125.0" layoutX="728.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true" visible="false">
                <image>
                   <Image url="@../graphics/misc/firstplayertoken.png" />
                </image></ImageView>
-            <ImageView fitHeight="78.0" fitWidth="71.0" layoutX="577.0" layoutY="498.0" pickOnBounds="true" preserveRatio="true" rotate="9.0">
-               <image>
-                  <Image url="@../graphics/scoring_tokens/end_game.jpg" />
-               </image>
-            </ImageView>
             <ImageView fitHeight="581.0" fitWidth="552.0" layoutX="727.0" layoutY="148.0" pickOnBounds="true" preserveRatio="true" visible="false">
                <image>
                   <Image url="@../graphics/boards/bookshelf.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="167.0" fitWidth="186.0" layoutX="6.0" layoutY="545.0" pickOnBounds="true" preserveRatio="true" visible="false">
-               <image>
-                  <Image url="@../graphics/misc/Sacchetto_Aperto.png" />
                </image>
             </ImageView>
             <Label layoutX="1238.0" layoutY="430.0" prefHeight="18.0" prefWidth="160.0" text="PLAYERS" />
@@ -67,5 +49,90 @@
             <Label fx:id="player4Label" layoutX="1240.0" layoutY="590.0" prefHeight="25.0" prefWidth="175.0" text="\%DEFAULT%" visible="false" />
          </children>
       </AnchorPane>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0">
+         <children>
+            <ImageView fitHeight="738.0" fitWidth="711.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../graphics/boards/livingroom.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="78.0" fitWidth="71.0" layoutX="577.0" layoutY="498.0" pickOnBounds="true" preserveRatio="true" rotate="9.0">
+               <image>
+                  <Image url="@../graphics/scoring_tokens/end_game.jpg" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="167.0" fitWidth="186.0" layoutX="40.0" layoutY="550.0" pickOnBounds="true" preserveRatio="true" visible="false">
+               <image>
+                  <Image url="@../graphics/misc/Sacchetto_Aperto.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="167.0" fitWidth="186.0" layoutX="40.0" layoutY="550.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../graphics/misc/Sacchetto_Chiuso.png" />
+               </image>
+            </ImageView>
+            <Button fx:id="_1_3_" layoutX="234.0" layoutY="100.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#itemClick" prefHeight="80.0" prefWidth="80.0" styleClass="itemButton" stylesheets="@../css/MainGame.css" text="Button">
+               <graphic>
+                  <BorderPane fx:id="wrapper13">
+                     <center>
+                        <ImageView fx:id="image13" fitHeight="65.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../graphics/item_tiles/Gatti1.1.png" />
+                           </image>
+                        </ImageView>
+                     </center>
+                  </BorderPane>
+               </graphic>
+            </Button>
+            <Button fx:id="_2_3_" layoutX="234.0" layoutY="172.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#itemClick" prefHeight="80.0" prefWidth="80.0" styleClass="itemButton" stylesheets="@../css/MainGame.css" text="Button">
+               <graphic>
+                  <BorderPane fx:id="wrapper23">
+                     <center>
+                        <ImageView fx:id="image23" fitHeight="65.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../graphics/item_tiles/Gatti1.1.png" />
+                           </image>
+                        </ImageView>
+                     </center>
+                  </BorderPane>
+               </graphic>
+            </Button>
+            <Button fx:id="_1_4_" layoutX="307.0" layoutY="100.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#itemClick" prefHeight="80.0" prefWidth="80.0" styleClass="itemButton" stylesheets="@../css/MainGame.css" text="Button">
+               <graphic>
+                  <BorderPane fx:id="wrapper14">
+                     <center>
+                        <ImageView fx:id="image14" fitHeight="65.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../graphics/item_tiles/Gatti1.1.png" />
+                           </image>
+                        </ImageView>
+                     </center>
+                  </BorderPane>
+               </graphic>
+            </Button>
+            <Button fx:id="confirmSelection" disable="true" layoutX="40.0" layoutY="44.0" mnemonicParsing="false" onAction="#confirmSelectionAction" opacity="0.6" prefHeight="26.0" prefWidth="95.0" text="Confirm" />
+         </children>
+      </AnchorPane>
    </children>
+   <fx:define>
+      <ArrayList fx:id="itemsList">
+         <fx:reference source="_1_3_" />
+         <fx:reference source="_1_4_" />
+         <fx:reference source="_2_3_" />
+      </ArrayList>
+   </fx:define>
+   <fx:define>
+      <ArrayList fx:id="imgsList">
+         <fx:reference source="image13" />
+         <fx:reference source="image14" />
+         <fx:reference source="image23" />
+      </ArrayList>
+   </fx:define>
+   <fx:define>
+      <ArrayList fx:id="wrappersList">
+         <fx:reference source="wrapper13" />
+         <fx:reference source="wrapper14" />
+         <fx:reference source="wrapper23" />
+      </ArrayList>
+   </fx:define>
 </AnchorPane>

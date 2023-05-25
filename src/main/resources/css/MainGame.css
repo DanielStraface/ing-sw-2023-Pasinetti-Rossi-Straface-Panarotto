@@ -1,0 +1,14 @@
+.itemButton {
+    -fx-background-color: transparent;
+    -fx-background-size: stretch;
+    -fx-alignment: center;
+}
+.clicked-button {
+    -fx-border-width: 2px;
+    -fx-border-color: blue;
+}
+.image-view-wrapper {
+    -fx-border-width: 2px;
+    -fx-border-style: solid;
+    -fx-border-color: blue;
+}

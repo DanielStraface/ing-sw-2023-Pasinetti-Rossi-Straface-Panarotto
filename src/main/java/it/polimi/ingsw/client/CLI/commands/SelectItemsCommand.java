@@ -218,10 +218,15 @@ public class SelectItemsCommand implements Command{
      * @throws InvalidSelectionException
      */
     @Override
-    public void execute() throws InvalidSelectionException{
+    public void execute() throws InvalidSelectionException, FullColumnException {
         this.askUser();
-        this.selectionChecker();
+        this.check();
         this.sortingCommand.itemToOrder(this.coords);
         this.sortingCommand.execute();
+    }
+
+    @Override
+    public void check() throws InvalidSelectionException {
+        this.selectionChecker();
     }
 }
