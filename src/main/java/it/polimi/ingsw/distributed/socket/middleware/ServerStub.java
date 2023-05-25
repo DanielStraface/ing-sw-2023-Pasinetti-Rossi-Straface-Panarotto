@@ -26,6 +26,11 @@ public class ServerStub implements Server {
     private ObjectInputStream ois;
     private static final String NO_GAME_ON_SERVER = "NO_GAME";
 
+    /**
+     * Constructor method
+     * @param ip IP address
+     * @param port Port
+     */
     public ServerStub(String ip, int port){
         this.ip = ip;
         this.port = port;
@@ -35,6 +40,11 @@ public class ServerStub implements Server {
             System.err.println("Cannot establish the socket connection: " + e.getMessage());
         }
     }
+
+    /**
+     * Writes a String containing "START GAME" to the ObjectOutputStream, then flushes and resets
+     * @throws RemoteException
+     */
     @Override
     public void startGame() throws RemoteException {
         try{
@@ -45,11 +55,25 @@ public class ServerStub implements Server {
         }
     }
 
+    /**
+     * Registers a client with his nickname to the server and invokes a method to send a "START GAME" message
+     * @param client Client registered
+     * @param nickname the client's nickname
+     * @throws RemoteException
+     */
     @Override
     public void register(Client client, String nickname) throws RemoteException {
         this.startGame();
     }
 
+    /**
+     * Writes an int[] List (coordinates chosen) and an Integer (column chosen) to the ObjectOutputStream,
+     * then flushes and resets after doing each one of those
+     * @param client Client giving the choice
+     * @param coords Coordinates chosen
+     * @param column Column chosen
+     * @throws RemoteException
+     */
     @Override
     public void update(Client client, List<int[]> coords, Integer column) throws RemoteException {
         try{
@@ -62,6 +86,17 @@ public class ServerStub implements Server {
         }
     }
 
+    /**
+     * Method that reads any type of object from the Object Input Stream received from the client and acts accordingly
+     * based on the object received:
+     *             GameView: is assigned to the "cgmv" List and is updated from the client
+     *             Integer: is assigned to the "id" Integer  and is updated from the client
+     *             String: Calls a system.exit if it is equal to "NO_GAME_ON_SERVER"
+     *
+     * @param client Client from which the object is received
+     * @throws RemoteException
+     * @throws NotMessageFromServerYet
+     */
     public void receive(Client client) throws RemoteException, NotMessageFromServerYet {
         Object o;
         GameView gmv;
@@ -105,6 +140,10 @@ public class ServerStub implements Server {
         }
     }
 
+    /**
+     * Creates a new connection
+     * @throws RemoteException
+     */
     private void createConnection() throws RemoteException{
         try {
             this.socket = new Socket(ip, port);
@@ -124,11 +163,20 @@ public class ServerStub implements Server {
         }
     }
 
+    /**
+     * Method used to flush and reset an Object Output Stream
+     * @param o Object Output Stream
+     * @throws IOException
+     */
     private void flushAndReset(ObjectOutputStream o) throws IOException {
         o.flush();
         o.reset();
     }
 
+    /**
+     * Closes a socket
+     * @throws RemoteException
+     */
     public void close() throws RemoteException{
         try{
             socket.close();
@@ -137,6 +185,13 @@ public class ServerStub implements Server {
         }
     }
 
+    /**
+     * Writes a nickname String to the ObjectOutputStream, then flushes, resets and sets the "result" boolean to true
+     * if successful
+     * @param nickname String
+     * @return result boolean
+     * @throws RemoteException
+     */
     public boolean log(String nickname) throws RemoteException{
         Boolean result;
         try{
@@ -155,6 +210,11 @@ public class ServerStub implements Server {
         }
     }
 
+    /**
+     * Writes a nickname String (the logged player to be removed) to the ObjectOutputStream, then flushes and resets
+     * @param nickname String
+     * @throws RemoteException
+     */
     public void removeLoggedUser(String nickname) throws RemoteException{
         try{
             oos.writeObject(nickname);
@@ -164,6 +224,13 @@ public class ServerStub implements Server {
         }
     }
 
+    /**
+     * Writes a AppServer.typeOfMatch (enum) to the ObjectOutputStream, then flushes and resets and sets the "result" boolean to true
+     * if successful
+     * @param type Match type enum
+     * @throws RemoteException
+     * @throws NotSupportedMatchesException
+     */
     public void connect(AppServer.typeOfMatch type) throws RemoteException, NotSupportedMatchesException {
         Object o;
         boolean result;

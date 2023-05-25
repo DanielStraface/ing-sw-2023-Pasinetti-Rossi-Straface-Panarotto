@@ -225,6 +225,10 @@ public class SelectItemsCommand implements Command{
         this.sortingCommand.execute();
     }
 
+    /**
+     * Checks if the choices made are valid
+     * @throws InvalidSelectionException
+     */
     @Override
     public void check() throws InvalidSelectionException {
         this.selectionChecker();

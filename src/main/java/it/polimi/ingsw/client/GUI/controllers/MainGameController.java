@@ -58,6 +58,7 @@ public class MainGameController implements GUIController{
     private final List<Label> activeLabels = new ArrayList<>();
     private String warning = "sounds/Warning.mp3";
     private String MenuSelection = "sounds/MenuSelection.mp3";
+    private String ItemSelect = "sounds/ItemSelect.mp3";
     private MediaPlayer mediaPlayer;
 
     public void initialize(){
@@ -121,6 +122,7 @@ public class MainGameController implements GUIController{
 
     public void itemClick(ActionEvent event){
         System.out.println("Item click");
+        playSound(ItemSelect);
         System.out.println(event.getSource().toString());
         String temp = event.getSource().toString();
         String[] stringArray = temp.split("_");

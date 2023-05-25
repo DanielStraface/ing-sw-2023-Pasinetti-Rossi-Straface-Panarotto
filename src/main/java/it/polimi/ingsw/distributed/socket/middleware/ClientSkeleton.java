@@ -22,6 +22,10 @@ public class ClientSkeleton implements Client {
     private Integer auxiliaryColumn;
     private String nickname;
 
+    /**
+     * Constructor method
+     * @throws RemoteException
+     */
     public ClientSkeleton(Socket socket) throws RemoteException {
         try {
             this.oos = new ObjectOutputStream(socket.getOutputStream());
@@ -36,6 +40,11 @@ public class ClientSkeleton implements Client {
         }
     }
 
+    /**
+     * Writes GameView to the ObjectOutputStream, then flushes and resets
+     * @param game GameView
+     * @throws RemoteException
+     */
     @Override
     public void update(GameView game) throws RemoteException {
         try{
@@ -46,6 +55,11 @@ public class ClientSkeleton implements Client {
         }
     }
 
+    /**
+     * Writes a String containing a message to the ObjectOutputStream, then flushes and resets
+     * @param msg String -> message
+     * @throws RemoteException
+     */
     @Override
     public void update(String msg) throws RemoteException {
         try{
@@ -56,6 +70,11 @@ public class ClientSkeleton implements Client {
         }
     }
 
+    /**
+     * Writes a clientID to the ObjectOutputStream, then flushes and resets
+     * @param clientID clientID
+     * @throws RemoteException
+     */
     @Override
     public void update(int clientID) throws RemoteException {
         try{
@@ -67,16 +86,31 @@ public class ClientSkeleton implements Client {
         }
     }
 
+    /**
+     * Get method for a nickname string
+     * @return nickname String
+     * @throws RemoteException
+     */
     @Override
     public String getNickname() throws RemoteException {
         return this.nickname;
     }
 
+    /**
+     * Get method for a clientID
+     * @return int -> clientID
+     * @throws RemoteException
+     */
     @Override
     public int getClientID() throws RemoteException {
         return this.clientID;
     }
 
+    /**
+     * Reads a nickname String from Object Input Stream and returns it
+     * @return nickname String
+     * @throws RemoteException
+     */
     public String receiveNicknameToLog() throws RemoteException{
         String nickname;
         try{
@@ -89,11 +123,20 @@ public class ClientSkeleton implements Client {
         }
     }
 
+    /**
+     * Set method for Nickname
+     * @param nickname String
+     */
     public void setNickname(String nickname){
         this.nickname = nickname;
     }
 
-    public void sendLogginResult(Boolean result) throws RemoteException{
+    /**
+     * Writes a boolean with a positive(true) or negative(false) result to the ObjectOutputStream, then flushes and resets
+     * @param result Boolean
+     * @throws RemoteException
+     */
+    public void sendLoginResult(Boolean result) throws RemoteException{
         try{
             oos.writeObject(result);
             flushAndReset(oos);
@@ -102,6 +145,11 @@ public class ClientSkeleton implements Client {
         }
     }
 
+    /**
+     * Reads an AppServer.TypeOfMatch (enum) from Object Input Stream and returns it
+     * @return Match Type enum
+     * @throws RemoteException
+     */
     public AppServer.typeOfMatch setupMatch() throws RemoteException {
         try{
             Object o = ois.readObject();
@@ -114,6 +162,12 @@ public class ClientSkeleton implements Client {
         }
     }
 
+    /**
+     * Writes a boolean (true if the server has been successfully created)
+     * to the ObjectOutputStream after flushing and resetting, then flushes again
+     * @param value Boolean
+     * @throws RemoteException
+     */
     public void sendMatchServer(Boolean value) throws RemoteException{
         try{
             flushAndReset(oos);
@@ -124,6 +178,17 @@ public class ClientSkeleton implements Client {
         }
     }
 
+    /**
+     * Method that reads any type of object from the Object Input Stream received from the server and acts accordingly
+     * based on the object received:
+     *        List<int[]>: is assigned to the "coords" List
+     *        Integer: is assigned to the "column" Integer
+     *        String: Starts a game if it is equal to "START GAME"
+     * It also updates invoking the "update" method in the server with the coordinates or column given
+     * @param server Server from which the object is received
+     * @throws RemoteException
+     * @throws NotMessageFromClientYet
+     */
     public synchronized void receive(Server server) throws RemoteException, NotMessageFromClientYet {
         Object o;
         Integer column = null;
@@ -158,6 +223,11 @@ public class ClientSkeleton implements Client {
         }
     }
 
+    /**
+     * Method used to flush and reset an Object Output Stream
+     * @param o Object Output Stream
+     * @throws IOException
+     */
     private void flushAndReset(ObjectOutputStream o) throws IOException {
         o.flush();
         o.reset();

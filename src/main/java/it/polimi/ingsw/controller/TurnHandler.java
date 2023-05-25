@@ -17,6 +17,10 @@ public class TurnHandler {
     private boolean endGame;
     private boolean gameOver;
     private static final int ENDGAME_POINTS = 1;
+
+    /**
+     * Constructor method
+     */
     public TurnHandler(Game game){
         this.turnChecker= new TurnChecker();
         this.game = game;
@@ -105,9 +109,19 @@ public class TurnHandler {
         AppServerImpl.gameFinished();
     }
 
+    /**
+     * Method used to help with the player turn cycle
+     * @param matchID the matchID where the turn needs to be changed
+     * @param player the player whose turn is over
+     * @throws RemoteException
+     */
     private void saveModelAndSetNewPlayer(int matchID, Player player) throws RemoteException {
         game.setAndSave(matchID, player);
     }
 
+    /**
+     * Get method for GameOver boolean
+     * @return GameOver boolean that indicates whether the game is on its last turn or not
+     */
     public boolean getGameOver(){return this.gameOver;}
 }

@@ -23,6 +23,14 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Serializa
     transient String nickname;
     private int clientID;
 
+    /**
+     * Constructor method
+     * @param server Server to connect to
+     * @param nickname Player's nickname
+     * @param uiType TUI/GUI
+     * @param guiReference used if GUI is chosen
+     * @throws RemoteException
+     */
     public ClientImpl(Server server, String nickname, AppClient.UIType uiType, Object guiReference)
             throws RemoteException {
         super();
@@ -33,6 +41,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Serializa
         server.register(this, nickname);
         this.view.addListener(server);
     }
+
 
     public ClientImpl(Server server, int port) throws RemoteException {
         super(port);
@@ -45,11 +54,27 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Serializa
         initialize(server);
     }
 
+    /**
+     * Adds the match server as the client's view observer
+     * @param server match Server
+     * @throws RemoteException
+     */
     private void initialize(Server server) throws RemoteException{
         this.view.addListener(server); //add the match server as this client view observer
         //per Damiani e\' diverso
     }
 
+    /**
+     * If the gameOver state is triggered, various updates are invoked from the UI:
+     *                 - printing a gameOver message
+     *                 - printing the gameBoard
+     *                 - printing the player's shelf
+     * Otherwise through various updates also invoked from the UI the turn is changed to the next player
+     * by changing the ClientState (enum) accordingly
+     *
+     * @param game GameView
+     * @throws RemoteException
+     */
     @Override
     public void update(GameView game) throws RemoteException {
         ShelfView sh;
@@ -103,11 +128,22 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Serializa
         }
     }
 
+    /**
+     * Invokes an update method in the UI containing a message String
+     * @param msg String
+     * @throws RemoteException
+     */
     @Override
     public void update(String msg) throws RemoteException {
         this.view.update(msg);
     }
 
+    /**
+     * Invokes an update method in the UI containing the player's ID, sets the Client that invoked this method
+     * as reference and changes its state to WAITING_IN_LOBBY (enum)
+     * @param clientID int playerID
+     * @throws RemoteException
+     */
     @Override
     public void update(int clientID) throws RemoteException {
         this.clientID = clientID;
@@ -115,11 +151,24 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Serializa
         this.clientState = ClientState.WAITING_IN_LOBBY;
     }
 
+    /**
+     * Get method for a player's Nickname
+     * @return nickname String
+     */
     @Override
     public String getNickname(){return this.nickname;}
 
+    /**
+     * Get method for a clientID
+     * @return int clientID
+     * @throws RemoteException
+     */
     @Override
     public int getClientID() throws RemoteException {return this.clientID;}
 
+    /**
+     * Get method for a ClientState (enum)
+     * @return ClientState enum
+     */
     public ClientState getClientState(){return this.clientState;}
 }
