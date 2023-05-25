@@ -10,5 +10,5 @@
   "Eight tiles of the same type.\nThere's no restriction about the position of these tiles.",
   "Five tiles of the same type forming an X.",
   "Five tiles of the same type forming a diagonal.",
-  "Five columns of increasing or decreasing height.\nStarting from the first column on the left or on the right, each next column must be made of exactly one more tile.\nTiles can be of any type."
+  "Five columns of increasing or decreasing height.\nStarting from the first column on the left or on the right,\neach next column must be made of exactly one more tile.\nTiles can be of any type."
 ]
