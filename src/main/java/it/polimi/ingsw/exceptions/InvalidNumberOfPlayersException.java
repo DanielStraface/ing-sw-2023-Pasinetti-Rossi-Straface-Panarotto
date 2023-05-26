@@ -5,8 +5,10 @@ package it.polimi.ingsw.exceptions;
  * or more than four.
  */
 public class InvalidNumberOfPlayersException extends Exception {
-    /* Method getMessage() returns the message of this exception */
 
+    /** Method getMessage() returns the message of this exception
+     * @return the message of this InvalidNumberOfPlayersException object.
+     */
     @Override
     public String getMessage(){
         return "Error: the number of players is not allowed!";
