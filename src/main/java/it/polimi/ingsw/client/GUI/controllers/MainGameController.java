@@ -11,9 +11,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -45,7 +43,7 @@ public class MainGameController implements GUIController{
     private List<ImageView> imgsList;
     @FXML
     private List<BorderPane> wrappersList;
-    private Map<String, BorderPane> wrapperMap = new HashMap<>();
+    private final Map<String, BorderPane> wrapperMap = new HashMap<>();
     @FXML
     private List<Button> itemsList;
     private int numOfItems = 0;
@@ -111,7 +109,6 @@ public class MainGameController implements GUIController{
                 label.setTextFill(Color.BLACK);
                 label.setStyle("-fx-font-size: 20px");
             }
-            //xX_warLord_Xx
         }
     }
     public void updateYourNameLabel(String name){
@@ -120,18 +117,19 @@ public class MainGameController implements GUIController{
     }
 
     public void itemClick(ActionEvent event){
+        this.messageBox.setText("");
         System.out.println("Item click");
         System.out.println(event.getSource().toString());
         String temp = event.getSource().toString();
         String[] stringArray = temp.split("_");
         int row = Integer.parseInt(stringArray[1]);
         int col = Integer.parseInt(stringArray[2]);
+        int[] coords = {row, col};
         if(!gameboardItemMatrix[row][col]){
             if(numOfItems >= 3) return;
             //da aggiungere
             gameboardItemMatrix[row][col] = true;
             numOfItems++;
-            int[] coords = {row, col};
             selectedCoords.add(coords);
             wrapperMap.get(event.getSource().toString()).getStyleClass().add("image-view-wrapper");
             if(numOfItems == 1) {
@@ -141,6 +139,7 @@ public class MainGameController implements GUIController{
         }
         else {
             if(numOfItems >= 0){
+                selectedCoords.removeIf(c -> c[0] == row && c[1] == col);
                 gameboardItemMatrix[row][col] = false;
                 numOfItems--;
                 wrapperMap.get(event.getSource().toString()).getStyleClass().clear();
@@ -150,15 +149,14 @@ public class MainGameController implements GUIController{
                 }
             }
         }
-        //_1_3
-        //imgsList.get(0).setImage(new Image("/graphics/item_tiles/Libri1.1.png"));
-        //wrapper13.getStyleClass().add("image-view-wrapper");
     }
 
     public void confirmSelectionAction(ActionEvent event){
         try{
-
             this.commands.get(0).check();
+            System.out.println("Sono stati selezionati: ");
+            for (int[] selectedCoord : selectedCoords)
+                System.out.println(selectedCoord[0] + "  " + selectedCoord[1] + ", ");
         } catch (InvalidSelectionException e) {
             playSound(warning);
             this.updateMessageBox("Invalid items selection:\n" + e.getMessage());

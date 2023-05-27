@@ -1,6 +1,5 @@
 package it.polimi.ingsw.client.GUI;
 
-import it.polimi.ingsw.client.CLI.commands.SelectItemsCommand;
 import it.polimi.ingsw.client.GUI.controllers.*;
 import it.polimi.ingsw.client.UI;
 import it.polimi.ingsw.distributed.Client;
@@ -25,6 +24,7 @@ import javafx.scene.image.Image;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.*;
+import java.util.List;
 
 
 public class GUI extends Application implements UI {
@@ -55,11 +55,11 @@ public class GUI extends Application implements UI {
     }
 
     public void changeScene(String nextScene){
+        if(stage.isIconified()) stage.setIconified(false);
         Scene currentScene = scenes.get(nextScene);
         currentScene.getStylesheets().add(css);
         stage.setScene(currentScene);
         if(nextScene.equals("MainGame.fxml")){
-            stage.setWidth(1420);
             Platform.runLater(() -> {
                 try {
                     mainGameController.updateYourNameLabel(this.refClient.getNickname());
@@ -79,25 +79,16 @@ public class GUI extends Application implements UI {
         this.stage = stage;
         setup();
         try {
-            Scene scene = scenes.get("MainMenu.fxml");
-            /*Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainMenu.fxml"));
-            Scene scene = new Scene(root);*/
-            Font.loadFont(getClass().getResourceAsStream("/fonts/Accio_Dollaro.ttf"), 14);
             stage.setTitle("MyShelfie");
             stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream(
                     "/graphics/Publisher_material/Icon_50x50px.png"))));
             stage.setResizable(false);
-            stage.setScene(scene);
-
-            String css = this.getClass().getResource("/css/MainMenu.css").toExternalForm();
-            scene.getStylesheets().add(css);
-
             stage.setOnCloseRequest(event -> {
                 event.consume();
                 quitButtonAction(stage);
             });
 
-            stage.show();
+            changeScene("MainMenu.fxml");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -117,12 +108,17 @@ public class GUI extends Application implements UI {
     }
 
     private void setup(){
+        String css = Objects.requireNonNull(this.getClass().getResource("/css/MainMenu.css")).toExternalForm();
+        Font.loadFont(getClass().getResourceAsStream("/fonts/Accio_Dollaro.ttf"), 14);
+        Scene loadScene;
         List<String> fxlms = new ArrayList<>(
                 Arrays.asList(MAIN_MENU, SETUP_CHOICES, MATCH_CHOICES, MAIN_GAME, OBJECTIVES));
         try{
             for(String fxml : fxlms){
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/" + fxml));
-                scenes.put(fxml, new Scene(fxmlLoader.load()));
+                loadScene = new Scene(fxmlLoader.load());
+                loadScene.getStylesheets().add(css);
+                scenes.put(fxml, loadScene);
                 GUIController ctrl = fxmlLoader.getController();
                 ctrl.setGUI(this);
                 guiControllers.put(fxml, ctrl);
