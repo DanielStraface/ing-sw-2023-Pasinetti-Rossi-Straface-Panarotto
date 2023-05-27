@@ -6,6 +6,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
 
 <?import java.util.ArrayList?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="719.0" prefWidth="1420.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.GUI.controllers.MainGameController">
@@ -22,11 +23,40 @@
       </ImageView>
       <AnchorPane layoutX="5.0" layoutY="5.0" prefHeight="711.0" prefWidth="1405.0">
          <children>
-            <ImageView fitHeight="560.0" fitWidth="552.0" layoutX="727.0" layoutY="160.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../graphics/boards/bookshelf_orth.png" />
-               </image>
-            </ImageView>
+            <Pane fx:id="shelfItemPane" layoutX="790.0" layoutY="190.0" opacity="0.7">
+               <children>
+                  <ImageView fitHeight="65.0" fitWidth="65.0" layoutX="1.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../graphics/item_tiles/Cornici1.1.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="65.0" fitWidth="65.0" layoutX="2.0" layoutY="83.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../graphics/item_tiles/Cornici1.1.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="65.0" fitWidth="65.0" layoutX="3.0" layoutY="157.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../graphics/item_tiles/Cornici1.1.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="70.0" fitWidth="70.0" layoutY="227.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../graphics/item_tiles/Cornici1.1.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="70.0" fitWidth="70.0" layoutY="300.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../graphics/item_tiles/Cornici1.1.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="70.0" fitWidth="70.0" layoutY="372.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../graphics/item_tiles/Cornici1.1.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
             <Label layoutX="1280.0" layoutY="196.0" prefHeight="40.0" prefWidth="95.0" text="YOUR NAME:" />
             <Button fx:id="objectivesButton" layoutX="1257.0" layoutY="48.0" mnemonicParsing="false" onAction="#objectivesButtonAction" prefHeight="59.0" prefWidth="140.0" text="Objectives" />
             <Label fx:id="yourNameLabel" layoutX="1280.0" layoutY="255.0" visible="false" />
@@ -34,11 +64,11 @@
             <Label fx:id="scoreLabel" layoutX="1309.0" layoutY="347.0" text="0" />
             <Label fx:id="player1Label" layoutX="1240.0" layoutY="470.0" prefHeight="25.0" prefWidth="175.0" text="\%DEFAULT%" visible="false" />
             <Label fx:id="messageBox" layoutX="811.0" layoutY="4.0" prefHeight="146.0" prefWidth="380.0" text="MessageBox" />
-            <ImageView fitHeight="155.0" fitWidth="125.0" layoutX="728.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true" visible="false">
+            <ImageView fx:id="firstPlayerChair" fitHeight="98.0" fitWidth="81.0" layoutX="708.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true" visible="false">
                <image>
                   <Image url="@../graphics/misc/firstplayertoken.png" />
                </image></ImageView>
-            <ImageView fitHeight="581.0" fitWidth="552.0" layoutX="727.0" layoutY="148.0" pickOnBounds="true" preserveRatio="true" visible="false">
+            <ImageView fx:id="activeShelf" fitHeight="581.0" fitWidth="552.0" layoutX="725.0" layoutY="155.0" opacity="0.7" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../graphics/boards/bookshelf.png" />
                </image>
@@ -47,9 +77,54 @@
             <Label fx:id="player2Label" layoutX="1240.0" layoutY="510.0" prefHeight="25.0" prefWidth="175.0" text="\%DEFAULT%" visible="false" />
             <Label fx:id="player3Label" layoutX="1240.0" layoutY="550.0" prefHeight="25.0" prefWidth="175.0" text="\%DEFAULT%" visible="false" />
             <Label fx:id="player4Label" layoutX="1240.0" layoutY="590.0" prefHeight="25.0" prefWidth="175.0" text="\%DEFAULT%" visible="false" />
+            <Button fx:id="column1Button" contentDisplay="TOP" disable="true" layoutX="780.0" layoutY="642.0" mnemonicParsing="false" onAction="#shelfColumnButtonAction" prefHeight="50.0" prefWidth="82.0" styleClass="itemButton" stylesheets="@../css/MainGame.css" visible="false">
+               <graphic>
+                  <ImageView fitHeight="48.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../graphics/misc/Red_Arrow.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button fx:id="column2Button" contentDisplay="TOP" disable="true" layoutX="872.0" layoutY="642.0" mnemonicParsing="false" onAction="#shelfColumnButtonAction" prefHeight="50.0" prefWidth="82.0" styleClass="itemButton" stylesheets="@../css/MainGame.css" visible="false">
+               <graphic>
+                  <ImageView fitHeight="48.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../graphics/misc/Red_Arrow.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button fx:id="column3Button" contentDisplay="TOP" disable="true" layoutX="960.0" layoutY="642.0" mnemonicParsing="false" onAction="#shelfColumnButtonAction" prefHeight="50.0" prefWidth="82.0" styleClass="itemButton" stylesheets="@../css/MainGame.css" visible="false">
+               <graphic>
+                  <ImageView fitHeight="48.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../graphics/misc/Red_Arrow.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button fx:id="column4Button" contentDisplay="TOP" disable="true" layoutX="1051.0" layoutY="642.0" mnemonicParsing="false" onAction="#shelfColumnButtonAction" prefHeight="50.0" prefWidth="82.0" styleClass="itemButton" stylesheets="@../css/MainGame.css" visible="false">
+               <graphic>
+                  <ImageView fitHeight="48.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../graphics/misc/Red_Arrow.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button fx:id="column5Button" contentDisplay="TOP" disable="true" layoutX="1143.0" layoutY="642.0" mnemonicParsing="false" onAction="#shelfColumnButtonAction" prefHeight="50.0" prefWidth="82.0" styleClass="itemButton" stylesheets="@../css/MainGame.css" visible="false">
+               <graphic>
+                  <ImageView fitHeight="48.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../graphics/misc/Red_Arrow.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
          </children>
       </AnchorPane>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0">
+      <AnchorPane fx:id="gameboardPane" prefHeight="200.0" prefWidth="200.0">
          <children>
             <ImageView fitHeight="738.0" fitWidth="711.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -71,7 +146,7 @@
                   <Image url="@../graphics/misc/Sacchetto_Chiuso.png" />
                </image>
             </ImageView>
-            <Button fx:id="_1_3_" layoutX="234.0" layoutY="100.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#itemClick" prefHeight="80.0" prefWidth="80.0" styleClass="itemButton" stylesheets="@../css/MainGame.css" text="Button">
+            <Button fx:id="_1_3_" contentDisplay="TOP" layoutX="241.0" layoutY="103.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#itemClick" prefHeight="80.0" prefWidth="80.0" styleClass="itemButton" stylesheets="@../css/MainGame.css" text="Button">
                <graphic>
                   <BorderPane fx:id="wrapper13">
                      <center>
@@ -84,7 +159,7 @@
                   </BorderPane>
                </graphic>
             </Button>
-            <Button fx:id="_2_3_" layoutX="234.0" layoutY="172.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#itemClick" prefHeight="80.0" prefWidth="80.0" styleClass="itemButton" stylesheets="@../css/MainGame.css" text="Button">
+            <Button fx:id="_2_3_" contentDisplay="TOP" layoutX="241.0" layoutY="175.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#itemClick" prefHeight="80.0" prefWidth="80.0" styleClass="itemButton" stylesheets="@../css/MainGame.css" text="Button">
                <graphic>
                   <BorderPane fx:id="wrapper23">
                      <center>
@@ -97,7 +172,7 @@
                   </BorderPane>
                </graphic>
             </Button>
-            <Button fx:id="_1_4_" layoutX="307.0" layoutY="100.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#itemClick" prefHeight="80.0" prefWidth="80.0" styleClass="itemButton" stylesheets="@../css/MainGame.css" text="Button">
+            <Button fx:id="_1_4_" contentDisplay="TOP" layoutX="313.0" layoutY="103.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#itemClick" prefHeight="80.0" prefWidth="80.0" styleClass="itemButton" stylesheets="@../css/MainGame.css" text="Button">
                <graphic>
                   <BorderPane fx:id="wrapper14">
                      <center>
@@ -111,6 +186,9 @@
                </graphic>
             </Button>
             <Button fx:id="confirmSelection" disable="true" layoutX="40.0" layoutY="44.0" mnemonicParsing="false" onAction="#confirmSelectionAction" opacity="0.6" prefHeight="26.0" prefWidth="95.0" text="Confirm" />
+            <Label fx:id="firstItem" layoutX="36.0" layoutY="12.0" text="1" visible="false" />
+            <Label fx:id="secondItem" layoutX="54.0" layoutY="12.0" text="2" visible="false" />
+            <Label fx:id="thirdItem" layoutX="73.0" layoutY="12.0" text="3" visible="false" />
          </children>
       </AnchorPane>
    </children>
@@ -133,6 +211,22 @@
          <fx:reference source="wrapper13" />
          <fx:reference source="wrapper14" />
          <fx:reference source="wrapper23" />
+      </ArrayList>
+   </fx:define>
+   <fx:define>
+      <ArrayList fx:id="ordinalSelectionFlag">
+         <fx:reference source="firstItem" />
+         <fx:reference source="secondItem" />
+         <fx:reference source="thirdItem" />
+      </ArrayList>
+   </fx:define>
+   <fx:define>
+      <ArrayList fx:id="shelfColumnButtonList">
+         <fx:reference source="column1Button" />
+         <fx:reference source="column2Button" />
+         <fx:reference source="column3Button" />
+         <fx:reference source="column4Button" />
+         <fx:reference source="column5Button" />
       </ArrayList>
    </fx:define>
 </AnchorPane>

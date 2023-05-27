@@ -107,7 +107,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Serializa
                 sh = game.getPlayers().stream().filter(p -> p.getClientID() == game.getPrevClientID())
                         .findFirst()
                         .get().getMyShelf();
-                this.view.update("Your turn is finished! Please wait for the other players turn");
+                this.view.update("Your turn is finished!\nPlease wait for the other players turn");
                 this.view.update(sh);
             }
             PlayerView ply = game.getPlayers().stream()

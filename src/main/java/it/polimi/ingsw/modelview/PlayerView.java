@@ -13,6 +13,7 @@ public class PlayerView implements Serializable {
     private final PersonalObjCardView myPersonalObjCard;
     private final String nickname;
     private final int clientID;
+    private final boolean isFirstPlayer;
 
     public PlayerView(Player player) {
         this.score = player.getScore();
@@ -21,6 +22,7 @@ public class PlayerView implements Serializable {
                 player.getMyPersonalOBjCard().getPersonalObjCardDescription());
         this.nickname = player.getNickname();
         this.clientID = player.getClientID();
+        this.isFirstPlayer = player.getIsFirstPlayer();
     }
     public int getScore(){
         return this.score;
@@ -33,4 +35,5 @@ public class PlayerView implements Serializable {
     }
     public String getNickname(){return this.nickname;}
     public int getClientID(){return this.clientID;}
+    public boolean getIsFirstPlayer(){return this.isFirstPlayer;}
 }

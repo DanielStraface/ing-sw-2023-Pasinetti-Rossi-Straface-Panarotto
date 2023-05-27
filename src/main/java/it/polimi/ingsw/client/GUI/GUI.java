@@ -44,6 +44,7 @@ public class GUI extends Application implements UI {
     private enum State {SETUP, IN_GAME}
     private State state = State.SETUP;
     private boolean areCardsSet;
+    private boolean firstPlayerChairFlag;
 
     public void imposeTheTypeOfConnection(String connectionType, String address){
         ((MatchChoicesController) currentController).setConnectionType(connectionType, address);
@@ -179,7 +180,7 @@ public class GUI extends Application implements UI {
 
     @Override
     public void update(ShelfView shelf) {
-
+        Platform.runLater(() -> mainGameController.updateShelf(shelf));
     }
 
     @Override
@@ -221,8 +222,33 @@ public class GUI extends Application implements UI {
 
     @Override
     public void run(GameView gameView) {
-        Platform.runLater(() -> mainGameController.updateCurrentTurnLabel(gameView.getCurrentPlayer().getNickname()));
+        try {
+            String finalNickname = this.refClient.getNickname();
+            boolean isFirstPlayer = gameView.getPlayers().stream()
+                    .filter(p -> p.getNickname().equals(finalNickname)).toList().get(0).getIsFirstPlayer();
+            Platform.runLater(() -> {
+                if(gameView.getCurrentPlayer().getNickname().equals(finalNickname)){
+                    if(isFirstPlayer && !firstPlayerChairFlag) {
+                        mainGameController.activateFirstPlayerChair();
+                        firstPlayerChairFlag = true;
+                    }
+                    mainGameController.updateMessageBox("");
+                    mainGameController.activateShelf(gameView.getCurrentPlayer().getMyShelf());
+                }
+            });
+        } catch (RemoteException e) {
+            System.err.println("Cannot read player's name: " + e.getMessage());
+        }
+        Platform.runLater(() -> {
+            mainGameController.updateCurrentTurnLabel(gameView.getCurrentPlayer().getNickname());
+            if(!areCardsSet){
+                ObjectivesController ctrl = (ObjectivesController) guiControllers.get("Objectives.fxml");                    ctrl.updateComObjCards(gameView.getCommonObjCard());
+                    ctrl.updatePersonalObjCard(gameView.getCurrentPlayer().getMyPersonalOBjCard());
+                areCardsSet = true;
+            }
+        });
         this.update(gameView.getGameBoard());
+        this.update(gameView.getCurrentPlayer().getMyShelf());
     }
 
     @Override
@@ -249,6 +275,17 @@ public class GUI extends Application implements UI {
             throw new NullPointerException();
         if (!observers.contains(o)) {
             observers.addElement(o);
+        }
+    }
+
+    public void setChangedAndNotifyListener(List<int[]> coords, Integer column){
+        this.setChanged();
+        try {
+            this.notifyObservers(this.refClient, coords, column);
+        } catch (RemoteException e) {
+            String msg = "Remote exception occurred: " + e.getMessage();
+            System.err.println(msg);
+            Platform.runLater(() -> mainGameController.updateMessageBox(msg));
         }
     }
 
