@@ -29,15 +29,25 @@ public class Controller {
     /* METHODS SECTION */
 
     /* -- constructor --*/
+
+    /**
+     * Constructor method
+     */
     public Controller(Game game) {
         this.game = game;
         turnHandler = new TurnHandler(game);
     }
 
     /* -- logic methods --*/
+
+    /**
+     * Adds a client to the client List
+     * @param view the client to be added
+     */
     public void addClient(Client view){
         this.clients.add(view);
     }
+
     /**
      * chooseFirstPlayer method decides the first player of the match
      * @author Matteo Panarotto
@@ -111,11 +121,19 @@ public class Controller {
         return null;
     }
 
+    /**
+     * Instantiates a TurnHandler class by giving a game instance
+     * @param game the Game instance given
+     */
     public void substituteGameModel(Game game){
         this.game = game;
         this.turnHandler = new TurnHandler(game);
     }
 
+    /**
+     * Set method for matchID
+     * @param matchID an int used for the matchID
+     */
     public void setMatchID(int matchID) {this.matchID = matchID;}
 
     /* get methods */
@@ -128,12 +146,34 @@ public class Controller {
     public synchronized Game getGame(){
         return this.game;
     }
+
+    /**
+     * Get method for all clients
+     * @return Client List
+     */
     public List<Client> getClients(){return this.clients;}
+
+    /**
+     * Get method for GameOver boolean
+     * @return GameOver boolean that indicates whether the game is on its last turn or not
+     */
     public boolean getGameOver(){return this.turnHandler.getGameOver();}
+
+    /**
+     * Get method for MatchID
+     * @return int -> MatchID
+     */
     public int getMatchID() {return this.matchID;}
 
     /* update methods */
 
+    /**
+     * Update method for a client's coordinates and column choices
+     * @param o Client
+     * @param coords Coordinates chosen
+     * @param column Column chosen
+     * @throws RemoteException
+     */
     public void update(Client o, List<int[]> coords, Integer column) throws RemoteException {
         boolean fromValidClient = false;
         for(Client c : this.clients){

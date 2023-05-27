@@ -64,7 +64,7 @@ public class SelectColumnCommand implements Command{
     }
 
     /**
-     * Invokes all methods to ask the shelf's column, check if it is valid and saves it in an Integer List
+     * Invokes all methods to ask the shelf's column, to check if it is valid and to save it in an Integer List
      * @throws FullColumnException
      */
     @Override
@@ -73,6 +73,11 @@ public class SelectColumnCommand implements Command{
         this.check();
     }
 
+    /**
+     * Checks if it is valid and saves it in an Integer List
+     * @throws InvalidSelectionException
+     * @throws FullColumnException
+     */
     @Override
     public void check() throws InvalidSelectionException, FullColumnException {
         columnCheck(this.col);

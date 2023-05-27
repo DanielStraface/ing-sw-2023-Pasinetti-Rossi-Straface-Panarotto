@@ -20,6 +20,11 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
     private Game game = null;
     private boolean[] toConnect;
 
+    /**
+     * Constructor method
+     * @param numOfPlayers type of match chosen (enum) that tells the total number of players
+     * @throws RemoteException
+     */
     public ServerImpl(AppServer.typeOfMatch numOfPlayers) throws RemoteException {
         super();
         try{
@@ -39,6 +44,11 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
         super(port, csf, ssf);
     }
 
+    /**
+     * Makes the player join a new match lobby and starts the game if all players are connected or it makes the player
+     * join an unfinished match
+     * @throws RemoteException
+     */
     @Override
     public void startGame() throws RemoteException{
         if(this.controller.getClients().size() == this.controller.getGame().getPlayers().size()){
@@ -50,7 +60,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
             if(checkIfPrevGame()){
                 for(Client c : this.controller.getClients())
                     c.update("Old unfinished match found!\nThe game will resume at that point. " +
-                            "\nIf you want to join a new game consider to changed your nickname");
+                            "\nIf you want to join a new game consider to change your nickname");
                 this.controller.substituteGameModel(this.game);
                 this.game.setCurrentPlayer(this.game.getCurrentPlayer());
             } else {
@@ -75,6 +85,14 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
         }
     }
 
+    /**
+     * Registers a client with his nickname, adds the client to the controller's client List and as model listener,
+     * if successful the player's ID is created (int on multiples of 10) and invokes an update on the player's client
+     * with the just created ID
+     * @param client client to register
+     * @param nickname player's nickname
+     * @throws RemoteException
+     */
     @Override
     public void register(Client client, String nickname) throws RemoteException {
         this.controller.addClient(client); //add this client in the client list of controller
@@ -92,12 +110,23 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
                 "for a " + this.game.getPlayers().size() + " players match");
     }
 
+    /**
+     * Update method with all the player's choices (coordinates, column) to update the controller and the matchLog
+     * @param client the choosing player
+     * @param coords coordinates chosen
+     * @param column the shelf column chosen
+     * @throws RemoteException
+     */
     @Override
     public void update(Client client, List<int[]> coords, Integer column) throws RemoteException {
         this.game.informLog(client, coords, column);
         this.controller.update(client, coords, column);
     }
 
+    /**
+     * Method to check if an unfinished match can be loaded from its ".ser" file
+     * @return boolean true if the match has been found, false otherwise
+     */
     private boolean checkIfPrevGame() {
         Game game;
         for(int i=0;i<AppServerImpl.MAX_MATCHES_MANAGED;i++){
@@ -136,8 +165,17 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
         return false;
     }
 
+    /**
+     * Get method for the total number of players in a match
+     * @return int total number of players
+     */
     public int getPlayersGameNumber(){
         return this.game.getPlayersNumber();
     }
+
+    /**
+     * Get method for the gameOver boolean (true if the game is on its last turn)
+     * @return gameOver boolean
+     */
     public boolean getGameOver(){return this.controller.getGameOver();}
 }

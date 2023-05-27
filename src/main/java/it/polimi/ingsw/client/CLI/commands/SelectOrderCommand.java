@@ -59,7 +59,8 @@ public class SelectOrderCommand implements Command{
     }
 
     /**
-     * Invokes methods to ask the tiles' order and saves the choice made in a List of an int array
+     * Invokes methods to ask the tiles' order, to check if the column selected isn't full
+     * and to save the choice made in a List of int arrays
      */
     @Override
     public void execute() throws InvalidSelectionException, FullColumnException {
@@ -67,6 +68,12 @@ public class SelectOrderCommand implements Command{
         this.check();
     }
 
+    /**
+     * Checks if the column selected isn't full and saves the choice made in a List of int arrays
+     *
+     * @throws InvalidSelectionException
+     * @throws FullColumnException
+     */
     @Override
     public void check() throws InvalidSelectionException, FullColumnException {
         List<int[]> temp = new ArrayList<>();
