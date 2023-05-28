@@ -12,10 +12,17 @@ public class ModelSubject {
     private boolean changed = false;
     private Vector<Client> obs;
 
+    /**
+     * Constructor method
+     */
     public ModelSubject(){
         this.obs = new Vector<>();
     }
 
+    /**
+     * Method to add a client as a listener
+     * @param o client to be added as listener
+     */
     public synchronized void addListener(Client o) {
         if (o == null)
             throw new NullPointerException();
@@ -24,8 +31,18 @@ public class ModelSubject {
         }
     }
 
+    /**
+     * Method to delete all listeners (clients) from its Vector
+     */
     public synchronized void deleteListeners(){obs = new Vector<>();}
 
+    /**
+     * Updates the MatchLog with the client and all the choices made
+     * @param o the client making the choices
+     * @param coords the item's coordinates chosen
+     * @param column the shelf's column choice
+     * @throws RemoteException
+     */
     public synchronized void informLog(Client o, List<int[]> coords, Integer column) throws RemoteException {
         /*
          * a temporary array buffer, used as a snapshot of the state of
@@ -41,6 +58,12 @@ public class ModelSubject {
         }
     }
 
+
+    /**
+     * Notifies the Game class of most changes made in a match
+     * @param arg
+     * @throws RemoteException
+     */
     public void notifyObservers(Game arg) throws RemoteException{
         /*
          * a temporary array buffer, used as a snapshot of the state of
@@ -78,6 +101,11 @@ public class ModelSubject {
         if(turnUserClient != null) turnUserClient.update(gmv);
     }
 
+    /**
+     * Notifies a Common Objective Card completion by a player
+     * @param player the player that completed a CommonObjCard
+     * @param arg the completion message String
+     */
     public void notifyObservers(Player player, String arg) {
         /*
          * a temporary array buffer, used as a snapshot of the state of
@@ -116,10 +144,16 @@ public class ModelSubject {
         }
     }
 
+    /**
+     * Sets the "changed" flag to true
+     */
     protected synchronized void setChanged() {
         changed = true;
     }
 
+    /**
+     * Sets the "changed" flag to false
+     */
     protected synchronized void clearChanged() {
         changed = false;
     }
