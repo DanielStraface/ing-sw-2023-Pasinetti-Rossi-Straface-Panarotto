@@ -24,7 +24,6 @@ public class CommonObjCardReader {
      * @return List<PersonalObjCard> LIST <==>  (forall PersonalObjCard P1 contained in JSON file
      *                                          exists PersonalObjCad P2 contained in LIST) &&
      *                                          P1.equals(P2)
-     * @author Matteo Panarotto
      */
     public List<String> readFromFile() {
         /* Preliminary operations: gson and reader from Json file creation */

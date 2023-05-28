@@ -13,6 +13,12 @@ public class GameBoard implements Serializable {
     private final int[][] validGrid = new int[DIM_GAMEBOARD][DIM_GAMEBOARD];
     private final Item[][] gameGrid = new Item[DIM_GAMEBOARD][DIM_GAMEBOARD];
 
+    /**
+     * constructor method for the game board.
+     * @param playersNumber
+     * @throws InvalidNumberOfPlayersException
+     * @throws RemoteException
+     */
     public GameBoard(int playersNumber) throws InvalidNumberOfPlayersException, RemoteException {
         if(playersNumber <= 1 || playersNumber >= 5)
             throw new InvalidNumberOfPlayersException();
@@ -100,7 +106,16 @@ public class GameBoard implements Serializable {
             }
         }
     }
-    // get methods
+
+    /**
+     * get method of the game grid.
+     * @return gameGrid
+     */
     public Item[][] getGameGrid(){return gameGrid;}
+
+    /**
+     * get method for the valid grid.
+     * @return validGrid.
+     */
     public int[][] getValidGrid(){return validGrid;}
 }

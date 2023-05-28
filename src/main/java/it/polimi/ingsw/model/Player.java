@@ -70,6 +70,13 @@ public class Player extends ModelSubject implements Serializable {
         }
     }
 
+    /**
+     * updateLastRows updates the number of empty slots in the last row of the shelf. Return true if the update is
+     * done successfully.
+     * @param selectedColumn
+     * @param numOfSelectItem
+     * @return true if the update is done successfully.
+     */
     public boolean updateLastRows(int selectedColumn, int numOfSelectItem){
         int[] lastRows = myShelf.getLastRow();
         switch (numOfSelectItem){
@@ -102,34 +109,88 @@ public class Player extends ModelSubject implements Serializable {
     }
 
     /* set methods */
+
+    /**
+     * the method sets the personal objective card of the player.
+     * @param card
+     */
     public void setPersonalObjCard(PersonalObjCard card){
         this.myPersonalObjCard = card;
     }
+
+    /**
+     * the method sets the personal shelf of the player.
+     * @param shelf
+     */
     public void setMyShelf(Shelf shelf){this.myShelf = shelf;}
+
+    /**
+     * the method sets isFirstPlayer to true.
+     */
     public void setIsFirstPlayer() {this.isFirstPlayer=true;}
+
+    /**
+     * the method sets the nickname and the ClientId of the player.
+     * @param nickname
+     * @param clientID
+     */
     public void setNicknameAndClientID(String nickname, int clientID){
         this.nickname = nickname;
         this.clientID = clientID;
     }
-    /* get methods */
+
+    /**
+     * get method for the nickname of the player.
+     * @return String nickname
+     */
     public String getNickname(){
         return this.nickname;
     }
+
+    /**
+     * get method for the ClientID.
+     * @return int clientID
+     */
     public int getClientID(){
         return this.clientID;
     }
+
+    /**
+     * get method that return the score of the player.
+     * @return int score
+     */
     public int getScore(){
         return this.score;
     }
+
+    /**
+     * get method that return the player's personal objective card.
+     * @return myPersonalObjCard
+     */
     public PersonalObjCard getMyPersonalOBjCard(){
         return this.myPersonalObjCard;
     }
+
+    /**
+     * get method that return the personal shelf of the player.
+     * @return
+     */
     public Shelf getMyShelf(){
         return this.myShelf;
     }
+
+    /**
+     * get method that return true if the player is the player who started the game.
+     * @return boolean isFirstPlayer
+     */
     public boolean getIsFirstPlayer(){
         return this.isFirstPlayer;
     }
+
+    /**
+     * get method that return the items drawn by the player.
+     * @return List selectItems
+     */
     public List<Item> getSelectItems(){return this.selectItems;}
 }
 

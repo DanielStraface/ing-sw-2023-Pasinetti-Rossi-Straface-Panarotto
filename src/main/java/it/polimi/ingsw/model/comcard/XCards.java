@@ -10,7 +10,9 @@ class XCards extends StrategyCheck implements Serializable {
 
     /* METHOD SECTION */
 
-    /* -- constructor -- */
+    /** constructor method
+     * @param type
+      */
     public XCards(int type){
         this.type = type;
     }

@@ -18,7 +18,8 @@ public class Bag implements Serializable {
     private List<Item> itemCards;
 
     /*METHODS SECTION */
-    /* - constructors -*/
+    /**  constructor
+     */
     public Bag(){
         this.itemCards = new ArrayList<Item>();
     }
@@ -43,7 +44,6 @@ public class Bag implements Serializable {
      * @return Item item : (cardsList.size() + 1 == \old(cardsList.size())) &&
      *                      (forall item i; !i.equals(item); cardsList.contains(i) <==> \old(cardsList.contains(i))) &&
      *                      !cardsList.contains(item) ==> \old(cardsList.contains(item)
-     * @author Matteo Panarotto
      * */
     public Item drawItem() throws NoElementException {
         if(itemCards.size()>0){
