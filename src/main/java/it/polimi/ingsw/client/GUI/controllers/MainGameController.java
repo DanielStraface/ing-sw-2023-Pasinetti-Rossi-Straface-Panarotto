@@ -89,7 +89,7 @@ public class MainGameController implements GUIController{
     private String warning = "sounds/Warning.mp3";
     private String MenuSelection = "sounds/MenuSelection.mp3";
     private String ItemSelect = "sounds/ItemSelect.mp3";
-    private String GameBoardRefill = "sounds/GameBoardRefill.mp3";
+    private String GameBoardRefill = "sounds/GBRefill.wav";
     private MediaPlayer mediaPlayer;
     private static final int SHELF_ROWS = 6;
     private static final int SHELF_COLS = 5;
