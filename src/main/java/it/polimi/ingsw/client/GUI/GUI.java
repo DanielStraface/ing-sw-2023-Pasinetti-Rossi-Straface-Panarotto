@@ -256,8 +256,9 @@ public class GUI extends Application implements UI {
         Platform.runLater(() -> {
             mainGameController.updateCurrentTurnLabel(gameView.getCurrentPlayer().getNickname());
             if(!areCardsSet){
-                ObjectivesController ctrl = (ObjectivesController) guiControllers.get("Objectives.fxml");                    ctrl.updateComObjCards(gameView.getCommonObjCard());
-                    ctrl.updatePersonalObjCard(gameView.getCurrentPlayer().getMyPersonalOBjCard());
+                ObjectivesController ctrl = (ObjectivesController) guiControllers.get("Objectives.fxml");
+                ctrl.updateComObjCards(gameView.getCommonObjCard());
+                ctrl.updatePersonalObjCard(gameView.getCurrentPlayer().getMyPersonalOBjCard());
                 areCardsSet = true;
             }
         });
