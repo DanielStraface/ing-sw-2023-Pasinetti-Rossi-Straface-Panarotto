@@ -11,6 +11,11 @@ public class ShelfView implements Serializable {
     private final Item[][] shelfGrid;
     private final int[] lastRow;
 
+    /**
+     * constructor method
+      * @param shelfGrid
+     * @param lastRow
+     */
     public ShelfView(Item[][] shelfGrid, int[] lastRow) {
         this.shelfGrid = new Item[shelfGrid.length][shelfGrid[0].length];
         this.lastRow = new int[lastRow.length];
@@ -24,8 +29,17 @@ public class ShelfView implements Serializable {
         }
     }
 
+    /**
+     * get method
+     * @return Item[][] -> shelfGrid
+     */
     public Item[][] getShelfGrid(){
         return shelfGrid;
     }
+
+    /**
+     * get method
+     * @return int[] -> lastRow, the array that represents the last row of the shelf
+     */
     public int[] getLastRow(){ return lastRow; }
 }

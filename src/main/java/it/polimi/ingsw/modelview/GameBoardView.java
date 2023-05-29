@@ -13,6 +13,10 @@ public class GameBoardView implements Serializable {
     private final Item[][] gameGrid;
     private final int[][] validGrid;
 
+    /**
+     * constructor method
+     * @param gb
+     */
     public GameBoardView(GameBoard gb) {
         this.validGrid = new int[DIM_GAMEBOARD][DIM_GAMEBOARD];
         this.gameGrid = new Item[DIM_GAMEBOARD][DIM_GAMEBOARD];
@@ -24,8 +28,15 @@ public class GameBoardView implements Serializable {
         }
     }
 
-    /** get methods */
+    /** get methods
+     * @return item[][] -> gameGrid
+     */
     public Item[][] getGameGrid(){return gameGrid;}
+
+    /**
+     * get method
+     * @return int[][] -> validGrid
+     */
     public int[][] getValidGrid(){return validGrid;}
 }
 

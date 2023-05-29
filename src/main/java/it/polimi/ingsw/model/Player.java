@@ -9,6 +9,12 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Player class represents the players of the game. The player is identified by a nickname (string) and a clientID
+ * (int). His other attributes are: score (int), isFirstPlayer, a reference to his personal shelf with myShelf, to his personal
+ * objective cards with myPersonalObjCards, to the list of items that he draws from the game board with selectItems.
+
+ */
 public class Player extends ModelSubject implements Serializable {
     private String nickname;    /** has to be unique */
 

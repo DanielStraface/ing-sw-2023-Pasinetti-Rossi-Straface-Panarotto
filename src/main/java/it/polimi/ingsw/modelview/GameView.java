@@ -17,6 +17,10 @@ public class GameView implements Serializable {
     private final int prevClientID;
     private final String gameOverFinalMessage;
 
+    /**
+     * constructor method
+     * @param game
+     */
     public GameView(Game game) {
         this.commonObjCards = new ArrayList<>();
         this.players = new ArrayList<>();
@@ -30,10 +34,40 @@ public class GameView implements Serializable {
         this.prevClientID = game.getPrevClientID();
         this.gameOverFinalMessage = game.getGameOverFinalMessage();
     }
+
+    /**
+     * get method
+     * @return the game board
+     */
     public GameBoardView getGameBoard(){return this.gameBoard;}
+
+    /**
+     * get method
+     * @return List -> commonObjCards
+     */
     public List<CommonObjCardView> getCommonObjCard(){return this.commonObjCards;}
+
+    /**
+     * get method
+     * @return List -> players
+     */
     public List<PlayerView> getPlayers(){return this.players;}
+
+    /**
+     * get method
+     * @return currentPlayer, the player who is playing
+     */
     public PlayerView getCurrentPlayer(){return this.currentPlayer;}
+
+    /**
+     * get method
+     * @return int prevClientID
+     */
     public int getPrevClientID(){return this.prevClientID;}
+
+    /**
+     * get method
+     * @return String -> gameOverFinalMessage
+     */
     public String getGameOverFinalMessage(){return this.gameOverFinalMessage;}
 }
