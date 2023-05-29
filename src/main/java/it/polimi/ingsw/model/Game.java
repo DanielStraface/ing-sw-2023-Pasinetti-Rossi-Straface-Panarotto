@@ -141,37 +141,116 @@ public class Game extends ModelSubject implements Serializable {
         notifyObservers(player, toDisplay);
     }
 
-    /* set methods */
+    /** set method that save the matchID.
+     * @param player the current player
+     * @param matchID
+     * @throws RemoteException
+     */
     public void setAndSave(int matchID, Player player) throws RemoteException {
         this.currentPlayer = player;
         String fileName = "match" + matchID + ".ser";
         Controller.saveGame(this, fileName);
         setChangedAndNotifyListeners(this);
     }
+
+    /**
+     * set method for current player
+     * @param player
+     * @throws RemoteException
+     */
     public void setCurrentPlayer(Player player) throws RemoteException{
         this.currentPlayer = player;
         setChangedAndNotifyListeners(this);
     }
+
+    /**
+     * set method for a player who finished the turn.
+     * @param prevClientID
+     */
     public void setTurnFinishedPlayerID(int prevClientID){
         this.prevClientID = prevClientID;
     }
+
+    /**
+     * set method for the game board.
+     * @param gameboard
+     */
     public void setGameBoard (GameBoard gameboard) { this.gameboard = gameboard; }
+
+    /**
+     * set metod for the valid grid.
+     * @param validGrid
+     */
     public void setValidGrid (int[][] validGrid) { this.validGrid = validGrid; }
+
+    /**
+     * set method for the game over message.
+     * @param finalMessage
+     * @throws RemoteException
+     */
     public void setGameOverFinalMessage(String finalMessage) throws RemoteException {
         this.gameOverFinalMessage = finalMessage;
         setChangedAndNotifyListeners(this);
     }
 
-    /* get methods */
+    /**
+     * get method that returns the number of players.
+     */
     public int getPlayersNumber(){return this.playersNumber;}
+
+    /**
+     * get method.
+     * @return List players
+     */
     public List<Player> getPlayers(){return players;}
+
+    /**
+     * get method.
+      * @return game board
+     */
     public GameBoard getGameboard(){return gameboard;}
+
+    /**
+     * get method.
+     * @return List commonObjCards
+     */
     public List<CommonObjCard> getCommonObjCard(){return commonObjCards;}
+
+    /**
+     * get method.
+     * @return bag
+     */
     public Bag getBag(){return bag;}
+
+    /**
+     * get method
+     * @return currentPlayer, the player who is playing.
+     */
     public Player getCurrentPlayer(){return currentPlayer;}
+
+    /**
+     * get method.
+     * @return prevClientID
+     */
     public int getPrevClientID(){return this.prevClientID;}
+
+    /**
+     * get method.
+     * @return int[][] -> validGrid
+     */
     public int[][] getValidGrid(){return validGrid;}
+
+    /**
+     * get method.
+     * @return string gameOverFinalMessage
+     */
     public String getGameOverFinalMessage(){return this.gameOverFinalMessage;}
+
+    /**
+     * set method for the game.
+     * @param gm
+     * @throws RemoteException
+     */
     private void setChangedAndNotifyListeners(Game gm) throws RemoteException{
         setChanged();
         notifyObservers(gm);

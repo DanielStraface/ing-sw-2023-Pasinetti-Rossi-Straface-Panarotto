@@ -11,7 +11,9 @@ class ThreeDifferentTypes extends StrategyCheck implements Serializable {
 
     /* METHOD SECTION */
 
-    /* -- constructor --*/
+    /** constructor
+     * @param type
+     */
     public ThreeDifferentTypes(int type){
         this.type = type;
     }

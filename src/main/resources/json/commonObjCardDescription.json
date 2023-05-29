@@ -3,7 +3,7 @@
   "Two columns each formed by 6 different types of tiles.",
   "Four groups each containing at least 4 tiles of the same type\n(not necessarily in the depicted shape).\nThe tiles of one group can be different from those of another group.",
   "Six groups each containing at least 2 tiles of the same type\n(not necessarily in the depicted shape).\nThe tiles of one group can be different from those of another group.",
-  "Three columns each formed by 6 tiles of maximum three different types.\nOne column can show the same or a different combination of another column.",
+  "Three columns each formed by 6 tiles of maximum three different types.\nOne column can show the same or a different combination\nof another column.",
   "Two lines each formed by 5 different types of tiles.",
   "Four lines each formed by 5 tiles of maximum three different types.\nOne line can show the same or a different combination\nof another line.",
   "Four tiles of the same type in the four corners of the bookshelf.",

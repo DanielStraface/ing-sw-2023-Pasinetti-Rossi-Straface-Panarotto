@@ -33,8 +33,19 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
     private static final String APPSERVER_REGISTRY_NAME = "it.polimi.ingsw.server.AppServer";
     public static final int MAX_MATCHES_MANAGED = 100;
     private static final int ERROR_WHILE_CREATING_SERVER_SOCKET = 1;
+
+    /**
+     * Constructor method
+     * @throws RemoteException
+     */
     protected AppServerImpl() throws RemoteException {
     }
+
+    /**
+     * Get method for the Server's instance
+     * @return the Server's instance
+     * @throws RemoteException
+     */
     public static AppServerImpl getInstance() throws RemoteException {
         if(instance == null){
             instance = new AppServerImpl();
@@ -42,6 +53,11 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
         return instance;
     }
 
+    /**
+     * Main method: Starts both RMI and socket technologies by invoking their respective method,
+     * everything inside a run method
+     * @param args
+     */
     public static void main(String[] args) {
         System.out.println("Server is starting...\nServer is ready!");
         Thread rmiThread = new Thread(){
@@ -77,6 +93,10 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
         }
     }
 
+    /**
+     * Starts RMI technology
+     * @throws RemoteException
+     */
     public static void startRMI() throws RemoteException {
         AppServerImpl server = getInstance();
         System.out.println("Server is ready to receive clients requests via RMI (Remote Method Invocation)");
@@ -84,6 +104,10 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
         registry.rebind(APPSERVER_REGISTRY_NAME, server);
     }
 
+    /**
+     * Starts socket technology
+     * @throws RemoteException
+     */
     public static void startSocket() throws RemoteException {
         AppServerImpl instance = getInstance();
         try(ServerSocket serverSocket = new ServerSocket(SERVER_PORT)){
@@ -146,6 +170,9 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
         }
     }
 
+    /**
+     * Removes a match from its Map after it is over and deletes its saved .ser file
+     */
     public static void gameFinished(){
         if(matches != null){
             for(Integer i : matches.keySet()){
@@ -166,6 +193,14 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
         }
     }
 
+    /**
+     * Creates a new match depending on its type enum, puts it in the "matches" Map and creates a "waiting queue" Map
+     * to manage the players' queue
+     * @param type typeOfMatch enum
+     * @return the match's server created
+     * @throws RemoteException
+     * @throws NotSupportedMatchesException
+     */
     @Override
     public Server connect(typeOfMatch type) throws RemoteException, NotSupportedMatchesException {
         ServerImpl match = null;
@@ -196,7 +231,7 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
                     return null;
                 }
                 match = waitingQueue.get(FIRST_WAITING_MATCH);
-                if(match == null) System.out.println("is nUlll");
+                if(match == null) System.out.println("is null");
                 int numberOfClientConnected = match.connectedClient;
                 if(numberOfClientConnected == match.getPlayersGameNumber() - 1) {
                     matches.put(matches.size(), waitingQueue.remove(FIRST_WAITING_MATCH));
@@ -216,6 +251,11 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
         return match;
     }
 
+    /**
+     * Prints a login message and adds the nicknames to the logged users String Set
+     * @param nickname the joined player's nickname String
+     * @return true boolean if the nickname isn't already present
+     */
     @Override
     public boolean log(String nickname) {
         synchronized (loggedNicknames){
@@ -226,6 +266,11 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
         }
     }
 
+    /**
+     * Removes a logged nickname from the logged users String Set
+     * @param nickname the player's nickname String to be removed
+     * @throws RemoteException
+     */
     @Override
     public void removeLoggedUser(String nickname) throws RemoteException {
         synchronized (loggedNicknames){
@@ -234,6 +279,11 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
         }
     }
 
+    /**
+     * Get method for the matchID int given its Server
+     * @param server the Server to get its matchID from
+     * @return int -> match's ID
+     */
     public static int getMatchID(Server server){
         return matches.entrySet()
                 .stream()

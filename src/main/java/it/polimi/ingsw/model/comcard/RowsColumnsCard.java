@@ -10,7 +10,10 @@ class RowsColumnsCard extends StrategyCheck implements Serializable {
 
     /* METHODS SECTION */
 
-    /* -- constructor -- */
+    /**
+     * constructor method
+     * @param type
+     */
     public RowsColumnsCard(int type){
         this.type = type;
     }

@@ -130,6 +130,7 @@ public class CommonObjCard implements Serializable {
 
     /**
      * defines all the check methods depending on the type of card
+     * @param type
      */
     private void defineStrategy(int type){
         if(type == 2 || type == 6) strategyCheck = new RowsColumnsCard(type);
@@ -141,6 +142,7 @@ public class CommonObjCard implements Serializable {
 
     /**
      * doCheck method controls if the condition for distributes points subsist.
+     * @param player
      * @return true <==> conditions of the commonObjCard subsists for the parameter player
      */
     public int doCheck(Player player) throws InvalidPointerException {
@@ -161,6 +163,11 @@ public class CommonObjCard implements Serializable {
         return -1;
     }
 
+    /**
+     * copyPointsArray copy the points configuration of objPoints array in temp array. the configuration is chosen
+     * by the number of players of the game.
+     * @return temp
+     */
     public int[] copyPointsArray(){
         int[] temp = new int[4];
         System.arraycopy(this.objPoints, 0, temp, 0, this.objPoints.length);

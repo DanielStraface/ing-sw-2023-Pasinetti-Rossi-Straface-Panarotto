@@ -12,7 +12,9 @@ class GroupCards extends StrategyCheck implements Serializable {
 
     /* METHOD SECTION */
 
-    /* -- constructor -- */
+    /** constructor
+     * @param type
+     */
     public GroupCards(int type){
         this.type = type;
     }
