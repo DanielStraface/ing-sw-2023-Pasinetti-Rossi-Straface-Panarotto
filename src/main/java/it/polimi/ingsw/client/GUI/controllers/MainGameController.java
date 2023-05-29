@@ -84,6 +84,7 @@ public class MainGameController implements GUIController{
     private final List<Label> activeLabels = new ArrayList<>();
     private List<String> itemImgPath = new ArrayList<>();
     private List<BorderPane> borderPanes = new ArrayList<>();
+    private List<BorderPane> ordinalBorderPanes = new ArrayList<>();
     private int prevColSelected;
     private boolean confirmButtonFlag = false;
     private String warning = "sounds/Warning.mp3";
@@ -235,6 +236,7 @@ public class MainGameController implements GUIController{
             selectedCoords.add(coords);
             BorderPane bp = wrapperMap.get(event.getSource().toString());
             bp.getStyleClass().add("image-view-wrapper");
+            ordinalBorderPanes.add(bp);
             double x = bp.localToScene(bp.getBoundsInLocal()).getMaxX();
             double y = bp.localToScene(bp.getBoundsInLocal()).getMinY();
             Label toDisplay = ordinalSelectionFlag.get(numOfItems - 1);
@@ -252,6 +254,7 @@ public class MainGameController implements GUIController{
                 gameboardItemMatrix[row][col] = false;
                 BorderPane bp = wrapperMap.get(event.getSource().toString());
                 bp.getStyleClass().clear();
+                ordinalBorderPanes.remove(bp);
                 Label toDisplay = ordinalSelectionFlag.get(index);
                 toDisplay.setVisible(false);
                 toDisplay.relocate(1, 1);
@@ -294,12 +297,12 @@ public class MainGameController implements GUIController{
                 osf.relocate(1, 1);
                 osf.setVisible(false);
             });
-            List<BorderPane> bps = wrappersList.stream()
+            /*List<BorderPane> bps = wrappersList.stream()
                     .filter(borderPane -> borderPane.getStyleClass().size() == 1).toList();
-            this.borderPanes.addAll(bps);
-            this.itemImgPath.addAll(bps.stream()
+            this.borderPanes.addAll(bps);*/
+            this.itemImgPath.addAll(ordinalBorderPanes.stream()
                     .map(borderPane -> ((ImageView) borderPane.getCenter()).getImage().getUrl()).toList());
-            bps.forEach(borderPane -> borderPane.getStyleClass().clear());
+            ordinalBorderPanes.forEach(borderPane -> borderPane.getStyleClass().clear());
             numOfItems = 0;
         } catch (InvalidSelectionException e) {
             playSound(warning);
@@ -320,7 +323,7 @@ public class MainGameController implements GUIController{
                 b.setDisable(true);
                 b.setVisible(false);
             }
-            borderPanes.forEach(borderPane -> ((ImageView) borderPane.getCenter()).setImage(null));
+            ordinalBorderPanes.forEach(borderPane -> ((ImageView) borderPane.getCenter()).setImage(null));
             System.out.println("BEFORE NOTIFY, := " + this.columnReference.get(0));
             this.activeShelf.setOpacity(0.7);
             this.shelfItemPane.setOpacity(0.7);
@@ -332,6 +335,7 @@ public class MainGameController implements GUIController{
             }
             new Thread(() ->
                     this.gui.setChangedAndNotifyListener(toSend, this.prevColSelected - 1)).start();
+            ordinalBorderPanes.clear();
             this.selectedCoords.clear();
         } catch (InvalidSelectionException ignored) {
         } catch (FullColumnException e) {
