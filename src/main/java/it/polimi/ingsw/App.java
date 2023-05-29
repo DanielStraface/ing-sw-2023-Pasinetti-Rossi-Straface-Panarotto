@@ -21,6 +21,5 @@ public class App {
             case 2 -> MyShelfieAppClient.startClient();
             case 3 -> GUI.main(null);
         }
-        //new Thread(MyShelfieAppClient::startClient).start();
     }
 }

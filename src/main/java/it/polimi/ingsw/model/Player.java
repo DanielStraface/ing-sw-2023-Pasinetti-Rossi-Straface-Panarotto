@@ -35,9 +35,9 @@ public class Player extends ModelSubject implements Serializable {
      * @param selectedCoords the GameBoard's coordinates selected by the current player's inputs
      * @param gameGrid the GameBoard's item matrix
      * @param validGrid the GameBoard's int matrix to check is the slot is valid or not
-     * @throws RemoteException
      */
-    public void pickItems(List<int[]> selectedCoords,Item[][] gameGrid, int[][] validGrid) throws RemoteException {
+    public void pickItems(List<int[]> selectedCoords,Item[][] gameGrid, int[][] validGrid) {
+        System.out.println("selectedCoordsSize := " + selectedCoords.size());
         for (int[] selectedCoord : selectedCoords) {
             int row = selectedCoord[0];
             int col = selectedCoord[1];
@@ -52,9 +52,8 @@ public class Player extends ModelSubject implements Serializable {
      * @param selectedCol the Shelf's column selected by the current player
      * @throws OutOfBoundsException
      * @throws InvalidNumberOfItemsException
-     * @throws RemoteException
      */
-    public void putItemInShelf(int selectedCol) throws RemoteException {
+    public void putItemInShelf(int selectedCol) {
         int[] lastRows = myShelf.getLastRow();
         Item[][] grid=myShelf.getShelfGrid();
 
@@ -71,6 +70,7 @@ public class Player extends ModelSubject implements Serializable {
     }
 
     public boolean updateLastRows(int selectedColumn, int numOfSelectItem){
+        System.out.println("selectedCol := " + selectedColumn + ", numOf := " + numOfSelectItem);
         int[] lastRows = myShelf.getLastRow();
         switch (numOfSelectItem){
             case 1 -> lastRows[selectedColumn] = lastRows[selectedColumn] - 1;

@@ -24,8 +24,11 @@ import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 public class MainGameController implements GUIController{
+    private static final int OCCUPIED = 2;
+    private static final int PLAYABLE = 1;
     @FXML
     private AnchorPane gameboardPane;
     @FXML
@@ -55,6 +58,10 @@ public class MainGameController implements GUIController{
     @FXML
     private List<Label> ordinalSelectionFlag;
     @FXML
+    private ImageView openedBag;
+    @FXML
+    private ImageView closedBag;
+    @FXML
     private List<ImageView> imgsList;
     @FXML
     private List<BorderPane> wrappersList;
@@ -62,9 +69,13 @@ public class MainGameController implements GUIController{
     @FXML
     private List<Button> itemsList;
     @FXML
+    private List<ImageView> shelfColumnOne;
+    private List<List<ImageView>> shelfColumns = new ArrayList<>();
+    @FXML
     private List<Button> shelfColumnButtonList;
     private int numOfItems = 0;
-    private boolean[][] gameboardItemMatrix = new boolean[9][9];
+    private BorderPane[][] gameboardItemSlotMatrix = new BorderPane[DIM_GAMEBOARD][DIM_GAMEBOARD];
+    private boolean[][] gameboardItemMatrix = new boolean[DIM_GAMEBOARD][DIM_GAMEBOARD];
     private List<int[]> selectedCoords = new ArrayList<>();
     private List<Integer> columnReference = new ArrayList<>();
     private List<Command> commands = Arrays.asList(new SelectItemsCommand(this.selectedCoords),
@@ -74,18 +85,28 @@ public class MainGameController implements GUIController{
     private List<String> itemImgPath = new ArrayList<>();
     private List<BorderPane> borderPanes = new ArrayList<>();
     private int prevColSelected;
+    private boolean confirmButtonFlag = false;
     private String warning = "sounds/Warning.mp3";
     private String MenuSelection = "sounds/MenuSelection.mp3";
     private String ItemSelect = "sounds/ItemSelect.mp3";
+    private String GameBoardRefill = "sounds/GameBoardRefill.mp3";
     private MediaPlayer mediaPlayer;
     private static final int SHELF_ROWS = 6;
     private static final int SHELF_COLS = 5;
+    private static final int DIM_GAMEBOARD = 9;
 
     public void initialize(){
         int counter = 0;
         for(BorderPane bp : wrappersList){
             wrapperMap.put(itemsList.get(counter).toString(), bp);
             counter++;
+        }
+        shelfColumns.add(shelfColumnOne);
+        for(int i=0;i<itemsList.size();i++){
+            String[] stringArray = itemsList.get(i).getId().split("_");
+            int row = Integer.parseInt(stringArray[1]);
+            int col = Integer.parseInt(stringArray[2]);
+            gameboardItemSlotMatrix[row][col] = wrappersList.get(i);
         }
     }
 
@@ -105,17 +126,23 @@ public class MainGameController implements GUIController{
     public void updateGameboard(GameBoardView gameBoardView){
         SelectItemsCommand sic = (SelectItemsCommand) this.commands.get(0);
         sic.setGameBoardView(gameBoardView);
+        refillImgGameBoard(gameBoardView);
     }
     public void updateShelf(ShelfView shelfView){
-        //fare displayare la shelf
-        for(int i=SHELF_ROWS;i>=0;i--){
-            //if(shelfView.getShelfGrid()[i][this.prevColSelected].getCategoryType() != null)
-        }
-        for(int i=0;i<SHELF_ROWS;i++){
-            for(int j=0;j<SHELF_COLS;j++){
-                Category category = shelfView.getShelfGrid()[i][j].getCategoryType();
+        if(this.itemImgPath.size() == 0) return;
+        int firstNullPosition = SHELF_ROWS - 1;
+        for(int i=SHELF_ROWS - 1;i>=0;i--){
+            if(shelfView.getShelfGrid()[i][this.prevColSelected - 1].getCategoryType() != null &&
+                    shelfColumns.get(this.prevColSelected - 1).get(i).getImage() == null){
+                firstNullPosition = i;
+                break;
             }
         }
+        for(String imgPath : this.itemImgPath){
+            shelfColumns.get(this.prevColSelected - 1).get(firstNullPosition).setImage(new Image(imgPath));
+            firstNullPosition--;
+        }
+        itemImgPath.clear();
     }
     public void updateCurrentTurnLabel(String msg){
         if(player1Label.getText().equals("%DEFAULT%")){
@@ -147,6 +174,49 @@ public class MainGameController implements GUIController{
         yourNameLabel.setText(name);
     }
 
+    private void refillImgGameBoard(GameBoardView gameBoardView){
+        Random random = new Random();
+        Category category;
+        int[][] validGrid = gameBoardView.getValidGrid();
+        if(this.gui.getIsRefilledFlag()){
+            playSound(GameBoardRefill);
+            closedBag.setVisible(false);
+            openedBag.setVisible(true);
+            for(int i=0;i<DIM_GAMEBOARD;i++){
+                for(int j=0;j<DIM_GAMEBOARD;j++){
+                    if(validGrid[i][j] == OCCUPIED && gameboardItemSlotMatrix[i][j] != null){
+                        int variant = random.nextInt(3) + 1;
+                        ImageView imageView = ((ImageView) gameboardItemSlotMatrix[i][j].getCenter());
+                        category = gameBoardView.getGameGrid()[i][j].getCategoryType();
+                        String partialPath = "/graphics/item_tiles/";
+                        switch (category){
+                            case CAT -> imageView.setImage(new Image(partialPath + "Gatti1." + variant + ".png"));
+                            case BOOK -> imageView.setImage(new Image(partialPath + "Libri1." + variant + ".png"));
+                            case GAME -> imageView.setImage(new Image(partialPath + "Giochi1." + variant + ".png"));
+                            case FRAME -> imageView.setImage(new Image(partialPath + "Cornici1." + variant + ".png"));
+                            case TROPHY -> imageView.setImage(new Image(partialPath + "Trofei1." + variant + ".png"));
+                            case PLANT -> imageView.setImage(new Image(partialPath + "Piante1." + variant + ".png"));
+                        }
+                    }
+                }
+            }
+            new Thread(() -> {
+                try {
+                    TimeUnit.SECONDS.sleep(5);
+                } catch (InterruptedException e) {
+                    System.err.println("Cannot sleep in refillImgGameBoard: " + e.getMessage());
+                }
+                openedBag.setVisible(false);
+                closedBag.setVisible(true);
+            }).start();
+        } else {
+            for(int i=0;i<DIM_GAMEBOARD;i++)
+                for(int j=0;j<DIM_GAMEBOARD;j++)
+                    if(validGrid[i][j] == PLAYABLE && gameboardItemSlotMatrix[i][j] != null)
+                        ((ImageView) gameboardItemSlotMatrix[i][j].getCenter()).setImage(null);
+        }
+    }
+
     public void itemClick(ActionEvent event){
         this.messageBox.setText("");
         System.out.println("Item click");
@@ -176,10 +246,8 @@ public class MainGameController implements GUIController{
             }
         } else {
             if(numOfItems >= 0){
-                //SISTEMARE NUMERINI
                 int index = selectedCoords.indexOf(selectedCoords.stream()
                         .filter(i -> i[0] == row && i[1] == col).findFirst().get());
-                //selectedCoords.removeIf(c -> c[0] == row && c[1] == col);
                 selectedCoords.remove(index);
                 gameboardItemMatrix[row][col] = false;
                 BorderPane bp = wrapperMap.get(event.getSource().toString());
@@ -191,12 +259,18 @@ public class MainGameController implements GUIController{
                 Map<Integer, List<Double>> labelCoords = new HashMap<>();
                 int counter = 0;
                 for(Label l : ordinalSelectionFlag){
-                    List<Double> labelXandY = Arrays.asList(l.getLayoutX(), l.getLayoutY());
-                    labelCoords.put(counter, labelXandY);
-                    counter++;
+                    if(l.getLayoutX() != 1 && l.getLayoutY() != 1){
+                        List<Double> labelXandY = Arrays.asList(l.getLayoutX(), l.getLayoutY());
+                        labelCoords.put(counter, labelXandY);
+                        counter++;
+                    }
+                    l.setVisible(false);
+                    l.relocate(1, 1);
                 }
-               for(int i=0;i<numOfItems;i++){
+               for(int i=0;i<labelCoords.size();i++){
+                   System.out.println(ordinalSelectionFlag.get(i).getText());
                    ordinalSelectionFlag.get(i).relocate(labelCoords.get(i).get(0), labelCoords.get(i).get(1));
+                   ordinalSelectionFlag.get(i).setVisible(true);
                }
                 if(numOfItems == 0) {
                     confirmSelection.setOpacity(0.6);
@@ -207,9 +281,10 @@ public class MainGameController implements GUIController{
     }
 
     public void confirmSelectionAction(ActionEvent event){
+        confirmButtonFlag = true;
         try{
             this.commands.get(0).check();
-            this.gameboardPane.setDisable(true);
+            switchGameBoardPaneStatus();
             for(Button b : shelfColumnButtonList){
                 b.setVisible(true);
                 b.setDisable(false);
@@ -225,6 +300,7 @@ public class MainGameController implements GUIController{
             this.itemImgPath.addAll(bps.stream()
                     .map(borderPane -> ((ImageView) borderPane.getCenter()).getImage().getUrl()).toList());
             bps.forEach(borderPane -> borderPane.getStyleClass().clear());
+            numOfItems = 0;
         } catch (InvalidSelectionException e) {
             playSound(warning);
             this.updateMessageBox("Invalid items selection:\n" + e.getMessage());
@@ -249,7 +325,14 @@ public class MainGameController implements GUIController{
             this.activeShelf.setOpacity(0.7);
             this.shelfItemPane.setOpacity(0.7);
             this.prevColSelected = this.columnReference.get(0);
-            this.gui.setChangedAndNotifyListener(this.selectedCoords, this.columnReference.get(0));
+            System.out.println("*****\n" + this.selectedCoords.get(0)[0] + ", " + this.selectedCoords.get(0)[1]);
+            List<int[]> toSend = new ArrayList<>();
+            for(int[] coords : selectedCoords){
+                toSend.add(new int[]{coords[0], coords[1]});
+            }
+            new Thread(() ->
+                    this.gui.setChangedAndNotifyListener(toSend, this.prevColSelected - 1)).start();
+            this.selectedCoords.clear();
         } catch (InvalidSelectionException ignored) {
         } catch (FullColumnException e) {
             playSound(warning);
@@ -267,6 +350,13 @@ public class MainGameController implements GUIController{
 
     public void activateFirstPlayerChair(){
         this.firstPlayerChair.setVisible(true);
+    }
+    public void switchGameBoardPaneStatus(){
+        if(this.gameboardPane.isDisable()) this.gameboardPane.setDisable(false);
+        else if(confirmButtonFlag){
+            this.gameboardPane.setDisable(true);
+            confirmButtonFlag = false;
+        }
     }
 
     @Override

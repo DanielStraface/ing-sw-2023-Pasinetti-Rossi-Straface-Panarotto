@@ -25,36 +25,12 @@
          <children>
             <Pane fx:id="shelfItemPane" layoutX="790.0" layoutY="190.0" opacity="0.7">
                <children>
-                  <ImageView fitHeight="65.0" fitWidth="65.0" layoutX="1.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../graphics/item_tiles/Cornici1.1.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="65.0" fitWidth="65.0" layoutX="2.0" layoutY="83.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../graphics/item_tiles/Cornici1.1.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="65.0" fitWidth="65.0" layoutX="3.0" layoutY="157.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../graphics/item_tiles/Cornici1.1.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="70.0" fitWidth="70.0" layoutY="227.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../graphics/item_tiles/Cornici1.1.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="70.0" fitWidth="70.0" layoutY="300.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../graphics/item_tiles/Cornici1.1.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="70.0" fitWidth="70.0" layoutY="372.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../graphics/item_tiles/Cornici1.1.png" />
-                     </image>
-                  </ImageView>
+                  <ImageView fx:id="slot11" fitHeight="65.0" fitWidth="65.0" layoutX="1.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="slot21" fitHeight="65.0" fitWidth="65.0" layoutX="2.0" layoutY="83.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="slot31" fitHeight="65.0" fitWidth="65.0" layoutX="3.0" layoutY="157.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="slot41" fitHeight="70.0" fitWidth="70.0" layoutY="227.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="slot51" fitHeight="70.0" fitWidth="70.0" layoutY="300.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="slot61" fitHeight="70.0" fitWidth="70.0" layoutY="372.0" pickOnBounds="true" preserveRatio="true" />
                </children>
             </Pane>
             <Label layoutX="1280.0" layoutY="196.0" prefHeight="40.0" prefWidth="95.0" text="YOUR NAME:" />
@@ -124,7 +100,7 @@
             </Button>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="gameboardPane" prefHeight="200.0" prefWidth="200.0">
+      <AnchorPane fx:id="gameboardPane" disable="true" prefHeight="200.0" prefWidth="200.0">
          <children>
             <ImageView fitHeight="738.0" fitWidth="711.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -136,12 +112,12 @@
                   <Image url="@../graphics/scoring_tokens/end_game.jpg" />
                </image>
             </ImageView>
-            <ImageView fitHeight="167.0" fitWidth="186.0" layoutX="40.0" layoutY="550.0" pickOnBounds="true" preserveRatio="true" visible="false">
+            <ImageView fx:id="openedBag" fitHeight="167.0" fitWidth="186.0" layoutX="40.0" layoutY="550.0" pickOnBounds="true" preserveRatio="true" visible="false">
                <image>
                   <Image url="@../graphics/misc/Sacchetto_Aperto.png" />
                </image>
             </ImageView>
-            <ImageView fitHeight="167.0" fitWidth="186.0" layoutX="40.0" layoutY="550.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="closedBag" fitHeight="167.0" fitWidth="186.0" layoutX="40.0" layoutY="550.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../graphics/misc/Sacchetto_Chiuso.png" />
                </image>
@@ -150,11 +126,7 @@
                <graphic>
                   <BorderPane fx:id="wrapper13">
                      <center>
-                        <ImageView fx:id="image13" fitHeight="65.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../graphics/item_tiles/Gatti1.1.png" />
-                           </image>
-                        </ImageView>
+                        <ImageView fx:id="image13" fitHeight="65.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true" />
                      </center>
                   </BorderPane>
                </graphic>
@@ -163,11 +135,7 @@
                <graphic>
                   <BorderPane fx:id="wrapper23">
                      <center>
-                        <ImageView fx:id="image23" fitHeight="65.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../graphics/item_tiles/Gatti1.1.png" />
-                           </image>
-                        </ImageView>
+                        <ImageView fx:id="image23" fitHeight="65.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true" />
                      </center>
                   </BorderPane>
                </graphic>
@@ -176,11 +144,7 @@
                <graphic>
                   <BorderPane fx:id="wrapper14">
                      <center>
-                        <ImageView fx:id="image14" fitHeight="65.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../graphics/item_tiles/Gatti1.1.png" />
-                           </image>
-                        </ImageView>
+                        <ImageView fx:id="image14" fitHeight="65.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true" />
                      </center>
                   </BorderPane>
                </graphic>
@@ -227,6 +191,16 @@
          <fx:reference source="column3Button" />
          <fx:reference source="column4Button" />
          <fx:reference source="column5Button" />
+      </ArrayList>
+   </fx:define>
+   <fx:define>
+      <ArrayList fx:id="shelfColumnOne">
+         <fx:reference source="slot11" />
+         <fx:reference source="slot21" />
+         <fx:reference source="slot31" />
+         <fx:reference source="slot41" />
+         <fx:reference source="slot51" />
+         <fx:reference source="slot61" />
       </ArrayList>
    </fx:define>
 </AnchorPane>

@@ -45,6 +45,10 @@ public class GUI extends Application implements UI {
     private State state = State.SETUP;
     private boolean areCardsSet;
     private boolean firstPlayerChairFlag;
+    private int prevNumOfItemOnGameBoard;
+    private boolean isRefilledFlag = true;
+    private static final int DIM_GAMEBOARD = 9;
+    private static final int OCCUPIED = 2;
 
     public void imposeTheTypeOfConnection(String connectionType, String address){
         ((MatchChoicesController) currentController).setConnectionType(connectionType, address);
@@ -165,6 +169,15 @@ public class GUI extends Application implements UI {
 
     @Override
     public void update(GameBoardView gb) {
+        int counter = 0;
+        for(int i=0;i<DIM_GAMEBOARD;i++){
+            for(int j=0;j<DIM_GAMEBOARD;j++){
+                if(gb.getValidGrid()[i][j] == OCCUPIED)
+                    counter++;
+            }
+        }
+        isRefilledFlag = counter > prevNumOfItemOnGameBoard;
+        prevNumOfItemOnGameBoard = counter;
         Platform.runLater(() -> mainGameController.updateGameboard(gb));
     }
 
@@ -234,6 +247,7 @@ public class GUI extends Application implements UI {
                     }
                     mainGameController.updateMessageBox("");
                     mainGameController.activateShelf(gameView.getCurrentPlayer().getMyShelf());
+                    mainGameController.switchGameBoardPaneStatus();
                 }
             });
         } catch (RemoteException e) {
@@ -249,6 +263,7 @@ public class GUI extends Application implements UI {
         });
         this.update(gameView.getGameBoard());
         this.update(gameView.getCurrentPlayer().getMyShelf());
+
     }
 
     @Override
@@ -279,8 +294,8 @@ public class GUI extends Application implements UI {
     }
 
     public void setChangedAndNotifyListener(List<int[]> coords, Integer column){
-        this.setChanged();
         try {
+            this.setChanged();
             this.notifyObservers(this.refClient, coords, column);
         } catch (RemoteException e) {
             String msg = "Remote exception occurred: " + e.getMessage();
@@ -310,4 +325,6 @@ public class GUI extends Application implements UI {
     public void clearChanged() {
         changed = false;
     }
+
+    public boolean getIsRefilledFlag(){return this.isRefilledFlag;}
 }
