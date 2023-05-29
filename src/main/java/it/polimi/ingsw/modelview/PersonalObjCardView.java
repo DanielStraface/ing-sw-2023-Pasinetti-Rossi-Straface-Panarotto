@@ -11,6 +11,11 @@ public class PersonalObjCardView implements Serializable {
     private final Item[][] cardGrid;
     private final String description;
 
+    /**
+     * constructor method
+     * @param cardGrid
+     * @param desc
+     */
     public PersonalObjCardView(Item[][] cardGrid, String desc) {
         this.description = desc;
         this.cardGrid = new Item[cardGrid.length][cardGrid[0].length];
@@ -21,8 +26,17 @@ public class PersonalObjCardView implements Serializable {
         }
     }
 
+    /**
+     * get method
+     * @return Item[][] -> cardGrid, the representation of the card
+     */
     public Item[][] getCardGrid(){
         return this.cardGrid;
     }
+
+    /**
+     * get method
+     * @return String -> description, the description of the card
+     */
     public String getDescription(){return this.description;}
 }

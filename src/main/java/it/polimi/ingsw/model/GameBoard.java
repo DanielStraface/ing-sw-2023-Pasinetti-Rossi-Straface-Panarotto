@@ -5,6 +5,9 @@ import it.polimi.ingsw.exceptions.InvalidNumberOfPlayersException;
 import java.io.Serializable;
 import java.rmi.RemoteException;
 
+/**
+ * GameBoard class represents the game table of the game. It is implemented as a 9x9 matrix of Item.
+ */
 public class GameBoard implements Serializable {
     // the GameBoard is a 9x9 matrix of Items
     private static final int DIM_GAMEBOARD=9;

@@ -12,6 +12,12 @@ import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.*;
 
+/**
+ * Game class represents the main logic of MyShelfie. It creates the game throw methods: createPlayers, createBag that refills the bag with the items,
+ * generatePersonalObjCards that distributes one of the personal objective cards to each player of the match,
+ * generateCommonObjCards that creates the two objective cards of the match, refillGameBoard that refills the
+ * game board when necessary, setter and getter.
+ */
 public class Game extends ModelSubject implements Serializable {
 
     private static final int DIM_GAMEBOARD=9;

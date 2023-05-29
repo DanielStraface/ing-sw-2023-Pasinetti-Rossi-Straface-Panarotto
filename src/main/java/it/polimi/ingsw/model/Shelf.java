@@ -12,7 +12,7 @@ public class Shelf implements Serializable {
     private final int[] lastRows;
 
     /**
-     * contructor
+     * constructor
      */
     public Shelf() {
         this.shelfGrid = new Item[SHELF_ROWS][SHELF_COLUMNS];

@@ -15,6 +15,9 @@ import java.util.List;
 // FOUR --> nostra 1
 // FIVE
 
+/**
+ * CommonObjCard class represents the common objective cards of the game.
+ */
 public class CommonObjCard implements Serializable {
 
     /* ATTRIBUTES SECTION */
