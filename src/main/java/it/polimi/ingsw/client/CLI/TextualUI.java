@@ -324,16 +324,18 @@ public class TextualUI implements UI, Serializable {
                     msg.substring(endPlayersName + 1);
             String[] playerNickname = new String[4];
             StringBuilder temp = new StringBuilder();
-            temp.append(finalMsg1);
+            temp.append(substring.substring(1));
             int counter = 0;
-            while(finalMsg1.contains("!")){
+            while(substring.contains("!")){
                 playerNickname[counter] = (temp.substring(0, temp.indexOf("!")));
                 temp.delete(0, temp.indexOf("!") + 1);
+                substring = temp.toString();
                 counter++;
             }
+            System.out.println("The player's nickname are");
             for(String name : playerNickname)
                 if(name != null) System.out.println(name);
-            System.out.println(substring);
+            System.out.println(finalMsg1);
         } else System.out.println(msg);
     }
 
