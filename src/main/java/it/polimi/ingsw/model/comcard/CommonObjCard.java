@@ -177,6 +177,12 @@ public class CommonObjCard implements Serializable {
         return temp;
     }
 
+    /**
+     * get method
+     * @return int -> nextPoints
+     */
+    public int getNextPoints(){return this.nextPoints;}
+
 }
 
 

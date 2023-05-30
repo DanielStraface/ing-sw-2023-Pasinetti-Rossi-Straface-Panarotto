@@ -10,6 +10,7 @@ public class CommonObjCardView implements Serializable {
     private static final long serialVersionUID = 2L;
     private final CommonObjCard card;
     private final int[] points;
+    private final int nextPoints;
 
     /**
      * Constructor method
@@ -18,6 +19,7 @@ public class CommonObjCardView implements Serializable {
     public CommonObjCardView(CommonObjCard card) {
         this.card = card;
         this.points = card.copyPointsArray();
+        this.nextPoints = card.getNextPoints();
     }
 
     /**
@@ -41,4 +43,9 @@ public class CommonObjCardView implements Serializable {
      * @return int[] -> points
      */
     public int[] getPoints(){return this.points;}
+    /**
+     * get method
+     * @return int -> nextPoints
+     */
+    public int getNextPoints(){return this.nextPoints;}
 }

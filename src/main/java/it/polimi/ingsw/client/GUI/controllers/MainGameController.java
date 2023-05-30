@@ -11,6 +11,7 @@ import it.polimi.ingsw.modelview.GameBoardView;
 import it.polimi.ingsw.modelview.ShelfView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -26,7 +27,7 @@ import javafx.util.Duration;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-public class MainGameController implements GUIController{
+public class MainGameController implements GUIController {
     private static final int OCCUPIED = 2;
     private static final int PLAYABLE = 1;
     @FXML
@@ -344,6 +345,13 @@ public class MainGameController implements GUIController{
             this.updateMessageBox("Wrong column selection: " + e.getMessage());
         }
 
+    }
+
+    public void playersShelfButtonAction(){
+        System.out.println("Players' Shelf button pressed");
+        playSound(MenuSelection);
+        String scenePath = "PlayersShelf.fxml";
+        this.gui.openNewWindow(scenePath);
     }
 
     public void activateShelf(ShelfView shelfView){

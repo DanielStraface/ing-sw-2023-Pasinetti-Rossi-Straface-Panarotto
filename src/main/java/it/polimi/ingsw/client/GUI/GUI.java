@@ -33,6 +33,7 @@ public class GUI extends Application implements UI {
     private static final String MATCH_CHOICES = "MatchChoices.fxml";
     private static final String MAIN_GAME = "MainGame.fxml";
     private static final String OBJECTIVES = "Objectives.fxml";
+    private static final String PLAYERS_SHELF = "PlayersShelf.fxml";
     private final HashMap<String, Scene> scenes = new HashMap<>();
     private final HashMap<String, GUIController> guiControllers = new HashMap<String, GUIController>();
     private Stage stage;
@@ -117,7 +118,7 @@ public class GUI extends Application implements UI {
         Font.loadFont(getClass().getResourceAsStream("/fonts/Accio_Dollaro.ttf"), 14);
         Scene loadScene;
         List<String> fxlms = new ArrayList<>(
-                Arrays.asList(MAIN_MENU, SETUP_CHOICES, MATCH_CHOICES, MAIN_GAME, OBJECTIVES));
+                Arrays.asList(MAIN_MENU, SETUP_CHOICES, MATCH_CHOICES, MAIN_GAME, OBJECTIVES, PLAYERS_SHELF));
         try{
             for(String fxml : fxlms){
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/" + fxml));
@@ -255,12 +256,13 @@ public class GUI extends Application implements UI {
         }
         Platform.runLater(() -> {
             mainGameController.updateCurrentTurnLabel(gameView.getCurrentPlayer().getNickname());
+            ObjectivesController ctrl = (ObjectivesController) guiControllers.get("Objectives.fxml");
             if(!areCardsSet){
-                ObjectivesController ctrl = (ObjectivesController) guiControllers.get("Objectives.fxml");
                 ctrl.updateComObjCards(gameView.getCommonObjCard());
                 ctrl.updatePersonalObjCard(gameView.getCurrentPlayer().getMyPersonalOBjCard());
                 areCardsSet = true;
             }
+            ctrl.updateCommonObjCardsPoints(gameView.getCommonObjCard());
         });
         this.update(gameView.getGameBoard());
         this.update(gameView.getCurrentPlayer().getMyShelf());

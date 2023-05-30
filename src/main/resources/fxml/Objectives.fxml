@@ -5,6 +5,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
+<?import java.util.ArrayList?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.GUI.controllers.ObjectivesController">
    <children>
       <ImageView fitHeight="600.0" fitWidth="800.0" layoutX="-1.0" pickOnBounds="true">
@@ -76,4 +77,20 @@
          </children>
       </AnchorPane>
    </children>
+   <fx:define>
+      <ArrayList fx:id="topScoringTokens">
+         <fx:reference source="topTwo" />
+         <fx:reference source="topFour" />
+         <fx:reference source="topSix" />
+         <fx:reference source="topEight" />
+      </ArrayList>
+   </fx:define>
+   <fx:define>
+      <ArrayList fx:id="bottomScoringTokens">
+         <fx:reference source="bottomTwo" />
+         <fx:reference source="bottomFour" />
+         <fx:reference source="bottomSix" />
+         <fx:reference source="bottomEight" />
+      </ArrayList>
+   </fx:define>
 </AnchorPane>
