@@ -107,7 +107,9 @@ public class MainGameController implements GUIController{
             String[] stringArray = itemsList.get(i).getId().split("_");
             int row = Integer.parseInt(stringArray[1]);
             int col = Integer.parseInt(stringArray[2]);
-            gameboardItemSlotMatrix[row][col] = wrappersList.get(i);
+            if(wrappersList.get(i) != null) {
+                gameboardItemSlotMatrix[row][col] = wrappersList.get(i);
+            }
         }
     }
 
