@@ -130,6 +130,7 @@ public class GUI extends Application implements UI {
                 guiControllers.put(fxml, ctrl);
             }
             currentController = guiControllers.get("MatchChoices.fxml");
+            mainGameController = (MainGameController) guiControllers.get("MainGame.fxml");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
