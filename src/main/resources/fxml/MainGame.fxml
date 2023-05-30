@@ -34,7 +34,7 @@
                </children>
             </Pane>
             <Label layoutX="1280.0" layoutY="196.0" prefHeight="40.0" prefWidth="95.0" text="YOUR NAME:" />
-            <Button fx:id="objectivesButton" layoutX="1257.0" layoutY="48.0" mnemonicParsing="false" onAction="#objectivesButtonAction" prefHeight="59.0" prefWidth="140.0" text="Objectives" />
+            <Button fx:id="objectivesButton" layoutX="1258.0" layoutY="14.0" mnemonicParsing="false" onAction="#objectivesButtonAction" prefHeight="59.0" prefWidth="140.0" text="Objectives" />
             <Label fx:id="yourNameLabel" layoutX="1280.0" layoutY="255.0" visible="false" />
             <Label layoutX="1280.0" layoutY="310.0" text="YOUR SCORE:" />
             <Label fx:id="scoreLabel" layoutX="1309.0" layoutY="347.0" text="0" />
@@ -98,6 +98,7 @@
                   </ImageView>
                </graphic>
             </Button>
+            <Button fx:id="playersShelfButton" layoutX="1258.0" layoutY="90.0" mnemonicParsing="false" onAction="#playersShelfButtonAction" prefHeight="59.0" prefWidth="140.0" text="Player's shelf" />
          </children>
       </AnchorPane>
       <AnchorPane fx:id="gameboardPane" disable="true" prefHeight="200.0" prefWidth="200.0">

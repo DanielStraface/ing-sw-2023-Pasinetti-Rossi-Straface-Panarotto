@@ -15,6 +15,7 @@ import it.polimi.ingsw.client.CLI.commands.SelectColumnCommand;
 import it.polimi.ingsw.client.CLI.commands.SelectItemsCommand;
 import it.polimi.ingsw.client.UI;
 import it.polimi.ingsw.server.AppServer;
+import javafx.application.Platform;
 
 import java.io.Serializable;
 import java.rmi.RemoteException;
@@ -313,7 +314,28 @@ public class TextualUI implements UI, Serializable {
      * Invokes a method to display a given message
      * @param msg String given
      */
-    public void update(String msg) {System.out.println(msg);}
+    public void update(String msg) {
+        if(msg.contains("%") && msg.contains("$")) {
+            int startPlayersName = msg.indexOf("%");
+            int endPlayersName = msg.indexOf("$");
+            String substring = msg.substring(startPlayersName, endPlayersName);
+            int thePlayersPos = msg.indexOf("The players'");
+            String finalMsg1 = msg.substring(0, thePlayersPos) +
+                    msg.substring(endPlayersName + 1);
+            String[] playerNickname = new String[4];
+            StringBuilder temp = new StringBuilder();
+            temp.append(finalMsg1);
+            int counter = 0;
+            while(finalMsg1.contains("!")){
+                playerNickname[counter] = (temp.substring(0, temp.indexOf("!")));
+                temp.delete(0, temp.indexOf("!") + 1);
+                counter++;
+            }
+            for(String name : playerNickname)
+                if(name != null) System.out.println(name);
+            System.out.println(substring);
+        } else System.out.println(msg);
+    }
 
     /**
      * Sets a reference flag to a client
