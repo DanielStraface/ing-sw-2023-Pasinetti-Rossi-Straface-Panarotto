@@ -1,10 +1,378 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 
-<AnchorPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="it.polimi.ingsw.client.GUI.controllers.PlayersShelfController" prefHeight="400.0" prefWidth="600.0">
+<?import java.util.ArrayList?>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.GUI.controllers.PlayersShelfController">
+   <children>
+      <ImageView fitHeight="600.0" fitWidth="800.0" pickOnBounds="true">
+         <image>
+            <Image url="@../graphics/misc/base_pagina2.jpg" />
+         </image>
+      </ImageView>
+      <Pane fx:id="paneShelf1" layoutX="275.0" layoutY="24.0" opacity="0.5" prefHeight="250.0" prefWidth="250.0">
+         <children>
+            <Pane layoutX="155.0" prefHeight="250.0" prefWidth="247.0">
+               <children>
+                  <ImageView fx:id="item04" fitHeight="32.0" fitWidth="32.0" layoutX="30.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item14" fitHeight="34.0" fitWidth="32.0" layoutX="29.0" layoutY="51.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item24" fitHeight="34.0" fitWidth="32.0" layoutX="30.0" layoutY="84.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item34" fitHeight="30.0" fitWidth="30.0" layoutX="30.0" layoutY="120.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item44" fitHeight="29.0" fitWidth="28.0" layoutX="31.0" layoutY="152.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item54" fitHeight="30.0" fitWidth="30.0" layoutX="31.0" layoutY="184.0" pickOnBounds="true" preserveRatio="true" />
+               </children>
+            </Pane>
+            <Pane layoutX="116.0" prefHeight="250.0" prefWidth="247.0">
+               <children>
+                  <ImageView fx:id="item03" fitHeight="32.0" fitWidth="32.0" layoutX="30.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item13" fitHeight="34.0" fitWidth="32.0" layoutX="29.0" layoutY="51.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item23" fitHeight="34.0" fitWidth="32.0" layoutX="30.0" layoutY="84.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item33" fitHeight="30.0" fitWidth="30.0" layoutX="30.0" layoutY="120.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item43" fitHeight="29.0" fitWidth="28.0" layoutX="31.0" layoutY="152.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item53" fitHeight="30.0" fitWidth="30.0" layoutX="31.0" layoutY="184.0" pickOnBounds="true" preserveRatio="true" />
+               </children>
+            </Pane>
+            <Pane layoutX="78.0" prefHeight="250.0" prefWidth="247.0">
+               <children>
+                  <ImageView fx:id="item02" fitHeight="32.0" fitWidth="32.0" layoutX="30.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item12" fitHeight="34.0" fitWidth="32.0" layoutX="29.0" layoutY="51.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item22" fitHeight="34.0" fitWidth="32.0" layoutX="30.0" layoutY="84.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item32" fitHeight="30.0" fitWidth="30.0" layoutX="30.0" layoutY="120.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item42" fitHeight="29.0" fitWidth="28.0" layoutX="31.0" layoutY="152.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item52" fitHeight="30.0" fitWidth="30.0" layoutX="31.0" layoutY="184.0" pickOnBounds="true" preserveRatio="true" />
+               </children>
+            </Pane>
+            <Pane layoutX="40.0" prefHeight="250.0" prefWidth="247.0">
+               <children>
+                  <ImageView fx:id="item01" fitHeight="32.0" fitWidth="32.0" layoutX="30.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item11" fitHeight="34.0" fitWidth="32.0" layoutX="29.0" layoutY="51.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item21" fitHeight="34.0" fitWidth="32.0" layoutX="30.0" layoutY="84.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item31" fitHeight="30.0" fitWidth="30.0" layoutX="30.0" layoutY="120.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item41" fitHeight="29.0" fitWidth="28.0" layoutX="31.0" layoutY="152.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item51" fitHeight="30.0" fitWidth="30.0" layoutX="31.0" layoutY="184.0" pickOnBounds="true" preserveRatio="true" />
+               </children>
+            </Pane>
+            <Pane prefHeight="250.0" prefWidth="247.0">
+               <children>
+                  <ImageView fx:id="item00" fitHeight="32.0" fitWidth="32.0" layoutX="30.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item10" fitHeight="34.0" fitWidth="32.0" layoutX="29.0" layoutY="51.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item20" fitHeight="34.0" fitWidth="32.0" layoutX="30.0" layoutY="84.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item30" fitHeight="30.0" fitWidth="30.0" layoutX="30.0" layoutY="120.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item40" fitHeight="29.0" fitWidth="28.0" layoutX="33.0" layoutY="152.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item50" fitHeight="30.0" fitWidth="30.0" layoutX="31.0" layoutY="184.0" pickOnBounds="true" preserveRatio="true" />
+               </children>
+            </Pane>
+            <ImageView fitHeight="250.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../graphics/boards/bookshelf.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
+      <Pane fx:id="paneShelf2" layoutX="24.0" layoutY="300.0" opacity="0.5" prefHeight="250.0" prefWidth="250.0">
+         <children>
+            <Pane layoutX="155.0" prefHeight="250.0" prefWidth="247.0">
+               <children>
+                  <ImageView fx:id="item041" fitHeight="32.0" fitWidth="32.0" layoutX="30.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item141" fitHeight="34.0" fitWidth="32.0" layoutX="29.0" layoutY="51.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item241" fitHeight="34.0" fitWidth="32.0" layoutX="30.0" layoutY="84.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item341" fitHeight="30.0" fitWidth="30.0" layoutX="30.0" layoutY="120.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item441" fitHeight="29.0" fitWidth="28.0" layoutX="31.0" layoutY="152.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item541" fitHeight="30.0" fitWidth="30.0" layoutX="31.0" layoutY="184.0" pickOnBounds="true" preserveRatio="true" />
+               </children>
+            </Pane>
+            <Pane layoutX="116.0" prefHeight="250.0" prefWidth="247.0">
+               <children>
+                  <ImageView fx:id="item031" fitHeight="32.0" fitWidth="32.0" layoutX="30.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item131" fitHeight="34.0" fitWidth="32.0" layoutX="29.0" layoutY="51.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item231" fitHeight="34.0" fitWidth="32.0" layoutX="30.0" layoutY="84.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item331" fitHeight="30.0" fitWidth="30.0" layoutX="30.0" layoutY="120.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item431" fitHeight="29.0" fitWidth="28.0" layoutX="31.0" layoutY="152.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item531" fitHeight="30.0" fitWidth="30.0" layoutX="31.0" layoutY="184.0" pickOnBounds="true" preserveRatio="true" />
+               </children>
+            </Pane>
+            <Pane layoutX="78.0" prefHeight="250.0" prefWidth="247.0">
+               <children>
+                  <ImageView fx:id="item021" fitHeight="32.0" fitWidth="32.0" layoutX="30.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item121" fitHeight="34.0" fitWidth="32.0" layoutX="29.0" layoutY="51.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item221" fitHeight="34.0" fitWidth="32.0" layoutX="30.0" layoutY="84.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item321" fitHeight="30.0" fitWidth="30.0" layoutX="30.0" layoutY="120.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item421" fitHeight="29.0" fitWidth="28.0" layoutX="31.0" layoutY="152.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item521" fitHeight="30.0" fitWidth="30.0" layoutX="31.0" layoutY="184.0" pickOnBounds="true" preserveRatio="true" />
+               </children>
+            </Pane>
+            <Pane layoutX="40.0" prefHeight="250.0" prefWidth="247.0">
+               <children>
+                  <ImageView fx:id="item011" fitHeight="32.0" fitWidth="32.0" layoutX="30.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item111" fitHeight="34.0" fitWidth="32.0" layoutX="29.0" layoutY="51.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item211" fitHeight="34.0" fitWidth="32.0" layoutX="30.0" layoutY="84.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item311" fitHeight="30.0" fitWidth="30.0" layoutX="30.0" layoutY="120.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item411" fitHeight="29.0" fitWidth="28.0" layoutX="31.0" layoutY="152.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item511" fitHeight="30.0" fitWidth="30.0" layoutX="31.0" layoutY="184.0" pickOnBounds="true" preserveRatio="true" />
+               </children>
+            </Pane>
+            <Pane prefHeight="250.0" prefWidth="247.0">
+               <children>
+                  <ImageView fx:id="item001" fitHeight="32.0" fitWidth="32.0" layoutX="30.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item101" fitHeight="34.0" fitWidth="32.0" layoutX="29.0" layoutY="51.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item201" fitHeight="34.0" fitWidth="32.0" layoutX="30.0" layoutY="84.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item301" fitHeight="30.0" fitWidth="30.0" layoutX="30.0" layoutY="120.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item401" fitHeight="29.0" fitWidth="28.0" layoutX="33.0" layoutY="152.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item501" fitHeight="30.0" fitWidth="30.0" layoutX="31.0" layoutY="184.0" pickOnBounds="true" preserveRatio="true" />
+               </children>
+            </Pane>
+            <ImageView fitHeight="250.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../graphics/boards/bookshelf.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
+      <Pane fx:id="paneShelf3" layoutX="525.0" layoutY="300.0" opacity="0.51" prefHeight="250.0" prefWidth="250.0">
+         <children>
+            <Pane layoutX="155.0" prefHeight="250.0" prefWidth="247.0">
+               <children>
+                  <ImageView fx:id="item0411" fitHeight="32.0" fitWidth="32.0" layoutX="30.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item1411" fitHeight="34.0" fitWidth="32.0" layoutX="29.0" layoutY="51.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item2411" fitHeight="34.0" fitWidth="32.0" layoutX="30.0" layoutY="84.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item3411" fitHeight="30.0" fitWidth="30.0" layoutX="30.0" layoutY="120.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item4411" fitHeight="29.0" fitWidth="28.0" layoutX="31.0" layoutY="152.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item5411" fitHeight="30.0" fitWidth="30.0" layoutX="31.0" layoutY="184.0" pickOnBounds="true" preserveRatio="true" />
+               </children>
+            </Pane>
+            <Pane layoutX="116.0" prefHeight="250.0" prefWidth="247.0">
+               <children>
+                  <ImageView fx:id="item0311" fitHeight="32.0" fitWidth="32.0" layoutX="30.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item1311" fitHeight="34.0" fitWidth="32.0" layoutX="29.0" layoutY="51.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item2311" fitHeight="34.0" fitWidth="32.0" layoutX="30.0" layoutY="84.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item3311" fitHeight="30.0" fitWidth="30.0" layoutX="30.0" layoutY="120.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item4311" fitHeight="29.0" fitWidth="28.0" layoutX="31.0" layoutY="152.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item5311" fitHeight="30.0" fitWidth="30.0" layoutX="31.0" layoutY="184.0" pickOnBounds="true" preserveRatio="true" />
+               </children>
+            </Pane>
+            <Pane layoutX="78.0" prefHeight="250.0" prefWidth="247.0">
+               <children>
+                  <ImageView fx:id="item0211" fitHeight="32.0" fitWidth="32.0" layoutX="30.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item1211" fitHeight="34.0" fitWidth="32.0" layoutX="29.0" layoutY="51.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item2211" fitHeight="34.0" fitWidth="32.0" layoutX="30.0" layoutY="84.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item3211" fitHeight="30.0" fitWidth="30.0" layoutX="30.0" layoutY="120.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item4211" fitHeight="29.0" fitWidth="28.0" layoutX="31.0" layoutY="152.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item5211" fitHeight="30.0" fitWidth="30.0" layoutX="31.0" layoutY="184.0" pickOnBounds="true" preserveRatio="true" />
+               </children>
+            </Pane>
+            <Pane layoutX="40.0" prefHeight="250.0" prefWidth="247.0">
+               <children>
+                  <ImageView fx:id="item0111" fitHeight="32.0" fitWidth="32.0" layoutX="30.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item1111" fitHeight="34.0" fitWidth="32.0" layoutX="29.0" layoutY="51.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item2111" fitHeight="34.0" fitWidth="32.0" layoutX="30.0" layoutY="84.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item3111" fitHeight="30.0" fitWidth="30.0" layoutX="30.0" layoutY="120.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item4111" fitHeight="29.0" fitWidth="28.0" layoutX="31.0" layoutY="152.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item5111" fitHeight="30.0" fitWidth="30.0" layoutX="31.0" layoutY="184.0" pickOnBounds="true" preserveRatio="true" />
+               </children>
+            </Pane>
+            <Pane prefHeight="250.0" prefWidth="247.0">
+               <children>
+                  <ImageView fx:id="item0011" fitHeight="32.0" fitWidth="32.0" layoutX="30.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item1011" fitHeight="34.0" fitWidth="32.0" layoutX="29.0" layoutY="51.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item2011" fitHeight="34.0" fitWidth="32.0" layoutX="30.0" layoutY="84.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item3011" fitHeight="30.0" fitWidth="30.0" layoutX="30.0" layoutY="120.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item4011" fitHeight="29.0" fitWidth="28.0" layoutX="33.0" layoutY="152.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="item5011" fitHeight="30.0" fitWidth="30.0" layoutX="31.0" layoutY="184.0" pickOnBounds="true" preserveRatio="true" />
+               </children>
+            </Pane>
+            <ImageView fitHeight="250.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../graphics/boards/bookshelf.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
+   </children>
+   <fx:define>
+      <ArrayList fx:id="shelf1Col0">
+         <fx:reference source="item00" />
+         <fx:reference source="item10" />
+         <fx:reference source="item20" />
+         <fx:reference source="item30" />
+         <fx:reference source="item40" />
+         <fx:reference source="item50" />
+      </ArrayList>
+   </fx:define>
+   <fx:define>
+      <ArrayList fx:id="shelf1Col1">
+         <fx:reference source="item01" />
+         <fx:reference source="item11" />
+         <fx:reference source="item21" />
+         <fx:reference source="item31" />
+         <fx:reference source="item41" />
+         <fx:reference source="item51" />
+      </ArrayList>
+   </fx:define>
+   <fx:define>
+      <ArrayList fx:id="shelf1Col2">
+         <fx:reference source="item02" />
+         <fx:reference source="item12" />
+         <fx:reference source="item22" />
+         <fx:reference source="item32" />
+         <fx:reference source="item42" />
+         <fx:reference source="item52" />
+      </ArrayList>
+   </fx:define>
+   <fx:define>
+      <ArrayList fx:id="shelf1Col3">
+         <fx:reference source="item03" />
+         <fx:reference source="item13" />
+         <fx:reference source="item23" />
+         <fx:reference source="item33" />
+         <fx:reference source="item43" />
+         <fx:reference source="item53" />
+      </ArrayList>
+   </fx:define>
+   <fx:define>
+      <ArrayList fx:id="shelf1Col4">
+         <fx:reference source="item04" />
+         <fx:reference source="item14" />
+         <fx:reference source="item24" />
+         <fx:reference source="item34" />
+         <fx:reference source="item44" />
+         <fx:reference source="item54" />
+      </ArrayList>
+   </fx:define>
+   <fx:define>
+      <ArrayList fx:id="shelf2Col0">
+         <fx:reference source="item001" />
+         <fx:reference source="item101" />
+         <fx:reference source="item201" />
+         <fx:reference source="item301" />
+         <fx:reference source="item401" />
+         <fx:reference source="item501" />
+      </ArrayList>
+   </fx:define>
+   <fx:define>
+      <ArrayList fx:id="shelf2Col1">
+         <fx:reference source="item011" />
+         <fx:reference source="item111" />
+         <fx:reference source="item211" />
+         <fx:reference source="item311" />
+         <fx:reference source="item411" />
+         <fx:reference source="item511" />
+      </ArrayList>
+   </fx:define>
+   <fx:define>
+      <ArrayList fx:id="shelf2Col2">
+         <fx:reference source="item021" />
+         <fx:reference source="item121" />
+         <fx:reference source="item221" />
+         <fx:reference source="item321" />
+         <fx:reference source="item421" />
+         <fx:reference source="item521" />
+      </ArrayList>
+   </fx:define>
+   <fx:define>
+      <ArrayList fx:id="shelf2Col3">
+         <fx:reference source="item031" />
+         <fx:reference source="item131" />
+         <fx:reference source="item231" />
+         <fx:reference source="item331" />
+         <fx:reference source="item431" />
+         <fx:reference source="item531" />
+      </ArrayList>
+   </fx:define>
+   <fx:define>
+      <ArrayList fx:id="shelf2Col4">
+         <fx:reference source="item041" />
+         <fx:reference source="item141" />
+         <fx:reference source="item241" />
+         <fx:reference source="item341" />
+         <fx:reference source="item441" />
+         <fx:reference source="item541" />
+      </ArrayList>
+   </fx:define>
+   <fx:define>
+      <ArrayList fx:id="shelf3Col0">
+         <fx:reference source="item0011" />
+         <fx:reference source="item1011" />
+         <fx:reference source="item2011" />
+         <fx:reference source="item3011" />
+         <fx:reference source="item4011" />
+         <fx:reference source="item5011" />
+      </ArrayList>
+   </fx:define>
+   <fx:define>
+      <ArrayList fx:id="shelf3Col1">
+         <fx:reference source="item0111" />
+         <fx:reference source="item1111" />
+         <fx:reference source="item2111" />
+         <fx:reference source="item3111" />
+         <fx:reference source="item4111" />
+         <fx:reference source="item5111" />
+      </ArrayList>
+   </fx:define>
+   <fx:define>
+      <ArrayList fx:id="shelf3Col2">
+         <fx:reference source="item0211" />
+         <fx:reference source="item1211" />
+         <fx:reference source="item2211" />
+         <fx:reference source="item3211" />
+         <fx:reference source="item4211" />
+         <fx:reference source="item5211" />
+      </ArrayList>
+   </fx:define>
+   <fx:define>
+      <ArrayList fx:id="shelf3Col3">
+         <fx:reference source="item0311" />
+         <fx:reference source="item1311" />
+         <fx:reference source="item2311" />
+         <fx:reference source="item3311" />
+         <fx:reference source="item4311" />
+         <fx:reference source="item5311" />
+      </ArrayList>
+   </fx:define>
+   <fx:define>
+      <ArrayList fx:id="shelf3Col4">
+         <fx:reference source="item0411" />
+         <fx:reference source="item1411" />
+         <fx:reference source="item2411" />
+         <fx:reference source="item3411" />
+         <fx:reference source="item4411" />
+         <fx:reference source="item5411" />
+      </ArrayList>
+   </fx:define>
+   <fx:define>
+      <ArrayList fx:id="shelf1">
+         <fx:reference source="shelf1Col0" />
+         <fx:reference source="shelf1Col1" />
+         <fx:reference source="shelf1Col2" />
+         <fx:reference source="shelf1Col3" />
+         <fx:reference source="shelf1Col4" />
+      </ArrayList>
+   </fx:define>
+   <fx:define>
+      <ArrayList fx:id="shelf2">
+         <fx:reference source="shelf2Col0" />
+         <fx:reference source="shelf2Col1" />
+         <fx:reference source="shelf2Col2" />
+         <fx:reference source="shelf2Col3" />
+         <fx:reference source="shelf2Col4" />
+      </ArrayList>
+   </fx:define>
+   <fx:define>
+      <ArrayList fx:id="shelf3">
+         <fx:reference source="shelf3Col0" />
+         <fx:reference source="shelf3Col1" />
+         <fx:reference source="shelf3Col2" />
+         <fx:reference source="shelf3Col3" />
+         <fx:reference source="shelf3Col4" />
+      </ArrayList>
+   </fx:define>
+   <fx:define>
+      <ArrayList fx:id="playersShelfList">
+         <fx:reference source="shelf1" />
+         <fx:reference source="shelf2" />
+         <fx:reference source="shelf3" />
+      </ArrayList>
+   </fx:define>
 </AnchorPane>

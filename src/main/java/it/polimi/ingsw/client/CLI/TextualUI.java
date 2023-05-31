@@ -75,9 +75,29 @@ public class TextualUI implements UI, Serializable {
      * @throws RemoteException
      */
     public void run(GameView gameView) throws RemoteException{
+        Scanner scanner = new Scanner(System.in);
+        String firstDecision;
+        List<String> admitDecision = Arrays.asList("play", "shelf");
         this.displayNewTurn(gameView);
         System.out.println("-----------------------------------------------------------------------------------------");
         System.out.println("Hey " + this.refClient.getNickname() + ", is your turn!");
+        System.out.print("""
+               Do you want to play or to display the other players' shelf?
+               (Please, type 'play' or 'shelf')
+               >>""");
+        firstDecision = scanner.nextLine();
+        while(!admitDecision.contains(firstDecision)){
+            System.out.print("""
+                    Wrong decision, please try again: >>""");
+            firstDecision = scanner.nextLine();
+        }
+        if(firstDecision.equals(admitDecision.get(1)))
+            for(PlayerView playerView : gameView.getPlayers()){
+                if(!playerView.getNickname().equals(this.refClient.getNickname())){
+                    System.out.println("Player " + playerView.getNickname());
+                    displayShelf(playerView.getMyShelf());
+                }
+            }
         while(true){
             try{
                 gameActionOnGameboard(gameView.getGameBoard());
@@ -147,7 +167,7 @@ public class TextualUI implements UI, Serializable {
      * @param shelf ShelfView to get the shelf's grid
      */
     private void displayShelf(ShelfView shelf) {
-        System.out.println("Your shelf: ");
+        System.out.println("The shelf is: ");
         for(int i=0; i<6; i++){
             System.out.print(i+1 + " ");
             for(int j=0; j<5; j++){
