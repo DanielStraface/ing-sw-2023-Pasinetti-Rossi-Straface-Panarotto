@@ -9,7 +9,6 @@
 <?import javafx.scene.layout.Pane?>
 
 <?import java.util.ArrayList?>
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="719.0" prefWidth="1420.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.GUI.controllers.MainGameController">
    <children>
       <ImageView fitHeight="720.0" fitWidth="796.0" pickOnBounds="true" preserveRatio="true">
@@ -24,28 +23,52 @@
       </ImageView>
       <AnchorPane layoutX="5.0" layoutY="5.0" prefHeight="711.0" prefWidth="1405.0">
          <children>
-            <Pane fx:id="shelfItemPane" layoutX="790.0" layoutY="190.0" opacity="0.7">
+            <Pane fx:id="shelfItemPane" layoutX="780.0" layoutY="190.0" opacity="0.7" prefHeight="482.0" prefWidth="438.0">
                <children>
-                  <ImageView fx:id="slot11" fitHeight="65.0" fitWidth="65.0" layoutX="1.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fx:id="slot21" fitHeight="65.0" fitWidth="65.0" layoutX="2.0" layoutY="83.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fx:id="slot31" fitHeight="65.0" fitWidth="65.0" layoutX="3.0" layoutY="157.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fx:id="slot41" fitHeight="70.0" fitWidth="70.0" layoutY="227.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fx:id="slot51" fitHeight="70.0" fitWidth="70.0" layoutY="300.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fx:id="slot61" fitHeight="70.0" fitWidth="70.0" layoutY="372.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="slot11" fitHeight="65.0" fitWidth="65.0" layoutX="11.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="slot21" fitHeight="65.0" fitWidth="65.0" layoutX="12.0" layoutY="96.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="slot31" fitHeight="65.0" fitWidth="65.0" layoutX="13.0" layoutY="172.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="slot41" fitHeight="70.0" fitWidth="70.0" layoutX="14.0" layoutY="243.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="slot51" fitHeight="70.0" fitWidth="70.0" layoutX="15.0" layoutY="316.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="slot61" fitHeight="70.0" fitWidth="70.0" layoutX="16.0" layoutY="388.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="slot12" fitHeight="65.0" fitWidth="65.0" layoutX="101.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="slot22" fitHeight="65.0" fitWidth="65.0" layoutX="102.0" layoutY="96.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="slot32" fitHeight="65.0" fitWidth="65.0" layoutX="103.0" layoutY="172.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="slot42" fitHeight="65.0" fitWidth="65.0" layoutX="104.0" layoutY="246.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="slot52" fitHeight="65.0" fitWidth="65.0" layoutX="105.0" layoutY="319.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="slot62" fitHeight="65.0" fitWidth="65.0" layoutX="106.0" layoutY="391.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="slot13" fitHeight="65.0" fitWidth="65.0" layoutX="189.0" layoutY="19.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="slot23" fitHeight="65.0" fitWidth="65.0" layoutX="189.0" layoutY="95.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="slot33" fitHeight="65.0" fitWidth="65.0" layoutX="189.0" layoutY="172.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="slot43" fitHeight="65.0" fitWidth="65.0" layoutX="189.0" layoutY="247.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="slot53" fitHeight="65.0" fitWidth="65.0" layoutX="189.0" layoutY="320.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="slot63" fitHeight="65.0" fitWidth="65.0" layoutX="189.0" layoutY="392.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="slot14" fitHeight="65.0" fitWidth="65.0" layoutX="277.0" layoutY="19.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="slot24" fitHeight="65.0" fitWidth="65.0" layoutX="277.0" layoutY="95.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="slot34" fitHeight="65.0" fitWidth="65.0" layoutX="277.0" layoutY="172.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="slot44" fitHeight="65.0" fitWidth="65.0" layoutX="277.0" layoutY="246.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="slot54" fitHeight="65.0" fitWidth="65.0" layoutX="277.0" layoutY="320.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="slot64" fitHeight="65.0" fitWidth="65.0" layoutX="277.0" layoutY="391.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="slot15" fitHeight="65.0" fitWidth="65.0" layoutX="366.0" layoutY="19.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="slot25" fitHeight="65.0" fitWidth="65.0" layoutX="365.0" layoutY="95.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="slot35" fitHeight="65.0" fitWidth="65.0" layoutX="364.0" layoutY="171.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="slot45" fitHeight="65.0" fitWidth="65.0" layoutX="363.0" layoutY="246.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="slot55" fitHeight="65.0" fitWidth="65.0" layoutX="362.0" layoutY="320.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="slot65" fitHeight="65.0" fitWidth="65.0" layoutX="361.0" layoutY="391.0" pickOnBounds="true" preserveRatio="true" />
                </children>
             </Pane>
             <Label layoutX="1280.0" layoutY="196.0" prefHeight="40.0" prefWidth="95.0" text="YOUR NAME:" />
             <Button fx:id="objectivesButton" layoutX="1258.0" layoutY="14.0" mnemonicParsing="false" onAction="#objectivesButtonAction" prefHeight="59.0" prefWidth="140.0" text="Objectives" />
-            <Label fx:id="yourNameLabel" layoutX="1280.0" layoutY="255.0" visible="false" />
+            <Label fx:id="yourNameLabel" layoutX="1248.0" layoutY="240.0" prefHeight="40.0" prefWidth="147.0" visible="false" />
             <Label layoutX="1280.0" layoutY="310.0" text="YOUR SCORE:" />
-            <Label fx:id="scoreLabel" layoutX="1309.0" layoutY="347.0" text="0" />
+            <Label fx:id="scoreLabel" alignment="CENTER" layoutX="1309.0" layoutY="347.0" prefHeight="18.0" prefWidth="18.0" text="0" />
             <Label fx:id="player1Label" layoutX="1240.0" layoutY="470.0" prefHeight="25.0" prefWidth="175.0" text="\%DEFAULT%" visible="false" />
             <Label fx:id="messageBox" layoutX="811.0" layoutY="4.0" prefHeight="146.0" prefWidth="380.0" text="MessageBox" />
             <ImageView fx:id="firstPlayerChair" fitHeight="98.0" fitWidth="81.0" layoutX="708.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true" visible="false">
                <image>
                   <Image url="@../graphics/misc/firstplayertoken.png" />
                </image></ImageView>
-            <ImageView fx:id="activeShelf" fitHeight="581.0" fitWidth="552.0" layoutX="725.0" layoutY="168.0" opacity="0.7" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="activeShelf" fitHeight="581.0" fitWidth="552.0" layoutX="725.0" layoutY="168.0" opacity="0.7" pickOnBounds="true" preserveRatio="true" rotate="-0.2">
                <image>
                   <Image url="@../graphics/boards/bookshelf.png" />
                </image>
@@ -124,7 +147,7 @@
                   <Image url="@../graphics/misc/Sacchetto_Chiuso.png" />
                </image>
             </ImageView>
-            <Pane layoutX="27.0" layoutY="29.0" prefHeight="654.0" prefWidth="654.0">
+            <Pane layoutX="27.0" layoutY="26.0" prefHeight="654.0" prefWidth="654.0">
                <children>
                   <Button fx:id="_1_3_" contentDisplay="TOP" layoutX="216.0" layoutY="74.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#itemClick" prefHeight="75.0" prefWidth="75.0" styleClass="itemButton" stylesheets="@../css/MainGame.css" text="Button">
                      <graphic>
@@ -664,11 +687,35 @@
    <fx:define>
       <ArrayList fx:id="shelfColumnOne">
          <fx:reference source="slot11" />
+         <fx:reference source="slot12" />
+         <fx:reference source="slot13" />
+         <fx:reference source="slot14" />
+         <fx:reference source="slot15" />
          <fx:reference source="slot21" />
+         <fx:reference source="slot22" />
+         <fx:reference source="slot23" />
+         <fx:reference source="slot24" />
+         <fx:reference source="slot25" />
          <fx:reference source="slot31" />
+         <fx:reference source="slot32" />
+         <fx:reference source="slot33" />
+         <fx:reference source="slot34" />
+         <fx:reference source="slot35" />
          <fx:reference source="slot41" />
+         <fx:reference source="slot42" />
+         <fx:reference source="slot43" />
+         <fx:reference source="slot44" />
+         <fx:reference source="slot45" />
          <fx:reference source="slot51" />
+         <fx:reference source="slot52" />
+         <fx:reference source="slot53" />
+         <fx:reference source="slot54" />
+         <fx:reference source="slot55" />
          <fx:reference source="slot61" />
+         <fx:reference source="slot62" />
+         <fx:reference source="slot63" />
+         <fx:reference source="slot64" />
+         <fx:reference source="slot65" />
       </ArrayList>
    </fx:define>
 </AnchorPane>
