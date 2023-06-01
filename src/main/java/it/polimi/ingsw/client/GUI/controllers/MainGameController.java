@@ -411,7 +411,7 @@ public class MainGameController implements GUIController {
     public void matchLogInfo(String msg, Stage stage) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("MyShelfie Match Log");
-        alert.setHeaderText("Dear MyShelfie player,");
+        alert.setHeaderText("Dear MyShelfie player");
         alert.setContentText(msg);
         ButtonType confirmation = new ButtonType("Confirm");
         alert.getButtonTypes().setAll(confirmation);

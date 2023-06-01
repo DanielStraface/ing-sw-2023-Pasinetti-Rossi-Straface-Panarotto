@@ -64,7 +64,7 @@ public class TurnChecker {
                 int index = game.getCommonObjCard().indexOf(goalCard);
                 index += 1;
                 game.commonObjCardReached(player ,"Common Objective Card " + index +
-                        " goal reached!\n" + "Obtain +" + numOfPoints + " points!");
+                        " goal reached!\n"+ player.getNickname() + "obtains +" + numOfPoints + " points!");
                 try{
                     TimeUnit.SECONDS.sleep(3);
                 } catch (InterruptedException e) {

@@ -94,13 +94,13 @@ public class TurnHandler {
         for(int i=0;i<game.getPlayers().size();i++){
             if(winner.getScore() < game.getPlayers().get(i).getScore()) winner = game.getPlayers().get(i);
         }
-        String initMessage = players.get(0).getNickname() + " has a score of " + players.get(0).getScore() + "\n";
+        String initMessage ="-"+ players.get(0).getNickname() + " has a score of " + players.get(0).getScore() + "\n";
         for(int i=1; i< players.size(); i++){
-            String tempMessage = players.get(i).getNickname() + " has a score of " + players.get(i).getScore() + "\n";
+            String tempMessage ="-"+ players.get(i).getNickname() + " has a score of " + players.get(i).getScore() + "\n";
             initMessage = initMessage.concat(tempMessage);
         }
         String finalMessage = initMessage.concat(winner.getNickname() + " wins with a score of " + winner.getScore()
-                + " points\nThe game ends here. Thank you for playing this game!\nBYE\n\nWaiting for app termination by user");
+                + " points!\nThe game ends here. Thank you for playing this game!\nBYE!\n\nWaiting for app termination by user");
         try {
             this.game.setGameOverFinalMessage(finalMessage);
         } catch (RemoteException e) {
