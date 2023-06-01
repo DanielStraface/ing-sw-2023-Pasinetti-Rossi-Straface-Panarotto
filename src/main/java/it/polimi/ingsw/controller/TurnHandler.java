@@ -80,11 +80,14 @@ public class TurnHandler {
     private void gameOverHandler() {
         System.out.println("This match has got a game over");
         List<Player> players = new ArrayList<Player>();
+        List<Integer> adjacentPointsAdded = new ArrayList<>();
         for(Player p : game.getPlayers()){
             PersonalObjCard personalObjCard = p.getMyPersonalOBjCard();
             try {
                 p.addPoints(personalObjCard.shelfCheck(p.getMyShelf()));
                 p.addPoints(turnChecker.adjacentItemsCheck(p));
+                Integer temp = turnChecker.adjacentItemsCheck(p);
+                adjacentPointsAdded.add(temp);
                 players.add(p);
             } catch (InvalidMatchesException e) {
                 System.err.println("Error occurred while calculating the players point: " + e.getMessage());
@@ -94,13 +97,15 @@ public class TurnHandler {
         for(int i=0;i<game.getPlayers().size();i++){
             if(winner.getScore() < game.getPlayers().get(i).getScore()) winner = game.getPlayers().get(i);
         }
-        String initMessage ="-"+ players.get(0).getNickname() + " has a score of " + players.get(0).getScore() + "\n";
+        String initMessage ="-"+ players.get(0).getNickname() + " has a score of " + players.get(0).getScore() +
+                " (+"+adjacentPointsAdded.get(0)+" adjacent items points)\n";
         for(int i=1; i< players.size(); i++){
-            String tempMessage ="-"+ players.get(i).getNickname() + " has a score of " + players.get(i).getScore() + "\n";
+            String tempMessage ="-"+ players.get(i).getNickname() + " has a score of " + players.get(i).getScore() +
+                    " (+"+adjacentPointsAdded.get(i)+" adjacent items points)\n";
             initMessage = initMessage.concat(tempMessage);
         }
-        String finalMessage = initMessage.concat(winner.getNickname() + " wins with a score of " + winner.getScore()
-                + " points!\nThe game ends here. Thank you for playing this game!\nBYE!\n\nWaiting for app termination by user");
+        String finalMessage = initMessage.concat("\n"+winner.getNickname() + " wins with a score of " + winner.getScore()
+                + " points!\n\nThe game ends here. Thank you for playing this game!\nBYE!\n\nWaiting for app termination by user");
         try {
             this.game.setGameOverFinalMessage(finalMessage);
         } catch (RemoteException e) {
