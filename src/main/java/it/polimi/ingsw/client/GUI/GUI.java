@@ -227,9 +227,9 @@ public class GUI extends Application implements UI {
                                 msg.substring(endPlayersName + 1);
                         Platform.runLater(() -> {
                             mainGameController.updateCurrentTurnLabel(substring);
-                            mainGameController.updateMessageBox(finalMsg1);
+                            mainGameController.updateMessageBox(finalMsg1, false);
                         });
-                    } else Platform.runLater(() -> mainGameController.updateMessageBox(finalMsg));
+                    } else Platform.runLater(() -> mainGameController.updateMessageBox(finalMsg, false));
                 }
             }
         }
@@ -247,7 +247,7 @@ public class GUI extends Application implements UI {
                         mainGameController.activateFirstPlayerChair();
                         firstPlayerChairFlag = true;
                     }
-                    mainGameController.updateMessageBox("");
+                    mainGameController.updateMessageBox("", false);
                     mainGameController.activateShelf(gameView.getCurrentPlayer().getMyShelf());
                     mainGameController.switchGameBoardPaneStatus();
                 }
@@ -304,7 +304,7 @@ public class GUI extends Application implements UI {
         } catch (RemoteException e) {
             String msg = "Remote exception occurred: " + e.getMessage();
             System.err.println(msg);
-            Platform.runLater(() -> mainGameController.updateMessageBox(msg));
+            Platform.runLater(() -> mainGameController.updateMessageBox(msg, true));
         }
     }
 

@@ -126,6 +126,10 @@ public class CommonObjCard implements Serializable {
             return tempPoints;
     }
 
+    /**
+     * get method
+     * @return String -> description
+     */
     public String getDescription() {
         return description;
     }

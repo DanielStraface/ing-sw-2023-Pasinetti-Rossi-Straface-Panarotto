@@ -16,9 +16,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
@@ -121,8 +119,19 @@ public class MainGameController implements GUIController {
         this.gui.openNewWindow(scenePath);
     }
 
-    public void updateMessageBox(String msg){
+    public void updateMessageBox(String msg, boolean Exception) {
         messageBox.setText(msg);
+        if (Exception) {
+            messageBox.setBackground(Background.fill(Color.LIGHTSALMON));
+            messageBox.setTextFill(Color.RED);
+            messageBox.setStyle("-fx-font-size: 25px");
+        }
+        else {
+            messageBox.setBackground(Background.fill(Color.TRANSPARENT));
+            messageBox.setTextFill(Color.BLACK);
+            messageBox.setStyle("-fx-font-size: 25px");
+
+            }
     }
     public void updateScoreLabel(int score){
         scoreLabel.setText(Integer.toString(score));
@@ -251,6 +260,7 @@ public class MainGameController implements GUIController {
             }
         } else {
             if(numOfItems >= 0){
+                messageBox.setBackground(Background.fill(Color.TRANSPARENT));
                 int index = selectedCoords.indexOf(selectedCoords.stream()
                         .filter(i -> i[0] == row && i[1] == col).findFirst().get());
                 selectedCoords.remove(index);
@@ -309,7 +319,7 @@ public class MainGameController implements GUIController {
             numOfItems = 0;
         } catch (InvalidSelectionException e) {
             playSound(warning);
-            this.updateMessageBox("Invalid items selection:\n" + e.getMessage());
+            this.updateMessageBox("Invalid items selection:\n" + e.getMessage(), true);
         } catch (FullColumnException ignored) {
         }
     }
@@ -344,7 +354,7 @@ public class MainGameController implements GUIController {
         } catch (FullColumnException e) {
             playSound(warning);
             this.columnReference.clear();
-            this.updateMessageBox("Wrong column selection: " + e.getMessage());
+            this.updateMessageBox("Wrong column selection: " + e.getMessage(), true);
         }
 
     }

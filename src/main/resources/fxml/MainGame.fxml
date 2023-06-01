@@ -63,7 +63,7 @@
             <Label layoutX="1280.0" layoutY="310.0" text="YOUR SCORE:" />
             <Label fx:id="scoreLabel" alignment="CENTER" layoutX="1309.0" layoutY="347.0" prefHeight="18.0" prefWidth="18.0" text="0" />
             <Label fx:id="player1Label" layoutX="1240.0" layoutY="470.0" prefHeight="25.0" prefWidth="175.0" text="\%DEFAULT%" visible="false" />
-            <Label fx:id="messageBox" layoutX="811.0" layoutY="4.0" prefHeight="146.0" prefWidth="380.0" text="MessageBox" />
+            <Label fx:id="messageBox" layoutX="811.0" layoutY="23.0" prefHeight="118.0" prefWidth="380.0" text="MessageBox" />
             <ImageView fx:id="firstPlayerChair" fitHeight="98.0" fitWidth="81.0" layoutX="708.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true" visible="false">
                <image>
                   <Image url="@../graphics/misc/firstplayertoken.png" />
