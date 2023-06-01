@@ -50,7 +50,7 @@ public class GUI extends Application implements UI {
     private int prevNumOfItemOnGameBoard;
     private boolean isRefilledFlag = true;
     private List<CommonObjCardView> commonObjCardViewList;
-    private String TurnChange = "sounds/TurnChange.mp3";
+    private String TurnChange = "sounds/TurnChange.wav";
     private static final int DIM_GAMEBOARD = 9;
     private static final int OCCUPIED = 2;
 

@@ -30,7 +30,7 @@ public class ChoicesMenuController implements GUIController, Initializable {
     private Scene scene;
     private String[] networks = {"", "RMI", "SOCKET"};
     private GUI gui;
-    private String MenuSelection = "sounds/MenuSelection.mp3";
+    private String MenuSelection = "sounds/MenuSelection.wav";
     private MediaPlayer mediaPlayer;
 
 

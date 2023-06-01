@@ -21,7 +21,7 @@ public class MainMenuController implements GUIController{
     private Stage stage;
     private Scene scene;
     private GUI gui;
-    private String MenuSelection = "sounds/MenuSelection.mp3";
+    private String MenuSelection = "sounds/MenuSelection.wav";
     private MediaPlayer mediaPlayer;
 
     public void playButtonAction(ActionEvent event) throws IOException {

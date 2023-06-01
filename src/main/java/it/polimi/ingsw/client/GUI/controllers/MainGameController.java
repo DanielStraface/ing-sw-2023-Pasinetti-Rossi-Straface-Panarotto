@@ -99,9 +99,9 @@ public class MainGameController implements GUIController {
     private int prevColSelected;
     private boolean confirmButtonFlag = false;
     private int[][] validGridForItemSelection;
-    private String warning = "sounds/Warning.mp3";
-    private String MenuSelection = "sounds/MenuSelection.mp3";
-    private String ItemSelect = "sounds/ItemSelect.mp3";
+    private String warning = "sounds/Warning.wav";
+    private String MenuSelection = "sounds/MenuSelection.wav";
+    private String ItemSelect = "sounds/ItemSelect.wav";
     private String GameBoardRefill = "sounds/GBRefill.wav";
     private MediaPlayer mediaPlayer;
     private static final int SHELF_ROWS = 6;

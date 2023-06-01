@@ -57,7 +57,7 @@ public class MatchChoicesController implements GUIController, Initializable {
     private State flag = State.NICKNAME;
     private String userNickname;
     private String typeOfMatchChoice;
-    private String MenuSelection = "sounds/MenuSelection.mp3";
+    private String MenuSelection = "sounds/MenuSelection.wav";
     private MediaPlayer mediaPlayer;
     private String typeOfConnection;
     private String address;

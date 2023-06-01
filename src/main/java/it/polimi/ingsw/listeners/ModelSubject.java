@@ -135,9 +135,9 @@ public class ModelSubject {
         for (int i = arrLocal.length-1; i>=0; i--){
             Client vl = (Client) arrLocal[i];
             try {
-                if(vl.getClientID() == player.getClientID())
-                    vl.update(arg);
-                else vl.update("New info from " + player.getNickname() + ": " + arg);
+                if(vl.getClientID() == 5)
+                    vl.update("New info from " + player.getNickname() + ": " + arg);
+                else vl.update(arg);
             } catch (RemoteException e) {
                 System.err.println("Cannot obtain the clientID to notify: " + e.getMessage());
             }
