@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.Pane?>
 
 <?import java.util.ArrayList?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.GUI.controllers.PlayersShelfController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.GUI.controllers.PlayersShelfController">
    <children>
       <ImageView fitHeight="600.0" fitWidth="800.0" pickOnBounds="true">
          <image>
@@ -191,9 +191,9 @@
             </ImageView>
          </children>
       </Pane>
-      <Label fx:id="nicknameLabel1" layoutX="356.0" layoutY="291.0" opacity="0.5" styleClass="nicknameOtherPlayer" stylesheets="@../css/ObjectiveCardPane.css" text="NicknameLabel1" visible="false" />
-      <Label fx:id="nicknameLabel2" layoutX="102.0" layoutY="560.0" opacity="0.5" styleClass="nicknameOtherPlayer" stylesheets="@../css/ObjectiveCardPane.css" text="NickanameLabel2" visible="false" />
-      <Label fx:id="nicknameLabel3" layoutX="606.0" layoutY="560.0" opacity="0.5" styleClass="nicknameOtherPlayer" stylesheets="@../css/ObjectiveCardPane.css" text="NicknameLabel3" visible="false" />
+      <Label fx:id="nicknameLabel1" alignment="CENTER" layoutX="310.0" layoutY="291.0" opacity="0.5" prefHeight="29.0" prefWidth="172.0" styleClass="nicknameOtherPlayer" stylesheets="@../css/ObjectiveCardPane.css" />
+      <Label fx:id="nicknameLabel2" alignment="CENTER" layoutX="62.0" layoutY="560.0" opacity="0.5" prefHeight="30.0" prefWidth="166.0" styleClass="nicknameOtherPlayer" stylesheets="@../css/ObjectiveCardPane.css" />
+      <Label fx:id="nicknameLabel3" alignment="CENTER" layoutX="566.0" layoutY="560.0" opacity="0.5" prefHeight="30.0" prefWidth="166.0" styleClass="nicknameOtherPlayer" stylesheets="@../css/ObjectiveCardPane.css" />
    </children>
    <fx:define>
       <ArrayList fx:id="shelf1Col0">
