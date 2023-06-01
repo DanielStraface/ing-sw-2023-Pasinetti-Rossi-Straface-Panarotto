@@ -37,7 +37,7 @@ public class ObjectivesController implements GUIController {
             entry(6, 2),
             entry(8, 3)
     );
-    private int prevKeyPoints;
+    private List<Integer> prevKeyPoints;
     private GUI gui;
     private MediaPlayer mediaPlayer;
     private final String PointsGet = "sounds/PointsGet.mp3";
@@ -63,10 +63,16 @@ public class ObjectivesController implements GUIController {
     public void updateCommonObjCardsPoints(List<CommonObjCardView> commonObjCardViews){
         for(CommonObjCardView cocv : commonObjCardViews)
             cardsReference.get(cocv.getType()).forEach(imageView -> imageView.setVisible(false));
+        int counter = 0;
         for(CommonObjCardView commonObjCardView : commonObjCardViews){
             int cardType = commonObjCardView.getType();
             int key = commonObjCardView.getPoints()[commonObjCardView.getNextPoints()];
-            if(key != prevKeyPoints) playSound(PointsGet);
+            if(key != prevKeyPoints.get(counter)){
+                playSound(PointsGet);
+                prevKeyPoints.remove(counter);
+                prevKeyPoints.add(counter, key);
+            }
+            counter++;
             cardsReference.get(cardType).get(intToInt.get(key)).setVisible(true);
         }
     }

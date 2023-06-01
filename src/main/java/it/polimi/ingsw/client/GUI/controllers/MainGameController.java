@@ -21,6 +21,7 @@ import javafx.scene.layout.*;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.sql.PreparedStatement;
@@ -407,7 +408,7 @@ public class MainGameController implements GUIController {
     public void resetGameBoardItemMatrix(){this.gameboardItemMatrix = new boolean[DIM_GAMEBOARD][DIM_GAMEBOARD];}
     public void setValidGridForItemSelection(int[][] validGrid){this.validGridForItemSelection = validGrid;}
 
-    public void matchLogInfo(String msg) {
+    public void matchLogInfo(String msg, Stage stage) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("MyShelfie Match Log");
         alert.setHeaderText("Dear MyShelfie player,");
@@ -416,6 +417,9 @@ public class MainGameController implements GUIController {
         alert.getButtonTypes().setAll(confirmation);
         alert.showAndWait().ifPresent(response -> {
             System.out.println("Confirm button pressed");
+            stage.close();
+            System.out.println("Closing...");
+            System.exit(0);
         });
     }
 

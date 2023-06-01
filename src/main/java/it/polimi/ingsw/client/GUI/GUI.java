@@ -49,7 +49,6 @@ public class GUI extends Application implements UI {
     private boolean firstPlayerChairFlag;
     private int prevNumOfItemOnGameBoard;
     private boolean isRefilledFlag = true;
-    private String commonObjCardFlag = null;
     private List<CommonObjCardView> commonObjCardViewList;
     private String TurnChange = "sounds/TurnChange.mp3";
     private static final int DIM_GAMEBOARD = 9;
@@ -267,12 +266,17 @@ public class GUI extends Application implements UI {
                             mainGameController.updateMessageBox(finalMsg1, false);
                         });
                     } else if(msg.contains("Common Objective Card")){
-                        commonObjCardFlag = msg;
+                        Platform.runLater(() -> {
+                            mainGameController.updateMessageBox(msg, false);
+                            ((ObjectivesController) guiControllers.get(OBJECTIVES))
+                                    .updateCommonObjCardsPoints(commonObjCardViewList);
+                        });
                     } else if(msg.contains("Your turn is finished!")) {
-                        delayCommonObjCardBeforeTurn();
                         Platform.runLater(() -> mainGameController.updateMessageBox(msg, false));
                     } else if(msg.contains("BYE")) {
-                        Platform.runLater(() -> mainGameController.matchLogInfo(msg));
+                        Platform.runLater(() -> {
+                            mainGameController.matchLogInfo(msg, this.stage);
+                        });
                     } else Platform.runLater(() -> mainGameController.updateMessageBox(msg, false));
                 }
             }
@@ -281,7 +285,6 @@ public class GUI extends Application implements UI {
 
     @Override
     public void run(GameView gameView) {
-        delayCommonObjCardBeforeTurn();
         try {
             String finalNickname = this.refClient.getNickname();
             boolean isFirstPlayer = gameView.getPlayers().stream()
@@ -328,14 +331,15 @@ public class GUI extends Application implements UI {
             String msg = "It's " + gameView.getCurrentPlayer().getNickname() + "'s turn.";
             mainGameController.updateMessageBox(msg, false);
         });
+        ObjectivesController ctrl = (ObjectivesController) guiControllers.get("Objectives.fxml");
         if(!areCardsSet){
-            ObjectivesController ctrl = (ObjectivesController) guiControllers.get("Objectives.fxml");
             Platform.runLater(() -> {
                 ctrl.updateComObjCards(gameView.getCommonObjCard());
                 ctrl.updatePersonalObjCard(playerView.getMyPersonalOBjCard());
             });
             areCardsSet = true;
         }
+        Platform.runLater(() -> ctrl.updateCommonObjCardsPoints(gameView.getCommonObjCard()));
         commonObjCardViewList = gameView.getCommonObjCard();
         Platform.runLater(() -> {this.updateOtherPlayersShelf(gameView);});
     }
@@ -422,21 +426,6 @@ public class GUI extends Application implements UI {
                         nicknames[counter], playerView.getMyShelf());
                 counter++;
             }
-        }
-    }
-
-    public void delayCommonObjCardBeforeTurn(){
-        if(commonObjCardFlag == null) return;
-        Platform.runLater(() -> {
-            mainGameController.updateMessageBox(commonObjCardFlag, false);
-            ((ObjectivesController) guiControllers.get(OBJECTIVES))
-                    .updateCommonObjCardsPoints(commonObjCardViewList);
-        });
-        commonObjCardFlag = null;
-        try{
-            TimeUnit.SECONDS.sleep(3);
-        } catch (InterruptedException e) {
-            System.err.println("Cannot sleep: " + e.getMessage());
         }
     }
 

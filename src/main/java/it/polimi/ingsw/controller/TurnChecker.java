@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.comcard.CommonObjCard;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 
 public class TurnChecker {
@@ -64,6 +65,11 @@ public class TurnChecker {
                 index += 1;
                 game.commonObjCardReached(player ,"Common Objective Card " + index +
                         " goal reached!\n" + "Obtain +" + numOfPoints + " points!");
+                try{
+                    TimeUnit.SECONDS.sleep(3);
+                } catch (InterruptedException e) {
+                    System.err.println("Cannot sleep: " + e.getMessage());
+                }
             } catch (InvalidPointerException e) {
                 System.err.println("Something went wrong, the obj points list of this card is less than zero: "
                         + e.getMessage());
