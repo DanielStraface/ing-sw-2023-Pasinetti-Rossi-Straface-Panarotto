@@ -16,6 +16,7 @@ import java.util.*;
 import static java.util.Map.entry;
 
 public class ObjectivesController implements GUIController {
+    private static final Integer MAX_POINTS = 8;
     @FXML
     private ImageView comObjCard1;
     @FXML
@@ -37,7 +38,7 @@ public class ObjectivesController implements GUIController {
             entry(6, 2),
             entry(8, 3)
     );
-    private List<Integer> prevKeyPoints;
+    private List<Integer> prevKeyPoints = new ArrayList<>();
     private GUI gui;
     private MediaPlayer mediaPlayer;
     private final String PointsGet = "sounds/PointsGet.mp3";
@@ -53,6 +54,7 @@ public class ObjectivesController implements GUIController {
             ((ImageView) imgs[i]).setImage(new Image("/graphics/common_goal_cards/" + cardType + ".jpg"));
             ((Label) imgs[i+2]).setText(comObjCards.get(i).getDescription());
             cardsReference.put(cardType, listOfList.get(i));
+            prevKeyPoints.add(MAX_POINTS);
         }
     }
 
@@ -65,6 +67,7 @@ public class ObjectivesController implements GUIController {
             cardsReference.get(cocv.getType()).forEach(imageView -> imageView.setVisible(false));
         int counter = 0;
         for(CommonObjCardView commonObjCardView : commonObjCardViews){
+            if(commonObjCardView.getNextPoints() == 0) return;
             int cardType = commonObjCardView.getType();
             int key = commonObjCardView.getPoints()[commonObjCardView.getNextPoints()];
             if(key != prevKeyPoints.get(counter)){
