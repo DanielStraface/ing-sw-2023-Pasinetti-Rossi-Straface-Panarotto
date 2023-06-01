@@ -13,3 +13,7 @@
 .descriptions {
     -fx-font-size: 14px;
 }
+
+.nicknameOtherPlayer {
+    -fx-background-color: #c19a6b;
+}

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -13,7 +14,7 @@
             <Image url="@../graphics/misc/base_pagina2.jpg" />
          </image>
       </ImageView>
-      <Pane fx:id="paneShelf1" layoutX="275.0" layoutY="24.0" opacity="0.5" prefHeight="250.0" prefWidth="250.0">
+      <Pane fx:id="paneShelf1" layoutX="275.0" layoutY="24.0" opacity="0.5" prefHeight="250.0" prefWidth="250.0" styleClass="ObjectiveCardPane" stylesheets="@../css/ObjectiveCardPane.css">
          <children>
             <Pane layoutX="155.0" prefHeight="250.0" prefWidth="247.0">
                <children>
@@ -72,7 +73,7 @@
             </ImageView>
          </children>
       </Pane>
-      <Pane fx:id="paneShelf2" layoutX="24.0" layoutY="300.0" opacity="0.5" prefHeight="250.0" prefWidth="250.0">
+      <Pane fx:id="paneShelf2" layoutX="24.0" layoutY="300.0" opacity="0.5" prefHeight="250.0" prefWidth="250.0" styleClass="ObjectiveCardPane" stylesheets="@../css/ObjectiveCardPane.css">
          <children>
             <Pane layoutX="155.0" prefHeight="250.0" prefWidth="247.0">
                <children>
@@ -131,7 +132,7 @@
             </ImageView>
          </children>
       </Pane>
-      <Pane fx:id="paneShelf3" layoutX="525.0" layoutY="300.0" opacity="0.51" prefHeight="250.0" prefWidth="250.0">
+      <Pane fx:id="paneShelf3" layoutX="525.0" layoutY="300.0" opacity="0.51" prefHeight="250.0" prefWidth="250.0" styleClass="ObjectiveCardPane" stylesheets="@../css/ObjectiveCardPane.css">
          <children>
             <Pane layoutX="155.0" prefHeight="250.0" prefWidth="247.0">
                <children>
@@ -190,6 +191,9 @@
             </ImageView>
          </children>
       </Pane>
+      <Label fx:id="nicknameLabel1" layoutX="356.0" layoutY="291.0" opacity="0.5" styleClass="nicknameOtherPlayer" stylesheets="@../css/ObjectiveCardPane.css" text="NicknameLabel1" visible="false" />
+      <Label fx:id="nicknameLabel2" layoutX="102.0" layoutY="560.0" opacity="0.5" styleClass="nicknameOtherPlayer" stylesheets="@../css/ObjectiveCardPane.css" text="NickanameLabel2" visible="false" />
+      <Label fx:id="nicknameLabel3" layoutX="606.0" layoutY="560.0" opacity="0.5" styleClass="nicknameOtherPlayer" stylesheets="@../css/ObjectiveCardPane.css" text="NicknameLabel3" visible="false" />
    </children>
    <fx:define>
       <ArrayList fx:id="shelf1Col0">
@@ -373,6 +377,13 @@
          <fx:reference source="shelf1" />
          <fx:reference source="shelf2" />
          <fx:reference source="shelf3" />
+      </ArrayList>
+   </fx:define>
+   <fx:define>
+      <ArrayList fx:id="nicknameLabels">
+         <fx:reference source="nicknameLabel1" />
+         <fx:reference source="nicknameLabel2" />
+         <fx:reference source="nicknameLabel3" />
       </ArrayList>
    </fx:define>
 </AnchorPane>

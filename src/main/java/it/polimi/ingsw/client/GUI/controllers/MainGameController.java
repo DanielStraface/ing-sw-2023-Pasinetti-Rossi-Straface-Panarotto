@@ -11,8 +11,9 @@ import it.polimi.ingsw.modelview.GameBoardView;
 import it.polimi.ingsw.modelview.ShelfView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -22,12 +23,14 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
+import java.sql.PreparedStatement;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class MainGameController implements GUIController {
     private static final int OCCUPIED = 2;
     private static final int PLAYABLE = 1;
+    private static final int INVALID = 0;
     @FXML
     private AnchorPane gameboardPane;
     @FXML
@@ -82,7 +85,7 @@ public class MainGameController implements GUIController {
     private List<Button> shelfColumnButtonList;
     private int numOfItems = 0;
     private BorderPane[][] gameboardItemSlotMatrix = new BorderPane[DIM_GAMEBOARD][DIM_GAMEBOARD];
-    private boolean[][] gameboardItemMatrix = new boolean[DIM_GAMEBOARD][DIM_GAMEBOARD];
+    private boolean[][] gameboardItemMatrix;
     private List<int[]> selectedCoords = new ArrayList<>();
     private List<Integer> columnReference = new ArrayList<>();
     private List<Command> commands = Arrays.asList(new SelectItemsCommand(this.selectedCoords),
@@ -94,6 +97,7 @@ public class MainGameController implements GUIController {
     private List<BorderPane> ordinalBorderPanes = new ArrayList<>();
     private int prevColSelected;
     private boolean confirmButtonFlag = false;
+    private int[][] validGridForItemSelection;
     private String warning = "sounds/Warning.mp3";
     private String MenuSelection = "sounds/MenuSelection.mp3";
     private String ItemSelect = "sounds/ItemSelect.mp3";
@@ -122,6 +126,7 @@ public class MainGameController implements GUIController {
                 gameboardItemSlotMatrix[row][col] = wrappersList.get(i);
             }
         }
+        resetGameBoardItemMatrix();
     }
 
     public void objectivesButtonAction(ActionEvent event){
@@ -200,6 +205,7 @@ public class MainGameController implements GUIController {
     }
 
     private void refillImgGameBoard(GameBoardView gameBoardView){
+        resetGameBoardItemMatrix();
         Random random = new Random();
         Category category;
         int[][] validGrid = gameBoardView.getValidGrid();
@@ -222,6 +228,9 @@ public class MainGameController implements GUIController {
                             case TROPHY -> imageView.setImage(new Image(partialPath + "Trofei1." + variant + ".png"));
                             case PLANT -> imageView.setImage(new Image(partialPath + "Piante1." + variant + ".png"));
                         }
+                    } else if(validGrid[i][j] == INVALID) {
+                        if(gameboardItemSlotMatrix[i][j] != null)
+                            gameboardItemSlotMatrix[i][j].getParent().setDisable(true);
                     }
                 }
             }
@@ -243,15 +252,16 @@ public class MainGameController implements GUIController {
     }
 
     public void itemClick(ActionEvent event){
-        this.messageBox.setText("");
+        this.updateMessageBox("", false);
         System.out.println("Item click");
-        playSound(ItemSelect);
         System.out.println(event.getSource().toString());
         String temp = event.getSource().toString();
         String[] stringArray = temp.split("_");
         int row = Integer.parseInt(stringArray[1]);
         int col = Integer.parseInt(stringArray[2]);
         int[] coords = {row, col};
+        if(validGridForItemSelection[row][col] == PLAYABLE) return;
+        playSound(ItemSelect);
         if(!gameboardItemMatrix[row][col]){
             if(numOfItems >= 3) return;
             //da aggiungere
@@ -329,6 +339,7 @@ public class MainGameController implements GUIController {
                     .map(borderPane -> ((ImageView) borderPane.getCenter()).getImage().getUrl()).toList());
             ordinalBorderPanes.forEach(borderPane -> borderPane.getStyleClass().clear());
             numOfItems = 0;
+            this.updateMessageBox("Where do you want\nto put these items?", false);
         } catch (InvalidSelectionException e) {
             playSound(warning);
             this.updateMessageBox("Invalid items selection:\n" + e.getMessage(), true);
@@ -349,11 +360,9 @@ public class MainGameController implements GUIController {
                 b.setVisible(false);
             }
             ordinalBorderPanes.forEach(borderPane -> ((ImageView) borderPane.getCenter()).setImage(null));
-            System.out.println("BEFORE NOTIFY, := " + this.columnReference.get(0));
             this.activeShelf.setOpacity(0.7);
             this.shelfItemPane.setOpacity(0.7);
             this.prevColSelected = this.columnReference.get(0);
-            System.out.println("*****\n" + this.selectedCoords.get(0)[0] + ", " + this.selectedCoords.get(0)[1]);
             List<int[]> toSend = new ArrayList<>();
             for(int[] coords : selectedCoords){
                 toSend.add(new int[]{coords[0], coords[1]});
@@ -363,13 +372,13 @@ public class MainGameController implements GUIController {
             ordinalBorderPanes.clear();
             this.selectedCoords.clear();
             this.columnReference.clear();
+            this.updateMessageBox("", false);
         } catch (InvalidSelectionException ignored) {
         } catch (FullColumnException e) {
             playSound(warning);
             this.columnReference.clear();
             this.updateMessageBox("Wrong column selection: " + e.getMessage(), true);
         }
-
     }
 
     public void playersShelfButtonAction(){
@@ -394,6 +403,20 @@ public class MainGameController implements GUIController {
             this.gameboardPane.setDisable(true);
             confirmButtonFlag = false;
         }
+    }
+    public void resetGameBoardItemMatrix(){this.gameboardItemMatrix = new boolean[DIM_GAMEBOARD][DIM_GAMEBOARD];}
+    public void setValidGridForItemSelection(int[][] validGrid){this.validGridForItemSelection = validGrid;}
+
+    public void matchLogInfo(String msg) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("MyShelfie Match Log");
+        alert.setHeaderText("Dear MyShelfie player,");
+        alert.setContentText(msg);
+        ButtonType confirmation = new ButtonType("Confirm");
+        alert.getButtonTypes().setAll(confirmation);
+        alert.showAndWait().ifPresent(response -> {
+            System.out.println("Confirm button pressed");
+        });
     }
 
     @Override

@@ -7,11 +7,11 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.util.Duration;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static java.util.Map.entry;
 
@@ -37,7 +37,10 @@ public class ObjectivesController implements GUIController {
             entry(6, 2),
             entry(8, 3)
     );
+    private int prevKeyPoints;
     private GUI gui;
+    private MediaPlayer mediaPlayer;
+    private final String PointsGet = "sounds/PointsGet.mp3";
 
     public void updateComObjCards(List<CommonObjCardView> comObjCards){
         int cardType;
@@ -63,6 +66,7 @@ public class ObjectivesController implements GUIController {
         for(CommonObjCardView commonObjCardView : commonObjCardViews){
             int cardType = commonObjCardView.getType();
             int key = commonObjCardView.getPoints()[commonObjCardView.getNextPoints()];
+            if(key != prevKeyPoints) playSound(PointsGet);
             cardsReference.get(cardType).get(intToInt.get(key)).setVisible(true);
         }
     }
@@ -74,6 +78,14 @@ public class ObjectivesController implements GUIController {
 
     @Override
     public void playSound(String filePath) {
-
+        Media pick = new Media(Objects.requireNonNull(getClass().getClassLoader()
+                .getResource(filePath)).toExternalForm());
+        mediaPlayer = new MediaPlayer(pick);
+        mediaPlayer.setAutoPlay(true);
+        mediaPlayer.setVolume(25);
+        mediaPlayer.setOnEndOfMedia(() -> {
+            mediaPlayer.seek(Duration.ZERO);
+            mediaPlayer.stop();
+        });
     }
 }

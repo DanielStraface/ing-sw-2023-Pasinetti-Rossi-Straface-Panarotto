@@ -5,10 +5,7 @@ import it.polimi.ingsw.client.UI;
 import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.distributed.Server;
 import it.polimi.ingsw.model.Item;
-import it.polimi.ingsw.modelview.GameBoardView;
-import it.polimi.ingsw.modelview.GameView;
-import it.polimi.ingsw.modelview.PlayerView;
-import it.polimi.ingsw.modelview.ShelfView;
+import it.polimi.ingsw.modelview.*;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -25,6 +22,7 @@ import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.*;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 
@@ -42,6 +40,7 @@ public class GUI extends Application implements UI {
     private MainGameController mainGameController;
     private final String css = this.getClass().getResource("/css/MainMenu.css").toExternalForm();
     private boolean objectivesWinIsOpen = false;
+    private boolean shelfWinIsOpen = false;
     private Client refClient;
     private enum State {SETUP, IN_GAME}
     private State state = State.SETUP;
@@ -50,6 +49,9 @@ public class GUI extends Application implements UI {
     private boolean firstPlayerChairFlag;
     private int prevNumOfItemOnGameBoard;
     private boolean isRefilledFlag = true;
+    private String commonObjCardFlag = null;
+    private List<CommonObjCardView> commonObjCardViewList;
+    private String TurnChange = "sounds/TurnChange.mp3";
     private static final int DIM_GAMEBOARD = 9;
     private static final int OCCUPIED = 2;
 
@@ -74,6 +76,15 @@ public class GUI extends Application implements UI {
                 } catch (RemoteException e) {
                     System.err.println("Cannot read refClient value");
                 }
+            });
+            stage.setOnCloseRequest(event -> {
+                event.consume();
+                quitActionInMainGame(stage);
+            });
+        } else {
+            stage.setOnCloseRequest(event -> {
+                event.consume();
+                quitButtonAction(stage);
             });
         }
         stage.show();
@@ -115,6 +126,29 @@ public class GUI extends Application implements UI {
         }
     }
 
+    public void quitActionInMainGame(Stage stage){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Close application");
+        alert.setHeaderText("You're about to close MyShelfie");
+        alert.setContentText("Are you sure you want to quit?");
+        ButtonType option1 = new ButtonType("Quit from MyShelfie");
+        ButtonType option2 = new ButtonType("Go to Main Menu");
+        ButtonType option3 = new ButtonType("Cancel");
+        alert.getButtonTypes().setAll(option1, option2, option3);
+        ButtonType response = alert.showAndWait().get();
+        if(response == option1){
+            System.out.println("You're successfully quit");
+            // update per finire partita
+            stage.close();
+        } else if(response == option2){
+            System.out.println("You're successfully go back to main menu");
+            // update per finire partita
+            changeScene(MAIN_MENU);
+        } else if(response == option3){
+            System.out.println("Cancel");
+        }
+    }
+
     private void setup(){
         String css = Objects.requireNonNull(this.getClass().getResource("/css/MainMenu.css")).toExternalForm();
         Font.loadFont(getClass().getResourceAsStream("/fonts/Accio_Dollaro.ttf"), 14);
@@ -143,6 +177,10 @@ public class GUI extends Application implements UI {
             if(objectivesWinIsOpen) return;
             else objectivesWinIsOpen = true;
         }
+        if(newPath.equals(PLAYERS_SHELF)){
+            if(shelfWinIsOpen) return;
+            else shelfWinIsOpen = true;
+        }
         Stage newStage = new Stage();
         Scene newWindowScene = scenes.get(newPath);
         newStage.setTitle(newPath.substring(0, newPath.indexOf(".")));
@@ -154,13 +192,14 @@ public class GUI extends Application implements UI {
         newStage.setResizable(false);
         newStage.setOnCloseRequest(event -> {
             event.consume();
-            newWindowClose(newStage);
+            newWindowClose(newStage, newPath);
         });
         newStage.show();
     }
 
-    private void newWindowClose(Stage stage){
-        objectivesWinIsOpen = false;
+    private void newWindowClose(Stage stage, String path){
+        if(path.equals(OBJECTIVES)) objectivesWinIsOpen = false;
+        if(path.equals(PLAYERS_SHELF)) shelfWinIsOpen = false;
         stage.close();
     }
 
@@ -204,13 +243,10 @@ public class GUI extends Application implements UI {
     public void update(String msg) {
         if(msg.contains("Enjoy!")){
             state = State.IN_GAME;
-            //currentController = guiControllers.get("MainGame.fxml");
             mainGameController = (MainGameController) guiControllers.get("MainGame.fxml");
         }
         switch (state){
             case SETUP -> {
-                //Platform.runLater(() -> currentController.executeRequest(msg));
-                //currentController.executeRequest(msg);
                 MatchChoicesController controller = ((MatchChoicesController) guiControllers.get("MatchChoices.fxml"));
                 Platform.runLater(() -> controller.displayMsgInfo(msg));
             }
@@ -230,6 +266,13 @@ public class GUI extends Application implements UI {
                             mainGameController.updateCurrentTurnLabel(substring);
                             mainGameController.updateMessageBox(finalMsg1, false);
                         });
+                    } else if(msg.contains("Common Objective Card")){
+                        commonObjCardFlag = msg;
+                    } else if(msg.contains("Your turn is finished!")) {
+                        delayCommonObjCardBeforeTurn();
+                        Platform.runLater(() -> mainGameController.updateMessageBox(msg, false));
+                    } else if(msg.contains("BYE")) {
+                        Platform.runLater(() -> mainGameController.matchLogInfo(msg));
                     } else Platform.runLater(() -> mainGameController.updateMessageBox(msg, false));
                 }
             }
@@ -238,6 +281,7 @@ public class GUI extends Application implements UI {
 
     @Override
     public void run(GameView gameView) {
+        delayCommonObjCardBeforeTurn();
         try {
             String finalNickname = this.refClient.getNickname();
             boolean isFirstPlayer = gameView.getPlayers().stream()
@@ -257,6 +301,10 @@ public class GUI extends Application implements UI {
             System.err.println("Cannot read player's name: " + e.getMessage());
         }
         Platform.runLater(() -> {
+            String currentTurnPlayerMsg = "It's your turn.\nPlease, choose from 1 to 3 items.";
+            mainGameController.playSound(TurnChange);
+            mainGameController.updateMessageBox(currentTurnPlayerMsg, true);
+            mainGameController.setValidGridForItemSelection(gameView.getGameBoard().getValidGrid());
             mainGameController.updateCurrentTurnLabel(gameView.getCurrentPlayer().getNickname());
             ObjectivesController objCtrl = (ObjectivesController) guiControllers.get("Objectives.fxml");
             this.updateOtherPlayersShelf(gameView);
@@ -267,13 +315,19 @@ public class GUI extends Application implements UI {
             }
             objCtrl.updateCommonObjCardsPoints(gameView.getCommonObjCard());
         });
+        commonObjCardViewList = gameView.getCommonObjCard();
         this.update(gameView.getGameBoard());
         this.update(gameView.getCurrentPlayer().getMyShelf());
     }
 
     @Override
     public void displayInfo(GameView gameView, PlayerView playerView) {
-        Platform.runLater(() -> mainGameController.updateScoreLabel(playerView.getScore()));
+        Platform.runLater(() -> {
+            mainGameController.playSound(TurnChange);
+            mainGameController.updateScoreLabel(playerView.getScore());
+            String msg = "It's " + gameView.getCurrentPlayer().getNickname() + "'s turn.";
+            mainGameController.updateMessageBox(msg, false);
+        });
         if(!areCardsSet){
             ObjectivesController ctrl = (ObjectivesController) guiControllers.get("Objectives.fxml");
             Platform.runLater(() -> {
@@ -282,6 +336,7 @@ public class GUI extends Application implements UI {
             });
             areCardsSet = true;
         }
+        commonObjCardViewList = gameView.getCommonObjCard();
         Platform.runLater(() -> {this.updateOtherPlayersShelf(gameView);});
     }
 
@@ -347,13 +402,58 @@ public class GUI extends Application implements UI {
             playersShelfController.setNumOfPlayer(numOfPlayers);
             playersShelfController.initializePlayersShelfMap(nicknames);
         }
-        playersShelfController.setNumOfPlayer(numOfPlayers);
-        playersShelfController.initializePlayersShelfMap(nicknames);
-        for(int counter=0;counter<numOfPlayers - 1;counter++)
-            playersShelfController.updateOtherPlayersShelf(
-                    nicknames[counter], gameView.getPlayers().get(counter).getMyShelf()
-            );
+        PlayerView thisClientPlayer = gameView.getPlayers().stream()
+                .filter(playerView -> {
+                    try {
+                        return playerView.getNickname().equals(this.refClient.getNickname());
+                    } catch (RemoteException e) {
+                        System.err.println("Cannot obtain refClient name: " + e.getMessage());
+                    }
+                    return false;
+                })
+                .findFirst()
+                .get();
+        /*playersShelfController.setNumOfPlayer(numOfPlayers);
+        playersShelfController.initializePlayersShelfMap(nicknames);*/
+        int counter=0;
+        for(PlayerView playerView : gameView.getPlayers()){
+            if(!playerView.getNickname().equals(thisClientPlayer.getNickname())){
+                playersShelfController.updateOtherPlayersShelf(
+                        nicknames[counter], playerView.getMyShelf());
+                counter++;
+            }
+        }
     }
+
+    public void delayCommonObjCardBeforeTurn(){
+        if(commonObjCardFlag == null) return;
+        Platform.runLater(() -> {
+            mainGameController.updateMessageBox(commonObjCardFlag, false);
+            ((ObjectivesController) guiControllers.get(OBJECTIVES))
+                    .updateCommonObjCardsPoints(commonObjCardViewList);
+        });
+        commonObjCardFlag = null;
+        try{
+            TimeUnit.SECONDS.sleep(3);
+        } catch (InterruptedException e) {
+            System.err.println("Cannot sleep: " + e.getMessage());
+        }
+    }
+
+    public void adjustFinalScore(GameView gameView){
+        int score = gameView.getPlayers().stream()
+                        .filter(playerView -> {
+                            try {
+                                return playerView.getNickname().equals(this.refClient.getNickname());
+                            } catch (RemoteException e) {
+                                System.err.println("Cannot obtain refClient nickname: " + e.getMessage());
+                            }
+                            return false;
+                        })
+                .map(PlayerView::getScore).toList().get(0);
+        Platform.runLater(() -> mainGameController.updateScoreLabel(score));
+    }
+
     public void setChanged() {
         changed = true;
     }

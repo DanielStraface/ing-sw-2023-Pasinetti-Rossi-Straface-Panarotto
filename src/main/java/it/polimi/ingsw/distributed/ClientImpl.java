@@ -96,6 +96,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Serializa
                     .get().getMyShelf();
             this.view.update(sh);
             this.view.update(game.getGameOverFinalMessage());
+            if(this.view instanceof GUI) ((GUI) this.view).adjustFinalScore(game);
             this.clientState = ClientState.GAMEOVER;
             return;
         }

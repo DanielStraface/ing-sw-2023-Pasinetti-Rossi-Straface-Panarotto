@@ -4,10 +4,12 @@ import it.polimi.ingsw.client.GUI.GUI;
 import it.polimi.ingsw.model.Category;
 import it.polimi.ingsw.modelview.ShelfView;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +27,8 @@ public class PlayersShelfController implements GUIController {
     private Pane paneShelf2;
     @FXML
     private Pane paneShelf3;
+    @FXML
+    private List<Label> nicknameLabels;
     private Map<String, Integer> playersShelfMap = new HashMap<>();
     private Map<Category, String> fromNameToPathItemTiles = Map.ofEntries(
             entry(Category.CAT, "/graphics/item_tiles/Gatti1.1.png"),
@@ -56,6 +60,9 @@ public class PlayersShelfController implements GUIController {
         }
         for(String nickname : nicknames){
             playersShelfMap.put(nickname, counter);
+            System.out.println("nickname of nicknames := " + nickname);
+            nicknameLabels.get(counter).setText(nickname);
+            nicknameLabels.get(counter).setOpacity(1);
             counter++;
         }
     }
