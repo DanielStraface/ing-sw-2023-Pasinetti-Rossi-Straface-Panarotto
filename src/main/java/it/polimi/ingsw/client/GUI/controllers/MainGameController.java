@@ -69,6 +69,14 @@ public class MainGameController implements GUIController {
     private List<Button> itemsList;
     @FXML
     private List<ImageView> shelfColumnOne;
+    @FXML
+    private List<ImageView> shelfColumnTwo;
+    @FXML
+    private List<ImageView> shelfColumnThree;
+    @FXML
+    private List<ImageView> shelfColumnFour;
+    @FXML
+    private List<ImageView> shelfColumnFive;
     private List<List<ImageView>> shelfColumns = new ArrayList<>();
     @FXML
     private List<Button> shelfColumnButtonList;
@@ -102,6 +110,10 @@ public class MainGameController implements GUIController {
             counter++;
         }
         shelfColumns.add(shelfColumnOne);
+        shelfColumns.add(shelfColumnTwo);
+        shelfColumns.add(shelfColumnThree);
+        shelfColumns.add(shelfColumnFour);
+        shelfColumns.add(shelfColumnFive);
         for(int i=0;i<itemsList.size();i++){
             String[] stringArray = itemsList.get(i).getId().split("_");
             int row = Integer.parseInt(stringArray[1]);
@@ -350,6 +362,7 @@ public class MainGameController implements GUIController {
                     this.gui.setChangedAndNotifyListener(toSend, this.prevColSelected - 1)).start();
             ordinalBorderPanes.clear();
             this.selectedCoords.clear();
+            this.columnReference.clear();
         } catch (InvalidSelectionException ignored) {
         } catch (FullColumnException e) {
             playSound(warning);

@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class GUI extends Application implements UI {
@@ -45,6 +46,7 @@ public class GUI extends Application implements UI {
     private enum State {SETUP, IN_GAME}
     private State state = State.SETUP;
     private boolean areCardsSet;
+    private boolean otherPlayersShelfSetupFlag;
     private boolean firstPlayerChairFlag;
     private int prevNumOfItemOnGameBoard;
     private boolean isRefilledFlag = true;
@@ -205,13 +207,12 @@ public class GUI extends Application implements UI {
             //currentController = guiControllers.get("MainGame.fxml");
             mainGameController = (MainGameController) guiControllers.get("MainGame.fxml");
         }
-        String finalMsg = msg;
         switch (state){
             case SETUP -> {
                 //Platform.runLater(() -> currentController.executeRequest(msg));
                 //currentController.executeRequest(msg);
                 MatchChoicesController controller = ((MatchChoicesController) guiControllers.get("MatchChoices.fxml"));
-                Platform.runLater(() -> controller.displayMsgInfo(finalMsg));
+                Platform.runLater(() -> controller.displayMsgInfo(msg));
             }
             case IN_GAME -> {
                 if(msg.contains("is playing")){
@@ -227,9 +228,9 @@ public class GUI extends Application implements UI {
                                 msg.substring(endPlayersName + 1);
                         Platform.runLater(() -> {
                             mainGameController.updateCurrentTurnLabel(substring);
-                            mainGameController.updateMessageBox(finalMsg1, false);
+                            mainGameController.updateMessageBox(finalMsg1);
                         });
-                    } else Platform.runLater(() -> mainGameController.updateMessageBox(finalMsg, false));
+                    } else Platform.runLater(() -> mainGameController.updateMessageBox(msg));
                 }
             }
         }
@@ -247,7 +248,7 @@ public class GUI extends Application implements UI {
                         mainGameController.activateFirstPlayerChair();
                         firstPlayerChairFlag = true;
                     }
-                    mainGameController.updateMessageBox("", false);
+                    mainGameController.updateMessageBox("");
                     mainGameController.activateShelf(gameView.getCurrentPlayer().getMyShelf());
                     mainGameController.switchGameBoardPaneStatus();
                 }
@@ -257,17 +258,17 @@ public class GUI extends Application implements UI {
         }
         Platform.runLater(() -> {
             mainGameController.updateCurrentTurnLabel(gameView.getCurrentPlayer().getNickname());
-            ObjectivesController ctrl = (ObjectivesController) guiControllers.get("Objectives.fxml");
+            ObjectivesController objCtrl = (ObjectivesController) guiControllers.get("Objectives.fxml");
+            this.updateOtherPlayersShelf(gameView);
             if(!areCardsSet){
-                ctrl.updateComObjCards(gameView.getCommonObjCard());
-                ctrl.updatePersonalObjCard(gameView.getCurrentPlayer().getMyPersonalOBjCard());
+                objCtrl.updateComObjCards(gameView.getCommonObjCard());
+                objCtrl.updatePersonalObjCard(gameView.getCurrentPlayer().getMyPersonalOBjCard());
                 areCardsSet = true;
             }
-            ctrl.updateCommonObjCardsPoints(gameView.getCommonObjCard());
+            objCtrl.updateCommonObjCardsPoints(gameView.getCommonObjCard());
         });
         this.update(gameView.getGameBoard());
         this.update(gameView.getCurrentPlayer().getMyShelf());
-
     }
 
     @Override
@@ -281,6 +282,7 @@ public class GUI extends Application implements UI {
             });
             areCardsSet = true;
         }
+        Platform.runLater(() -> {this.updateOtherPlayersShelf(gameView);});
     }
 
     @Override
@@ -304,7 +306,7 @@ public class GUI extends Application implements UI {
         } catch (RemoteException e) {
             String msg = "Remote exception occurred: " + e.getMessage();
             System.err.println(msg);
-            Platform.runLater(() -> mainGameController.updateMessageBox(msg, true));
+            Platform.runLater(() -> mainGameController.updateMessageBox(msg));
         }
     }
 
@@ -321,6 +323,36 @@ public class GUI extends Application implements UI {
             Server vl = (Server) arrLocal[i];
             vl.update(o, arg1, arg2);
         }
+    }
+
+    public void updateOtherPlayersShelf(GameView gameView){
+        PlayersShelfController playersShelfController =
+                (PlayersShelfController) guiControllers.get("PlayersShelf.fxml");
+        int numOfPlayers = gameView.getPlayers().size();
+        String[] nicknames = new String[numOfPlayers - 1];
+        gameView.getPlayers().stream()
+                .map(PlayerView::getNickname)
+                .filter(name -> {
+                    try {
+                        System.out.println(this.refClient.getNickname());
+                        return !name.equals(this.refClient.getNickname());
+                    } catch (RemoteException e) {
+                        System.err.println("Cannot obtain refClient name: " + e.getMessage());
+                    }
+                    return false;
+                })
+                .toList()
+                .toArray(nicknames);
+        if(!otherPlayersShelfSetupFlag){
+            playersShelfController.setNumOfPlayer(numOfPlayers);
+            playersShelfController.initializePlayersShelfMap(nicknames);
+        }
+        playersShelfController.setNumOfPlayer(numOfPlayers);
+        playersShelfController.initializePlayersShelfMap(nicknames);
+        for(int counter=0;counter<numOfPlayers - 1;counter++)
+            playersShelfController.updateOtherPlayersShelf(
+                    nicknames[counter], gameView.getPlayers().get(counter).getMyShelf()
+            );
     }
     public void setChanged() {
         changed = true;

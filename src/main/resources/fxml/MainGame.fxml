@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.Pane?>
 
 <?import java.util.ArrayList?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="719.0" prefWidth="1420.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.GUI.controllers.MainGameController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="719.0" prefWidth="1420.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.GUI.controllers.MainGameController">
    <children>
       <ImageView fitHeight="720.0" fitWidth="796.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -122,7 +122,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="playersShelfButton" layoutX="1258.0" layoutY="90.0" mnemonicParsing="false" prefHeight="59.0" prefWidth="140.0" text="Player's shelf" />
+            <Button fx:id="playersShelfButton" layoutX="1258.0" layoutY="90.0" mnemonicParsing="false" onAction="#playersShelfButtonAction" prefHeight="59.0" prefWidth="140.0" text="Player's shelf" />
          </children>
       </AnchorPane>
       <AnchorPane fx:id="gameboardPane" disable="true" prefHeight="200.0" prefWidth="200.0">
@@ -687,34 +687,50 @@
    <fx:define>
       <ArrayList fx:id="shelfColumnOne">
          <fx:reference source="slot11" />
-         <fx:reference source="slot12" />
-         <fx:reference source="slot13" />
-         <fx:reference source="slot14" />
-         <fx:reference source="slot15" />
          <fx:reference source="slot21" />
-         <fx:reference source="slot22" />
-         <fx:reference source="slot23" />
-         <fx:reference source="slot24" />
-         <fx:reference source="slot25" />
          <fx:reference source="slot31" />
-         <fx:reference source="slot32" />
-         <fx:reference source="slot33" />
-         <fx:reference source="slot34" />
-         <fx:reference source="slot35" />
          <fx:reference source="slot41" />
-         <fx:reference source="slot42" />
-         <fx:reference source="slot43" />
-         <fx:reference source="slot44" />
-         <fx:reference source="slot45" />
          <fx:reference source="slot51" />
-         <fx:reference source="slot52" />
-         <fx:reference source="slot53" />
-         <fx:reference source="slot54" />
-         <fx:reference source="slot55" />
          <fx:reference source="slot61" />
+      </ArrayList>
+   </fx:define>
+   <fx:define>
+      <ArrayList fx:id="shelfColumnTwo">
+         <fx:reference source="slot12" />
+         <fx:reference source="slot22" />
+         <fx:reference source="slot32" />
+         <fx:reference source="slot42" />
+         <fx:reference source="slot52" />
          <fx:reference source="slot62" />
+      </ArrayList>
+   </fx:define>
+   <fx:define>
+      <ArrayList fx:id="shelfColumnThree">
+         <fx:reference source="slot13" />
+         <fx:reference source="slot23" />
+         <fx:reference source="slot33" />
+         <fx:reference source="slot43" />
+         <fx:reference source="slot53" />
          <fx:reference source="slot63" />
+      </ArrayList>
+   </fx:define>
+   <fx:define>
+      <ArrayList fx:id="shelfColumnFour">
+         <fx:reference source="slot14" />
+         <fx:reference source="slot24" />
+         <fx:reference source="slot34" />
+         <fx:reference source="slot44" />
+         <fx:reference source="slot54" />
          <fx:reference source="slot64" />
+      </ArrayList>
+   </fx:define>
+   <fx:define>
+      <ArrayList fx:id="shelfColumnFive">
+         <fx:reference source="slot15" />
+         <fx:reference source="slot25" />
+         <fx:reference source="slot35" />
+         <fx:reference source="slot45" />
+         <fx:reference source="slot55" />
          <fx:reference source="slot65" />
       </ArrayList>
    </fx:define>
