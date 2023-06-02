@@ -89,16 +89,23 @@ public class ModelSubject {
             arrLocal = obs.toArray();
             clearChanged();
         }
-        Client turnUserClient = null;
+        final Client[] turnUserClient = {null};
         GameView gmv = new GameView(arg);
-        for (int i = arrLocal.length-1; i>=0; i--){
-            Client vl = (Client) arrLocal[i];
-            if(vl.getClientID() == arg.getCurrentPlayer().getClientID()) turnUserClient = vl;
-            else {
-                vl.update(gmv);
+        new Thread(() -> {
+            try{
+                for (int i = arrLocal.length-1; i>=0; i--){
+                    Client vl = (Client) arrLocal[i];
+                    if(vl.getClientID() == arg.getCurrentPlayer().getClientID()) turnUserClient[0] = vl;
+                    else {
+                        vl.update(gmv);
+                    }
+                }
+                if(turnUserClient[0] != null) turnUserClient[0].update(gmv);
+            } catch (RemoteException e) {
+                System.err.println("Error while notify game in Server: " + e.getMessage());
             }
-        }
-        if(turnUserClient != null) turnUserClient.update(gmv);
+        }).start();
+
     }
 
     /**
@@ -132,16 +139,18 @@ public class ModelSubject {
             clearChanged();
         }
 
-        for (int i = arrLocal.length-1; i>=0; i--){
-            Client vl = (Client) arrLocal[i];
-            try {
-                if(vl.getClientID() == 5)
-                    vl.update("New info from " + player.getNickname() + ": " + arg);
-                else vl.update(arg);
-            } catch (RemoteException e) {
-                System.err.println("Cannot obtain the clientID to notify: " + e.getMessage());
+        new Thread(() -> {
+            for (int i = arrLocal.length-1; i>=0; i--){
+                Client vl = (Client) arrLocal[i];
+                try {
+                    if(vl.getClientID() == 5)
+                        vl.update("New info from " + player.getNickname() + ": " + arg);
+                    else vl.update(arg);
+                } catch (RemoteException e) {
+                    System.err.println("Cannot obtain the clientID to notify: " + e.getMessage());
+                }
             }
-        }
+        }).start();
     }
 
     /**
