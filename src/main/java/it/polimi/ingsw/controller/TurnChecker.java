@@ -60,11 +60,11 @@ public class TurnChecker {
                     index += 1;
                     game.commonObjCardReached(player ,"Common Objective Card " + index +
                             " goal reached!\n"+ player.getNickname() + "obtains +" + numOfPoints + " points!");
-                }
-                try{
-                    TimeUnit.SECONDS.sleep(3);
-                } catch (InterruptedException e) {
-                    System.err.println("Cannot sleep while commonObjCard: " + e.getMessage());
+                    try{
+                        TimeUnit.SECONDS.sleep(3);
+                    } catch (InterruptedException e) {
+                        System.err.println("Cannot sleep while commonObjCard: " + e.getMessage());
+                    }
                 }
             } catch (InvalidPointerException e) {
                 System.err.println("Something went wrong, the obj points list of this card is less than zero: "
