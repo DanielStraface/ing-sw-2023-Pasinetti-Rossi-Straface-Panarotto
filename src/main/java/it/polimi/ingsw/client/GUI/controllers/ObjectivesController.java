@@ -41,7 +41,7 @@ public class ObjectivesController implements GUIController {
     private List<Integer> prevKeyPoints = new ArrayList<>();
     private GUI gui;
     private MediaPlayer mediaPlayer;
-    private final String PointsGet = "sounds/PointsGet.wav";
+
 
     public void updateComObjCards(List<CommonObjCardView> comObjCards){
         int cardType;
@@ -71,7 +71,6 @@ public class ObjectivesController implements GUIController {
             int cardType = commonObjCardView.getType();
             int key = commonObjCardView.getPoints()[commonObjCardView.getNextPoints()];
             if(key != prevKeyPoints.get(counter)){
-                playSound(PointsGet);
                 prevKeyPoints.remove(counter);
                 prevKeyPoints.add(counter, key);
             }

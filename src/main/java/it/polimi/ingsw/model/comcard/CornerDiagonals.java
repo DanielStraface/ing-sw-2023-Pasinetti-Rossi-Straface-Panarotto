@@ -50,7 +50,7 @@ class CornerDiagonals extends StrategyCheck implements Serializable {
         boolean diag1 = true; //first main diagonal referencer
         boolean diag2 = true; //second main diagonal referencer
         boolean diag3 = true; //first opposite diagonal referencer
-        boolean diag4 = true; //secondo opposite diagonal referencer
+        boolean diag4 = true; //second opposite diagonal referencer
         /* Main diagonals check */
         Category c1 = grid[0][0].getCategoryType(); //first element of diag1
         Category c2 = grid[1][0].getCategoryType(); //first element of diag2

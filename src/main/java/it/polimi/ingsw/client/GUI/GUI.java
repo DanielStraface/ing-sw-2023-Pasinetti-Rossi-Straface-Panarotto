@@ -49,8 +49,12 @@ public class GUI extends Application implements UI {
     private boolean firstPlayerChairFlag;
     private int prevNumOfItemOnGameBoard;
     private boolean isRefilledFlag = true;
+    private String winner = null;
     private List<CommonObjCardView> commonObjCardViewList;
     private String TurnChange = "sounds/TurnChange.wav";
+    private String GameWin = "sounds/GameWin.wav";
+    private String GameLose = "sounds/GameLose.wav";
+    private final String PointsGet = "sounds/PointsGet.wav";
     private static final int DIM_GAMEBOARD = 9;
     private static final int OCCUPIED = 2;
 
@@ -267,6 +271,7 @@ public class GUI extends Application implements UI {
                         });
                     } else if(msg.contains("Common Objective Card")){
                         Platform.runLater(() -> {
+                            mainGameController.playSound(PointsGet);
                             mainGameController.updateMessageBox(msg, false);
                             ((ObjectivesController) guiControllers.get(OBJECTIVES))
                                     .updateCommonObjCardsPoints(commonObjCardViewList);
@@ -430,6 +435,14 @@ public class GUI extends Application implements UI {
     }
 
     public void adjustFinalScore(GameView gameView){
+        List<PlayerView> players = gameView.getPlayers();
+        int max=0;
+        for(int i=0; i<players.size(); i++){
+            if(players.get(i).getScore()>max){
+                winner = players.get(i).getNickname();
+                max = players.get(i).getScore();
+            }
+        }
         int score = gameView.getPlayers().stream()
                         .filter(playerView -> {
                             try {
@@ -441,6 +454,19 @@ public class GUI extends Application implements UI {
                         })
                 .map(PlayerView::getScore).toList().get(0);
         Platform.runLater(() -> mainGameController.updateScoreLabel(score));
+        Platform.runLater(() -> {
+            String refClientNickname = null;
+            try {
+                refClientNickname = this.refClient.getNickname();
+            } catch (RemoteException e) {
+                System.err.println("Cannot obtain refClient nickname: " + e.getMessage());
+            }
+            if (refClientNickname.equals(winner)) {
+                mainGameController.playSound(GameWin);
+            } else if (!refClientNickname.equals(winner)){
+                mainGameController.playSound(GameLose);
+            }
+        });
     }
 
     public void setChanged() {
