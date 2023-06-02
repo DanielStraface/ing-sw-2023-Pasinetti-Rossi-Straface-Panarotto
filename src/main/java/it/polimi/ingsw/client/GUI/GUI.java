@@ -299,13 +299,14 @@ public class GUI extends Application implements UI {
                         firstPlayerChairFlag = true;
                     }
                     mainGameController.updateMessageBox("", false);
-                    mainGameController.activateShelf(gameView.getCurrentPlayer().getMyShelf());
+                    mainGameController.activateShelf();
                     mainGameController.switchGameBoardPaneStatus();
                 }
             });
         } catch (RemoteException e) {
             System.err.println("Cannot read player's name: " + e.getMessage());
         }
+        mainGameController.setCurrentShelf(gameView.getCurrentPlayer().getMyShelf());
         Platform.runLater(() -> {
             String currentTurnPlayerMsg = "It's your turn.\nPlease, choose from 1 to 3 items.";
             mainGameController.playSound(TurnChange);
@@ -420,8 +421,6 @@ public class GUI extends Application implements UI {
                 })
                 .findFirst()
                 .get();
-        /*playersShelfController.setNumOfPlayer(numOfPlayers);
-        playersShelfController.initializePlayersShelfMap(nicknames);*/
         int counter=0;
         for(PlayerView playerView : gameView.getPlayers()){
             if(!playerView.getNickname().equals(thisClientPlayer.getNickname())){
@@ -461,9 +460,7 @@ public class GUI extends Application implements UI {
             }
             if (refClientNickname.equals(winner)) {
                 mainGameController.playSound(GameWin);
-            } else if (!refClientNickname.equals(winner)){
-                mainGameController.playSound(GameLose);
-            }
+            } else mainGameController.playSound(GameLose);
         });
     }
 

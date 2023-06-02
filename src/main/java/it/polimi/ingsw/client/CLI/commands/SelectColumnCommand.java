@@ -64,6 +64,14 @@ public class SelectColumnCommand implements Command{
     }
 
     /**
+     * Set method for the column (choose column of the shelf)
+     * @param col int -> number of tiles taken
+     */
+    public void setColumn(int col){
+        this.col = col - 1;
+    }
+
+    /**
      * Invokes all methods to ask the shelf's column, to check if it is valid and to save it in an Integer List
      * @throws FullColumnException
      */
@@ -81,6 +89,6 @@ public class SelectColumnCommand implements Command{
     @Override
     public void check() throws InvalidSelectionException, FullColumnException {
         columnCheck(this.col);
-        this.columnReference.add(Integer.valueOf(this.col));
+        this.columnReference.add(this.col);
     }
 }

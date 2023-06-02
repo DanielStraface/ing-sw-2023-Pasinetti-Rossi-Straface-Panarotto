@@ -60,7 +60,6 @@ public class PlayersShelfController implements GUIController {
         }
         for(String nickname : nicknames){
             playersShelfMap.put(nickname, counter);
-            System.out.println("nickname of nicknames := " + nickname);
             nicknameLabels.get(counter).setText(nickname);
             nicknameLabels.get(counter).setOpacity(1);
             counter++;

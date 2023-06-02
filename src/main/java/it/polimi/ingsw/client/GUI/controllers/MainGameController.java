@@ -339,6 +339,7 @@ public class MainGameController implements GUIController {
             this.itemImgPath.addAll(ordinalBorderPanes.stream()
                     .map(borderPane -> ((ImageView) borderPane.getCenter()).getImage().getUrl()).toList());
             ordinalBorderPanes.forEach(borderPane -> borderPane.getStyleClass().clear());
+            this.setMaxNumOfItems(numOfItems);
             numOfItems = 0;
             this.updateMessageBox("Where do you want\nto put these items?", false);
         } catch (InvalidSelectionException e) {
@@ -355,6 +356,7 @@ public class MainGameController implements GUIController {
             if(eventString.contains(col))
                 this.columnReference.add(Integer.parseInt(col));
         try{
+            ((SelectColumnCommand) this.commands.get(1)).setColumn(this.columnReference.get(0));
             this.commands.get(1).check();
             for(Button b : shelfColumnButtonList){
                 b.setDisable(true);
@@ -378,7 +380,7 @@ public class MainGameController implements GUIController {
         } catch (FullColumnException e) {
             playSound(warning);
             this.columnReference.clear();
-            this.updateMessageBox("Wrong column selection: " + e.getMessage(), true);
+            this.updateMessageBox("Wrong column selection:\n" + e.getMessage(), true);
         }
     }
 
@@ -389,9 +391,12 @@ public class MainGameController implements GUIController {
         this.gui.openNewWindow(scenePath);
     }
 
-    public void activateShelf(ShelfView shelfView){
+    public void activateShelf(){
         this.activeShelf.setOpacity(1);
         this.shelfItemPane.setOpacity(1);
+    }
+
+    public void setCurrentShelf(ShelfView shelfView) {
         ((SelectColumnCommand) this.commands.get(1)).setShelfView(shelfView);
     }
 
@@ -421,6 +426,10 @@ public class MainGameController implements GUIController {
             System.out.println("Closing...");
             System.exit(0);
         });
+    }
+
+    private void setMaxNumOfItems(int numOfItems){
+        ((SelectColumnCommand) this.commands.get(1)).setMaxNumOfItems(numOfItems);
     }
 
     @Override
