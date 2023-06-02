@@ -19,8 +19,7 @@ public class CommonObjCardView implements Serializable {
     public CommonObjCardView(CommonObjCard card) {
         this.card = card;
         this.points = card.copyPointsArray();
-        if(card.getNextPoints() == -1) this.nextPoints = 0;
-        else this.nextPoints = card.getNextPoints();
+        this.nextPoints = card.getNextPoints();
     }
 
     /**

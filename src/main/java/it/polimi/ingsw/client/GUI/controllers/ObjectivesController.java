@@ -41,6 +41,7 @@ public class ObjectivesController implements GUIController {
     private List<Integer> prevKeyPoints = new ArrayList<>();
     private GUI gui;
     private MediaPlayer mediaPlayer;
+    private String PointsGet = "sounds/PointsGet.wav";
 
 
     public void updateComObjCards(List<CommonObjCardView> comObjCards){
@@ -65,18 +66,16 @@ public class ObjectivesController implements GUIController {
     public void updateCommonObjCardsPoints(List<CommonObjCardView> commonObjCardViews){
         for(CommonObjCardView cocv : commonObjCardViews)
             cardsReference.get(cocv.getType()).forEach(imageView -> imageView.setVisible(false));
-        int counter = 0;
+        int counterPosition = 0;
         for(CommonObjCardView commonObjCardView : commonObjCardViews){
-            if(commonObjCardView.getNextPoints() != 0) {
+            if(commonObjCardView.getNextPoints() != -1){
                 int cardType = commonObjCardView.getType();
-                int key = commonObjCardView.getPoints()[commonObjCardView.getNextPoints()];
-                if(!prevKeyPoints.get(counter).equals(key)){
-                    playSound(PointsGet);
-                    prevKeyPoints.remove(counter);
-                    prevKeyPoints.add(counter, key);
-                }
-                counter++;
-                cardsReference.get(cardType).get(intToInt.get(key)).setVisible(true);
+                int previousPoints = prevKeyPoints.get(counterPosition); //get the available points of the previous turn
+                int actualPoints = commonObjCardView.getPoints()[commonObjCardView.getNextPoints()];
+                cardsReference.get(cardType).get(intToInt.get(actualPoints)).setVisible(true);
+                prevKeyPoints.remove(counterPosition);
+                prevKeyPoints.add(counterPosition, actualPoints);
+                counterPosition++;
             }
         }
     }
