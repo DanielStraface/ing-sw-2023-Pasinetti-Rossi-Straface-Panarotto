@@ -68,8 +68,8 @@ public class ChoicesMenuController implements GUIController, Initializable {
         Media pick = new Media(Objects.requireNonNull(getClass().getClassLoader()
                 .getResource(filePath)).toExternalForm());
         mediaPlayer = new MediaPlayer(pick);
+        mediaPlayer.setVolume(0.1);
         mediaPlayer.setAutoPlay(true);
-        mediaPlayer.setVolume(10);
         mediaPlayer.setOnEndOfMedia(() -> {
             mediaPlayer.seek(Duration.ZERO);
             mediaPlayer.stop();
