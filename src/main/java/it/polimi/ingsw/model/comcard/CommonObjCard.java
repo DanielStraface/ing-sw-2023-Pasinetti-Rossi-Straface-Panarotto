@@ -157,9 +157,6 @@ public class CommonObjCard implements Serializable {
             boolean isTrue = strategyCheck.check(player.getMyShelf().getShelfGrid());
             if(isTrue){
                 try{
-                    /*player.addPointsByCommonObjCard(numOfPoints, "Common Objective Card " +
-                            this.strategyCheck.type + " goal reach!\n" +
-                            "Obtain +" + numOfPoints + " points!");*/
                     playersDone.add(player);
                     return this.getPoints();
                 } catch (OutOfBoundsException e){

@@ -42,33 +42,29 @@ public class TurnChecker {
      * checks if the Player currently playing has reached any of the two CommonObjectiveCards' goal
      * after his turn and adds points to its Score tally , throws an InvalidPointerException if
      * all the points of one CommonObjectiveCard have already been taken
-     * @param player
-     * @param game
-     * @throws InvalidPointerException
+     * @param player - the player to be tested for this card
+     * @param game - the model (contains the commonObjCard list)
      */
     private void commonObjCardCheck(Player player, Game game) {
-        CommonObjCard commonObjCard;
-
         // check if the current player has reached the goal for both CommonObjectiveCards in Game
-        for(int i=0; i<game.getCommonObjCard().size(); i++){
-            commonObjCard = game.getCommonObjCard().get(i);
+        for(CommonObjCard commonObjCard : game.getCommonObjCard()){
             try{
                 int numOfPoints = commonObjCard.doCheck(player);
-                if(numOfPoints == -1) return;
-                player.addPoints(numOfPoints);
-                CommonObjCard finalCommonObjCard = commonObjCard;
-                CommonObjCard goalCard = game.getCommonObjCard().stream()
-                        .filter(card -> card.getType() == finalCommonObjCard.getType())
-                        .toList()
-                        .get(0);
-                int index = game.getCommonObjCard().indexOf(goalCard);
-                index += 1;
-                game.commonObjCardReached(player ,"Common Objective Card " + index +
-                        " goal reached!\n"+ player.getNickname() + " obtains +" + numOfPoints + " points!");
-                try{
-                    TimeUnit.SECONDS.sleep(3);
-                } catch (InterruptedException e) {
-                    System.err.println("Cannot sleep: " + e.getMessage());
+                if(numOfPoints != -1){
+                    player.addPoints(numOfPoints);
+                    CommonObjCard goalCard = game.getCommonObjCard().stream()
+                            .filter(card -> card.getType() == commonObjCard.getType())
+                            .toList()
+                            .get(0);
+                    int index = game.getCommonObjCard().indexOf(goalCard);
+                    index += 1;
+                    game.commonObjCardReached(player ,"Common Objective Card " + index +
+                            " goal reached!\n"+ player.getNickname() + "obtains +" + numOfPoints + " points!");
+                    try{
+                        TimeUnit.SECONDS.sleep(3);
+                    } catch (InterruptedException e) {
+                        System.err.println("Cannot sleep while commonObjCard: " + e.getMessage());
+                    }
                 }
             } catch (InvalidPointerException e) {
                 System.err.println("Something went wrong, the obj points list of this card is less than zero: "

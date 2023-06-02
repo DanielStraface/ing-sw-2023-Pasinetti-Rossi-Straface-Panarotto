@@ -67,15 +67,17 @@ public class ObjectivesController implements GUIController {
             cardsReference.get(cocv.getType()).forEach(imageView -> imageView.setVisible(false));
         int counter = 0;
         for(CommonObjCardView commonObjCardView : commonObjCardViews){
-            if(commonObjCardView.getNextPoints() == 0) return;
-            int cardType = commonObjCardView.getType();
-            int key = commonObjCardView.getPoints()[commonObjCardView.getNextPoints()];
-            if(key != prevKeyPoints.get(counter)){
-                prevKeyPoints.remove(counter);
-                prevKeyPoints.add(counter, key);
+            if(commonObjCardView.getNextPoints() != 0) {
+                int cardType = commonObjCardView.getType();
+                int key = commonObjCardView.getPoints()[commonObjCardView.getNextPoints()];
+                if(!prevKeyPoints.get(counter).equals(key)){
+                    playSound(PointsGet);
+                    prevKeyPoints.remove(counter);
+                    prevKeyPoints.add(counter, key);
+                }
+                counter++;
+                cardsReference.get(cardType).get(intToInt.get(key)).setVisible(true);
             }
-            counter++;
-            cardsReference.get(cardType).get(intToInt.get(key)).setVisible(true);
         }
     }
 
