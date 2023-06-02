@@ -56,7 +56,7 @@ public class MainMenuController implements GUIController{
                 .getResource(filePath)).toExternalForm());
         mediaPlayer = new MediaPlayer(pick);
         mediaPlayer.setAutoPlay(true);
-        mediaPlayer.setVolume(25);
+        mediaPlayer.setVolume(10);
         mediaPlayer.setOnEndOfMedia(() -> {
             mediaPlayer.seek(Duration.ZERO);
             mediaPlayer.stop();
