@@ -292,6 +292,9 @@ public class GUI extends Application implements UI {
                     } else if(msg.contains("disconnected")){
                         System.out.println(msg);
                         Platform.runLater(() -> mainGameController.disconnectionAlert(msg, this.stage));
+                    } else if (msg.contains("the bag is empty")) {
+                        System.out.println(msg);
+                        Platform.runLater(() -> mainGameController.emptyBagAlert(msg, this.stage));
                     } else Platform.runLater(() -> mainGameController.updateMessageBox(msg, false));
                 }
             }

@@ -459,6 +459,28 @@ public class MainGameController implements GUIController {
         });
     }
 
+    public void emptyBagAlert(String msg, Stage stage){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("MyShelfie Server Error Notification");
+        alert.setHeaderText("The Bag is empty");
+        alert.setContentText(msg + "\nThe game ends here...");
+        ButtonType confirmation = new ButtonType("Confirm");
+        alert.getButtonTypes().setAll(confirmation);
+        alert.setOnCloseRequest(event -> {
+            event.consume();
+            System.out.println("X button pressed");
+            stage.close();
+            System.out.println("Closing...");
+            System.exit(-6);
+        });
+        alert.showAndWait().ifPresent(response -> {
+            System.out.println("Confirm button pressed");
+            stage.close();
+            System.out.println("Closing...");
+            System.exit(-6);
+        });
+    }
+
     private void setMaxNumOfItems(int numOfItems){
         ((SelectColumnCommand) this.commands.get(1)).setMaxNumOfItems(numOfItems);
     }

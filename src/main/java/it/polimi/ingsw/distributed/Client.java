@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface Client extends Remote {
 
-    enum QuitState {NORMAL, QUIT};
+    enum QuitState {NORMAL, EMPTY_BAG, QUIT};
 
     /**
      * Update method passing a GameView

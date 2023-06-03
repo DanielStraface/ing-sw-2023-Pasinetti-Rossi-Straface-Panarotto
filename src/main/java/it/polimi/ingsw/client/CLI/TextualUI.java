@@ -356,7 +356,6 @@ public class TextualUI implements UI, Serializable {
      * @param msg String given
      */
     public void update(String msg) {
-        System.out.println("devo ");
         if(msg.contains("%") && msg.contains("$")) {
             int startPlayersName = msg.indexOf("%");
             int endPlayersName = msg.indexOf("$");
@@ -381,6 +380,9 @@ public class TextualUI implements UI, Serializable {
         } else if (msg.contains("disconnected")) {
             System.out.println(msg);
             System.exit(-5);
+        } else if (msg.contains("the bag is empty")) {
+            System.out.println(msg + "\nThe game ends here...");
+            System.exit(-6);
         } else System.out.println(msg);
     }
 

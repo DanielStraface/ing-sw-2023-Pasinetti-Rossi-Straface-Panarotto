@@ -2,6 +2,7 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.exceptions.InvalidNumberOfPlayersException;
+import it.polimi.ingsw.exceptions.NoElementException;
 import it.polimi.ingsw.listeners.ModelSubject;
 import it.polimi.ingsw.model.comcard.CommonObjCard;
 import it.polimi.ingsw.model.comcard.CommonObjCardReader;
@@ -134,8 +135,14 @@ public class Game extends ModelSubject implements Serializable {
                     try {
                         this.gameboard.getGameGrid()[i][j] = this.bag.drawItem();
                         this.gameboard.getValidGrid()[i][j] = OCCUPIED;
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
+                    } catch (NoElementException e) {
+                        System.out.println(e.getMessage() + ", client notification and termination of the game");
+                        try {
+                            this.notifyDisconnection(this, ":Empty Bag", e.getMessage());
+                            return;
+                        } catch (RemoteException ex) {
+                            System.err.println("Cannot notify the empty bag: " + e.getMessage());
+                        }
                     }
                 } else if(vlg[i][j]==0) {
                     this.gameboard.getGameGrid()[i][j] = new Item(null, 0);

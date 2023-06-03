@@ -197,6 +197,22 @@ public class ModelSubject {
             arrLocal = obs.toArray();
             clearChanged();
         }
+
+        if(disconnectedName.equals(":Empty Bag")){
+            for(int i=arrLocal.length-1;i>=0;i--){
+                int finalI = i;
+                new Thread(() -> {
+                    Client vl = (Client) arrLocal[finalI];
+                    List<Object> notificationList = Arrays.asList(Client.QuitState.EMPTY_BAG, msg);
+                    try {
+                        vl.update(notificationList);
+                    } catch (RemoteException e) {
+                        System.err.println("Cannot notify the emptyBag in ModelSubject: " + e.getMessage());
+                    }
+                }).start();
+            }
+        }
+
         GameView gmv = new GameView(game);
         String[] nicknames = new String[gmv.getPlayers().size()];
         gmv.getPlayers().stream().map(PlayerView::getNickname).toList().toArray(nicknames);
@@ -207,7 +223,6 @@ public class ModelSubject {
                     Client vl = (Client) arrLocal[finalI];
                     List<Object> notificationList = Arrays.asList(Client.QuitState.QUIT, msg);
                     try {
-                        System.out.println("SETTIMO");
                         vl.update(notificationList);
                     } catch (RemoteException ignored) {
                     }
