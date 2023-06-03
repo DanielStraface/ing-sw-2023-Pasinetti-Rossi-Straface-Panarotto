@@ -124,9 +124,8 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
     }
 
     @Override
-    public void update(List<Object> notificationList) throws RemoteException {
-        System.out.println("QUARTO");
-        String nameDisconnectedClient = ((String) notificationList.get(0));
+    public void update(List<String> notificationList) throws RemoteException {
+        String nameDisconnectedClient = ( notificationList.get(0));
         String msg = "The user of player " + nameDisconnectedClient
                 + " has disconnected! The game ends here...";
         this.controller.getGame().notifyDisconnection(this.controller.getGame(), nameDisconnectedClient, msg);

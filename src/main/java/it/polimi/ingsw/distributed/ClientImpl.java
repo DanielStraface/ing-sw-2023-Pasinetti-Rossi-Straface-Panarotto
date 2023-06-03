@@ -161,7 +161,6 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Serializa
 
     @Override
     public void update(List<Object> notificationList) throws RemoteException {
-        System.out.println("OTTAVO");
         QuitState quitState = (QuitState) notificationList.get(0);
         String msg = (String) notificationList.get(1);
         if(quitState == QuitState.QUIT) this.view.update(msg);

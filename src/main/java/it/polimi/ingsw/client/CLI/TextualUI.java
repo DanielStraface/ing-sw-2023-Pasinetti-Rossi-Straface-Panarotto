@@ -277,7 +277,7 @@ public class TextualUI implements UI, Serializable {
                 }
             else if(firstDecision.equals(admitDecision.get(2))){
                 System.out.println("Quit from MyShelfie...");
-                List<Object> notificationList = Collections.singletonList(this.refClient.getNickname());
+                List<String> notificationList = Collections.singletonList(this.refClient.getNickname());
                 setChanged();
                 notifyDisconnection(notificationList);
                 System.exit(-5);
@@ -378,7 +378,7 @@ public class TextualUI implements UI, Serializable {
             for(String name : playerNickname)
                 if(name != null) System.out.println(name);
             System.out.println(finalMsg1);
-        } else if (msg.contains("disconnection")) {
+        } else if (msg.contains("disconnected")) {
             System.out.println(msg);
             System.exit(-5);
         } else System.out.println(msg);
@@ -443,7 +443,7 @@ public class TextualUI implements UI, Serializable {
     }
 
     @Override
-    public void notifyDisconnection(List<Object> notificationList) throws RemoteException {
+    public void notifyDisconnection(List<String> notificationList) throws RemoteException {
         Object[] arrLocal;
         synchronized (this){
             if (!changed)

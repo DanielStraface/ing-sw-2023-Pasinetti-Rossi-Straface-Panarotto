@@ -172,7 +172,6 @@ public class ModelSubject {
     }
 
     public void notifyDisconnection(Game game, String disconnectedName, String msg) throws RemoteException{
-        System.out.println("QUINTO");
         setChanged();
         /*
          * a temporary array buffer, used as a snapshot of the state of
@@ -205,7 +204,6 @@ public class ModelSubject {
             if(!nicknames[i].equals(disconnectedName)){
                 int finalI = i;
                 new Thread(() -> {
-                    System.out.println("SESTO");
                     Client vl = (Client) arrLocal[finalI];
                     List<Object> notificationList = Arrays.asList(Client.QuitState.QUIT, msg);
                     try {

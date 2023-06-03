@@ -30,5 +30,5 @@ public interface Server extends Remote {
      */
     void update(Client client, List<int[]> coords, Integer column) throws RemoteException;
 
-    void update(List<Object> notificationList) throws RemoteException;
+    void update(List<String> notificationList) throws RemoteException;
 }

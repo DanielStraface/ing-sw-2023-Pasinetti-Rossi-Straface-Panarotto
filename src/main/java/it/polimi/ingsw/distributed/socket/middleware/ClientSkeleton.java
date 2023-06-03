@@ -11,6 +11,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ClientSkeleton implements Client {
@@ -203,22 +204,20 @@ public class ClientSkeleton implements Client {
         Object o;
         Integer column = null;
         String msg;
+        List<Object> temp;
         List<int[]> coords = null;
-        List<Object> notificationList = null;
+        List<String> notificationList = new ArrayList<>();
 
         try{
             o = ois.readObject();
-            System.out.println("prima if");
             if(o instanceof List<?>) {
-                System.out.println("dopo if");
-                notificationList = (List<Object>) o;
-                if(notificationList.get(0) instanceof int[]){
-                    System.out.println("non devo entrare");
-                    coords = (List<int[]>) o;
-                }
-                if(notificationList.get(0) instanceof String){
-                    System.out.println("TERZO ter");
+                temp = (List<Object>) o;
+                if(temp.get(0) instanceof String) {
+                    notificationList.add((String) temp.get(0));
                     server.update(notificationList);
+                }
+                else if(temp.get(0) instanceof int[]) {
+                    coords = (List<int[]>) o;
                 }
             }
             if(o instanceof Integer) column = (Integer) o;

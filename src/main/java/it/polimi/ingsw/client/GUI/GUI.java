@@ -142,8 +142,8 @@ public class GUI extends Application implements UI {
             System.out.println("You're successfully quit");
             stage.close();
             try {
-                List<Object> notificationList = Collections.singletonList(this.refClient.getNickname());
-                System.out.println("PRIMO");
+                List<String> notificationList = new ArrayList<>();
+                notificationList.add(this.refClient.getNickname());
                 setChanged();
                 this.notifyDisconnection(notificationList);
             } catch (RemoteException e) {
@@ -410,8 +410,7 @@ public class GUI extends Application implements UI {
     }
 
     @Override
-    public void notifyDisconnection(List<Object> notificationList) throws RemoteException {
-        System.out.println("SECONDO");
+    public void notifyDisconnection(List<String> notificationList) throws RemoteException {
         Object[] arrLocal;
         synchronized (this){
             if (!changed)
@@ -422,15 +421,14 @@ public class GUI extends Application implements UI {
         new Thread(() -> {
             for (int i = arrLocal.length-1; i>=0; i--){
                 Server vl = (Server) arrLocal[i];
-                System.out.println("TERZO");
                 try {
                     vl.update(notificationList);
+                    System.exit(-5);
                 } catch (RemoteException e) {
                     System.err.println("Cannot reached the server in notifyDisconnection: " + e.getMessage());
                 }
             }
         }).start();
-        System.exit(-5);
     }
 
     public void updateOtherPlayersShelf(GameView gameView){

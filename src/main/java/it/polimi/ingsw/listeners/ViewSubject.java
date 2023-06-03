@@ -24,5 +24,5 @@ public interface ViewSubject {
      */
     void notifyObservers(Client o, List<int[]> arg1, Integer arg2) throws RemoteException;
 
-    void notifyDisconnection(List<Object> notificationList) throws RemoteException;
+    void notifyDisconnection(List<String> notificationList) throws RemoteException;
 }

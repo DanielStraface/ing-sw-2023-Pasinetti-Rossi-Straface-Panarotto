@@ -87,9 +87,9 @@ public class ServerStub implements Server {
     }
 
     @Override
-    public void update(List<Object> notificationList) throws RemoteException {
-        System.out.println("TERZO bis");
+    public void update(List<String> notificationList) throws RemoteException {
         try{
+            System.out.println(notificationList.get(0));
             oos.writeObject(notificationList);
             flushAndReset(oos);
         } catch (IOException e) {
