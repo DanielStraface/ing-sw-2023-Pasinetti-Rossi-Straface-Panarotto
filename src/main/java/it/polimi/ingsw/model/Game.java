@@ -32,6 +32,8 @@ public class Game extends ModelSubject implements Serializable {
     private Player currentPlayer;
     private int prevClientID;
     private String gameOverFinalMessage;
+    private boolean gameOverPointToken;
+    private String gameOverPointPlayerName;
 
     /**
      * constructor for Game class
@@ -71,9 +73,10 @@ public class Game extends ModelSubject implements Serializable {
      */
     private void createBag() {
         final int ITEM_NUM = 22;
+        Random random = new Random();
         for(Category c : Category.values()){
             for(int i=0;i<ITEM_NUM;i++){
-                this.bag.setItemCards(new Item(c));
+                this.bag.setItemCards(new Item(c, random.nextInt(3) + 1));
             }
         }
     }
@@ -135,7 +138,7 @@ public class Game extends ModelSubject implements Serializable {
                         throw new RuntimeException(e);
                     }
                 } else if(vlg[i][j]==0) {
-                    this.gameboard.getGameGrid()[i][j] = new Item(null);
+                    this.gameboard.getGameGrid()[i][j] = new Item(null, 0);
                 }
             }
         }
@@ -199,6 +202,11 @@ public class Game extends ModelSubject implements Serializable {
         setChangedAndNotifyListeners(this);
     }
 
+    public void setGameOverPointToken(boolean value, String nickname){
+        this.gameOverPointToken = true;
+        this.gameOverPointPlayerName = nickname;
+    }
+
     /**
      * get method that returns the number of players.
      */
@@ -251,6 +259,16 @@ public class Game extends ModelSubject implements Serializable {
      * @return string gameOverFinalMessage
      */
     public String getGameOverFinalMessage(){return this.gameOverFinalMessage;}
+    /**
+     * get method.
+     * @return boolean gameOverPointToken
+     */
+    public boolean getGameOverPointToken(){return this.gameOverPointToken;}
+    /**
+     * get method
+     * @return String -> gameOverPointPlayerNickname
+     */
+    public String getGameOverPointPlayerName(){return this.gameOverPointPlayerName;}
 
     /**
      * set method for the game.

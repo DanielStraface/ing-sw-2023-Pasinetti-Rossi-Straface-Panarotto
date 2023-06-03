@@ -29,14 +29,14 @@ public class PlayersShelfController implements GUIController {
     private Pane paneShelf3;
     @FXML
     private List<Label> nicknameLabels;
-    private Map<String, Integer> playersShelfMap = new HashMap<>();
-    private Map<Category, String> fromNameToPathItemTiles = Map.ofEntries(
-            entry(Category.CAT, "/graphics/item_tiles/Gatti1.1.png"),
-            entry(Category.BOOK, "/graphics/item_tiles/Libri1.1.png"),
-            entry(Category.FRAME, "/graphics/item_tiles/Cornici1.1.png"),
-            entry(Category.GAME, "/graphics/item_tiles/Giochi1.1.png"),
-            entry(Category.TROPHY, "/graphics/item_tiles/Trofei1.1.png"),
-            entry(Category.PLANT, "/graphics/item_tiles/Piante1.1.png")
+    private final Map<String, Integer> playersShelfMap = new HashMap<>();
+    private final Map<Category, String> fromNameToPathItemTiles = Map.ofEntries(
+            entry(Category.CAT, "/graphics/item_tiles/Gatti1."),
+            entry(Category.BOOK, "/graphics/item_tiles/Libri1."),
+            entry(Category.FRAME, "/graphics/item_tiles/Cornici1."),
+            entry(Category.GAME, "/graphics/item_tiles/Giochi1."),
+            entry(Category.TROPHY, "/graphics/item_tiles/Trofei1."),
+            entry(Category.PLANT, "/graphics/item_tiles/Piante1.")
     );
     private int numOfPlayers;
     private GUI gui;
@@ -71,9 +71,10 @@ public class PlayersShelfController implements GUIController {
         for(int i=0;i<SHELF_ROWS;i++){
             for(int j=0;j<SHELF_COLS;j++){
                 Category type = shelfView.getShelfGrid()[i][j].getCategoryType();
+                int variant = shelfView.getShelfGrid()[i][j].getVariant();
                 if(type != null){
                     shelf.get(j).get(i).setImage(
-                            new Image(fromNameToPathItemTiles.get(type))
+                            new Image(fromNameToPathItemTiles.get(type) + variant + ".png")
                     );
                 }
             }

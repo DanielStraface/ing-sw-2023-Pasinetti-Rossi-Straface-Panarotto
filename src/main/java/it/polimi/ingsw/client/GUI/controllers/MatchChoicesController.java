@@ -185,6 +185,7 @@ public class MatchChoicesController implements GUIController, Initializable {
         if(flag == State.NICKNAME){
             this.userNickname = null;
             textField.setText("");
+            done = false;
             return;
         }
         if(flag == State.TYPE_OF_MATCH){
@@ -198,6 +199,7 @@ public class MatchChoicesController implements GUIController, Initializable {
             textField.setOpacity(1);
             textField.setDisable(false);
             textField.setText("");
+            done = false;
             return;
         }
         if(flag == State.NUM_OF_PLAYER){
@@ -211,6 +213,7 @@ public class MatchChoicesController implements GUIController, Initializable {
             typeOfMatchBox.setOpacity(1);
             typeOfMatchBox.setDisable(false);
             typeOfMatchBox.setValue("");
+            done = false;
         }
     }
 
@@ -219,23 +222,7 @@ public class MatchChoicesController implements GUIController, Initializable {
         System.out.println("Back button pressed, go back to main menu");
         this.userNickname = null;
         this.typeOfMatchChoice = null;
-        /*nicknameLabel.setOpacity(1);
-        textField.setOpacity(1);
-        textField.setText("");
-        textField.setDisable(false);
-        typeOfMatchLabel.setOpacity(0.5);
-        typeOfMatchBox.setOpacity(0.5);
-        typeOfMatchBox.setValue("");
-        typeOfMatchBox.setDisable(true);
-        numOfItemsLabel.setOpacity(0.5);
-        numOfPlayersBox.setOpacity(0.5);
-        numOfPlayersBox.setValue("");
-        numOfPlayersBox.setDisable(true);
-        notifyLabel.setVisible(false);
-        confirmButton.setOpacity(1);
-        confirmButton.setDisable(false);
-        prevButton.setOpacity(1);
-        prevButton.setDisable(false);*/
+        done = false;
         resetSceneAtBeginning();
         flag = State.NICKNAME;
         gui.changeScene("MainMenu.fxml");

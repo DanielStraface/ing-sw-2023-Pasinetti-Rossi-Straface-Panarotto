@@ -21,7 +21,7 @@ public class ShelfView implements Serializable {
         this.lastRow = new int[lastRow.length];
         for(int i=0;i<shelfGrid.length;i++){
             for(int j=0;j<shelfGrid[0].length;j++){
-                this.shelfGrid[i][j] = new Item(shelfGrid[i][j].getCategoryType());
+                this.shelfGrid[i][j] = new Item(shelfGrid[i][j].getCategoryType(), shelfGrid[i][j].getVariant());
             }
             if(i<=4){
                 this.lastRow[i]=lastRow[i];

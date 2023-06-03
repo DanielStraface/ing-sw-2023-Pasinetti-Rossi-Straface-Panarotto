@@ -70,7 +70,6 @@ public class ObjectivesController implements GUIController {
         for(CommonObjCardView commonObjCardView : commonObjCardViews){
             if(commonObjCardView.getNextPoints() != -1){
                 int cardType = commonObjCardView.getType();
-                int previousPoints = prevKeyPoints.get(counterPosition); //get the available points of the previous turn
                 int actualPoints = commonObjCardView.getPoints()[commonObjCardView.getNextPoints()];
                 cardsReference.get(cardType).get(intToInt.get(actualPoints)).setVisible(true);
                 prevKeyPoints.remove(counterPosition);

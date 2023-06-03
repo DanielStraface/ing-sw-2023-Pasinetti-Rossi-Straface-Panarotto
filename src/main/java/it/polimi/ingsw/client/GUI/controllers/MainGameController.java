@@ -84,6 +84,8 @@ public class MainGameController implements GUIController {
     private List<List<ImageView>> shelfColumns = new ArrayList<>();
     @FXML
     private List<Button> shelfColumnButtonList;
+    @FXML
+    private ImageView finalPointToken;
     private int numOfItems = 0;
     private BorderPane[][] gameboardItemSlotMatrix = new BorderPane[DIM_GAMEBOARD][DIM_GAMEBOARD];
     private boolean[][] gameboardItemMatrix;
@@ -217,10 +219,10 @@ public class MainGameController implements GUIController {
             for(int i=0;i<DIM_GAMEBOARD;i++){
                 for(int j=0;j<DIM_GAMEBOARD;j++){
                     if(validGrid[i][j] == OCCUPIED && gameboardItemSlotMatrix[i][j] != null){
-                        int variant = random.nextInt(3) + 1;
                         ImageView imageView = ((ImageView) gameboardItemSlotMatrix[i][j].getCenter());
                         category = gameBoardView.getGameGrid()[i][j].getCategoryType();
-                        String partialPath = "/graphics/item_tiles/";
+                        int variant = gameBoardView.getGameGrid()[i][j].getVariant();
+                                String partialPath = "/graphics/item_tiles/";
                         switch (category){
                             case CAT -> imageView.setImage(new Image(partialPath + "Gatti1." + variant + ".png"));
                             case BOOK -> imageView.setImage(new Image(partialPath + "Libri1." + variant + ".png"));
@@ -420,6 +422,13 @@ public class MainGameController implements GUIController {
         alert.setContentText(msg);
         ButtonType confirmation = new ButtonType("Confirm");
         alert.getButtonTypes().setAll(confirmation);
+        alert.setOnCloseRequest(event -> {
+            event.consume();
+            System.out.println("X button pressed");
+            stage.close();
+            System.out.println("Closing...");
+            System.exit(0);
+        });
         alert.showAndWait().ifPresent(response -> {
             System.out.println("Confirm button pressed");
             stage.close();
@@ -428,8 +437,34 @@ public class MainGameController implements GUIController {
         });
     }
 
+    public void disconnectionAlert(String msg, Stage stage){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("MyShelfie User Disconnection");
+        alert.setHeaderText("A disconnection occurred!");
+        alert.setContentText(msg);
+        ButtonType confirmation = new ButtonType("Confirm");
+        alert.getButtonTypes().setAll(confirmation);
+        alert.setOnCloseRequest(event -> {
+            event.consume();
+            System.out.println("X button pressed");
+            stage.close();
+            System.out.println("Closing...");
+            System.exit(-5);
+        });
+        alert.showAndWait().ifPresent(response -> {
+            System.out.println("Confirm button pressed");
+            stage.close();
+            System.out.println("Closing...");
+            System.exit(-5);
+        });
+    }
+
     private void setMaxNumOfItems(int numOfItems){
         ((SelectColumnCommand) this.commands.get(1)).setMaxNumOfItems(numOfItems);
+    }
+
+    public void takeFinalPointToken(){
+        finalPointToken.setVisible(false);
     }
 
     @Override

@@ -16,6 +16,8 @@ public class GameView implements Serializable {
     private final PlayerView currentPlayer;
     private final int prevClientID;
     private final String gameOverFinalMessage;
+    private final boolean gameOverPointToken;
+    private final String gameOverPointPlayerNickname;
 
     /**
      * constructor method
@@ -33,6 +35,8 @@ public class GameView implements Serializable {
         this.currentPlayer = new PlayerView(game.getCurrentPlayer());
         this.prevClientID = game.getPrevClientID();
         this.gameOverFinalMessage = game.getGameOverFinalMessage();
+        this.gameOverPointToken = game.getGameOverPointToken();
+        this.gameOverPointPlayerNickname = game.getGameOverPointPlayerName();
     }
 
     /**
@@ -70,4 +74,15 @@ public class GameView implements Serializable {
      * @return String -> gameOverFinalMessage
      */
     public String getGameOverFinalMessage(){return this.gameOverFinalMessage;}
+
+    /**
+     * get method
+     * @return boolean -> gameOverPointToken
+     */
+    public boolean getGameOverPointToken(){return this.gameOverPointToken;}
+    /**
+     * get method
+     * @return String -> gameOverPointPlayerNickname
+     */
+    public String getGameOverPointPlayerNickname(){return this.gameOverPointPlayerNickname;}
 }

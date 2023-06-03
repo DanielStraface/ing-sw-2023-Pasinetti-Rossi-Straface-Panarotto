@@ -21,7 +21,7 @@ public class PersonalObjCardView implements Serializable {
         this.cardGrid = new Item[cardGrid.length][cardGrid[0].length];
         for(int i=0;i<cardGrid.length;i++){
             for(int j=0;j<cardGrid[0].length;j++){
-                this.cardGrid[i][j] = new Item(cardGrid[i][j].getCategoryType());
+                this.cardGrid[i][j] = new Item(cardGrid[i][j].getCategoryType(), cardGrid[i][j].getVariant());
             }
         }
     }

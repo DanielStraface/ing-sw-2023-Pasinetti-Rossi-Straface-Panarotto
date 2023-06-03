@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.Pane?>
 
 <?import java.util.ArrayList?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="719.0" prefWidth="1420.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.GUI.controllers.MainGameController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="719.0" prefWidth="1420.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.GUI.controllers.MainGameController">
    <children>
       <ImageView fitHeight="720.0" fitWidth="796.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -132,7 +132,7 @@
                   <Image url="@../graphics/boards/livingroom.png" />
                </image>
             </ImageView>
-            <ImageView fitHeight="78.0" fitWidth="71.0" layoutX="577.0" layoutY="498.0" pickOnBounds="true" preserveRatio="true" rotate="9.0">
+            <ImageView fx:id="finalPointToken" fitHeight="78.0" fitWidth="71.0" layoutX="577.0" layoutY="498.0" pickOnBounds="true" preserveRatio="true" rotate="9.0">
                <image>
                   <Image url="@../graphics/scoring_tokens/end_game.jpg" />
                </image>

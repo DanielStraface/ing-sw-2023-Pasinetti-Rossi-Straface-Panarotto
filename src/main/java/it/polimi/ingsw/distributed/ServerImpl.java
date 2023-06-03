@@ -123,6 +123,15 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
         this.controller.update(client, coords, column);
     }
 
+    @Override
+    public void update(List<Object> notificationList) throws RemoteException {
+        System.out.println("QUARTO");
+        String nameDisconnectedClient = ((String) notificationList.get(0));
+        String msg = "The user of player " + nameDisconnectedClient
+                + " has disconnected! The game ends here...";
+        this.controller.getGame().notifyDisconnection(this.controller.getGame(), nameDisconnectedClient, msg);
+    }
+
     /**
      * Method to check if an unfinished match can be loaded from its ".ser" file
      * @return boolean true if the match has been found, false otherwise

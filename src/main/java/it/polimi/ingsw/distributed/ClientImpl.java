@@ -13,6 +13,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.RMIClientSocketFactory;
 import java.rmi.server.RMIServerSocketFactory;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.List;
 
 public class ClientImpl extends UnicastRemoteObject implements Client, Serializable {
     public enum ClientState {
@@ -100,6 +101,9 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Serializa
             this.clientState = ClientState.GAMEOVER;
             return;
         }
+        if(game.getGameOverPointToken()){
+            this.view.gameOverPointTokenHandler(game, game.getGameOverPointPlayerNickname());
+        }
         if(this.getClientState() != ClientState.PLAYING) this.clientState = ClientState.PLAYING;
         if(game.getCurrentPlayer().getClientID() == this.clientID){
             this.view.run(game);
@@ -137,6 +141,9 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Serializa
     @Override
     public void update(String msg) throws RemoteException {
         this.view.update(msg);
+        if(msg.contains("disconnected")){
+            System.exit(-5);
+        }
     }
 
     /**
@@ -150,6 +157,14 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Serializa
         this.clientID = clientID;
         this.view.setReferenceClient(this);
         this.clientState = ClientState.WAITING_IN_LOBBY;
+    }
+
+    @Override
+    public void update(List<Object> notificationList) throws RemoteException {
+        System.out.println("OTTAVO");
+        QuitState quitState = (QuitState) notificationList.get(0);
+        String msg = (String) notificationList.get(1);
+        if(quitState == QuitState.QUIT) this.view.update(msg);
     }
 
     /**

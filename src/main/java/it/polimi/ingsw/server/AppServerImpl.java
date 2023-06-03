@@ -10,6 +10,7 @@ import it.polimi.ingsw.exceptions.TooManyMatchesException;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;

@@ -86,6 +86,16 @@ public class ClientSkeleton implements Client {
         }
     }
 
+    @Override
+    public void update(List<Object> notificationList) throws RemoteException {
+        try {
+            oos.writeObject(notificationList);
+            flushAndReset(oos);
+        } catch (IOException e) {
+            throw new RemoteException("Cannot send quitState event: " + e.getMessage());
+        }
+    }
+
     /**
      * Get method for a nickname string
      * @return nickname String
@@ -194,10 +204,23 @@ public class ClientSkeleton implements Client {
         Integer column = null;
         String msg;
         List<int[]> coords = null;
+        List<Object> notificationList = null;
 
         try{
             o = ois.readObject();
-            if(o instanceof List<?>) coords = (List<int[]>) o;
+            System.out.println("prima if");
+            if(o instanceof List<?>) {
+                System.out.println("dopo if");
+                notificationList = (List<Object>) o;
+                if(notificationList.get(0) instanceof int[]){
+                    System.out.println("non devo entrare");
+                    coords = (List<int[]>) o;
+                }
+                if(notificationList.get(0) instanceof String){
+                    System.out.println("TERZO ter");
+                    server.update(notificationList);
+                }
+            }
             if(o instanceof Integer) column = (Integer) o;
             if(o instanceof String) {
                 msg = (String) o;
@@ -214,11 +237,29 @@ public class ClientSkeleton implements Client {
         }
 
         if(coords != null){
-            if(this.auxiliaryColumn != null) server.update(this, coords, this.auxiliaryColumn);
+            if(this.auxiliaryColumn != null) {
+                List<int[]> finalCoords = coords;
+                new Thread(() -> {
+                    try {
+                        server.update(this, finalCoords, this.auxiliaryColumn);
+                    } catch (RemoteException e) {
+                        System.err.println("Cannot reached the server in receive coords: " + e.getMessage());
+                    }
+                }).start();
+            }
             else this.auxiliaryCoords = coords;
         }
         if(column != null){
-            if(this.auxiliaryCoords != null) server.update(this, this.auxiliaryCoords, column);
+            if(this.auxiliaryCoords != null) {
+                Integer finalColumn = column;
+                new Thread(() -> {
+                    try {
+                        server.update(this, this.auxiliaryCoords, finalColumn);
+                    } catch (RemoteException e) {
+                        System.err.println("Cannot reached the server in receive column: " + e.getMessage());
+                    }
+                }).start();
+            }
             else this.auxiliaryColumn = column;
         }
     }

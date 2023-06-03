@@ -8,17 +8,26 @@ import java.io.Serializable;
  */
 public class Item implements Serializable {
     private final Category category;
+    private final int variant;
 
     /** constructor
-     * @param category
+     * @param category - the category of the item
+     * @param variant - the variant type of the item
      */
-    public Item(Category category){
-        this.category=category;
+    public Item(Category category, int variant){
+        this.variant = variant;
+        this.category = category;
     }
 
     /**
      * get method
      * @return category
      */
-    public Category getCategoryType(){return category;}
+    public Category getCategoryType(){return this.category;}
+
+    /**
+     * get method
+     * @return int -> variant
+     */
+    public int getVariant(){return this.variant;}
 }

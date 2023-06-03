@@ -23,7 +23,8 @@ public class GameBoardView implements Serializable {
         for(int i=0;i< DIM_GAMEBOARD;i++){
             for(int j=0;j<DIM_GAMEBOARD;j++){
                 this.validGrid[i][j] = gb.getValidGrid()[i][j];
-                this.gameGrid[i][j] = new Item(gb.getGameGrid()[i][j].getCategoryType());
+                this.gameGrid[i][j] = new Item(gb.getGameGrid()[i][j].getCategoryType(),
+                        gb.getGameGrid()[i][j].getVariant());
             }
         }
     }

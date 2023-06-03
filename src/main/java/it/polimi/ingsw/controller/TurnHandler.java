@@ -59,6 +59,7 @@ public class TurnHandler {
         if(turnChecker.manageCheck(player, game) || endGame) {
             if(!endGame) player.addPoints(ENDGAME_POINTS);
             endGame = true;
+            game.setGameOverPointToken(true, player.getNickname());
             Player firstPlayer = null;
             for (Player p : game.getPlayers()) {
                 if (p.getIsFirstPlayer()) firstPlayer = p;

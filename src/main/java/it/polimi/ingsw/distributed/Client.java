@@ -4,8 +4,11 @@ import it.polimi.ingsw.modelview.GameView;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.List;
 
 public interface Client extends Remote {
+
+    enum QuitState {NORMAL, QUIT};
 
     /**
      * Update method passing a GameView
@@ -27,6 +30,8 @@ public interface Client extends Remote {
      * @throws RemoteException
      */
     void update(int clientID) throws RemoteException;
+
+    void update(List<Object> notificationList) throws RemoteException;
 
     /**
      * Get method for a player's nickname

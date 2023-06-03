@@ -48,7 +48,7 @@ public class Player extends ModelSubject implements Serializable {
             int row = selectedCoord[0];
             int col = selectedCoord[1];
             selectItems.add(gameGrid[row][col]);
-            gameGrid[row][col] = new Item(null);
+            gameGrid[row][col] = new Item(null, 0);
             validGrid[row][col] = PLAYABLE;
         }
     }

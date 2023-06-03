@@ -18,7 +18,7 @@ public class Shelf implements Serializable {
         this.shelfGrid = new Item[SHELF_ROWS][SHELF_COLUMNS];
         for (int row = 0; row < SHELF_ROWS; row++) {
             for (int col = 0; col < SHELF_COLUMNS; col++) {
-                shelfGrid[row][col] = new Item(null);
+                shelfGrid[row][col] = new Item(null, 0);
             }
         }
         this.lastRows = new int[ARRAY_LENGTH];

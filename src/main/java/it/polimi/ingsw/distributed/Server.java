@@ -3,6 +3,7 @@ package it.polimi.ingsw.distributed;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
+import java.util.Objects;
 
 public interface Server extends Remote {
 
@@ -28,4 +29,6 @@ public interface Server extends Remote {
      * @throws RemoteException
      */
     void update(Client client, List<int[]> coords, Integer column) throws RemoteException;
+
+    void update(List<Object> notificationList) throws RemoteException;
 }

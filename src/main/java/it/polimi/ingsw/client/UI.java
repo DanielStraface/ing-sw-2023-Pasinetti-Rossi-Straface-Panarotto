@@ -30,4 +30,5 @@ public interface UI extends ViewSubject {
     void run(GameView gameView) throws RemoteException;
     void displayInfo(GameView gameView, PlayerView playerView);
     void setReferenceClient(Client client);
+    void gameOverPointTokenHandler(GameView game, String playerNickname);
 }

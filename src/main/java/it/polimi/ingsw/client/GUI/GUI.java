@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.*;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 
 public class GUI extends Application implements UI {
@@ -139,8 +140,16 @@ public class GUI extends Application implements UI {
         ButtonType response = alert.showAndWait().get();
         if(response == option1){
             System.out.println("You're successfully quit");
-            // update per finire partita
             stage.close();
+            try {
+                List<Object> notificationList = Collections.singletonList(this.refClient.getNickname());
+                System.out.println("PRIMO");
+                setChanged();
+                this.notifyDisconnection(notificationList);
+            } catch (RemoteException e) {
+                System.err.println("Cannot obtain refClient nickname in quitActionInMainGame: " + e.getMessage());
+            }
+            //System.exit(-5);
         } else if(response == option2){
             System.out.println("You're successfully go back to main menu");
             // update per finire partita
@@ -280,6 +289,9 @@ public class GUI extends Application implements UI {
                         Platform.runLater(() -> {
                             mainGameController.matchLogInfo(msg, this.stage);
                         });
+                    } else if(msg.contains("disconnected")){
+                        System.out.println(msg);
+                        Platform.runLater(() -> mainGameController.disconnectionAlert(msg, this.stage));
                     } else Platform.runLater(() -> mainGameController.updateMessageBox(msg, false));
                 }
             }
@@ -354,6 +366,15 @@ public class GUI extends Application implements UI {
     }
 
     @Override
+    public void gameOverPointTokenHandler(GameView game, String playerNickname) {
+        Platform.runLater(() -> {
+            mainGameController.updateMessageBox("Player " + playerNickname +
+                    " completely filled the shelf.\nThis is the last turn cycle", false);
+            mainGameController.takeFinalPointToken();
+        });
+    }
+
+    @Override
     public void addListener(Server o) {
         if (o == null)
             throw new NullPointerException();
@@ -386,6 +407,30 @@ public class GUI extends Application implements UI {
             Server vl = (Server) arrLocal[i];
             vl.update(o, arg1, arg2);
         }
+    }
+
+    @Override
+    public void notifyDisconnection(List<Object> notificationList) throws RemoteException {
+        System.out.println("SECONDO");
+        Object[] arrLocal;
+        synchronized (this){
+            if (!changed)
+                return;
+            arrLocal = observers.toArray();
+            clearChanged();
+        }
+        new Thread(() -> {
+            for (int i = arrLocal.length-1; i>=0; i--){
+                Server vl = (Server) arrLocal[i];
+                System.out.println("TERZO");
+                try {
+                    vl.update(notificationList);
+                } catch (RemoteException e) {
+                    System.err.println("Cannot reached the server in notifyDisconnection: " + e.getMessage());
+                }
+            }
+        }).start();
+        System.exit(-5);
     }
 
     public void updateOtherPlayersShelf(GameView gameView){

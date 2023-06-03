@@ -58,6 +58,13 @@ public class MatchLog implements Client {
         this.listenerID = clientID;
     }
 
+    @Override
+    public void update(List<Object> notificationList) throws RemoteException {
+        System.out.println("Log := match#" + matchID + ", client disconnection event : \n->" +
+                notificationList.get(1));
+        System.out.println();
+    }
+
     /**
      * Get method for a player's nickname String
      * @return nickname String

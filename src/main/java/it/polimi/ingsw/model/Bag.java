@@ -21,7 +21,7 @@ public class Bag implements Serializable {
     /**  constructor
      */
     public Bag(){
-        this.itemCards = new ArrayList<Item>();
+        this.itemCards = new ArrayList<>();
     }
 
     // setter and getter methods
@@ -54,6 +54,6 @@ public class Bag implements Serializable {
         else if(itemCards.size()==0){
             throw new NoElementException("Cannot draw Item,the bag is empty!");
         }
-        return new Item(null);
+        return new Item(null, 0);
     }
 }

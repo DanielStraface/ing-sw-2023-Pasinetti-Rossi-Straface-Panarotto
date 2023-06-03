@@ -18,10 +18,12 @@ import it.polimi.ingsw.server.AppServer;
 import javafx.application.Platform;
 
 import java.io.Serializable;
+import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.*;
 
 public class TextualUI implements UI, Serializable {
+    private final transient Scanner scanner = new Scanner(System.in);
 
     private transient boolean changed = false;
     private transient final Vector<Server> observers = new Vector<>();
@@ -57,7 +59,7 @@ public class TextualUI implements UI, Serializable {
     private transient List<int[]> coords;
     private transient List<Integer> columnReference;
     private transient Client refClient;
-    private transient List<Command> gameActionMenu;
+    private final transient List<Command> gameActionMenu;
 
     /**
      * Constructor method for TextualUI
@@ -75,29 +77,10 @@ public class TextualUI implements UI, Serializable {
      * @throws RemoteException
      */
     public void run(GameView gameView) throws RemoteException{
-        Scanner scanner = new Scanner(System.in);
-        String firstDecision;
-        List<String> admitDecision = Arrays.asList("play", "shelf");
         this.displayNewTurn(gameView);
         System.out.println("-----------------------------------------------------------------------------------------");
         System.out.println("Hey " + this.refClient.getNickname() + ", is your turn!");
-        System.out.print("""
-               Do you want to play or to display the other players' shelf?
-               (Please, type 'play' or 'shelf')
-               >>""");
-        firstDecision = scanner.nextLine();
-        while(!admitDecision.contains(firstDecision)){
-            System.out.print("""
-                    Wrong decision, please try again: >>""");
-            firstDecision = scanner.nextLine();
-        }
-        if(firstDecision.equals(admitDecision.get(1)))
-            for(PlayerView playerView : gameView.getPlayers()){
-                if(!playerView.getNickname().equals(this.refClient.getNickname())){
-                    System.out.println("Player " + playerView.getNickname());
-                    displayShelf(playerView.getMyShelf());
-                }
-            }
+        this.displayTurnMenu(gameView);
         while(true){
             try{
                 gameActionOnGameboard(gameView.getGameBoard());
@@ -264,6 +247,45 @@ public class TextualUI implements UI, Serializable {
     }
 
     /**
+     * Method for display the turn menu (play, display shelf and quit decisions)
+     * @param gameView to get and display the player's shelf
+     * @throws RemoteException - throws if cannot obtain the refClient nickname
+     */
+    private void displayTurnMenu(GameView gameView) throws RemoteException {
+        String firstDecision;
+        List<String> admitDecision = Arrays.asList("play", "shelf", "quit");
+        while(true){
+            System.out.print("""
+               Do you want to play or to display the other players' shelf?
+               Please, type
+               'play' if you want to start your turn,
+               'shelf' if you want to see the other player's shelf,
+               'quit' if you want to close MyShelfie
+               >>""");
+            firstDecision = scanner.nextLine();
+            while(!admitDecision.contains(firstDecision)){
+                System.out.print("""
+                    Wrong decision, please try again: >>""");
+                firstDecision = scanner.nextLine();
+            }
+            if(firstDecision.equals(admitDecision.get(1)))
+                for(PlayerView playerView : gameView.getPlayers()){
+                    if(!playerView.getNickname().equals(this.refClient.getNickname())){
+                        System.out.println("Player " + playerView.getNickname());
+                        displayShelf(playerView.getMyShelf());
+                    }
+                }
+            else if(firstDecision.equals(admitDecision.get(2))){
+                System.out.println("Quit from MyShelfie...");
+                List<Object> notificationList = Collections.singletonList(this.refClient.getNickname());
+                setChanged();
+                notifyDisconnection(notificationList);
+                System.exit(-5);
+            } else break;
+        }
+    }
+
+    /**
      * Method that gets the tiles chosen by the player and checks if the choice is valid
      * @param gb GameBoardView to get the GameBoard's grid
      */
@@ -280,7 +302,6 @@ public class TextualUI implements UI, Serializable {
             } catch (FullColumnException ignored) {
             }
         }
-        //setChangedAndNotifyListener(this.coords);
     }
 
     /**
@@ -335,6 +356,7 @@ public class TextualUI implements UI, Serializable {
      * @param msg String given
      */
     public void update(String msg) {
+        System.out.println("devo ");
         if(msg.contains("%") && msg.contains("$")) {
             int startPlayersName = msg.indexOf("%");
             int endPlayersName = msg.indexOf("$");
@@ -356,6 +378,9 @@ public class TextualUI implements UI, Serializable {
             for(String name : playerNickname)
                 if(name != null) System.out.println(name);
             System.out.println(finalMsg1);
+        } else if (msg.contains("disconnection")) {
+            System.out.println(msg);
+            System.exit(-5);
         } else System.out.println(msg);
     }
 
@@ -365,6 +390,11 @@ public class TextualUI implements UI, Serializable {
      */
     public void setReferenceClient(Client client){
         this.refClient = client;
+    }
+
+    @Override
+    public void gameOverPointTokenHandler(GameView game, String playerNickname) {
+        this.update("Player " + playerNickname + " completely filled the shelf.\nThis is the last turn cycle");
     }
 
     /**
@@ -409,6 +439,21 @@ public class TextualUI implements UI, Serializable {
         for (int i = arrLocal.length-1; i>=0; i--){
             Server vl = (Server) arrLocal[i];
             vl.update(o, arg1, arg2);
+        }
+    }
+
+    @Override
+    public void notifyDisconnection(List<Object> notificationList) throws RemoteException {
+        Object[] arrLocal;
+        synchronized (this){
+            if (!changed)
+                return;
+            arrLocal = observers.toArray();
+            clearChanged();
+        }
+        for (int i = arrLocal.length-1; i>=0; i--){
+            Server vl = (Server) arrLocal[i];
+            vl.update(notificationList);
         }
     }
 

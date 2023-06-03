@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.Category;
 import it.polimi.ingsw.model.Item;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -95,46 +96,28 @@ class GroupCards extends StrategyCheck implements Serializable {
      * @param grid
      */
     private boolean groupOfFour(Item[][] grid) {
-        int groupCounter = 0; //counter of the group
-        for(int i=0;i<6;i++){
-            for(int j=0;j<2;j++){
-                //the item must be not null
-                if(grid[i][j].getCategoryType() != null){
-                    Category scanned = grid[i][j].getCategoryType(); //scanned category for item in that position
-                    int k = 1;
-                    while(k<4){
-                        //if scanned category != category type of element in that position (at least one)
-                        if(scanned != grid[i][j+k].getCategoryType()){
-                            break;
-                        }
-                        k++;
-                    }
-                    //if the equals category type number is 4, counter++
-                    if(k==4){
-                        groupCounter++;
-                    }
+        Category scanned;
+        int groupDimCounter = 0;
+        List<Integer> groupsFound = new ArrayList<>();
+        groupsFound.add(0);
+        List<Boolean> groupFlag = new ArrayList<>();
+        groupFlag.add(false);
+        // boolean matrix in order to not revisit already checked Items
+        boolean[][] visited = new boolean[grid.length][grid[0].length];
+        for(int i=0; i<grid.length; i++){
+            for(int j=0; j<grid[i].length; j++){
+                if(!visited[i][j] && grid[i][j].getCategoryType() != null){
+                    scanned = grid[i][j].getCategoryType();
+                    // recursive method that checks adjacent tiles in the Shelf
+                    adjacentCategoryCheck(grid, visited, scanned, i, j, groupDimCounter, groupsFound, groupFlag);
+                    // counter resets
+                    groupDimCounter = 0;
+                    groupFlag.clear();
+                    groupFlag.add(false);
                 }
             }
         }
-
-        for(int i=0;i<5;i++){
-            for(int j=0;j<3;j++){
-                if(grid[i][j].getCategoryType() != null){
-                    Category scanned = grid[i][j].getCategoryType();
-                    int k = 1;
-                    while(k<4){
-                        if(scanned != grid[j+k][i].getCategoryType()){
-                            break;
-                        }
-                        k++;
-                    }
-                    if(k==4){
-                        groupCounter++;
-                    }
-                }
-            }
-        }
-        return groupCounter == 4;
+        return groupsFound.get(0) >= 4;
     }
 
     /**
@@ -205,5 +188,43 @@ class GroupCards extends StrategyCheck implements Serializable {
             }
         }
         return false;
+    }
+
+/**
+ * Recursive method used in conjunction to groupOfFour to increase the counter in case there's an
+ * adjacent item with the same category
+ * @param shelf the current player's shelf
+ * @param visited a matrix of booleans to check if the slot has already been visited
+ * @param category the category of the previous item checked
+ * @param i the row of the previous item checked
+ * @param j the column of the previous item checked
+ * @param groupDimCounter a counter that increases if the conditions are met (dimension of the current group)
+ * @param groupsFound a counter that increases if a group of four dimension has been found
+ * @param groupFlag a flag that stops the counter from increasing unnecessarily during the recursive calling
+ * */
+    private void adjacentCategoryCheck(Item[][] shelf, boolean[][] visited, Category category, int i, int j,
+                                       int groupDimCounter, List<Integer> groupsFound, List<Boolean> groupFlag){
+        if(groupDimCounter == 4 && !groupFlag.get(0)){
+            groupsFound.add(groupsFound.remove(0) + 1);
+            groupFlag.clear();
+            groupFlag.add(true);
+            return;
+        }
+        // stops the method if the item checked is out of the Shelf's bounds, has already been visited
+        // or isn't of the same category as the previous one checked
+        if     (i<0 || i>=shelf.length ||
+                j<0|| j>=shelf[i].length ||
+                visited[i][j] ||
+                shelf[i][j].getCategoryType() != category){
+            return;
+        }
+        visited[i][j] = true;  //
+        // counter is incremented by 1
+        groupDimCounter++;
+        // calls the same method on the adjacent tiles
+        adjacentCategoryCheck(shelf,visited,category,i-1,j,groupDimCounter, groupsFound, groupFlag);
+        adjacentCategoryCheck(shelf,visited,category,i+1,j,groupDimCounter, groupsFound, groupFlag);
+        adjacentCategoryCheck(shelf,visited,category,i,j-1,groupDimCounter, groupsFound, groupFlag);
+        adjacentCategoryCheck(shelf,visited,category,i,j+1,groupDimCounter, groupsFound, groupFlag);
     }
 }

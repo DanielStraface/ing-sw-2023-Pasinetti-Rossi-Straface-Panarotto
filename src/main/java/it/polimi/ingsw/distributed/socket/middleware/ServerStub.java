@@ -86,6 +86,17 @@ public class ServerStub implements Server {
         }
     }
 
+    @Override
+    public void update(List<Object> notificationList) throws RemoteException {
+        System.out.println("TERZO bis");
+        try{
+            oos.writeObject(notificationList);
+            flushAndReset(oos);
+        } catch (IOException e) {
+            throw new RemoteException("Cannot send event: " + e.getMessage());
+        }
+    }
+
     /**
      * Method that reads any type of object from the Object Input Stream received from the client and acts accordingly
      * based on the object received:
@@ -102,6 +113,7 @@ public class ServerStub implements Server {
         GameView gmv;
         String msg;
         Integer id;
+        List<Object> notificationList = null;
         try{
             o = ois.readObject();
         } catch (IOException e) {
@@ -137,6 +149,10 @@ public class ServerStub implements Server {
         if(o instanceof Integer){
             id = (Integer) o;
             client.update(id);
+        }
+        if(o instanceof List<?>){
+            notificationList = (List<Object>) o;
+            client.update(notificationList);
         }
     }
 
