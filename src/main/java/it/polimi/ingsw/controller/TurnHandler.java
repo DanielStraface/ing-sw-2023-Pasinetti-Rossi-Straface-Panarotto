@@ -102,10 +102,10 @@ public class TurnHandler {
             if(winner.getScore() < game.getPlayers().get(i).getScore()) winner = game.getPlayers().get(i);
         }
         String initMessage ="-"+ players.get(0).getNickname() + " has a score of " + players.get(0).getScore() +
-                " (+"+persObjPointsAdded.get(0)+" personal objective points, +" + adjacentPointsAdded.get(0) + " adjacent items points)\n";
+                " (+"+persObjPointsAdded.get(0)+" personal objective points,\n +" + adjacentPointsAdded.get(0) + " adjacent items points)\n";
         for(int i=1; i< players.size(); i++){
             String tempMessage ="-"+ players.get(i).getNickname() + " has a score of " + players.get(i).getScore() +
-                    " (+"+persObjPointsAdded.get(i)+" personal objective points, +" + adjacentPointsAdded.get(i) + " adjacent items points)\n";
+                    " (+"+persObjPointsAdded.get(i)+" personal objective points,\n +" + adjacentPointsAdded.get(i) + " adjacent items points)\n";
             initMessage = initMessage.concat(tempMessage);
         }
         String finalMessage = initMessage.concat("\n"+winner.getNickname() + " wins with a score of " + winner.getScore()

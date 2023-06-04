@@ -390,7 +390,7 @@ public class MainGameController implements GUIController {
             this.activeShelf.setOpacity(0.7);
             this.shelfItemPane.setOpacity(0.7);
             this.columnReference.clear();
-            this.updateMessageBox("Wrong column selection:\n" + e.getMessage()+ "\nPlease choose 1 to 3 items again!", true);
+            this.updateMessageBox("The column you selected is full!\nPlease choose 1 to 3 items again!", true);
             this.ordinalBorderPanes.clear();
             for(int[] c: selectedCoords){
                 int row = c[0];
