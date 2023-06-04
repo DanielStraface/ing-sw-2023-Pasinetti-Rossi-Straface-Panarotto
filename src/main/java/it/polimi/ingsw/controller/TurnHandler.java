@@ -82,13 +82,16 @@ public class TurnHandler {
         System.out.println("This match has got a game over");
         List<Player> players = new ArrayList<Player>();
         List<Integer> adjacentPointsAdded = new ArrayList<>();
+        List<Integer> persObjPointsAdded = new ArrayList<>();
         for(Player p : game.getPlayers()){
             PersonalObjCard personalObjCard = p.getMyPersonalOBjCard();
             try {
                 p.addPoints(personalObjCard.shelfCheck(p.getMyShelf()));
+                Integer persObj = personalObjCard.shelfCheck(p.getMyShelf());
+                persObjPointsAdded.add(persObj);
                 p.addPoints(turnChecker.adjacentItemsCheck(p));
-                Integer temp = turnChecker.adjacentItemsCheck(p);
-                adjacentPointsAdded.add(temp);
+                Integer adj = turnChecker.adjacentItemsCheck(p);
+                adjacentPointsAdded.add(adj);
                 players.add(p);
             } catch (InvalidMatchesException e) {
                 System.err.println("Error occurred while calculating the players point: " + e.getMessage());
@@ -99,10 +102,10 @@ public class TurnHandler {
             if(winner.getScore() < game.getPlayers().get(i).getScore()) winner = game.getPlayers().get(i);
         }
         String initMessage ="-"+ players.get(0).getNickname() + " has a score of " + players.get(0).getScore() +
-                " (+"+adjacentPointsAdded.get(0)+" adjacent items points)\n";
+                " (+"+persObjPointsAdded.get(0)+" personal objective points, +" + adjacentPointsAdded.get(0) + " adjacent items points)\n";
         for(int i=1; i< players.size(); i++){
             String tempMessage ="-"+ players.get(i).getNickname() + " has a score of " + players.get(i).getScore() +
-                    " (+"+adjacentPointsAdded.get(i)+" adjacent items points)\n";
+                    " (+"+persObjPointsAdded.get(i)+" personal objective points, +" + adjacentPointsAdded.get(i) + " adjacent items points)\n";
             initMessage = initMessage.concat(tempMessage);
         }
         String finalMessage = initMessage.concat("\n"+winner.getNickname() + " wins with a score of " + winner.getScore()

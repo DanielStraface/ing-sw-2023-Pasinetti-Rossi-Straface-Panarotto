@@ -9,6 +9,7 @@ import it.polimi.ingsw.exceptions.InvalidSelectionException;
 import it.polimi.ingsw.model.Category;
 import it.polimi.ingsw.modelview.GameBoardView;
 import it.polimi.ingsw.modelview.ShelfView;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -381,8 +382,25 @@ public class MainGameController implements GUIController {
         } catch (InvalidSelectionException ignored) {
         } catch (FullColumnException e) {
             playSound(warning);
+            confirmButtonFlag = false;
+            for(Button b : shelfColumnButtonList){
+                b.setDisable(true);
+                b.setVisible(false);
+            }
+            this.activeShelf.setOpacity(0.7);
+            this.shelfItemPane.setOpacity(0.7);
             this.columnReference.clear();
-            this.updateMessageBox("Wrong column selection:\n" + e.getMessage(), true);
+            this.updateMessageBox("Wrong column selection:\n" + e.getMessage()+ "\nPlease choose 1 to 3 items again!", true);
+            this.ordinalBorderPanes.clear();
+            for(int[] c: selectedCoords){
+                int row = c[0];
+                int col = c[1];
+                gameboardItemMatrix[row][col] = false;
+            }
+            this.itemImgPath.clear();
+            this.selectedCoords.clear();
+            this.numOfItems = 0;
+            this.switchGameBoardPaneStatus();
         }
     }
 
