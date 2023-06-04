@@ -44,8 +44,6 @@ public class AppClientRMI extends AppClient{
                 if(!isOk) System.out.print("\nThis nickname is already used by another user, you must choose another one.");
             } while (!isOk);
             System.out.print("Log successfully completed!");
-            //logginToAppServer(serverApp, null);
-            //List<Integer> decisions = mainMenu();
             decisions = TextualUI.setupConnectionByUser();
         }
         if(args[0].equals("GUI")){

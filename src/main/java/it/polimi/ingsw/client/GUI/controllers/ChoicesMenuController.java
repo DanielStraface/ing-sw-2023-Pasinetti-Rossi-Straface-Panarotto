@@ -1,6 +1,8 @@
 package it.polimi.ingsw.client.GUI.controllers;
 
+import it.polimi.ingsw.client.CLI.AppClient;
 import it.polimi.ingsw.client.GUI.GUI;
+import it.polimi.ingsw.server.AppServer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -23,7 +25,7 @@ public class ChoicesMenuController implements GUIController, Initializable {
     @FXML
     private ChoiceBox<String> networkChoices;
     @FXML
-    private Label serverAddressLabel;
+    private Label invalidIpLabel;
     @FXML
     private TextField serverAddressTextField;
     private Stage stage;
@@ -36,8 +38,6 @@ public class ChoicesMenuController implements GUIController, Initializable {
 
     public void setGUI(GUI gui){this.gui = gui;}
 
-
-
     public void backButtonAction(ActionEvent event) {
         playSound(MenuSelection);
         System.out.println("Back button pressed, go back to main menu");
@@ -48,10 +48,16 @@ public class ChoicesMenuController implements GUIController, Initializable {
 
     public void confirmButtonAction(ActionEvent event){
         playSound(MenuSelection);
+        invalidIpLabel.setText("");
         String netChoice = networkChoices.getValue();
         String address = serverAddressTextField.getText();
         if(netChoice == null || netChoice.equals("") || address == null || address.equals("")){
             System.out.println("Wrong selection");
+            return;
+        }
+        if(!AppClient.checkIp(address)){
+            System.out.println("Invalid ip address");
+            invalidIpLabel.setText("The ip address is not valid,\nplease insert a valid ip address!");
             return;
         }
         System.out.println("The choice is " + netChoice + ", address " + address);

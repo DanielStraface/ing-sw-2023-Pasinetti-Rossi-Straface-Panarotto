@@ -205,7 +205,8 @@ public class ModelSubject {
                     Client vl = (Client) arrLocal[finalI];
                     List<Object> notificationList = Arrays.asList(Client.QuitState.EMPTY_BAG, msg);
                     try {
-                        vl.update(notificationList);
+                        if(vl.getClientID() != 5) vl.update(notificationList);
+                        else System.out.println(msg);
                     } catch (RemoteException e) {
                         System.err.println("Cannot notify the emptyBag in ModelSubject: " + e.getMessage());
                     }

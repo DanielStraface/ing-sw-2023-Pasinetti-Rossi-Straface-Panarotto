@@ -147,12 +147,21 @@ public class GUI extends Application implements UI {
                 setChanged();
                 this.notifyDisconnection(notificationList);
             } catch (RemoteException e) {
-                System.err.println("Cannot obtain refClient nickname in quitActionInMainGame: " + e.getMessage());
+                System.err.println("Cannot notify quit in quitActionInMainGame: " + e.getMessage());
             }
-            //System.exit(-5);
         } else if(response == option2){
             System.out.println("You're successfully go back to main menu");
-            // update per finire partita
+            List<String> notificationList = new ArrayList<>();
+            try {
+                notificationList.add(this.refClient.getNickname());
+                notificationList.add("BACK-TO-MAIN-MENU");
+                areCardsSet = false;
+                this.state = State.SETUP;
+                setChanged();
+                this.notifyDisconnection(notificationList);
+            } catch (RemoteException e) {
+                System.err.println("Cannot notify back to Main Menu in quitActionInMainGame: " + e.getMessage());
+            }
             changeScene(MAIN_MENU);
         } else if(response == option3){
             System.out.println("Cancel");
@@ -426,7 +435,7 @@ public class GUI extends Application implements UI {
                 Server vl = (Server) arrLocal[i];
                 try {
                     vl.update(notificationList);
-                    System.exit(-5);
+                    if(notificationList.size() == 1) System.exit(-5);
                 } catch (RemoteException e) {
                     System.err.println("Cannot reached the server in notifyDisconnection: " + e.getMessage());
                 }

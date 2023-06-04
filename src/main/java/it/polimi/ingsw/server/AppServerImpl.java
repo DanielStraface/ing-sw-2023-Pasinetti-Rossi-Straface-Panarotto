@@ -194,6 +194,15 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
         }
     }
 
+    public static void forceGameRemove(int matchID){
+        if(matches != null){
+            System.out.println("The match # " + matchID + " must be removed!");
+            matches.remove(matchID);
+            System.out.println("The match # " + matchID + " is correctly removed!\nThere are "
+                    + matches.size() + " matches now");
+        } else System.err.println("There are no match to be removed in matches list!");
+    }
+
     /**
      * Creates a new match depending on its type enum, puts it in the "matches" Map and creates a "waiting queue" Map
      * to manage the players' queue
@@ -207,7 +216,7 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
         ServerImpl match = null;
         switch(type){
             case newTwoPlayersGame, newThreePlayersGame, newFourPlayersGame -> {
-                if(waitingQueue == null){
+                if(waitingQueue == null || waitingQueue.size() == 0){
                     waitingQueue = new HashMap<>();
                     matches = new HashMap<>();
                     FIRST_WAITING_MATCH = 0;
@@ -232,7 +241,6 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
                     return null;
                 }
                 match = waitingQueue.get(FIRST_WAITING_MATCH);
-                if(match == null) System.out.println("is null");
                 int numberOfClientConnected = match.connectedClient;
                 if(numberOfClientConnected == match.getPlayersGameNumber() - 1) {
                     matches.put(matches.size(), waitingQueue.remove(FIRST_WAITING_MATCH));

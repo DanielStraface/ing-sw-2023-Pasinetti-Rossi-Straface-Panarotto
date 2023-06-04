@@ -22,9 +22,10 @@
       </ImageView>
       <Label fx:id="networkLabel" alignment="CENTER" layoutX="62.0" layoutY="258.0" prefHeight="82.0" prefWidth="350.0" text="Choose between RMI or socket connection:" textAlignment="CENTER" />
       <ChoiceBox fx:id="networkChoices" layoutX="425.0" layoutY="287.0" prefWidth="150.0" />
-      <Button layoutX="334.0" layoutY="450.0" mnemonicParsing="false" onAction="#confirmButtonAction" prefHeight="60.0" prefWidth="160.0" text="Confirm" />
-      <Button layoutX="101.0" layoutY="450.0" mnemonicParsing="false" onAction="#backButtonAction" prefHeight="60.0" prefWidth="160.0" text="Back" />
+      <Button layoutX="334.0" layoutY="400.0" mnemonicParsing="false" onAction="#confirmButtonAction" prefHeight="60.0" prefWidth="160.0" text="Confirm" />
+      <Button layoutX="101.0" layoutY="400.0" mnemonicParsing="false" onAction="#backButtonAction" prefHeight="60.0" prefWidth="160.0" text="Back" />
       <TextField fx:id="serverAddressTextField" layoutX="426.0" layoutY="340.0" />
       <Label fx:id="serverAddressLabel" layoutX="117.0" layoutY="344.0" prefHeight="18.0" prefWidth="252.0" text="Insert the server IP address:" />
+      <Label fx:id="invalidIpLabel" layoutX="100.0" layoutY="515.0" prefHeight="18.0" prefWidth="400.0" />
    </children>
 </AnchorPane>

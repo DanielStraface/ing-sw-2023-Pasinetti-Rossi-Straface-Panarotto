@@ -41,7 +41,7 @@ public class ObjectivesController implements GUIController {
     private List<Integer> prevKeyPoints = new ArrayList<>();
     private GUI gui;
     private MediaPlayer mediaPlayer;
-    private String PointsGet = "sounds/PointsGet.wav";
+    private final String PointsGet = "sounds/PointsGet.wav";
 
 
     public void updateComObjCards(List<CommonObjCardView> comObjCards){

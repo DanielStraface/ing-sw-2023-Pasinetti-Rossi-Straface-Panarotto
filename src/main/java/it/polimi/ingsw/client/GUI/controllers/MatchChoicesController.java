@@ -260,6 +260,19 @@ public class MatchChoicesController implements GUIController, Initializable {
             }
             textLabelDisplay.setText(msg);
             progressBar.setProgress(1);
+            loadingPane.setVisible(false);
+            loadingImage.setVisible(false);
+            textField.setText("");
+            textField.setDisable(false);
+            textField.setOpacity(1);
+            nicknameLabel.setOpacity(1);
+            typeOfMatchBox.setValue("");;
+            numOfPlayersBox.setValue("");
+            numOfPlayersBox.setDisable(true);
+            numOfPlayersBox.setOpacity(0.5);
+            numOfItemsLabel.setOpacity(0.5);
+            done = false;
+            flag = State.NICKNAME;
             gui.changeScene("MainGame.fxml");
         } else if(!msg.equals("Joining a lobby...")) {
             notifyLabel.setText(msg);

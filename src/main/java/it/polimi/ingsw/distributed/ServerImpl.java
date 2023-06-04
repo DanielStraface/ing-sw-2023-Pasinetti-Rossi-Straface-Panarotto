@@ -128,6 +128,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
         String nameDisconnectedClient = ( notificationList.get(0));
         String msg = "The user of player " + nameDisconnectedClient
                 + " has disconnected! The game ends here...";
+        AppServerImpl.forceGameRemove(this.controller.getMatchID());
         this.controller.getGame().notifyDisconnection(this.controller.getGame(), nameDisconnectedClient, msg);
     }
 

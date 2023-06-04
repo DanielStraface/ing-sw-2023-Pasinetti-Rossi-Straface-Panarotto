@@ -6,6 +6,7 @@ import it.polimi.ingsw.server.AppServer;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -49,6 +50,27 @@ public abstract class AppClient {
         playersDecision.add(numbOfPlayers);
         //playersDecision.add(guiChoice);
         return playersDecision;
+    }
+
+    /**
+     * method that check if the given string is in the form x.x.x.x with x in [0, 255] inclusive.
+     * @param ip - the string to be checked
+     * @return true <==> String ip -> is an ip string type
+     */
+    public static boolean checkIp(String ip) {
+        if(ip.endsWith(".")) return false;
+        String[] numbers = ip.split("\\.");
+        for(String s : numbers){
+            for(char c : s.toCharArray()){
+                if(c < '0' || c > '9')
+                    return false;
+            }
+        }
+        return numbers.length == 4 &&
+                Arrays.stream(numbers)
+                .map(Integer::parseInt)
+                .filter(n -> n >= 0 && n <= 255)
+                .count() == 4;
     }
 
     /**
