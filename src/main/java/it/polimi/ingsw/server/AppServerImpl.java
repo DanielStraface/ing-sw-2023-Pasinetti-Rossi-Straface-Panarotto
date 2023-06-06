@@ -246,11 +246,15 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
                 if(numberOfClientConnected == match.getPlayersGameNumber() - 1) {
                     matches.put(activeMatchKey, waitingQueue.remove(FIRST_WAITING_MATCH));
                     activeMatchKey++;
-                    if(waitingQueue.size() == 0) FIRST_WAITING_MATCH = waitingMatchKey;
-                    FIRST_WAITING_MATCH = waitingQueue.keySet().stream()
-                            .min(Comparator.comparing(Integer::valueOf)).orElse(-1);
-                    if(FIRST_WAITING_MATCH == -1) System.out.println("No match in waiting");
-                    else System.out.println("The next match to be served is the #" + FIRST_WAITING_MATCH);
+                    if(waitingQueue.size() == 0){
+                        FIRST_WAITING_MATCH = waitingMatchKey;
+                        System.out.println("No match in waiting");
+                    }
+                    else {
+                        FIRST_WAITING_MATCH = waitingQueue.keySet().stream()
+                                .min(Comparator.comparing(Integer::valueOf)).orElse(-1);
+                        System.out.println("The next match to be served is the #" + FIRST_WAITING_MATCH);
+                    }
                 }
                 match.connectedClient++;
                 System.out.println("The current running matches are " + matches.size() +
