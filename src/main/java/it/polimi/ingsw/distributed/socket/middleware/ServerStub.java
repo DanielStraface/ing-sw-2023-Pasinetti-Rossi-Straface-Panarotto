@@ -92,6 +92,7 @@ public class ServerStub implements Server {
             System.out.println(notificationList.get(0));
             oos.writeObject(notificationList);
             flushAndReset(oos);
+            System.out.println("QUI");
         } catch (IOException e) {
             throw new RemoteException("Cannot send event: " + e.getMessage());
         }
