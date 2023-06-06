@@ -187,4 +187,6 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
      * @return gameOver boolean
      */
     public boolean getGameOver(){return this.controller.getGameOver();}
+
+    public List<String> getMatchNicknames(){return this.game.getPlayers().stream().map(Player::getNickname).toList();}
 }

@@ -6,6 +6,7 @@ import it.polimi.ingsw.distributed.socket.middleware.ClientSkeleton;
 import it.polimi.ingsw.exceptions.ClientDisconnectionException;
 import it.polimi.ingsw.exceptions.NotSupportedMatchesException;
 import it.polimi.ingsw.exceptions.TooManyMatchesException;
+import it.polimi.ingsw.model.Player;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -200,7 +201,9 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
     public static void forceGameRemove(int matchID){
         if(matches != null){
             System.out.println("The match # " + matchID + " must be removed!");
-            matches.remove(matchID);
+            List<String> matchNicknames = (matches.remove(matchID)).getMatchNicknames();
+            for(String nickname : matchNicknames)
+                loggedNicknames.remove(nickname);
             System.out.println("The match # " + matchID + " is correctly removed!\nThere are "
                     + matches.size() + " matches now");
             System.out.println("The waiting queue is " + waitingQueue.size() + " matches long\n" +
@@ -292,7 +295,7 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
     public void removeLoggedUser(String nickname) throws RemoteException {
         synchronized (loggedNicknames){
             loggedNicknames.remove(nickname);
-            System.out.println("Forced log out of " + nickname);
+            System.out.println("Nickname log out of " + nickname);
         }
     }
 
