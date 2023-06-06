@@ -124,6 +124,7 @@ public class ServerStub implements Server {
             throw new RemoteException("Cannot cast event: " + e.getMessage());
         }
         if(o instanceof String){
+            System.out.println("---DEVE ENTRARE QUI---");
             msg = (String) o;
             boolean toTerminate = false;
             if(msg.equals(NO_GAME_ON_SERVER)){
