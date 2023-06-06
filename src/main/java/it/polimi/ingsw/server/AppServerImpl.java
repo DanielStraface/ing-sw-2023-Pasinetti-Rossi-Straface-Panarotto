@@ -26,10 +26,12 @@ import java.util.concurrent.Executors;
 public class AppServerImpl extends UnicastRemoteObject implements AppServer {
     private static AppServerImpl instance;
     private final ExecutorService executorService = Executors.newCachedThreadPool();
-    private static Map<Integer, ServerImpl> matches;
-    private static Map<Integer, ServerImpl> waitingQueue;
+    private static final Map<Integer, ServerImpl> matches = new HashMap<>();
+    private static final Map<Integer, ServerImpl> waitingQueue = new HashMap<>();
     private static final Set<String> loggedNicknames = new TreeSet<>();
-    private static int FIRST_WAITING_MATCH;
+    private static int waitingMatchKey = 0;
+    private static int activeMatchKey = 0;
+    private static int FIRST_WAITING_MATCH = 0;
     private static final int SERVER_PORT = 1234;
     private static final String APPSERVER_REGISTRY_NAME = "it.polimi.ingsw.server.AppServer";
     public static final int MAX_MATCHES_MANAGED = 100;
@@ -216,18 +218,15 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
         ServerImpl match = null;
         switch(type){
             case newTwoPlayersGame, newThreePlayersGame, newFourPlayersGame -> {
-                if(waitingQueue == null || waitingQueue.size() == 0){
-                    waitingQueue = new HashMap<>();
-                    matches = new HashMap<>();
-                    FIRST_WAITING_MATCH = 0;
-                }
                 if(matches != null && (waitingQueue.size() + matches.size() >= MAX_MATCHES_MANAGED)) {
                     System.err.println("Too many matches managed!");
                     throw new TooManyMatchesException();
                 }
                 try {
                     match = new ServerImpl(type);
-                    waitingQueue.put(waitingQueue.size(), match);
+                    waitingQueue.put(waitingMatchKey, match);
+                    waitingMatchKey++;
+                    if(waitingQueue.size() == 1) FIRST_WAITING_MATCH = 0;
                     match.connectedClient++;
                     System.out.println("The current running matches are " + matches.size() +
                             "\nThe waiting queue is " + waitingQueue.size() + " matches long");
@@ -236,14 +235,15 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
                 }
             }
             case existingGame -> {
-                if( waitingQueue == null || waitingQueue.size() == 0){
+                if(waitingQueue.size() == 0){
                     System.err.println("A client tried to join an existing match but the waiting list is empty");
                     return null;
                 }
                 match = waitingQueue.get(FIRST_WAITING_MATCH);
                 int numberOfClientConnected = match.connectedClient;
                 if(numberOfClientConnected == match.getPlayersGameNumber() - 1) {
-                    matches.put(matches.size(), waitingQueue.remove(FIRST_WAITING_MATCH));
+                    matches.put(activeMatchKey, waitingQueue.remove(FIRST_WAITING_MATCH));
+                    activeMatchKey++;
                     FIRST_WAITING_MATCH = waitingQueue.keySet().stream()
                             .min(Comparator.comparing(Integer::valueOf)).orElse(-1);
                     if(FIRST_WAITING_MATCH == -1) System.out.println("No match in waiting");
