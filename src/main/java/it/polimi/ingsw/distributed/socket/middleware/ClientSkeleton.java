@@ -2,7 +2,7 @@ package it.polimi.ingsw.distributed.socket.middleware;
 
 import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.distributed.Server;
-import it.polimi.ingsw.exceptions.NotMessageFromClientYet;
+import it.polimi.ingsw.exceptions.ClientDisconnectionException;
 import it.polimi.ingsw.modelview.GameView;
 import it.polimi.ingsw.server.AppServer;
 
@@ -198,9 +198,9 @@ public class ClientSkeleton implements Client {
      * It also updates invoking the "update" method in the server with the coordinates or column given
      * @param server Server from which the object is received
      * @throws RemoteException
-     * @throws NotMessageFromClientYet
+     * @throws ClientDisconnectionException
      */
-    public synchronized void receive(Server server) throws RemoteException {
+    public synchronized void receive(Server server) throws RemoteException, ClientDisconnectionException {
         Object o;
         Integer column = null;
         String msg;
@@ -235,7 +235,7 @@ public class ClientSkeleton implements Client {
             List<String> notList = new ArrayList<>();
             notList.add(this.nickname);
             server.update(notList);
-            return;
+            throw new ClientDisconnectionException();
         } catch (ClassNotFoundException e) {
             throw new RemoteException("Cannot find the object class correctly in ClientSkeleton: " + e.getMessage());
         }
