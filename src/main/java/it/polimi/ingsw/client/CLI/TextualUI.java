@@ -281,7 +281,6 @@ public class TextualUI implements UI, Serializable {
                 setChanged();
                 notifyDisconnection(notificationList);
                 System.out.println("QUA");
-                System.exit(-5);
             } else break;
         }
     }

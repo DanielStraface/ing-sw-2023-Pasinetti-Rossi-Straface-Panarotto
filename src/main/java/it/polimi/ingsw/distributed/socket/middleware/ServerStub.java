@@ -136,6 +136,7 @@ public class ServerStub implements Server {
                     throw new RemoteException("Cannot cast event: " + e.getMessage());
                 }
             }
+            if(msg.equals("YOU_CAN_CLOSE")) System.exit(-5);
             client.update(msg);
             if(toTerminate) System.exit(3);
         }

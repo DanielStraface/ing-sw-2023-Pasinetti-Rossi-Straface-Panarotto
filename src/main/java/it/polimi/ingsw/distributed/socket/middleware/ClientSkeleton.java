@@ -216,6 +216,8 @@ public class ClientSkeleton implements Client {
                 temp = (List<Object>) o;
                 System.out.println("TRE");
                 if(temp.get(0) instanceof String) {
+                    oos.writeObject("YOU_CAN_CLOSE");
+                    flushAndReset(oos);
                     System.out.println("QUATTRO");
                     notificationList.add((String) temp.get(0));
                     System.out.println("CINQUE");
