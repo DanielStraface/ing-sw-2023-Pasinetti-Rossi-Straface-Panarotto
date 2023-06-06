@@ -210,11 +210,17 @@ public class ClientSkeleton implements Client {
 
         try{
             o = ois.readObject();
+            System.out.println("UNO");
             if(o instanceof List<?>) {
+                System.out.println("DUE");
                 temp = (List<Object>) o;
+                System.out.println("TRE");
                 if(temp.get(0) instanceof String) {
+                    System.out.println("QUATTRO");
                     notificationList.add((String) temp.get(0));
+                    System.out.println("CINQUE");
                     server.update(notificationList);
+                    System.out.println("SEI");
                 }
                 else if(temp.get(0) instanceof int[]) {
                     coords = (List<int[]>) o;
