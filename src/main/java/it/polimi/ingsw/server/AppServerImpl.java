@@ -184,7 +184,7 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
                     System.out.println("The match #" + i + " is finished!\nRemoving from matches...Done!\n" +
                             "There are " + matches.size() + " matches now");
                     try {
-                        Path path = FileSystems.getDefault().getPath("./match0.ser");
+                        Path path = FileSystems.getDefault().getPath("./match" + i + ".ser");
                         if(Files.deleteIfExists(path))
                             System.out.println("Saving file of match # " + i + " delete successfully");
                         else System.err.println("Error while delete the saving file of match # " + i);
