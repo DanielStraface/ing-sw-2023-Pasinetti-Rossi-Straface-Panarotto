@@ -160,7 +160,7 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
                     while(true){
                         try {
                             clientSkeleton.receive(server);
-                        } catch (RemoteException | NotMessageFromClientYet e) {
+                        } catch (RemoteException e) {
                             System.err.println("Error while receiving message from client: " + e.getMessage());
                         }
                     }

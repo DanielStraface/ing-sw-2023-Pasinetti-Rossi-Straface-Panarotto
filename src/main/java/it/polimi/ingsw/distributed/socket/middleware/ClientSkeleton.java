@@ -200,7 +200,7 @@ public class ClientSkeleton implements Client {
      * @throws RemoteException
      * @throws NotMessageFromClientYet
      */
-    public synchronized void receive(Server server) throws RemoteException, NotMessageFromClientYet {
+    public synchronized void receive(Server server) throws RemoteException {
         Object o;
         Integer column = null;
         String msg;
@@ -221,6 +221,7 @@ public class ClientSkeleton implements Client {
                     System.out.println("CINQUE");
                     server.update(notificationList);
                     System.out.println("SEI");
+                    return;
                 }
                 else if(temp.get(0) instanceof int[]) {
                     coords = (List<int[]>) o;
@@ -236,6 +237,7 @@ public class ClientSkeleton implements Client {
                         this.clientID + " clientID number");
             }
         } catch (IOException e) {
+            System.out.println("IOEXCEPTION: " + e.getMessage());
             return;
         } catch (ClassNotFoundException e) {
             throw new RemoteException("Cannot find the object class correctly in ClientSkeleton: " + e.getMessage());
