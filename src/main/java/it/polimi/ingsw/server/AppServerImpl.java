@@ -202,6 +202,8 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
             matches.remove(matchID);
             System.out.println("The match # " + matchID + " is correctly removed!\nThere are "
                     + matches.size() + " matches now");
+            System.out.println("The waiting queue is " + waitingQueue.size() + " matches long\n" +
+                    "The next match to be served is # " + FIRST_WAITING_MATCH);
         } else System.err.println("There are no match to be removed in matches list!");
     }
 
@@ -244,6 +246,7 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
                 if(numberOfClientConnected == match.getPlayersGameNumber() - 1) {
                     matches.put(activeMatchKey, waitingQueue.remove(FIRST_WAITING_MATCH));
                     activeMatchKey++;
+                    if(waitingQueue.size() == 0) FIRST_WAITING_MATCH = waitingMatchKey;
                     FIRST_WAITING_MATCH = waitingQueue.keySet().stream()
                             .min(Comparator.comparing(Integer::valueOf)).orElse(-1);
                     if(FIRST_WAITING_MATCH == -1) System.out.println("No match in waiting");
