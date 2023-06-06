@@ -198,12 +198,16 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
         }
     }
 
-    public static void forceGameRemove(int matchID){
+    public synchronized static void forceGameRemove(int matchID){
         if(matches != null){
             System.out.println("The match # " + matchID + " must be removed!");
-            List<String> matchNicknames = (matches.remove(matchID)).getMatchNicknames();
-            for(String nickname : matchNicknames)
+            List<String> matchNicknames = (matches.get(matchID)).getMatchNicknames();
+            System.out.println("mN size := " + matchNicknames.size());
+            for(String nickname : matchNicknames){
+                System.out.println("IIII");
                 loggedNicknames.remove(nickname);
+            }
+            matches.remove(matchID);
             System.out.println("The match # " + matchID + " is correctly removed!\nThere are "
                     + matches.size() + " matches now");
             System.out.println("The waiting queue is " + waitingQueue.size() + " matches long\n" +
