@@ -145,8 +145,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
         for(int i=0;i<AppServerImpl.MAX_MATCHES_MANAGED;i++){
             try{
                 game = Controller.loadGame("match" + i + ".ser");
-                if(game == null) return false;
-                else {
+                if(game != null) {
                     List<String> newGameNicknames = this.game.getPlayers().stream()
                             .map(Player::getNickname)
                             .toList();
