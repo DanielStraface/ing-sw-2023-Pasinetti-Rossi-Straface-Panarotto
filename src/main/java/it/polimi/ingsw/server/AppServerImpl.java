@@ -226,7 +226,6 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
                     match = new ServerImpl(type);
                     waitingQueue.put(waitingMatchKey, match);
                     waitingMatchKey++;
-                    if(waitingQueue.size() == 1) FIRST_WAITING_MATCH = 0;
                     match.connectedClient++;
                     System.out.println("The current running matches are " + matches.size() +
                             "\nThe waiting queue is " + waitingQueue.size() + " matches long");
