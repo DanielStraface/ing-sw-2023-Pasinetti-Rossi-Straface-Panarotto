@@ -8,6 +8,10 @@ import it.polimi.ingsw.server.AppServer;
 import it.polimi.ingsw.server.AppServerImpl;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.rmi.RemoteException;
 import java.rmi.server.RMIClientSocketFactory;
 import java.rmi.server.RMIServerSocketFactory;
@@ -164,7 +168,15 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
                         for(Player player : this.game.getPlayers())
                             if(player.getNickname().equals(c.getNickname()))
                                 c.update(player.getClientID());
-                    this.controller.setMatchID(i);
+                    try {
+                        Path path = FileSystems.getDefault().getPath("./match" + i + ".ser");
+                        if(Files.deleteIfExists(path))
+                            System.out.println("Previous saving file of match # " + i + " delete successfully" +
+                                    "\nThe new saving file is match" + this.controller.getMatchID() + ".ser");
+                        else System.err.println("Error while delete the previous saving file of match # " + i);
+                    } catch (IOException e) {
+                        System.err.println("Error while deleting the saving file of match # " + i + " during restore");
+                    }
                     return true;
                 }
             } catch (FileNotFoundException ignored) {
