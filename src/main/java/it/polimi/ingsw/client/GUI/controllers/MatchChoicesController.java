@@ -101,7 +101,7 @@ public class MatchChoicesController implements GUIController, Initializable {
             case TYPE_OF_MATCH -> {
                 playSound(MenuSelection);
                 String typeOfMatchValue = typeOfMatchBox.getValue();
-                if(typeOfMatchValue.equals("")) return;
+                if(typeOfMatchValue == null || typeOfMatchValue.equals("")) return;
                 if(typeOfMatchValue.equals("Create a new match")){
                     this.typeOfMatchChoice = typeOfMatchValue;
                     numOfItemsLabel.setOpacity(1);
