@@ -279,16 +279,8 @@ public class TextualUI implements UI, Serializable {
                 System.out.println("Quit from MyShelfie...");
                 List<String> notificationList = Collections.singletonList(this.refClient.getNickname());
                 setChanged();
-                new Thread(() -> {
-                    try {
-                        notifyDisconnection(notificationList);
-                    } catch (RemoteException e) {
-                        System.err.println("Cannot notify the server in voluntary disconnection: " + e.getMessage());
-                    }
-                }).start();
-                while(true){
-
-                }
+                notifyDisconnection(notificationList);
+                System.exit(-5);
             } else break;
         }
     }

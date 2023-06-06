@@ -210,19 +210,12 @@ public class ClientSkeleton implements Client {
 
         try{
             o = ois.readObject();
-            System.out.println("UNO");
             if(o instanceof List<?>) {
-                System.out.println("DUE");
                 temp = (List<Object>) o;
-                System.out.println("TRE");
                 if(temp.get(0) instanceof String) {
-                    oos.writeObject("YOU_CAN_CLOSE");
                     flushAndReset(oos);
-                    System.out.println("QUATTRO");
                     notificationList.add((String) temp.get(0));
-                    System.out.println("CINQUE");
                     server.update(notificationList);
-                    System.out.println("SEI");
                     return;
                 }
                 else if(temp.get(0) instanceof int[]) {
@@ -239,6 +232,9 @@ public class ClientSkeleton implements Client {
                         this.clientID + " clientID number");
             }
         } catch (IOException e) {
+            List<String> notList = new ArrayList<>();
+            notList.add(this.nickname);
+            server.update(notList);
             return;
         } catch (ClassNotFoundException e) {
             throw new RemoteException("Cannot find the object class correctly in ClientSkeleton: " + e.getMessage());
