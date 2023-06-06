@@ -239,7 +239,6 @@ public class ClientSkeleton implements Client {
                         this.clientID + " clientID number");
             }
         } catch (IOException e) {
-            System.out.println("IOEXCEPTION: " + e.getMessage());
             return;
         } catch (ClassNotFoundException e) {
             throw new RemoteException("Cannot find the object class correctly in ClientSkeleton: " + e.getMessage());

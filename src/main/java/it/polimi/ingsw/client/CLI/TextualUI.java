@@ -280,7 +280,7 @@ public class TextualUI implements UI, Serializable {
                 List<String> notificationList = Collections.singletonList(this.refClient.getNickname());
                 setChanged();
                 notifyDisconnection(notificationList);
-                System.out.println("QUA");
+                break;
             } else break;
         }
     }
