@@ -199,7 +199,7 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
     }
 
     public synchronized static void forceGameRemove(int matchID){
-        if(matches != null){
+        if(matches != null || matches.containsKey(matchID)){
             System.out.println("The match # " + matchID + " must be removed!");
             List<String> matchNicknames = (matches.get(matchID)).getMatchNicknames();
             System.out.println("mN size := " + matchNicknames.size());

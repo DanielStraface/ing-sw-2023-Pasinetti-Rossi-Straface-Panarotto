@@ -164,6 +164,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
                         for(Player player : this.game.getPlayers())
                             if(player.getNickname().equals(c.getNickname()))
                                 c.update(player.getClientID());
+                    this.controller.setMatchID(i);
                     return true;
                 }
             } catch (FileNotFoundException ignored) {
