@@ -239,6 +239,7 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
                     System.err.println("A client tried to join an existing match but the waiting list is empty");
                     return null;
                 }
+                System.out.println("fwm := " + FIRST_WAITING_MATCH);
                 match = waitingQueue.get(FIRST_WAITING_MATCH);
                 int numberOfClientConnected = match.connectedClient;
                 if(numberOfClientConnected == match.getPlayersGameNumber() - 1) {
