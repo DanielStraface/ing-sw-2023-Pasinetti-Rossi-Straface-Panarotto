@@ -17,6 +17,7 @@ import java.rmi.server.RMIClientSocketFactory;
 import java.rmi.server.RMIServerSocketFactory;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class ServerImpl extends UnicastRemoteObject implements Server {
     public int connectedClient;
@@ -119,7 +120,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
      * @param client the choosing player
      * @param coords coordinates chosen
      * @param column the shelf column chosen
-     * @throws RemoteException
+     * @throws RemoteException 
      */
     @Override
     public void update(Client client, List<int[]> coords, Integer column) throws RemoteException {

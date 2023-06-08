@@ -22,6 +22,8 @@ import java.util.ResourceBundle;
 
 public class MatchChoicesController implements GUIController, Initializable {
     private boolean done;
+    private boolean oldMatchFlag;
+
     @FXML
     private Button confirmButton;
     @FXML
@@ -252,7 +254,8 @@ public class MatchChoicesController implements GUIController, Initializable {
             } else this.connectedPlayers += 1;
             double loadingPercentage = connectedPlayers / this.denominator;
             progressBar.setProgress(loadingPercentage);
-        } else if (msg.contains("Correct")){
+        } else if(msg.contains("unfinished") || msg.contains("Correct")){
+            if(msg.contains("unfinished")) oldMatchFlag = true;
             if(flag == State.WAIT_IN_LOBBY) flag = State.MATCH_START;
             else {
                 loadingPane.setVisible(true);
@@ -291,6 +294,29 @@ public class MatchChoicesController implements GUIController, Initializable {
         notifyLabel.setVisible(true);
     }
 
+    private void resetSceneAtBeginning(){
+        nicknameLabel.setOpacity(1);
+        textField.setOpacity(1);
+        textField.setText("");
+        textField.setDisable(false);
+        typeOfMatchLabel.setOpacity(0.5);
+        typeOfMatchBox.setOpacity(0.5);
+        typeOfMatchBox.setValue("");
+        typeOfMatchBox.setDisable(true);
+        numOfItemsLabel.setOpacity(0.5);
+        numOfPlayersBox.setOpacity(0.5);
+        numOfPlayersBox.setValue("");
+        numOfPlayersBox.setDisable(true);
+        notifyLabel.setVisible(false);
+        confirmButton.setOpacity(1);
+        confirmButton.setDisable(false);
+        prevButton.setOpacity(1);
+        prevButton.setDisable(false);
+    }
+
+    public boolean getOldMatch(){ return this.oldMatchFlag; }
+
+    public void setOldMatchFalse(){ this.oldMatchFlag = false; }
 
     @Override
     public void setGUI(GUI gui) {
@@ -315,23 +341,5 @@ public class MatchChoicesController implements GUIController, Initializable {
         numOfPlayersBox.getItems().addAll(numOfPlayers);
     }
 
-    private void resetSceneAtBeginning(){
-        nicknameLabel.setOpacity(1);
-        textField.setOpacity(1);
-        textField.setText("");
-        textField.setDisable(false);
-        typeOfMatchLabel.setOpacity(0.5);
-        typeOfMatchBox.setOpacity(0.5);
-        typeOfMatchBox.setValue("");
-        typeOfMatchBox.setDisable(true);
-        numOfItemsLabel.setOpacity(0.5);
-        numOfPlayersBox.setOpacity(0.5);
-        numOfPlayersBox.setValue("");
-        numOfPlayersBox.setDisable(true);
-        notifyLabel.setVisible(false);
-        confirmButton.setOpacity(1);
-        confirmButton.setDisable(false);
-        prevButton.setOpacity(1);
-        prevButton.setDisable(false);
-    }
+
 }

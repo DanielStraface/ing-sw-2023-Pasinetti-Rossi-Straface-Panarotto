@@ -8,6 +8,8 @@ import it.polimi.ingsw.exceptions.FullColumnException;
 import it.polimi.ingsw.exceptions.InvalidSelectionException;
 import it.polimi.ingsw.model.Category;
 import it.polimi.ingsw.modelview.GameBoardView;
+import it.polimi.ingsw.modelview.GameView;
+import it.polimi.ingsw.modelview.PlayerView;
 import it.polimi.ingsw.modelview.ShelfView;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -178,6 +180,30 @@ public class MainGameController implements GUIController {
         }
         itemImgPath.clear();
     }
+
+    public void restoreShelf(ShelfView shelfView){
+        for(int i=0; i<SHELF_COLS; i++){
+            for(int j=0; j<SHELF_ROWS; j++){
+                Category category = shelfView.getShelfGrid()[j][i].getCategoryType();
+                int variant =  shelfView.getShelfGrid()[j][i].getVariant();
+                String partialPath = "/graphics/item_tiles/";
+                ImageView imageView = shelfColumns.get(i).get(j);
+                if(category == null){
+                    imageView.setImage(null);
+                }
+                else switch(category){
+                    case CAT -> imageView.setImage(new Image(partialPath + "Gatti1." + variant + ".png"));
+                    case BOOK -> imageView.setImage(new Image(partialPath + "Libri1." + variant + ".png"));
+                    case GAME -> imageView.setImage(new Image(partialPath + "Giochi1." + variant + ".png"));
+                    case FRAME -> imageView.setImage(new Image(partialPath + "Cornici1." + variant + ".png"));
+                    case TROPHY -> imageView.setImage(new Image(partialPath + "Trofei1." + variant + ".png"));
+                    case PLANT -> imageView.setImage(new Image(partialPath + "Piante1." + variant + ".png"));
+                }
+            }
+        }
+    }
+
+
     public void updateCurrentTurnLabel(String msg){
         if(player1Label.getText().equals("%DEFAULT%")){
             StringBuilder temp = new StringBuilder();
@@ -203,6 +229,25 @@ public class MainGameController implements GUIController {
             }
         }
     }
+
+    public void restorePlayerLabels(List<String> players, String firstPlayer){
+        activeLabels.clear();
+        Label[] playerNameLabels = {player1Label, player2Label, player3Label, player4Label};
+        int i=0;
+        for(String s: players){
+            playerNameLabels[i].setVisible(true);
+            playerNameLabels[i].setText(s);
+            if(s.equals(firstPlayer)){
+                playerNameLabels[i].setTextFill(Color.RED);
+                playerNameLabels[i].setStyle("-fx-font-size: 25px");
+            } else{
+                playerNameLabels[i].setTextFill(Color.BLACK);
+                playerNameLabels[i].setStyle("-fx-font-size: 20px");
+            }
+            activeLabels.add(playerNameLabels[i]);
+            i++;
+        }
+    }
     public void updateYourNameLabel(String name){
         yourNameLabel.setVisible(true);
         yourNameLabel.setText(name);
@@ -210,7 +255,6 @@ public class MainGameController implements GUIController {
 
     private void refillImgGameBoard(GameBoardView gameBoardView){
         resetGameBoardItemMatrix();
-        Random random = new Random();
         Category category;
         int[][] validGrid = gameBoardView.getValidGrid();
         if(this.gui.getIsRefilledFlag()){
@@ -223,7 +267,7 @@ public class MainGameController implements GUIController {
                         ImageView imageView = ((ImageView) gameboardItemSlotMatrix[i][j].getCenter());
                         category = gameBoardView.getGameGrid()[i][j].getCategoryType();
                         int variant = gameBoardView.getGameGrid()[i][j].getVariant();
-                                String partialPath = "/graphics/item_tiles/";
+                        String partialPath = "/graphics/item_tiles/";
                         switch (category){
                             case CAT -> imageView.setImage(new Image(partialPath + "Gatti1." + variant + ".png"));
                             case BOOK -> imageView.setImage(new Image(partialPath + "Libri1." + variant + ".png"));
@@ -233,7 +277,7 @@ public class MainGameController implements GUIController {
                             case PLANT -> imageView.setImage(new Image(partialPath + "Piante1." + variant + ".png"));
                         }
                     } else if(validGrid[i][j] == INVALID) {
-                        if(gameboardItemSlotMatrix[i][j] != null)
+                        if(gameboardItemSlotMatrix[i][j] != null && gameboardItemSlotMatrix[i][j].getParent()!=null)
                             gameboardItemSlotMatrix[i][j].getParent().setDisable(true);
                     }
                 }
