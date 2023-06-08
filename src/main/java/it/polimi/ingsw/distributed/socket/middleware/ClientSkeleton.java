@@ -211,6 +211,7 @@ public class ClientSkeleton implements Client {
         try{
             o = ois.readObject();
             if(o instanceof List<?>) {
+                System.out.println("E DEVO ARRIVARE QUI");
                 temp = (List<Object>) o;
                 if(temp.get(0) instanceof String) {
                     flushAndReset(oos);

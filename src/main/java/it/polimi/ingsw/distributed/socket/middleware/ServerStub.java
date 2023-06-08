@@ -119,7 +119,6 @@ public class ServerStub implements Server {
             o = ois.readObject();
         } catch (IOException e) {
             throw new NotMessageFromServerYet();
-            //throw new RemoteException("Cannot receive event: " + e.getMessage());
         } catch (ClassNotFoundException e) {
             throw new RemoteException("Cannot cast event: " + e.getMessage());
         }

@@ -231,6 +231,9 @@ public class MatchChoicesController implements GUIController, Initializable {
     }
 
     public void displayMsgInfo(String msg){
+        if(msg.contains("disconnected!")){
+            this.gui.anotherUserDisconnection(msg);
+        }
         if(msg.contains("searching")){
             int remainNumOfPlayers = 0;
             char[] chars = msg.toCharArray();

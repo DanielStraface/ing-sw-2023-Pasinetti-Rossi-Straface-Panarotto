@@ -213,10 +213,9 @@ public class ModelSubject {
                 }).start();
             }
         }
-
-        GameView gmv = new GameView(game);
-        String[] nicknames = new String[gmv.getPlayers().size()];
-        gmv.getPlayers().stream().map(PlayerView::getNickname).toList().toArray(nicknames);
+        String[] nicknames = new String[game.getPlayers().size()];
+        game.getPlayers().stream().map(Player::getNickname).toList().toArray(nicknames);
+        System.out.println("SONO");
         for(int i=0;i<arrLocal.length - 1;i++){
             if(!nicknames[i].equals(disconnectedName)){
                 int finalI = i;
@@ -224,7 +223,9 @@ public class ModelSubject {
                     Client vl = (Client) arrLocal[finalI];
                     List<Object> notificationList = Arrays.asList(Client.QuitState.QUIT, msg);
                     try {
+                        System.out.println("PASSATO DI");
                         vl.update(notificationList);
+                        System.out.println("QUI");
                     } catch (RemoteException ignored) {
                     }
                 }).start();

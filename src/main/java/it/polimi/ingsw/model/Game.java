@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.comcard.CommonObjCard;
 import it.polimi.ingsw.model.comcard.CommonObjCardReader;
 import it.polimi.ingsw.model.personcard.PersonalCardReader;
 import it.polimi.ingsw.model.personcard.PersonalObjCard;
+import it.polimi.ingsw.server.AppServerImpl;
 
 import java.io.Serializable;
 import java.rmi.RemoteException;
@@ -166,6 +167,7 @@ public class Game extends ModelSubject implements Serializable {
         this.currentPlayer = player;
         String fileName = "match" + matchID + ".ser";
         Controller.saveGame(this, fileName);
+        AppServerImpl.addPrevMatchSave(matchID);
         setChangedAndNotifyListeners(this);
     }
 

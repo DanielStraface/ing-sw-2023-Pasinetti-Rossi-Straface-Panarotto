@@ -17,7 +17,6 @@ import java.rmi.server.RMIClientSocketFactory;
 import java.rmi.server.RMIServerSocketFactory;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class ServerImpl extends UnicastRemoteObject implements Server {
     public int connectedClient;
@@ -50,7 +49,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
     }
 
     /**
-     * Makes the player join a new match lobby and starts the game if all players are connected or it makes the player
+     * Makes the player join a new match lobby and starts the game if all players are connected, or it makes the player
      * join an unfinished match
      * @throws RemoteException
      */
@@ -130,10 +129,10 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
 
     @Override
     public void update(List<String> notificationList) throws RemoteException {
-        String nameDisconnectedClient = ( notificationList.get(0));
+        String nameDisconnectedClient = notificationList.get(0);
         String msg = "The user of player " + nameDisconnectedClient
                 + " has disconnected! The game ends here...";
-        AppServerImpl.forceGameRemove(this.controller.getMatchID());
+        AppServerImpl.forceGameRemove(this.controller.getMatchID(), notificationList.get(0));
         this.controller.getGame().notifyDisconnection(this.controller.getGame(), nameDisconnectedClient, msg);
     }
 
@@ -143,9 +142,11 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
      */
     private boolean checkIfPrevGame() {
         Game game;
-        for(int i=0;i<AppServerImpl.MAX_MATCHES_MANAGED;i++){
+        List<Integer> previousMatchList = AppServerImpl.getPreviousMatch();
+        if(previousMatchList.size() == 0) return false;
+        for(Integer id : previousMatchList){
             try{
-                game = Controller.loadGame("match" + i + ".ser");
+                game = Controller.loadGame("match" + id + ".ser");
                 if(game != null) {
                     List<String> newGameNicknames = this.game.getPlayers().stream()
                             .map(Player::getNickname)
@@ -153,31 +154,36 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
                     List<String> prevGameNicknames = game.getPlayers().stream()
                             .map(Player::getNickname)
                             .toList();
-                    if(newGameNicknames.size() != prevGameNicknames.size()) return false;
-                    for(String nickname : prevGameNicknames)
-                        if(!newGameNicknames.contains(nickname))
-                            return false;
-                    this.game = game;
-                    this.game.deleteListeners();
-                    this.controller.getClients()
-                            .forEach(client -> this.game.addListener(client));
-                    MatchLog thisMatchLog = new MatchLog(this.controller.getMatchID());
-                    thisMatchLog.update(5);
-                    this.game.addListener(thisMatchLog);
-                    for(Client c : this.controller.getClients())
-                        for(Player player : this.game.getPlayers())
-                            if(player.getNickname().equals(c.getNickname()))
-                                c.update(player.getClientID());
-                    try {
-                        Path path = FileSystems.getDefault().getPath("./match" + i + ".ser");
-                        if(Files.deleteIfExists(path))
-                            System.out.println("Previous saving file of match # " + i + " delete successfully" +
-                                    "\nThe new saving file is match" + this.controller.getMatchID() + ".ser");
-                        else System.err.println("Error while delete the previous saving file of match # " + i);
-                    } catch (IOException e) {
-                        System.err.println("Error while deleting the saving file of match # " + i + " during restore");
+                    if(newGameNicknames.size() == prevGameNicknames.size()){
+                        for(String nickname : prevGameNicknames){
+                            if(!newGameNicknames.contains(nickname)){
+                                break;
+                            } else {
+                                this.game = game;
+                                this.game.deleteListeners();
+                                this.controller.getClients()
+                                        .forEach(client -> this.game.addListener(client));
+                                MatchLog thisMatchLog = new MatchLog(this.controller.getMatchID());
+                                thisMatchLog.update(5);
+                                this.game.addListener(thisMatchLog);
+                                for(Client c : this.controller.getClients())
+                                    for(Player player : this.game.getPlayers())
+                                        if(player.getNickname().equals(c.getNickname()))
+                                            c.update(player.getClientID());
+                                try {
+                                    Path path = FileSystems.getDefault().getPath("./match" + id + ".ser");
+                                    if(Files.deleteIfExists(path))
+                                        System.out.println("Previous saving file of match # " + id + " delete successfully" +
+                                                "\nThe new saving file is match" + this.controller.getMatchID() + ".ser");
+                                    else System.err.println("Error while delete the previous saving file of match # " + id);
+                                } catch (IOException e) {
+                                    System.err.println("Error while deleting the saving file of match # "
+                                            + id + " during restore");
+                                }
+                                return true;
+                            }
+                        }
                     }
-                    return true;
                 }
             } catch (FileNotFoundException ignored) {
             } catch (RemoteException e) {
@@ -185,6 +191,11 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
             }
         }
         return false;
+    }
+
+    public void notifyDisconnectionWhileSetup(String name) throws RemoteException {
+        String msg = "The user of player " + name + " has disconnected!";
+        this.controller.getGame().notifyDisconnection(game, name, msg);
     }
 
     /**
@@ -202,4 +213,6 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
     public boolean getGameOver(){return this.controller.getGameOver();}
 
     public List<String> getMatchNicknames(){return this.game.getPlayers().stream().map(Player::getNickname).toList();}
+
+    public int getMatchId(){return this.controller.getMatchID();}
 }

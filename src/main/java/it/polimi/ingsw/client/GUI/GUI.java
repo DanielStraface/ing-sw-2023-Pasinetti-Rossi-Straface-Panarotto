@@ -589,6 +589,10 @@ public class GUI extends Application implements UI {
         });
     }
 
+    public void anotherUserDisconnection(String msg){
+        Platform.runLater(() -> mainGameController.disconnectionAlert(msg, this.stage));
+    }
+
     public void setChanged() {
         changed = true;
     }
