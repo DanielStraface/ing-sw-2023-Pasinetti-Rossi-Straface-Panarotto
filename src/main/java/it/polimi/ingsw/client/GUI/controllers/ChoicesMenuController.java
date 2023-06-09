@@ -35,9 +35,16 @@ public class ChoicesMenuController implements GUIController, Initializable {
     private String MenuSelection = "sounds/MenuSelection.wav";
     private MediaPlayer mediaPlayer;
 
-
+    /**
+     * method to set gui
+     * @param gui -> GUI
+     */
     public void setGUI(GUI gui){this.gui = gui;}
 
+    /**
+     * backButtonAction handles the press of the back button that returns to the main menu.
+     * @param event -> ActionEvent
+     */
     public void backButtonAction(ActionEvent event) {
         playSound(MenuSelection);
         System.out.println("Back button pressed, go back to main menu");
@@ -46,6 +53,10 @@ public class ChoicesMenuController implements GUIController, Initializable {
         gui.changeScene("MainMenu.fxml");
     }
 
+    /**
+     * confirmButtonAction handles the press of the confirm button.
+     * @param event
+     */
     public void confirmButtonAction(ActionEvent event){
         playSound(MenuSelection);
         invalidIpLabel.setText("");

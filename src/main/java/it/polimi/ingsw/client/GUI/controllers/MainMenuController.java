@@ -24,6 +24,10 @@ public class MainMenuController implements GUIController{
     private String MenuSelection = "sounds/MenuSelection.wav";
     private MediaPlayer mediaPlayer;
 
+    /**
+     * handles the action of press "play" button in this way the application start.
+     * @param event ActionEvent
+     */
     public void playButtonAction(ActionEvent event) throws IOException {
         System.out.println("Play button pressed, application start");
         playSound(MenuSelection);
@@ -37,6 +41,11 @@ public class MainMenuController implements GUIController{
         //stage.show();
     }
 
+    /**
+     * handles the event of press "quit" button, in this way the application is closed and the
+     * player is logged out.
+     * @param event ActionEvent
+     */
     public void quitButtonAction(ActionEvent event){
         playSound(MenuSelection);
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -50,6 +59,10 @@ public class MainMenuController implements GUIController{
         }
     }
 
+    /**
+     * plays a sound effect from the specified file path.
+     * @param filePath String
+     */
     @Override
     public void playSound(String filePath) {
         Media pick = new Media(Objects.requireNonNull(getClass().getClassLoader()
@@ -63,6 +76,10 @@ public class MainMenuController implements GUIController{
         });
     }
 
+    /**
+     * set method for the GUI.
+     * @param gui GUI
+     */
     @Override
     public void setGUI(GUI gui) {
         this.gui = gui;

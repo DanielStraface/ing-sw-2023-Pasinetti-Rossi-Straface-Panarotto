@@ -43,7 +43,11 @@ public class ObjectivesController implements GUIController {
     private MediaPlayer mediaPlayer;
     private final String PointsGet = "sounds/PointsGet.wav";
 
-
+    /**
+     * it assigns the corresponding images and descriptions to the two objective cards of the match in the objective
+     * cards' window
+     * @param comObjCards
+     */
     public void updateComObjCards(List<CommonObjCardView> comObjCards){
         int cardType;
         Object[] imgs = {comObjCard1, comObjCard2, comObjCardDesc1, comObjCardDesc2};
@@ -59,10 +63,18 @@ public class ObjectivesController implements GUIController {
         }
     }
 
+    /**
+     * it assigns the corresponding image to the personal objective card of the player in the objective cards' window
+     * @param perObjCard
+     */
     public void updatePersonalObjCard(PersonalObjCardView perObjCard){
         personalObjCard.setImage(new Image("/graphics/personal_goal_cards/" + perObjCard.getDescription() + ".png"));
     }
 
+    /**
+     * updates common objective cards point in the objective cards' window
+     * @param commonObjCardViews
+     */
     public void updateCommonObjCardsPoints(List<CommonObjCardView> commonObjCardViews){
         for(CommonObjCardView cocv : commonObjCardViews)
             cardsReference.get(cocv.getType()).forEach(imageView -> imageView.setVisible(false));
@@ -79,11 +91,19 @@ public class ObjectivesController implements GUIController {
         }
     }
 
+    /**
+     * set method for the GUI.
+     * @param gui GUI
+     */
     @Override
     public void setGUI(GUI gui) {
         this.gui = gui;
     }
 
+    /**
+     * plays a sound effect from the specified file path.
+     * @param filePath String
+     */
     @Override
     public void playSound(String filePath) {
         Media pick = new Media(Objects.requireNonNull(getClass().getClassLoader()

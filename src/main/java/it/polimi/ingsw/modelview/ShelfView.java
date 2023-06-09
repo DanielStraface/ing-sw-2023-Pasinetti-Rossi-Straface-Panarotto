@@ -13,8 +13,8 @@ public class ShelfView implements Serializable {
 
     /**
      * constructor method
-      * @param shelfGrid
-     * @param lastRow
+      * @param shelfGrid -> item[][]
+     * @param lastRow -> int[]
      */
     public ShelfView(Item[][] shelfGrid, int[] lastRow) {
         this.shelfGrid = new Item[shelfGrid.length][shelfGrid[0].length];

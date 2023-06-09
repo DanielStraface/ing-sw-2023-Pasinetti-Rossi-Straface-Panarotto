@@ -41,10 +41,18 @@ public class PlayersShelfController implements GUIController {
     private int numOfPlayers;
     private GUI gui;
 
+    /**
+     * set method
+     * @param numOfPlayer ->int
+     */
     public void setNumOfPlayer(int numOfPlayer){
         this.numOfPlayers = numOfPlayer;
     }
 
+    /**
+     * initializes the players' shelf map, associating to each nickname (key) a counter (value)
+     * @param nicknames array with players' nickname
+     */
     public void initializePlayersShelfMap(String[] nicknames){
         int counter = 0;
         if(numOfPlayers == 2) paneShelf1.setOpacity(1);
@@ -66,6 +74,11 @@ public class PlayersShelfController implements GUIController {
         }
     }
 
+    /**
+     * plays other players' shelf
+     * @param nickname player's nickname
+     * @param shelfView ShelfView
+     */
     public void updateOtherPlayersShelf(String nickname, ShelfView shelfView){
         List<List<ImageView>> shelf = playersShelfList.get(playersShelfMap.get(nickname));
         for(int i=0;i<SHELF_ROWS;i++){
@@ -81,11 +94,19 @@ public class PlayersShelfController implements GUIController {
         }
     }
 
+    /**
+     * set method for the GUI.
+     * @param gui GUI
+     */
     @Override
     public void setGUI(GUI gui) {
         this.gui = gui;
     }
 
+    /**
+     * plays a sound effect from the specified file path.
+     * @param filePath String
+     */
     @Override
     public void playSound(String filePath) {
 

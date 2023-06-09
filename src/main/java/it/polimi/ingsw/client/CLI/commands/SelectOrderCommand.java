@@ -71,8 +71,8 @@ public class SelectOrderCommand implements Command{
     /**
      * Checks if the column selected isn't full and saves the choice made in a List of int arrays
      *
-     * @throws InvalidSelectionException
-     * @throws FullColumnException
+     * @throws InvalidSelectionException when the items selection from the game board is not correct
+     * @throws FullColumnException when the shelf column is full
      */
     @Override
     public void check() throws InvalidSelectionException, FullColumnException {
