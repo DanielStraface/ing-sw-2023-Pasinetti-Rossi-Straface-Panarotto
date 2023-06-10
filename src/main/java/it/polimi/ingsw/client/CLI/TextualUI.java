@@ -456,7 +456,6 @@ public class TextualUI implements UI, Serializable {
         for (int i = arrLocal.length-1; i>=0; i--){
             Server vl = (Server) arrLocal[i];
             vl.update(notificationList);
-            System.out.println("QUO");
         }
     }
 

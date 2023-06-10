@@ -177,7 +177,7 @@ public class ModelSubject {
          * a temporary array buffer, used as a snapshot of the state of
          * current Observers.
          */
-        Object[] arrLocal;
+        Client[] arrLocal = new Client[obs.size()];
 
         synchronized (this) {
             /* We don't want the Observer doing callbacks into
@@ -194,7 +194,7 @@ public class ModelSubject {
              */
             if (!changed)
                 return;
-            arrLocal = obs.toArray();
+            obs.toArray(arrLocal);
             clearChanged();
         }
 
@@ -202,7 +202,7 @@ public class ModelSubject {
             for(int i=arrLocal.length-1;i>=0;i--){
                 int finalI = i;
                 new Thread(() -> {
-                    Client vl = (Client) arrLocal[finalI];
+                    Client vl = arrLocal[finalI];
                     List<Object> notificationList = Arrays.asList(Client.QuitState.EMPTY_BAG, msg);
                     try {
                         if(vl.getClientID() != 5) vl.update(notificationList);
@@ -215,20 +215,29 @@ public class ModelSubject {
         }
         String[] nicknames = new String[game.getPlayers().size()];
         game.getPlayers().stream().map(Player::getNickname).toList().toArray(nicknames);
-        System.out.println("SONO");
-        for(int i=0;i<arrLocal.length - 1;i++){
+        int upperBounder;
+        List<Integer> clientIDTempList = Arrays.stream(arrLocal).map(elem -> {
+            try {
+                return elem.getClientID();
+            } catch (RemoteException e) {
+                System.err.println("Cannot obtain the clientID: " + e.getMessage());
+            }
+            return null;
+        }).toList();
+        if(clientIDTempList.contains(5)) upperBounder = arrLocal.length - 1;
+        else upperBounder = arrLocal.length;
+        for(int i=0;i<upperBounder;i++){
             if(!nicknames[i].equals(disconnectedName)){
-                int finalI = i;
-                new Thread(() -> {
-                    Client vl = (Client) arrLocal[finalI];
+                Client vl = arrLocal[i];
+                if(vl.getClientID() != 5){
                     List<Object> notificationList = Arrays.asList(Client.QuitState.QUIT, msg);
-                    try {
-                        System.out.println("PASSATO DI");
-                        vl.update(notificationList);
-                        System.out.println("QUI");
-                    } catch (RemoteException ignored) {
-                    }
-                }).start();
+                    new Thread(() -> {
+                        try {
+                            vl.update(notificationList);
+                        } catch (RemoteException ignored) {
+                        }
+                    }).start();
+                }
             }
         }
     }

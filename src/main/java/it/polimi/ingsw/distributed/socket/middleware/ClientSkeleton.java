@@ -211,7 +211,6 @@ public class ClientSkeleton implements Client {
         try{
             o = ois.readObject();
             if(o instanceof List<?>) {
-                System.out.println("E DEVO ARRIVARE QUI");
                 temp = (List<Object>) o;
                 if(temp.get(0) instanceof String) {
                     flushAndReset(oos);
@@ -233,9 +232,6 @@ public class ClientSkeleton implements Client {
                         this.clientID + " clientID number");
             }
         } catch (IOException e) {
-            List<String> notList = new ArrayList<>();
-            notList.add(this.nickname);
-            server.update(notList);
             throw new ClientDisconnectionException();
         } catch (ClassNotFoundException e) {
             throw new RemoteException("Cannot find the object class correctly in ClientSkeleton: " + e.getMessage());

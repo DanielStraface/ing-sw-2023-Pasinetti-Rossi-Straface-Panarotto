@@ -22,7 +22,6 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 
 public class AppServerImpl extends UnicastRemoteObject implements AppServer {
@@ -186,7 +185,7 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
                         }
                     }
                     String finalNicknameToLog = nicknameToLog;
-                    Server finalServer = server;
+                    ServerImpl finalServer = (ServerImpl) server;
                     new Thread(() -> {
                         while(true){
                             try{
@@ -194,13 +193,13 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
                                     System.out.println("Disconnection");
                                 }
                             } catch (IOException e) {
-                                System.err.println("The user of : " + finalNicknameToLog + " has disconnected!");
+                                System.out.println("THE USER OF " + finalNicknameToLog + " HAS DISCONNECTED!");
                                 try {
-                                    if(finalServer != null){
+                                    if(finalServer != null && !finalServer.getInactiveMatch()){
                                         List<String> notificationList = Collections.singletonList(finalNicknameToLog);
-                                        instance.removeLoggedUser(finalNicknameToLog);
+                                        //instance.removeLoggedUser(finalNicknameToLog);
                                         finalServer.update(notificationList);
-                                        int matchID = ((ServerImpl) finalServer).getMatchId();
+                                        int matchID = (finalServer).getMatchId();
                                         if(waitingQueue.containsKey(matchID)) {
                                             waitingQueue.remove(matchID);
                                             System.out.println("Match # " + matchID +
@@ -217,6 +216,7 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
                                 break;
                             }
                         }
+                        //System.out.println("This thread has ended its task");
                     }).start();
                 });
             }
@@ -250,9 +250,9 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
         }
     }
 
-    public synchronized static void forceGameRemove(int matchID, String name){
+    public synchronized static void forceGameRemove(int matchID){
         if(matches.size() > 0 && matches.containsKey(matchID)){
-            System.out.println("The match # " + matchID + " must be removed!");
+            System.out.println("The running match # " + matchID + " must be removed!");
             List<String> matchNicknames = (matches.get(matchID)).getMatchNicknames();
             for(String nickname : matchNicknames){
                 loggedNicknames.remove(nickname);
@@ -262,28 +262,32 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
                     + matches.size() + " matches now");
             System.out.println("The waiting queue is " + waitingQueue.size() + " matches long\n" +
                     "The next match to be served is # " + FIRST_WAITING_MATCH);
-        } else System.out.println("There are no match to be removed in matches list!");
-        if(waitingQueue.size() > 0){
-            for(ServerImpl match : waitingQueue.values()){
-                if(matchID == match.getMatchId()) {
+        }
+        if(waitingQueue.size() > 0 && waitingQueue.containsKey(matchID)){
+            System.out.println("The waiting match # " + matchID + " must be removed!");
+            List<String> matchNicknames = (waitingQueue.get(matchID)).getMatchNicknames();
+            matchNicknames.forEach(n -> System.out.println(n + " "));
+            for(String nickname : matchNicknames){
+                if(nickname != null) {
                     try {
-                        match.notifyDisconnectionWhileSetup(name);
+                        instance.removeLoggedUser(nickname);
                     } catch (RemoteException e) {
-                        System.err.println("Cannot notify disconnection while setUp: " + e.getMessage());
+                        System.err.println("Cannot removed user nickname " + nickname + ":" + e.getMessage());
                     }
                 }
             }
-        }
+            waitingQueue.remove(matchID);
+            System.out.println("The waiting match # " + matchID + " is correctly removed!\nThere are "
+                    + waitingQueue.size() + " waiting matches now");
+            }
         //da sistemare
     }
 
     private static void setupActiveMatchId(){
-        int tempFlag = 0;
         for(int counter=0;counter<MAX_MATCHES_MANAGED;counter++){
             try {
                 if(Controller.loadGame("match" + counter + ".ser") != null){
                     previousMatch.add(counter);
-                    tempFlag = counter + 1;
                 }
             } catch (FileNotFoundException ignored) {
             }
@@ -293,9 +297,9 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
             return;
         }
         else System.out.println("There are " + previousMatch.size() + " previous match saved.");
-        if(tempFlag == MAX_MATCHES_MANAGED) System.err.println("Max saving file reached!");
+        if(previousMatch.size() == MAX_MATCHES_MANAGED) System.err.println("Max saving file reached!");
         else {
-            activeMatchKey = tempFlag;
+            activeMatchKey = previousMatch.size();
             System.out.println("The first activeMatchKey is " + activeMatchKey);
         }
     }

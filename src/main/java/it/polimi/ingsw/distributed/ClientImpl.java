@@ -160,7 +160,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Serializa
     }
 
     @Override
-    public void update(List<Object> notificationList) throws RemoteException {
+    public synchronized void update(List<Object> notificationList) throws RemoteException {
         QuitState quitState = (QuitState) notificationList.get(0);
         String msg = (String) notificationList.get(1);
         if(quitState == QuitState.QUIT || quitState == QuitState.EMPTY_BAG) this.view.update(msg);

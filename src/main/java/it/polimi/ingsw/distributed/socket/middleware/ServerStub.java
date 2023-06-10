@@ -92,7 +92,6 @@ public class ServerStub implements Server {
             System.out.println(notificationList.get(0));
             oos.writeObject(notificationList);
             flushAndReset(oos);
-            System.out.println("QUI");
         } catch (IOException e) {
             throw new RemoteException("Cannot send event: " + e.getMessage());
         }
@@ -111,10 +110,6 @@ public class ServerStub implements Server {
      */
     public void receive(Client client) throws RemoteException, NotMessageFromServerYet {
         Object o;
-        GameView gmv;
-        String msg;
-        Integer id;
-        List<Object> notificationList = null;
         try{
             o = ois.readObject();
         } catch (IOException e) {
@@ -122,38 +117,48 @@ public class ServerStub implements Server {
         } catch (ClassNotFoundException e) {
             throw new RemoteException("Cannot cast event: " + e.getMessage());
         }
-        if(o instanceof String){
-            msg = (String) o;
-            boolean toTerminate = false;
-            if(msg.equals(NO_GAME_ON_SERVER)){
-                try{
-                    msg = (String) ois.readObject();
-                    toTerminate = true;
-                } catch (IOException e) {
-                    throw new RemoteException("Cannot receive event: " + e.getMessage());
-                } catch (ClassNotFoundException e) {
-                    throw new RemoteException("Cannot cast event: " + e.getMessage());
+        //if(o == null) return;
+        new Thread(() -> {
+            GameView gmv;
+            String msg;
+            Integer id;
+            List<Object> notificationList;
+            try {
+                if(o instanceof String){
+                    msg = (String) o;
+                    boolean toTerminate = false;
+                    if(msg.equals(NO_GAME_ON_SERVER)){
+                        try{
+                            msg = (String) ois.readObject();
+                            toTerminate = true;
+                        } catch (IOException e) {
+                            //throw new RemoteException("Cannot receive event: " + e.getMessage());
+                        } catch (ClassNotFoundException e) {
+                            //throw new RemoteException("Cannot cast event: " + e.getMessage());
+                        }
+                    }
+                    client.update(msg);
+                    if(toTerminate) System.exit(3);
                 }
+                //--------------------------------------------------------------------------------------------------------------
+                //game --> readObject() = integer --> update(GameBoardView, int)
+                //--------------------------------------------------------------------------------------------------------------
+                if(o instanceof GameView){
+                    gmv = (GameView) o;
+                    client.update(gmv);
+                }
+                if(o instanceof Integer){
+                    id = (Integer) o;
+                    client.update(id);
+                }
+                if(o instanceof List<?>){
+                    notificationList = (List<Object>) o;
+                    client.update(notificationList);
+                }
+            } catch (RemoteException e) {
+                System.err.println("I am here");
             }
-            client.update(msg);
-            if(toTerminate) System.exit(3);
-        }
-        //--------------------------------------------------------------------------------------------------------------
-        //game --> readObject() = integer --> update(GameBoardView, int)
-        //--------------------------------------------------------------------------------------------------------------
-        if(o instanceof GameView){
-            gmv = (GameView) o;
-            if(client instanceof MatchLog) System.out.println("RERER");
-            client.update(gmv);
-        }
-        if(o instanceof Integer){
-            id = (Integer) o;
-            client.update(id);
-        }
-        if(o instanceof List<?>){
-            notificationList = (List<Object>) o;
-            client.update(notificationList);
-        }
+        }).start();
     }
 
     /**

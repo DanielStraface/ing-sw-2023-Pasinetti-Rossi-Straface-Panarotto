@@ -23,6 +23,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
     private Controller controller;
     private Game game = null;
     private boolean[] toConnect;
+    private boolean inactiveMatch;
 
     /**
      * Constructor method
@@ -104,7 +105,6 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
         for(int i=0;i<toConnect.length;i++){
             if(!this.toConnect[i]){
                 this.toConnect[i] = true;
-                //this.game.getPlayers().get(i).addListenerForPlayer(client);
                 this.game.getPlayers().get(i).setNicknameAndClientID(nickname, i*10);
                 client.update(i*10);
                 break;
@@ -132,8 +132,11 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
         String nameDisconnectedClient = notificationList.get(0);
         String msg = "The user of player " + nameDisconnectedClient
                 + " has disconnected! The game ends here...";
-        AppServerImpl.forceGameRemove(this.controller.getMatchID(), notificationList.get(0));
-        this.controller.getGame().notifyDisconnection(this.controller.getGame(), nameDisconnectedClient, msg);
+        AppServerImpl.forceGameRemove(this.controller.getMatchID());
+        this.inactiveMatch = true;
+        if(this.controller.getClients().size() == 1)
+            System.out.println("In this match there was one client only, the match is deleted!");
+        else this.controller.getGame().notifyDisconnection(this.controller.getGame(), nameDisconnectedClient, msg);
     }
 
     /**
@@ -215,4 +218,5 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
     public List<String> getMatchNicknames(){return this.game.getPlayers().stream().map(Player::getNickname).toList();}
 
     public int getMatchId(){return this.controller.getMatchID();}
+    public boolean getInactiveMatch(){return this.inactiveMatch;}
 }
