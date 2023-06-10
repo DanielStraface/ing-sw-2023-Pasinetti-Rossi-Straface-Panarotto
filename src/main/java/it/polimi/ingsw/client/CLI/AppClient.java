@@ -29,7 +29,7 @@ public abstract class AppClient {
      */
     protected static List<Integer> mainMenu(){
         System.out.print("\n\nThis is MyShelfie main menu, please choose from this menu list:\n" +
-                "1)Start a new game\n2)Join an existing game\n3)Quit from MyShelfie\n>>");
+                "1)Create/Continue a match\n2)Join an existing match\n3)Quit from MyShelfie\n>>");
         int decision = scanner.nextInt();
         while(decision < 1 || decision > 4){
             System.out.print("\nInvalid selection from above menu! Please try again\n>>");

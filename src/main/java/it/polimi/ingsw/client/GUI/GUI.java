@@ -4,6 +4,7 @@ import it.polimi.ingsw.client.GUI.controllers.*;
 import it.polimi.ingsw.client.UI;
 import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.distributed.Server;
+import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Item;
 import it.polimi.ingsw.modelview.*;
 import javafx.application.Application;
@@ -231,6 +232,37 @@ public class GUI extends Application implements UI {
     }
 
 
+    private void restoreGUI(GameView gameView){
+        try {
+            String refClientNickname = this.refClient.getNickname();
+            boolean isFirstPlayer = gameView.getPlayers().stream()
+                    .filter(p -> p.getNickname().equals(refClientNickname)).toList().get(0).getIsFirstPlayer();
+            firstPlayerChairFlag = false;
+            Platform.runLater(()-> {
+                if (isFirstPlayer && !firstPlayerChairFlag) {
+                    mainGameController.activateFirstPlayerChair();
+                    firstPlayerChairFlag = true;
+                }
+            });
+        } catch (RemoteException e) {
+            System.err.println("Cannot read player's name: " + e.getMessage());
+        }
+        List<String> players = gameView.getPlayers().stream().map(PlayerView::getNickname).toList();
+        PlayerView refClientPlayer = gameView.getPlayers().stream().filter(p -> {
+            try {
+                return p.getNickname().equals(this.refClient.getNickname());
+            } catch (RemoteException e) {
+                System.err.println("Cannot read player's name: " + e.getMessage());
+            }
+            return false;
+        }).toList().get(0);
+        Platform.runLater(()-> {
+            mainGameController.restorePlayerLabels(players,gameView.getCurrentPlayer().getNickname());
+            mainGameController.restoreShelf(refClientPlayer.getMyShelf());
+        });
+        matchChoicesController.setOldMatchFalse();
+    }
+
     @Override
     public void update(GameBoardView gb) {
         int counter = 0;
@@ -358,34 +390,7 @@ public class GUI extends Application implements UI {
         commonObjCardViewList = gameView.getCommonObjCard();
         this.update(gameView.getGameBoard());
         if(matchChoicesController.getOldMatch()){
-            try {
-                String refClientNickname = this.refClient.getNickname();
-                boolean isFirstPlayer = gameView.getPlayers().stream()
-                        .filter(p -> p.getNickname().equals(refClientNickname)).toList().get(0).getIsFirstPlayer();
-                firstPlayerChairFlag = false;
-                Platform.runLater(()-> {
-                    if (isFirstPlayer && !firstPlayerChairFlag) {
-                    mainGameController.activateFirstPlayerChair();
-                    firstPlayerChairFlag = true;
-                }
-                });
-            } catch (RemoteException e) {
-                System.err.println("Cannot read player's name: " + e.getMessage());
-            }
-            List<String> players = gameView.getPlayers().stream().map(PlayerView::getNickname).toList();
-            PlayerView refClientPlayer = gameView.getPlayers().stream().filter(p -> {
-                try {
-                    return p.getNickname().equals(this.refClient.getNickname());
-                } catch (RemoteException e) {
-                    System.err.println("Cannot read player's name: " + e.getMessage());
-                }
-                return false;
-            }).toList().get(0);
-            Platform.runLater(()-> {
-                mainGameController.restorePlayerLabels(players,gameView.getCurrentPlayer().getNickname());
-                mainGameController.restoreShelf(refClientPlayer.getMyShelf());
-            });
-            matchChoicesController.setOldMatchFalse();
+            restoreGUI(gameView);
         }
         else this.update(gameView.getCurrentPlayer().getMyShelf());
     }
@@ -393,34 +398,7 @@ public class GUI extends Application implements UI {
     @Override
     public void displayInfo(GameView gameView, PlayerView playerView) {
         if(matchChoicesController.getOldMatch()){
-            try {
-                String refClientNickname = this.refClient.getNickname();
-                boolean isFirstPlayer = gameView.getPlayers().stream()
-                        .filter(p -> p.getNickname().equals(refClientNickname)).toList().get(0).getIsFirstPlayer();
-                firstPlayerChairFlag = false;
-                Platform.runLater(()-> {
-                    if (isFirstPlayer && !firstPlayerChairFlag) {
-                        mainGameController.activateFirstPlayerChair();
-                        firstPlayerChairFlag = true;
-                    }
-                });
-            } catch (RemoteException e) {
-                System.err.println("Cannot read player's name: " + e.getMessage());
-            }
-            List<String> players = gameView.getPlayers().stream().map(PlayerView::getNickname).toList();
-            PlayerView refClientPlayer = gameView.getPlayers().stream().filter(p -> {
-                try {
-                    return p.getNickname().equals(this.refClient.getNickname());
-                } catch (RemoteException e) {
-                    System.err.println("Cannot read player's name: " + e.getMessage());
-                }
-                return false;
-            }).toList().get(0);
-            Platform.runLater(()-> {
-                mainGameController.restoreShelf(refClientPlayer.getMyShelf());
-                mainGameController.restorePlayerLabels(players,gameView.getCurrentPlayer().getNickname());
-            });
-            matchChoicesController.setOldMatchFalse();
+            restoreGUI(gameView);
         }
         Platform.runLater(() -> {
             mainGameController.playSound(TurnChange);
