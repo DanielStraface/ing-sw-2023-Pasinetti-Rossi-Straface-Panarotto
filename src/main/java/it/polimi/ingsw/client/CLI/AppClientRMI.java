@@ -18,14 +18,15 @@ import java.util.List;
 
 public class AppClientRMI extends AppClient{
     private static final String APPSERVER_REGISTRY_NAME = "it.polimi.ingsw.server.AppServer";
-    private static final String SERVER_ADDRESS = "192.168.0.61";
+    private static final String SERVER_ADDRESS = "192.168.181.61";
     private static final int SERVER_PORT = 1099;
 
     /**
      * Manages all aspects of RMI connection, the choice bewteen CLI/GUI and to either create or join a match
-     * @param args
-     * @throws RemoteException
-     * @throws NotBoundException
+     * @param args -> Object[]
+     * @throws RemoteException due to the invocation of methods: getRegistry and lookup in Registry,
+     * log in AppServer, connect in AppServer, removeLoggedUser in AppServer
+     *  @throws NotBoundException when a name is not currently bound
      */
     public static void launchClient(Object[] args) throws RemoteException, NotBoundException {
         Server matchServerRef = null;

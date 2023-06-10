@@ -66,12 +66,24 @@ public class MatchChoicesController implements GUIController, Initializable {
     double denominator;
     double connectedPlayers;
 
+    /**
+     * sets the type of connection (SOCKET or RMI) and the address for the connection.
+     * @param typeOfConnection String
+     * @param address String
+     */
     public void setConnectionType(String typeOfConnection, String address){
         this.typeOfConnection = typeOfConnection;
         this.address = address;
     }
 
-
+    /**
+     * handles the event of press "confirm" button based on the choice made, for:
+     * -nickname (makes error messages for invalid name selection)
+     * -type of match (new game or existing game)
+     * -number of player (2,3 or 4 players)
+     * notifies the choices made.
+     * @param event ActionEvent
+     */
     public void confirmButtonAction(ActionEvent event){
         if(done) return;
         System.out.println("Confirm button press");
@@ -182,6 +194,12 @@ public class MatchChoicesController implements GUIController, Initializable {
 
     }
 
+    /**
+     * returns to the previous choice.
+     * NICKNAME <-- TYPE OF MATCH
+     * TYPE OF MATCH <-- NUMBER OF PLAYERS
+     * @param event ActionEvent
+     */
     public void prevButtonAction(ActionEvent event){
         playSound(MenuSelection);
         if(flag == State.NICKNAME){
@@ -219,6 +237,10 @@ public class MatchChoicesController implements GUIController, Initializable {
         }
     }
 
+    /**
+     * returns to main menu
+     * @param event ActionEvent
+     */
     public void backButtonAction(ActionEvent event){
         playSound(MenuSelection);
         System.out.println("Back button pressed, go back to main menu");
@@ -230,6 +252,15 @@ public class MatchChoicesController implements GUIController, Initializable {
         gui.changeScene("MainMenu.fxml");
     }
 
+    /**
+     * if the message is "searching" this method manages the process of waiting in the lobby for finding other players;
+     * If the message is "correct", if the current state is WAIT_IN_LOBBY, it moves to the MATCH_START state, otherwise
+     * it displays a loading pane; then sets the main game window as the next window.
+     * If the message isn't "joining a lobby..." the method updates the notification label with the message.
+     *
+     *
+     * @param msg information message displayed
+     */
     public void displayMsgInfo(String msg){
         if(msg.contains("disconnected!")){
             this.gui.anotherUserDisconnection(msg);
@@ -290,6 +321,10 @@ public class MatchChoicesController implements GUIController, Initializable {
         }
     }
 
+    /**
+     * when the nickname is already used wrongNickname method resets the scene to the beginning state and displays
+     * a notification message
+     */
     public void wrongNickname(){
         flag = State.NICKNAME;
         resetSceneAtBeginning();
@@ -297,6 +332,9 @@ public class MatchChoicesController implements GUIController, Initializable {
         notifyLabel.setVisible(true);
     }
 
+    /**
+     * reset the scene to its initial state at the beginning.
+     */
     private void resetSceneAtBeginning(){
         nicknameLabel.setOpacity(1);
         textField.setOpacity(1);
@@ -320,12 +358,19 @@ public class MatchChoicesController implements GUIController, Initializable {
     public boolean getOldMatch(){ return this.oldMatchFlag; }
 
     public void setOldMatchFalse(){ this.oldMatchFlag = false; }
-
+    /**
+     * set method for the GUI.
+     * @param gui GUI
+     */
     @Override
     public void setGUI(GUI gui) {
         this.gui = gui;
     }
 
+    /**
+     * plays a sound effect from the specified file path.
+     * @param filePath String
+     */
     @Override
     public void playSound(String filePath) {
         Media pick = new Media(Objects.requireNonNull(getClass().getClassLoader()
@@ -338,6 +383,13 @@ public class MatchChoicesController implements GUIController, Initializable {
             mediaPlayer.stop();
         });
     }
+
+    /**
+     * in the match choice window, it fills the boxes that represents the options that the player can choose about
+     * the type of game and the number of players.
+     * @param url URL
+     * @param resourceBundle ResourceBundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         typeOfMatchBox.getItems().addAll(typeOfMatch);

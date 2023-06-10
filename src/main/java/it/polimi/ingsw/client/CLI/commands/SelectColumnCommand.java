@@ -38,7 +38,7 @@ public class SelectColumnCommand implements Command{
     /**
      * Checks if the shelf's column selected is valid
      * @param columnSelected the shelf's column selected
-     * @throws FullColumnException
+     * @throws FullColumnException when the shelf column is full
      */
     private void columnCheck(int columnSelected) throws FullColumnException {
         int[] lastRows = shelfView.getLastRow();
@@ -73,7 +73,7 @@ public class SelectColumnCommand implements Command{
 
     /**
      * Invokes all methods to ask the shelf's column, to check if it is valid and to save it in an Integer List
-     * @throws FullColumnException
+     * @throws FullColumnException when the shelf column is full
      */
     @Override
     public void execute() throws FullColumnException, InvalidSelectionException {
@@ -83,8 +83,8 @@ public class SelectColumnCommand implements Command{
 
     /**
      * Checks if it is valid and saves it in an Integer List
-     * @throws InvalidSelectionException
-     * @throws FullColumnException
+     * @throws InvalidSelectionException  when the items selection from the game board is not correct
+     * @throws FullColumnException when the shelf column is full
      */
     @Override
     public void check() throws InvalidSelectionException, FullColumnException {

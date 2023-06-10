@@ -15,13 +15,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AppClientSocket extends AppClient {
-    private static final String SERVER_ADDRESS = "192.168.0.61";
+    private static final String SERVER_ADDRESS = "192.168.181.61";
     private static final int SERVER_PORT = 1234;
 
     /**
-     * Manages all aspects of socket connection, the choice bewteen CLI/GUI and to either create or join a match
-     * @param args
-     * @throws RemoteException
+     * Manages all aspects of socket connection, the choice between CLI/GUI and to either create or join a match
+     * @param args -> Object[]
+     * @throws RemoteException if the server is unreachable
      */
     public static void launchClient(Object[] args) throws RemoteException {
         String serverAddress = (String) args[1];

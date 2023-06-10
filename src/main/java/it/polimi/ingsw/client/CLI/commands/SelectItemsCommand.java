@@ -71,7 +71,7 @@ public class SelectItemsCommand implements Command{
     /**
      * Checks if all the coordinates selected contain a tile
      * @param validGrid an int Matrix with all the GameBoard's coordinates' info
-     * @throws InvalidSelectionException
+     * @throws InvalidSelectionException when the items selection from the game board is not correct
      */
     private void noItemSelectedChecker(int[][] validGrid) throws InvalidSelectionException {
         for(int i=0;i<coords.size();i++){
@@ -85,7 +85,7 @@ public class SelectItemsCommand implements Command{
     /**
      * Checks if all coordinates selected have at least one free side
      * @param validGrid an int Matrix with all the GameBoard's coordinates' info
-     * @throws InvalidSelectionException
+     * @throws InvalidSelectionException when the items selection from the game board is not correct
      */
     private void freeSideChecker(int[][] validGrid) throws InvalidSelectionException {
         for (int i = 0; i < coords.size(); i++) {
@@ -106,7 +106,7 @@ public class SelectItemsCommand implements Command{
 
     /**
      * Checks if all the coordinates chosen are from either the same row or column
-     * @throws InvalidSelectionException
+     * @throws InvalidSelectionException when the items selection from the game board is not correct
      */
     private void rowAndColChecker() throws InvalidSelectionException {
         boolean sameX = true;
@@ -191,7 +191,7 @@ public class SelectItemsCommand implements Command{
 
     /**
      * Invokes all methods that check if the coordinates chosen are valid
-     * @throws InvalidSelectionException
+     * @throws InvalidSelectionException when the items selection from the game board is not correct
      */
     public void selectionChecker()throws InvalidSelectionException{
         noItemSelectedChecker(gb.getValidGrid());
@@ -215,7 +215,7 @@ public class SelectItemsCommand implements Command{
      * Invokes methods to ask the number of tiles, their coordinates and their order for when
      * they're put in the shelf and to check if the choices made are valid
      *
-     * @throws InvalidSelectionException
+     * @throws InvalidSelectionException when the items selection from the game board is not correct
      */
     @Override
     public void execute() throws InvalidSelectionException, FullColumnException {
@@ -227,7 +227,7 @@ public class SelectItemsCommand implements Command{
 
     /**
      * Checks if the choices made are valid
-     * @throws InvalidSelectionException
+     * @throws InvalidSelectionException when the items selection from the game board is not correct
      */
     @Override
     public void check() throws InvalidSelectionException {

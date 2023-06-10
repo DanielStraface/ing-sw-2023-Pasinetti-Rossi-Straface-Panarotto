@@ -74,7 +74,7 @@ public class TextualUI implements UI, Serializable {
     /**
      * Method for the start of a turn
      * @param gameView to get and display the GameBoard and to check if the tiles and Shelf column selected are valid
-     * @throws RemoteException
+     * @throws RemoteException if the client (throw getNickname) or the server (throw displayTurnMenu) are unreachable
      */
     public void run(GameView gameView) throws RemoteException{
         this.displayNewTurn(gameView);
@@ -249,7 +249,7 @@ public class TextualUI implements UI, Serializable {
     /**
      * Method for display the turn menu (play, display shelf and quit decisions)
      * @param gameView to get and display the player's shelf
-     * @throws RemoteException - throws if cannot obtain the refClient nickname
+     * @throws RemoteException if the client is unreachable
      */
     private void displayTurnMenu(GameView gameView) throws RemoteException {
         String firstDecision;
@@ -307,8 +307,8 @@ public class TextualUI implements UI, Serializable {
     /**
      * Invokes all methods to check if the shelf's column choice is valid
      * @param sh ShelfView to modify the shelf's grid
-     * @throws RemoteException
-     * @throws FullColumnException
+     * @throws RemoteException due to the modification of the shelf
+     * @throws FullColumnException when the shelf column is full
      */
     public void gameActionOnShelf(ShelfView sh) throws RemoteException, FullColumnException {
         SelectColumnCommand scc = (SelectColumnCommand) this.gameActionMenu.get(1);
@@ -402,7 +402,7 @@ public class TextualUI implements UI, Serializable {
     /**
      * Invokes methods that set the "changed" flag to true and notifies observers about the client
      * and its tiles and the shelf's column choices
-     * @throws RemoteException
+     * @throws RemoteException if the server is unreachable
      */
     private void setChangedAndNotifyListener() throws RemoteException{
         setChanged();
@@ -427,7 +427,7 @@ public class TextualUI implements UI, Serializable {
      * @param o Client that made the choices
      * @param arg1 Tiles' coordinates chosen
      * @param arg2 Column chosen
-     * @throws RemoteException
+     * @throws RemoteException if the server is unreachable
      */
     @Override
     public void notifyObservers(Client o, List<int[]> arg1, Integer arg2) throws RemoteException {
