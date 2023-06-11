@@ -17,11 +17,9 @@ import java.rmi.RemoteException;
 import java.rmi.server.RMIClientSocketFactory;
 import java.rmi.server.RMIServerSocketFactory;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 public class ServerImpl extends UnicastRemoteObject implements Server {
     public int connectedClient;
@@ -152,6 +150,11 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
         }
     }
 
+    /**
+     * Prints a message to all players that the player's nickname given in the list has disconnected
+     * @param notificationList the String List with notification messages
+     * @throws RemoteException if the execution of the update method call goes wrong
+     */
     @Override
     public void update(List<String> notificationList) throws RemoteException {
         String nameDisconnectedClient = notificationList.get(0);
@@ -240,8 +243,21 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
      */
     public boolean getGameOver(){return this.controller.getGameOver();}
 
+    /**
+     * Get method for a List with Strings of all players' nicknames in a match
+     * @return A String List with all nicknames
+     */
     public List<String> getMatchNicknames(){return this.game.getPlayers().stream().map(Player::getNickname).toList();}
 
+    /**
+     * Get method for a match's ID
+     * @return int -> Match ID
+     */
     public int getMatchId(){return this.controller.getMatchID();}
+
+    /**
+     * Get method for the InactiveMatch flag
+     * @return InactiveMatch boolean
+     */
     public boolean getInactiveMatch(){return this.inactiveMatch;}
 }

@@ -30,5 +30,10 @@ public interface Server extends Remote {
      */
     void update(Client client, List<int[]> coords, Integer column) throws RemoteException;
 
+    /**
+     * Update method with a String List containing all notifications
+     * @param notificationList the String List with notification messages
+     * @throws RemoteException if the execution of a remote method call goes wrong
+     */
     void update(List<String> notificationList) throws RemoteException;
 }
