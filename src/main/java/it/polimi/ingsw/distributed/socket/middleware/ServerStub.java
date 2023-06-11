@@ -85,6 +85,11 @@ public class ServerStub implements Server {
         }
     }
 
+    /**
+     * Writes a String List containing all notification messages to the ObjectOutputStream, then flushes and resets
+     * @param notificationList the String List with notification messages
+     * @throws RemoteException if the execution of the update method call goes wrong
+     */
     @Override
     public void update(List<String> notificationList) throws RemoteException {
         try{

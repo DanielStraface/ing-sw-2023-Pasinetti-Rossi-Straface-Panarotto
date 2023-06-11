@@ -1,7 +1,6 @@
 package it.polimi.ingsw.listeners;
 
 import it.polimi.ingsw.distributed.Client;
-import it.polimi.ingsw.exceptions.RMIClientDisconnectionException;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.modelview.GameView;
 import it.polimi.ingsw.modelview.PlayerView;
