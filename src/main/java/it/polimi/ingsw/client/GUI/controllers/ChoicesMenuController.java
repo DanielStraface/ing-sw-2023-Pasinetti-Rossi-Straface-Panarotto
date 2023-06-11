@@ -2,7 +2,6 @@ package it.polimi.ingsw.client.GUI.controllers;
 
 import it.polimi.ingsw.client.CLI.AppClient;
 import it.polimi.ingsw.client.GUI.GUI;
-import it.polimi.ingsw.server.AppServer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -80,6 +79,10 @@ public class ChoicesMenuController implements GUIController, Initializable {
 
     }
 
+    /**
+     * Plays a sound given its path String
+     * @param filePath String with the file's path
+     */
     @Override
     public void playSound(String filePath) {
         Media pick = new Media(Objects.requireNonNull(getClass().getClassLoader()

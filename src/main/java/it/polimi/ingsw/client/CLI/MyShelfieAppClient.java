@@ -1,7 +1,5 @@
 package it.polimi.ingsw.client.CLI;
 
-import it.polimi.ingsw.server.AppServer;
-
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;

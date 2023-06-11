@@ -5,7 +5,6 @@ import it.polimi.ingsw.listeners.ModelSubject;
 import it.polimi.ingsw.model.personcard.PersonalObjCard;
 
 import java.io.Serializable;
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 

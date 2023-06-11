@@ -9,11 +9,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-// ONE --> Quadrati2x2
-// TWO --> Columns6Element
-// THREE --> nostra 5
-// FOUR --> nostra 1
-// FIVE
 
 /**
  * CommonObjCard class represents the common objective cards of the game.

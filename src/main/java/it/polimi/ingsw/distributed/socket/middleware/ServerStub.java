@@ -6,7 +6,6 @@ import it.polimi.ingsw.exceptions.NoMatchException;
 import it.polimi.ingsw.exceptions.NotMessageFromServerYet;
 import it.polimi.ingsw.exceptions.NotSupportedMatchesException;
 import it.polimi.ingsw.exceptions.TooManyMatchesException;
-import it.polimi.ingsw.listeners.MatchLog;
 import it.polimi.ingsw.modelview.GameView;
 import it.polimi.ingsw.server.AppServer;
 

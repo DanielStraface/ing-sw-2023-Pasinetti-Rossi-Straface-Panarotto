@@ -1,6 +1,5 @@
 package it.polimi.ingsw.client.CLI;
 
-import it.polimi.ingsw.client.GUI.GUI;
 import it.polimi.ingsw.distributed.socket.middleware.ServerStub;
 import it.polimi.ingsw.server.AppServer;
 

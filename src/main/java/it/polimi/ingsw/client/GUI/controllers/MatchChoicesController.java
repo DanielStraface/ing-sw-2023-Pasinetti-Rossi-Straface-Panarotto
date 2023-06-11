@@ -355,9 +355,17 @@ public class MatchChoicesController implements GUIController, Initializable {
         prevButton.setDisable(false);
     }
 
+    /**
+     * Get method for a previous match found boolean flag
+     * @return oldMatchFlag boolean
+     */
     public boolean getOldMatch(){ return this.oldMatchFlag; }
 
+    /**
+     * Set method for a previous match found boolean flag to false (after all the respective methods have been called)
+     */
     public void setOldMatchFalse(){ this.oldMatchFlag = false; }
+
     /**
      * set method for the GUI.
      * @param gui GUI
