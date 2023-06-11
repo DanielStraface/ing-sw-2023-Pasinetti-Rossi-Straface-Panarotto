@@ -50,7 +50,7 @@ public class MatchChoicesController implements GUIController, Initializable {
     private ImageView loadingImage;
     @FXML
     private Label notifyLabel;
-    private final String[] typeOfMatch = {"", "Create a new match", "Join an existing match"};
+    private final String[] typeOfMatch = {"", "Create/Continue a match", "Join an existing match"};
     private final String[] numOfPlayers = {"", "2 players", "3 players", "4 players"};
     private GUI gui;
 
@@ -116,7 +116,7 @@ public class MatchChoicesController implements GUIController, Initializable {
                 playSound(MenuSelection);
                 String typeOfMatchValue = typeOfMatchBox.getValue();
                 if(typeOfMatchValue == null || typeOfMatchValue.equals("")) return;
-                if(typeOfMatchValue.equals("Create a new match")){
+                if(typeOfMatchValue.equals("Create/Continue a match")){
                     this.typeOfMatchChoice = typeOfMatchValue;
                     numOfItemsLabel.setOpacity(1);
                     numOfPlayersBox.setDisable(false);
@@ -355,9 +355,17 @@ public class MatchChoicesController implements GUIController, Initializable {
         prevButton.setDisable(false);
     }
 
+    /**
+     * Get method for a previous match found boolean flag
+     * @return oldMatchFlag boolean
+     */
     public boolean getOldMatch(){ return this.oldMatchFlag; }
 
+    /**
+     * Set method for a previous match found boolean flag to false (after all the respective methods have been called)
+     */
     public void setOldMatchFalse(){ this.oldMatchFlag = false; }
+
     /**
      * set method for the GUI.
      * @param gui GUI

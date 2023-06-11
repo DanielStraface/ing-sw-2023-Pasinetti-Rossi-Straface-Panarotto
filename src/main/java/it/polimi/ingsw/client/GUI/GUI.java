@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.*;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
+
 
 
 public class GUI extends Application implements UI {
@@ -57,16 +57,30 @@ public class GUI extends Application implements UI {
     private final String PointsGet = "sounds/PointsGet.wav";
     private static final int DIM_GAMEBOARD = 9;
     private static final int OCCUPIED = 2;
+    private boolean changed;
+    private final Vector<Server> observers = new Vector<>();
 
+    /**
+     * Sets a type of connection and the IP address to connect to
+     * @param connectionType RMI/Socket
+     * @param address IP address String
+     */
     public void imposeTheTypeOfConnection(String connectionType, String address){
         ((MatchChoicesController) currentController).setConnectionType(connectionType, address);
     }
 
+    /**
+     * Checks if the inserted nickname is valid or not
+     */
     public void askNicknameManager(){
         MatchChoicesController ctrl = ((MatchChoicesController) guiControllers.get("MatchChoices.fxml"));
         Platform.runLater(ctrl::wrongNickname);
     }
 
+    /**
+     * Changes from a scene to another one
+     * @param nextScene the scene that the current one needs to switch into
+     */
     public void changeScene(String nextScene){
         if(stage.isIconified()) stage.setIconified(false);
         Scene currentScene = scenes.get(nextScene);
@@ -93,11 +107,13 @@ public class GUI extends Application implements UI {
         stage.show();
         centerWindow(stage);
     }
-    private boolean changed;
-    private final Vector<Server> observers = new Vector<>();
 
+    /**
+     * Starts the first Scene (Main menu)
+     * @param stage Main menu scene
+     */
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage){
         this.stage = stage;
         setup();
         try {
@@ -116,8 +132,16 @@ public class GUI extends Application implements UI {
         }
     }
 
+    /**
+     * Main method for GUI
+     * @param args
+     */
     public static void main(String[] args){ launch(args);}
 
+    /**
+     * Manages the alertBox that pops up when closing the application in the Main Menu
+     * @param stage the stage from where the user closes the application
+     */
     public void quitButtonAction(Stage stage){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Close application");
@@ -129,6 +153,10 @@ public class GUI extends Application implements UI {
         }
     }
 
+    /**
+     * Manages the alertBox that pops up when closing the application during a match
+     * @param stage  the stage from where the user closes the application
+     */
     public void quitActionInMainGame(Stage stage){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Close application");
@@ -169,6 +197,9 @@ public class GUI extends Application implements UI {
         }
     }
 
+    /**
+     * Loads all css and fxml files needed for the styling of all the scenes
+     */
     private void setup(){
         String css = Objects.requireNonNull(this.getClass().getResource("/css/MainMenu.css")).toExternalForm();
         Font.loadFont(getClass().getResourceAsStream("/fonts/Accio_Dollaro.ttf"), 14);
@@ -193,6 +224,10 @@ public class GUI extends Application implements UI {
         }
     }
 
+    /**
+     * Opens a new stage (separated from the current open scene), only one can be opened at a time
+     * @param newPath the title of the stage opened
+     */
     public void openNewWindow(String newPath){
         if(newPath.equals(OBJECTIVES)){
             if(objectivesWinIsOpen) return;
@@ -218,19 +253,66 @@ public class GUI extends Application implements UI {
         newStage.show();
     }
 
+    /**
+     * Makes it so only one stage can be opened at a time
+     * @param stage the stage opened
+     * @param path its title String
+     */
     private void newWindowClose(Stage stage, String path){
         if(path.equals(OBJECTIVES)) objectivesWinIsOpen = false;
         if(path.equals(PLAYERS_SHELF)) shelfWinIsOpen = false;
         stage.close();
     }
 
+    /**
+     * Makes all opened stages center to the screen
+     * @param stage the stage opened
+     */
     private void centerWindow(Stage stage){
         Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
         stage.setX((screenBounds.getWidth() - stage.getWidth()) / 2);
         stage.setY((screenBounds.getHeight() - stage.getHeight()) / 2);
     }
 
+    /**
+     * Restores a player's Main Match stage to the point where the previous match ended
+     * @param gameView to get all the info needed to restore
+     */
+    private void restoreGUI(GameView gameView){
+        try {
+            String refClientNickname = this.refClient.getNickname();
+            boolean isFirstPlayer = gameView.getPlayers().stream()
+                    .filter(p -> p.getNickname().equals(refClientNickname)).toList().get(0).getIsFirstPlayer();
+            firstPlayerChairFlag = false;
+            Platform.runLater(()-> {
+                if (isFirstPlayer && !firstPlayerChairFlag) {
+                    mainGameController.activateFirstPlayerChair();
+                    firstPlayerChairFlag = true;
+                }
+            });
+        } catch (RemoteException e) {
+            System.err.println("Cannot read player's name: " + e.getMessage());
+        }
+        List<String> players = gameView.getPlayers().stream().map(PlayerView::getNickname).toList();
+        PlayerView refClientPlayer = gameView.getPlayers().stream().filter(p -> {
+            try {
+                return p.getNickname().equals(this.refClient.getNickname());
+            } catch (RemoteException e) {
+                System.err.println("Cannot read player's name: " + e.getMessage());
+            }
+            return false;
+        }).toList().get(0);
+        Platform.runLater(()-> {
+            mainGameController.restorePlayerLabels(players,gameView.getCurrentPlayer().getNickname());
+            mainGameController.restoreShelf(refClientPlayer.getMyShelf());
+        });
+        matchChoicesController.setOldMatchFalse();
+    }
 
+    /**
+     * Updates with the GameBoard changes happening during a turn
+     * @param gb the GameBoardView to be updated
+     */
     @Override
     public void update(GameBoardView gb) {
         int counter = 0;
@@ -255,11 +337,26 @@ public class GUI extends Application implements UI {
 
     }
 
+    /**
+     * Updates with all the changes made to a player's shelf during a turn
+     * @param shelf the player's shelfView to be updated
+     */
     @Override
     public void update(ShelfView shelf) {
         Platform.runLater(() -> mainGameController.updateShelf(shelf));
     }
 
+    /**
+     * Does different actions depending on the message String received:
+     *                - "Enjoy!" : switches to the Main Game scene
+     *                - "is playing" : updated all the labels with the current turn's information
+     *                - "Common Objective Card" : notifies every player that one of them reached a CommonObjCard goal
+     *                - "Your turn is finished!" : notifies a player that the turn is over
+     *                - "BYE" : calls a method to make an AlertBox appear with the match's ending stats (including the winner)
+     *                - "disconnected": makes all players close the application if one of them disconnects during a match
+     *                - "the bag is empty": makes all players close the application if the bag is out of item tiles
+     * @param msg the message String received
+     */
     @Override
     public void update(String msg) {
         if(matchChoicesController.getOldMatch()){
@@ -319,6 +416,11 @@ public class GUI extends Application implements UI {
         }
     }
 
+    /**
+     * Sets up all players' Main Game GUI given info on every one of them (who's the first player, etc.), sets up
+     * the GameBoard Pane for the first player who has to start a turn
+     * @param gameView to get all info needed
+     */
     @Override
     public void run(GameView gameView) {
         try {
@@ -358,69 +460,20 @@ public class GUI extends Application implements UI {
         commonObjCardViewList = gameView.getCommonObjCard();
         this.update(gameView.getGameBoard());
         if(matchChoicesController.getOldMatch()){
-            try {
-                String refClientNickname = this.refClient.getNickname();
-                boolean isFirstPlayer = gameView.getPlayers().stream()
-                        .filter(p -> p.getNickname().equals(refClientNickname)).toList().get(0).getIsFirstPlayer();
-                firstPlayerChairFlag = false;
-                Platform.runLater(()-> {
-                    if (isFirstPlayer && !firstPlayerChairFlag) {
-                    mainGameController.activateFirstPlayerChair();
-                    firstPlayerChairFlag = true;
-                }
-                });
-            } catch (RemoteException e) {
-                System.err.println("Cannot read player's name: " + e.getMessage());
-            }
-            List<String> players = gameView.getPlayers().stream().map(PlayerView::getNickname).toList();
-            PlayerView refClientPlayer = gameView.getPlayers().stream().filter(p -> {
-                try {
-                    return p.getNickname().equals(this.refClient.getNickname());
-                } catch (RemoteException e) {
-                    System.err.println("Cannot read player's name: " + e.getMessage());
-                }
-                return false;
-            }).toList().get(0);
-            Platform.runLater(()-> {
-                mainGameController.restorePlayerLabels(players,gameView.getCurrentPlayer().getNickname());
-                mainGameController.restoreShelf(refClientPlayer.getMyShelf());
-            });
-            matchChoicesController.setOldMatchFalse();
+            restoreGUI(gameView);
         }
         else this.update(gameView.getCurrentPlayer().getMyShelf());
     }
 
+    /**
+     * Manages a player's turn switch and checks if any objective has been reached
+     * @param gameView to get all the info needed on turns and objectives
+     * @param playerView the player's GUI to be updated
+     */
     @Override
     public void displayInfo(GameView gameView, PlayerView playerView) {
         if(matchChoicesController.getOldMatch()){
-            try {
-                String refClientNickname = this.refClient.getNickname();
-                boolean isFirstPlayer = gameView.getPlayers().stream()
-                        .filter(p -> p.getNickname().equals(refClientNickname)).toList().get(0).getIsFirstPlayer();
-                firstPlayerChairFlag = false;
-                Platform.runLater(()-> {
-                    if (isFirstPlayer && !firstPlayerChairFlag) {
-                        mainGameController.activateFirstPlayerChair();
-                        firstPlayerChairFlag = true;
-                    }
-                });
-            } catch (RemoteException e) {
-                System.err.println("Cannot read player's name: " + e.getMessage());
-            }
-            List<String> players = gameView.getPlayers().stream().map(PlayerView::getNickname).toList();
-            PlayerView refClientPlayer = gameView.getPlayers().stream().filter(p -> {
-                try {
-                    return p.getNickname().equals(this.refClient.getNickname());
-                } catch (RemoteException e) {
-                    System.err.println("Cannot read player's name: " + e.getMessage());
-                }
-                return false;
-            }).toList().get(0);
-            Platform.runLater(()-> {
-                mainGameController.restoreShelf(refClientPlayer.getMyShelf());
-                mainGameController.restorePlayerLabels(players,gameView.getCurrentPlayer().getNickname());
-            });
-            matchChoicesController.setOldMatchFalse();
+            restoreGUI(gameView);
         }
         Platform.runLater(() -> {
             mainGameController.playSound(TurnChange);
@@ -442,11 +495,20 @@ public class GUI extends Application implements UI {
         Platform.runLater(() -> {this.updateOtherPlayersShelf(gameView);});
     }
 
+    /**
+     * Sets the current turn's player as the reference client
+     * @param client reference client
+     */
     @Override
     public void setReferenceClient(Client client) {
         this.refClient = client;
     }
 
+    /**
+     * Notifies every player that it's the last turn cycle and takes away the end match point token
+     * @param game to get all the info
+     * @param playerNickname the nickname String of the player that has filled the shelf
+     */
     @Override
     public void gameOverPointTokenHandler(GameView game, String playerNickname) {
         Platform.runLater(() -> {
@@ -456,6 +518,10 @@ public class GUI extends Application implements UI {
         });
     }
 
+    /**
+     * Method that adds a listener
+     * @param o client to be added as listener
+     */
     @Override
     public void addListener(Server o) {
         if (o == null)
@@ -465,6 +531,11 @@ public class GUI extends Application implements UI {
         }
     }
 
+    /**
+     * Sets the "changed" flag to true and notifies listeners with all the choices made by the player
+     * @param coords the taken item tiles' coordinates
+     * @param column the shelf's column chosen
+     */
     public void setChangedAndNotifyListener(List<int[]> coords, Integer column){
         try {
             this.setChanged();
@@ -476,6 +547,13 @@ public class GUI extends Application implements UI {
         }
     }
 
+    /**
+     * Notifies listeners with all the choices made by the player
+     * @param o the client making the choices
+     * @param arg1 the item's coordinates chosen
+     * @param arg2 the shelf's column choice
+     * @throws RemoteException if the execution of the update method call goes wrong
+     */
     @Override
     public void notifyObservers(Client o, List<int[]> arg1, Integer arg2) throws RemoteException {
         Object[] arrLocal;
@@ -491,8 +569,12 @@ public class GUI extends Application implements UI {
         }
     }
 
+    /**
+     * Sends a notification update to all other players in case of a player's disconnection
+     * @param notificationList a String List with all notifications
+     */
     @Override
-    public void notifyDisconnection(List<String> notificationList) throws RemoteException {
+    public void notifyDisconnection(List<String> notificationList) {
         Object[] arrLocal;
         synchronized (this){
             if (!changed)
@@ -513,6 +595,10 @@ public class GUI extends Application implements UI {
         }).start();
     }
 
+    /**
+     * Updates the "Players' shelf" tab GUI with all the tiles chosen by the other players
+     * @param gameView to get all the players' info
+     */
     public void updateOtherPlayersShelf(GameView gameView){
         PlayersShelfController playersShelfController =
                 (PlayersShelfController) guiControllers.get("PlayersShelf.fxml");
@@ -556,6 +642,11 @@ public class GUI extends Application implements UI {
         }
     }
 
+    /**
+     * Updates the score label in Main Game scene for the final time, sets a player's nickname to a "winner" status and
+     * plays a sound according if a player wins or loses
+     * @param gameView to get all the players' score info
+     */
     public void adjustFinalScore(GameView gameView){
         List<PlayerView> players = gameView.getPlayers();
         int max=0;
@@ -589,17 +680,31 @@ public class GUI extends Application implements UI {
         });
     }
 
+    /**
+     * Invokes a method to display a disconnection alert dialog box
+     * @param msg the message String to be displayed
+     */
     public void anotherUserDisconnection(String msg){
         Platform.runLater(() -> mainGameController.disconnectionAlert(msg, this.stage));
     }
 
+    /**
+     * Sets the "changed" flag to true
+     */
     public void setChanged() {
         changed = true;
     }
 
+    /**
+     * Sets the "changed" flag to false
+     */
     public void clearChanged() {
         changed = false;
     }
 
+    /**
+     * Get method for the "isRefilled" flag (true if the gameBoard has just been refilled)
+     * @return the "isRefilledFlag" boolean
+     */
     public boolean getIsRefilledFlag(){return this.isRefilledFlag;}
 }

@@ -3,7 +3,7 @@ package it.polimi.ingsw.distributed;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
-import java.util.Objects;
+
 
 public interface Server extends Remote {
 

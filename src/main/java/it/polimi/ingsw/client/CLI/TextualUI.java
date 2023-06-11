@@ -2,7 +2,6 @@ package it.polimi.ingsw.client.CLI;
 
 import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.distributed.Server;
-import it.polimi.ingsw.distributed.socket.middleware.ServerStub;
 import it.polimi.ingsw.exceptions.FullColumnException;
 import it.polimi.ingsw.exceptions.InvalidSelectionException;
 import it.polimi.ingsw.model.*;
@@ -14,11 +13,8 @@ import it.polimi.ingsw.client.CLI.commands.Command;
 import it.polimi.ingsw.client.CLI.commands.SelectColumnCommand;
 import it.polimi.ingsw.client.CLI.commands.SelectItemsCommand;
 import it.polimi.ingsw.client.UI;
-import it.polimi.ingsw.server.AppServer;
-import javafx.application.Platform;
 
 import java.io.Serializable;
-import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.*;
 

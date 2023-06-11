@@ -8,10 +8,7 @@ import it.polimi.ingsw.exceptions.FullColumnException;
 import it.polimi.ingsw.exceptions.InvalidSelectionException;
 import it.polimi.ingsw.model.Category;
 import it.polimi.ingsw.modelview.GameBoardView;
-import it.polimi.ingsw.modelview.GameView;
-import it.polimi.ingsw.modelview.PlayerView;
 import it.polimi.ingsw.modelview.ShelfView;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -27,7 +24,6 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import java.sql.PreparedStatement;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -210,6 +206,10 @@ public class MainGameController implements GUIController {
         itemImgPath.clear();
     }
 
+    /**
+     * Graphically restores a player's shelf with all the previous match's info
+     * @param shelfView to get the Shelf grid's info
+     */
     public void restoreShelf(ShelfView shelfView){
         for(int i=0; i<SHELF_COLS; i++){
             for(int j=0; j<SHELF_ROWS; j++){
@@ -265,6 +265,11 @@ public class MainGameController implements GUIController {
         }
     }
 
+    /**
+     * Restores all the players' name indicator and highlights the current player in red
+     * @param players a list of players' nicknames
+     * @param firstPlayer the first player's nickname
+     */
     public void restorePlayerLabels(List<String> players, String firstPlayer){
         activeLabels.clear();
         Label[] playerNameLabels = {player1Label, player2Label, player3Label, player4Label};

@@ -1,7 +1,6 @@
 package it.polimi.ingsw.listeners;
 
 import it.polimi.ingsw.distributed.Client;
-import it.polimi.ingsw.distributed.Server;
 import it.polimi.ingsw.modelview.GameView;
 
 import java.rmi.RemoteException;

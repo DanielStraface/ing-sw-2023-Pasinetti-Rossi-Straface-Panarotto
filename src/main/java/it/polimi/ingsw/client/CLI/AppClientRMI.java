@@ -56,7 +56,7 @@ public class AppClientRMI extends AppClient{
                 ((GUI) args[5]).askNicknameManager();
                 return;
             }
-            if(args[3].equals("Create a new match")){
+            if(args[3].equals("Create/Continue a match")){
                 decisions.add(CREATE_A_NEW_MATCH);
                 String temp = (String) args[4];
                 decisions.add(Integer.parseInt(temp.substring(0, 1)));
@@ -93,7 +93,7 @@ public class AppClientRMI extends AppClient{
                 }
                 if(matchServerRef == null){
                     String msgToSend = "There are no match at this moment for you.." +
-                            "\nPlease, reboot application and choose 'to Start a new game'.";
+                            "\nPlease, reboot application and choose 'to Create/Continue a match'.";
                     serverApp.removeLoggedUser(nickname);
                     if(args[0].equals("CLI")){
                         System.out.println(msgToSend);
