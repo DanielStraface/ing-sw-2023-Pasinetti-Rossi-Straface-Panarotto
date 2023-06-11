@@ -7,6 +7,7 @@ import it.polimi.ingsw.modelview.GameView;
 import it.polimi.ingsw.modelview.PlayerView;
 import it.polimi.ingsw.server.AppServerImpl;
 
+import java.net.SocketException;
 import java.rmi.RemoteException;
 import java.util.Arrays;
 import java.util.List;
