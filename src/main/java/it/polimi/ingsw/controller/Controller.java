@@ -1,10 +1,12 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.distributed.Client;
+import it.polimi.ingsw.exceptions.RMIClientDisconnectionException;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
 
 import java.io.*;
+import java.net.SocketException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
@@ -172,24 +174,31 @@ public class Controller {
      * @param o Client
      * @param coords Coordinates chosen
      * @param column Column chosen
-     * @throws RemoteException
      */
-    public void update(Client o, List<int[]> coords, Integer column) throws RemoteException {
+    public void update(Client o, List<int[]> coords, Integer column) throws RMIClientDisconnectionException {
         boolean fromValidClient = false;
-        for(Client c : this.clients){
-            if(c.getClientID() == o.getClientID())
-                fromValidClient = true;
-        }
-        if(!fromValidClient){
-            System.err.println("Match#" + this.getMatchID() + " discarding notification from client with "
-                    + o.getClientID() + " clientID number in update");
-        } else {
-            game.getCurrentPlayer().pickItems(coords, game.getGameboard().getGameGrid(),
-                    game.getGameboard().getValidGrid());
-            game.getCurrentPlayer().putItemInShelf(column);
-            for(Client c : this.clients)
+        try{
+            for(Client c : this.clients){
                 if(c.getClientID() == o.getClientID())
-                    this.turnHandler.manageTurn(this.getMatchID(), c);
+                    fromValidClient = true;
+            }
+            if(!fromValidClient){
+                System.err.println("Match#" + this.getMatchID() + " discarding notification from client with "
+                        + o.getClientID() + " clientID number in update");
+            } else {
+                game.getCurrentPlayer().pickItems(coords, game.getGameboard().getGameGrid(),
+                        game.getGameboard().getValidGrid());
+                game.getCurrentPlayer().putItemInShelf(column);
+                for(Client c : this.clients)
+                    if(c.getClientID() == o.getClientID())
+                        this.turnHandler.manageTurn(this.getMatchID(), c);
+            }
+        } catch (RemoteException e) {
+            if(e.getCause() != null && e.getCause() instanceof SocketException){
+                System.out.println("A client has disconnected during this turn...Force game termination");
+                throw new RMIClientDisconnectionException();
+            }
         }
+
     }
 }

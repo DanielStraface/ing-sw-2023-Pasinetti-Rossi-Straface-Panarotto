@@ -1,6 +1,7 @@
 package it.polimi.ingsw.distributed;
 
 import it.polimi.ingsw.controller.Controller;
+import it.polimi.ingsw.exceptions.RMIClientDisconnectionException;
 import it.polimi.ingsw.listeners.MatchLog;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
@@ -16,7 +17,11 @@ import java.rmi.RemoteException;
 import java.rmi.server.RMIClientSocketFactory;
 import java.rmi.server.RMIServerSocketFactory;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ServerImpl extends UnicastRemoteObject implements Server {
     public int connectedClient;
@@ -124,7 +129,27 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
     @Override
     public void update(Client client, List<int[]> coords, Integer column) throws RemoteException {
         this.game.informLog(client, coords, column);
-        this.controller.update(client, coords, column);
+        try{
+            this.controller.update(client, coords, column);
+        } catch (RMIClientDisconnectionException e) {
+            int counter = 0;
+            for(int i=0;i<this.game.getPlayersNumber();i++){
+                try{
+                    this.controller.getClients().get(i).getNickname();
+                    counter++;
+                } catch (RemoteException ex) {
+                    break;
+                }
+            }
+            AppServerImpl appServer = AppServerImpl.getInstance();
+            List<String> nicknamesToDisconnect = this.game.getPlayers().stream().map(Player::getNickname).toList();
+            for(String nickname : nicknamesToDisconnect){
+                appServer.removeLoggedUser(nickname);
+            }
+            List<String> disconnectionNicknameList =
+                    Collections.singletonList(this.game.getPlayers().get(counter).getNickname());
+            this.update(disconnectionNicknameList);
+        }
     }
 
     @Override

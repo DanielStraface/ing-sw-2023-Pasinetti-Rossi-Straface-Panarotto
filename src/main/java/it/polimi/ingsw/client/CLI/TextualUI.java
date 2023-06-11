@@ -91,6 +91,9 @@ public class TextualUI implements UI, Serializable {
                 System.out.println("Wrong column selection: " + e.getMessage());
             } catch (RemoteException e) {
                 System.err.println("Remote error occurred,\n" + e.getMessage());
+                List<String> notificationList = Collections.singletonList(this.refClient.getNickname());
+                setChanged();
+                notifyDisconnection(notificationList);
                 break;
             }
         }

@@ -1,9 +1,11 @@
 package it.polimi.ingsw.listeners;
 
 import it.polimi.ingsw.distributed.Client;
+import it.polimi.ingsw.exceptions.RMIClientDisconnectionException;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.modelview.GameView;
 import it.polimi.ingsw.modelview.PlayerView;
+import it.polimi.ingsw.server.AppServerImpl;
 
 import java.net.SocketException;
 import java.rmi.RemoteException;
@@ -68,7 +70,7 @@ public class ModelSubject {
      * @param arg - the game model
      * @throws RemoteException
      */
-    public void notifyObservers(Game arg) throws RemoteException{
+    public void notifyObservers(Game arg) {
         /*
          * a temporary array buffer, used as a snapshot of the state of
          * current Observers.
@@ -105,22 +107,31 @@ public class ModelSubject {
                         vl.update(gmv);
                     }
                 } catch (RemoteException e) {
-                    /*if(e.getCause() != null && e.getCause() instanceof SocketException){
-                        System.err.println("The user of the player " + nicknames[finalI] + " has disconnected");
+                    if(e.getCause() != null && e.getCause() instanceof SocketException){
+                        System.out.println("THE USER OF THE PLAYER " + nicknames[finalI] + " HAS DISCONNECTED");
                         new Thread(() -> {
-                            for(int j=0;j<arrLocal.length;j++){
-                                if(j != finalI){
-                                    Client client = (Client) arrLocal[j];
-                                    String disconnectionMsg = "The user of player " + nicknames[finalI]
-                                            + " has disconnected! The game ends here...";
-                                    try {
-                                        client.update(disconnectionMsg);
-                                    } catch (RemoteException ignored) {
+                            AppServerImpl appServer;
+                            try {
+                                appServer = AppServerImpl.getInstance();
+                                for(int j=0;j<arrLocal.length;j++){
+                                    if(j != finalI){
+                                        Client client = (Client) arrLocal[j];
+                                        String disconnectionMsg = "The user of player " + nicknames[finalI]
+                                                + " has disconnected! The game ends here...";
+                                        try {
+                                            if(client.getClientID() != 5)
+                                                appServer.removeLoggedUser(((Client) arrLocal[j]).getNickname());
+                                            client.update(disconnectionMsg);
+                                        } catch (RemoteException ignored) {
+                                        }
                                     }
                                 }
+                                appServer.removeLoggedUser(nicknames[finalI]);
+                            } catch (RemoteException ex) {
+                                System.err.println("Cannot reached the appServer: " + e.getMessage());
                             }
                         }).start();
-                    } else System.err.println("Error while notify game in Server: " + e.getMessage());*/
+                    } else System.err.println("Error while notify game in Server: " + e.getMessage());
                 }
                 }).start();
         }
