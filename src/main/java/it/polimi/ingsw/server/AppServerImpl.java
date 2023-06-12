@@ -234,7 +234,14 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
         if(matches != null){
             for(Integer i : matches.keySet()){
                 if(matches.get(i).getGameOver()) {
-                    matches.remove(i);
+                    ServerImpl serverMatch = matches.remove(i);
+                    for(String nickname : serverMatch.getMatchNicknames()){
+                        try{
+                            instance.removeLoggedUser(nickname);
+                        } catch (RemoteException e) {
+                            System.err.println("Cannot removed the nickname " + nickname + ": " + e.getMessage());
+                        }
+                    }
                     System.out.println("The match #" + i + " is finished!\nRemoving from matches...Done!\n" +
                             "There are " + matches.size() + " matches now");
                     try {
@@ -255,7 +262,11 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
             System.out.println("The running match # " + matchID + " must be removed!");
             List<String> matchNicknames = (matches.get(matchID)).getMatchNicknames();
             for(String nickname : matchNicknames){
-                loggedNicknames.remove(nickname);
+                try {
+                    instance.removeLoggedUser(nickname);
+                } catch (RemoteException e) {
+                    System.err.println("Cannot removed the nickname " + nickname + ": " + e.getMessage());
+                }
             }
             matches.remove(matchID);
             System.out.println("The match # " + matchID + " is correctly removed!\nThere are "

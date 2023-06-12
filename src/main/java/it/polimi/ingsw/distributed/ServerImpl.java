@@ -188,32 +188,31 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
                     if(newGameNicknames.size() == prevGameNicknames.size()){
                         for(String nickname : prevGameNicknames){
                             if(!newGameNicknames.contains(nickname)){
-                                break;
-                            } else {
-                                this.game = game;
-                                this.game.deleteListeners();
-                                this.controller.getClients()
-                                        .forEach(client -> this.game.addListener(client));
-                                MatchLog thisMatchLog = new MatchLog(this.controller.getMatchID());
-                                thisMatchLog.update(5);
-                                this.game.addListener(thisMatchLog);
-                                for(Client c : this.controller.getClients())
-                                    for(Player player : this.game.getPlayers())
-                                        if(player.getNickname().equals(c.getNickname()))
-                                            c.update(player.getClientID());
-                                try {
-                                    Path path = FileSystems.getDefault().getPath("./match" + id + ".ser");
-                                    if(Files.deleteIfExists(path))
-                                        System.out.println("Previous saving file of match # " + id + " delete successfully" +
-                                                "\nThe new saving file is match" + this.controller.getMatchID() + ".ser");
-                                    else System.err.println("Error while delete the previous saving file of match # " + id);
-                                } catch (IOException e) {
-                                    System.err.println("Error while deleting the saving file of match # "
-                                            + id + " during restore");
-                                }
-                                return true;
+                                return false;
                             }
                         }
+                        this.game = game;
+                        this.game.deleteListeners();
+                        this.controller.getClients()
+                                .forEach(client -> this.game.addListener(client));
+                        MatchLog thisMatchLog = new MatchLog(this.controller.getMatchID());
+                        thisMatchLog.update(5);
+                        this.game.addListener(thisMatchLog);
+                        for(Client c : this.controller.getClients())
+                            for(Player player : this.game.getPlayers())
+                                if(player.getNickname().equals(c.getNickname()))
+                                    c.update(player.getClientID());
+                        try {
+                            Path path = FileSystems.getDefault().getPath("./match" + id + ".ser");
+                            if(Files.deleteIfExists(path))
+                                System.out.println("Previous saving file of match # " + id + " delete successfully" +
+                                        "\nThe new saving file is match" + this.controller.getMatchID() + ".ser");
+                            else System.err.println("Error while delete the previous saving file of match # " + id);
+                        } catch (IOException e) {
+                            System.err.println("Error while deleting the saving file of match # "
+                                    + id + " during restore");
+                        }
+                        return true;
                     }
                 }
             } catch (FileNotFoundException ignored) {
