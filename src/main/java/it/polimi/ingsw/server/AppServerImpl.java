@@ -357,10 +357,8 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
                     return null;
                 }
                 if(FIRST_WAITING_MATCH == -1) {
-                    System.err.println("fwm equals -1");
                     FIRST_WAITING_MATCH = 0;
                 }
-                System.err.println("fwm := " + FIRST_WAITING_MATCH);
                 match = waitingQueue.get(FIRST_WAITING_MATCH);
                 int numberOfClientConnected = match.connectedClient;
                 if(numberOfClientConnected == match.getPlayersGameNumber() - 1) {
@@ -415,6 +413,10 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
                                 timer.cancel();
                                 if(e instanceof AnotherClientRMITimeoutException){
                                 } else if(e instanceof NoMoreHeartbeatException) {
+                                    System.out.println("Client " + nickname + " is entered in the game phase," +
+                                            "no more heartbeat needed");
+                                    timer.cancel();
+                                    connectedRMIClient.remove(nickname);
                                 } else {
                                     if(waitingQueue.size() > 0){
                                         List<List<String>> allWaitingMatchesNickname =
@@ -459,7 +461,6 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
                             }
                         }
                     }, 7500, CLIENT_TIMEOUT);
-
                     try{
                         TimeUnit.SECONDS.sleep(3);
                     } catch (InterruptedException ex) {
@@ -469,6 +470,7 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
                         try{
                             TimeUnit.SECONDS.sleep(6);
                             synchronized (connectedRMIClient){
+                                if(!connectedRMIClient.contains(nickname)) return;
                                 connectedRMIClientFlag.remove(connectedRMIClient.indexOf(nickname));
                                 connectedRMIClientFlag.add(connectedRMIClient.indexOf(nickname), false);
                             }
@@ -476,7 +478,6 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
                             System.err.println("Cannot sleep while reset connection flag of client " + nickname);
                         }
                     }
-
                 }).start();
             }
             return temp;

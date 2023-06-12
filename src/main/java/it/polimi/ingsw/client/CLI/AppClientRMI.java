@@ -58,10 +58,14 @@ public class AppClientRMI extends AppClient{
                     @Override
                     public void run() {
                         try {
-                            if(!inGameFlag){
-                                serverApp.heartbeat(nickname);
-                            } else serverApp.heartbeatStop(nickname);
-
+                            //synchronized (lock){
+                                if(!inGameFlag){
+                                    serverApp.heartbeat(nickname);
+                                } else {
+                                    timer.cancel();
+                                    serverApp.heartbeatStop(nickname);
+                                }
+                            //}
                         } catch (RemoteException e) {
                             System.err.println("Cannot call the heartbeat method: " + e.getMessage());
                         }
@@ -134,14 +138,18 @@ public class AppClientRMI extends AppClient{
         }
         ClientImpl finalRefClientImpl = refClientImpl;
         new Thread(() -> {
-            while(true){
-                if(finalRefClientImpl.getClientState() == ClientImpl.ClientState.PLAYING){
-                    synchronized (lock) {
-                        inGameFlag = true;
+            Timer timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    synchronized (lock){
+                        if(finalRefClientImpl.getClientState() == ClientImpl.ClientState.PLAYING){
+                            inGameFlag = true;
+                            timer.cancel();
+                        }
                     }
-                    break;
                 }
-            }
+            }, HEARTBEAT_INTERVAL, HEARTBEAT_INTERVAL);
         }).start();
         if(matchServerRef != null) matchServerRef.startGame();
     }
