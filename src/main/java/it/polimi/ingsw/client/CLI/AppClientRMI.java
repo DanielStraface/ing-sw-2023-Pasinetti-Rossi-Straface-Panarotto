@@ -15,11 +15,17 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 public class AppClientRMI extends AppClient{
     private static final String APPSERVER_REGISTRY_NAME = "it.polimi.ingsw.server.AppServer";
     private static final String SERVER_ADDRESS = "192.168.181.61";
     private static final int SERVER_PORT = 1099;
+    private static final long HEARTBEAT_INTERVAL = 6000;
+    private static boolean inGameFlag = false;
+    private static final Object lock = new Object();
 
     /**
      * Manages all aspects of RMI connection, the choice bewteen CLI/GUI and to either create or join a match
@@ -37,6 +43,7 @@ public class AppClientRMI extends AppClient{
         List<Integer> decisions = null;
         UIType uiType = null;
         Object uiReference = null;
+        ClientImpl refClientImpl = null;
         boolean isOk;
         if(args[0].equals("CLI")){
             uiType = UIType.CLI;
@@ -45,6 +52,22 @@ public class AppClientRMI extends AppClient{
                 if(!isOk) System.out.print("\nThis nickname is already used by another user, you must choose another one.");
             } while (!isOk);
             System.out.print("Log successfully completed!");
+            new Thread(() -> {
+                Timer timer = new Timer();
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        try {
+                            if(!inGameFlag){
+                                serverApp.heartbeat(nickname);
+                            } else serverApp.heartbeatStop(nickname);
+
+                        } catch (RemoteException e) {
+                            System.err.println("Cannot call the heartbeat method: " + e.getMessage());
+                        }
+                    }
+                }, HEARTBEAT_INTERVAL, HEARTBEAT_INTERVAL);
+            }).start();
             decisions = TextualUI.setupConnectionByUser();
         }
         if(args[0].equals("GUI")){
@@ -75,7 +98,7 @@ public class AppClientRMI extends AppClient{
                             tom = t;
                     }
                     matchServerRef = serverApp.connect(tom);
-                    new ClientImpl(matchServerRef, nickname, uiType, uiReference);
+                    refClientImpl = new ClientImpl(matchServerRef, nickname, uiType, uiReference);
                 } catch (NotSupportedMatchesException e) {
                     if (e instanceof TooManyMatchesException) {
                         serverApp.removeLoggedUser(nickname);
@@ -103,12 +126,23 @@ public class AppClientRMI extends AppClient{
                         ((UI) args[5]).update(msgToSend);
                     return;
                 }
-                new ClientImpl(matchServerRef, nickname, uiType, uiReference);
+                refClientImpl = new ClientImpl(matchServerRef, nickname, uiType, uiReference);
             }
             default -> {
                 System.exit(QUIT_IN_APPCLIENTRMI_ERROR);
             }
         }
+        ClientImpl finalRefClientImpl = refClientImpl;
+        new Thread(() -> {
+            while(true){
+                if(finalRefClientImpl.getClientState() == ClientImpl.ClientState.PLAYING){
+                    synchronized (lock) {
+                        inGameFlag = true;
+                    }
+                    break;
+                }
+            }
+        }).start();
         if(matchServerRef != null) matchServerRef.startGame();
     }
 }

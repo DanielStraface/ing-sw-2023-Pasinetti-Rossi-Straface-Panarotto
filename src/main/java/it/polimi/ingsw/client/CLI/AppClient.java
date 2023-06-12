@@ -130,7 +130,7 @@ public abstract class AppClient {
             throws RemoteException {
         if(uiType == UIType.CLI) nickname = TextualUI.askNickname();
         if(appS != null){
-            return appS.log(nickname);
+            return appS.log(nickname, true);
             //else System.out.print("\nThis nickname is already used by another user, you must choose another one.");
         } else {
             return stub.log(nickname);

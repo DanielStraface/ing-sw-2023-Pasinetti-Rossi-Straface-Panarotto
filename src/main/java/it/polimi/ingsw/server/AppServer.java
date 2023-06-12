@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server;
 
+import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.distributed.Server;
 import it.polimi.ingsw.exceptions.NotSupportedMatchesException;
 
@@ -7,6 +8,7 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 public interface AppServer extends Remote {
+    long CLIENT_TIMEOUT = 6000;
 
     /**
      * Enumeration for the type of match:
@@ -35,7 +37,7 @@ public interface AppServer extends Remote {
      * @return true boolean if the nickname isn't already present
      * @throws RemoteException
      */
-    boolean log(String nickname) throws RemoteException;
+    boolean log(String nickname, boolean isRMI) throws RemoteException;
 
     /**
      * Removes a logged nickname from the logged users String Set
@@ -43,4 +45,13 @@ public interface AppServer extends Remote {
      * @throws RemoteException if the execution of a remote method call goes wrong
      */
     void removeLoggedUser(String nickname) throws RemoteException;
+
+    /**
+     * Send ping method called from client in order to verify disconnection
+     */
+    boolean heartbeat(String client) throws RemoteException;
+    /**
+     * The corresponding method of heartbeat called from client in order to stop the disconnection verification
+     */
+    boolean heartbeatStop(String client) throws RemoteException;
 }

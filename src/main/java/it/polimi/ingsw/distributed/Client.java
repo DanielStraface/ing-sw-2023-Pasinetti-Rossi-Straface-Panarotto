@@ -31,6 +31,11 @@ public interface Client extends Remote {
      */
     void update(int clientID) throws RemoteException;
 
+    /**
+     * Update method passing a disconnection notification List (List<Object>)
+     * @param notificationList List<Object>
+     * @throws RemoteException if the execution of method goes wrong
+     */
     void update(List<Object> notificationList) throws RemoteException;
 
     /**

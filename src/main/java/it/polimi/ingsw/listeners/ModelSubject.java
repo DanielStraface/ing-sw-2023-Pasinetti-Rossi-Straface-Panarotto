@@ -66,7 +66,6 @@ public class ModelSubject {
     /**
      * Notifies the Game class of most changes made in a match
      * @param arg - the game model
-     * @throws RemoteException if the execution of a remote method call goes wrong
      */
     public void notifyObservers(Game arg) {
         /*

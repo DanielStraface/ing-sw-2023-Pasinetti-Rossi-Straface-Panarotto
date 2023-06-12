@@ -1,12 +1,12 @@
 package it.polimi.ingsw.server;
 
+import it.polimi.ingsw.client.CLI.AppClientRMI;
 import it.polimi.ingsw.controller.Controller;
+import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.distributed.Server;
 import it.polimi.ingsw.distributed.ServerImpl;
 import it.polimi.ingsw.distributed.socket.middleware.ClientSkeleton;
-import it.polimi.ingsw.exceptions.ClientDisconnectionException;
-import it.polimi.ingsw.exceptions.NotSupportedMatchesException;
-import it.polimi.ingsw.exceptions.TooManyMatchesException;
+import it.polimi.ingsw.exceptions.*;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -22,6 +22,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 
 public class AppServerImpl extends UnicastRemoteObject implements AppServer {
@@ -38,6 +39,9 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
     private static final String APPSERVER_REGISTRY_NAME = "it.polimi.ingsw.server.AppServer";
     public static final int MAX_MATCHES_MANAGED = 100;
     private static final int ERROR_WHILE_CREATING_SERVER_SOCKET = 1;
+    private static final List<String> connectedRMIClient = new ArrayList<>();
+    private static final List<Boolean> connectedRMIClientFlag = new ArrayList<>();
+    private static final List<Boolean> noMoreHeartbeat = new ArrayList<>();
 
     /**
      * Constructor method
@@ -135,7 +139,7 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
                     while(true){
                         try {
                             nicknameToLog = clientSkeleton.receiveNicknameToLog();
-                            temp = instance.log(nicknameToLog);
+                            temp = instance.log(nicknameToLog, false);
                             clientSkeleton.sendLoginResult(temp);
                             if(temp) {clientSkeleton.setNickname(nicknameToLog); break;}
                         } catch (RemoteException e) {
@@ -344,12 +348,19 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
                 } catch (RemoteException e) {
                     System.err.println("Error while creating the match server in ServerImpl class" + e.getMessage());
                 }
+                FIRST_WAITING_MATCH = waitingQueue.keySet().stream()
+                        .min(Comparator.comparing(Integer::valueOf)).orElse(-1);
             }
             case existingGame -> {
                 if(waitingQueue.size() == 0){
                     System.err.println("A client tried to join an existing match but the waiting list is empty");
                     return null;
                 }
+                if(FIRST_WAITING_MATCH == -1) {
+                    System.err.println("fwm equals -1");
+                    FIRST_WAITING_MATCH = 0;
+                }
+                System.err.println("fwm := " + FIRST_WAITING_MATCH);
                 match = waitingQueue.get(FIRST_WAITING_MATCH);
                 int numberOfClientConnected = match.connectedClient;
                 if(numberOfClientConnected == match.getPlayersGameNumber() - 1) {
@@ -382,11 +393,92 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
      * @return true boolean if the nickname isn't already present
      */
     @Override
-    public boolean log(String nickname) {
+    public boolean log(String nickname, boolean isRMI) {
         synchronized (loggedNicknames){
             boolean temp = loggedNicknames.add(nickname);
             if(temp) System.out.println("New client correctly logged in! Its name is " + nickname);
             else System.out.println("A client tried to log in but its nickname was already been chosen.");
+            if(isRMI){
+                new Thread(() -> {
+                    synchronized (connectedRMIClient){
+                        connectedRMIClient.add(nickname);
+                        connectedRMIClientFlag.add(true);
+                        noMoreHeartbeat.add(false);
+                    }
+                    Timer timer = new Timer();
+                    timer.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            try {
+                                checkClientStatus(nickname);
+                            } catch (ClientRMITimeoutException e) {
+                                timer.cancel();
+                                if(e instanceof AnotherClientRMITimeoutException){
+                                } else if(e instanceof NoMoreHeartbeatException) {
+                                } else {
+                                    if(waitingQueue.size() > 0){
+                                        List<List<String>> allWaitingMatchesNickname =
+                                                waitingQueue.values().stream().map(ServerImpl::getMatchNicknames).toList();
+                                        for(List<String> waitingMatchNicknames : allWaitingMatchesNickname){
+                                            if(waitingMatchNicknames.contains(nickname)){
+                                                for(String name : waitingMatchNicknames) {
+                                                    try {
+                                                        if(name != null) instance.removeLoggedUser(name);
+                                                    } catch (RemoteException ex) {
+                                                        System.err.println("Cannot removed nickname " + nickname +
+                                                                " in ClientRMiTimeoutException waitingMatch: "
+                                                                + ex.getMessage());
+                                                    }
+                                                }
+
+                                                System.out.println("flag := " +
+                                                        allWaitingMatchesNickname.indexOf(waitingMatchNicknames));
+                                                ServerImpl serverMatch = waitingQueue.get(
+                                                        waitingQueue.keySet().stream().toList().get(
+                                                                allWaitingMatchesNickname.indexOf(waitingMatchNicknames)
+                                                        )
+                                                        );
+                                                List<String> notificationList = Collections.singletonList(nickname);
+                                                try {
+                                                    serverMatch.update(notificationList);
+                                                } catch (RemoteException ex) {
+                                                    System.err.println("Cannot notify disconnectionList: " + e.getMessage());
+                                                }
+                                            }
+                                            break;
+                                        }
+                                    } else {
+                                        try {
+                                            instance.removeLoggedUser(nickname);
+                                        } catch (RemoteException ex) {
+                                            System.err.println("Cannot removed nickname " + nickname +
+                                                    " in ClientRMiTimeoutException: " + ex.getMessage());
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }, 7500, CLIENT_TIMEOUT);
+
+                    try{
+                        TimeUnit.SECONDS.sleep(3);
+                    } catch (InterruptedException ex) {
+                        System.err.println("Cannot sleep while reset connection flag of client " + nickname);
+                    }
+                    while (true){
+                        try{
+                            TimeUnit.SECONDS.sleep(6);
+                            synchronized (connectedRMIClient){
+                                connectedRMIClientFlag.remove(connectedRMIClient.indexOf(nickname));
+                                connectedRMIClientFlag.add(connectedRMIClient.indexOf(nickname), false);
+                            }
+                        } catch (InterruptedException ex) {
+                            System.err.println("Cannot sleep while reset connection flag of client " + nickname);
+                        }
+                    }
+
+                }).start();
+            }
             return temp;
         }
     }
@@ -402,6 +494,34 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
             loggedNicknames.remove(nickname);
             System.out.println("Nickname log out of " + nickname);
         }
+    }
+
+    @Override
+    public boolean heartbeat(String client) throws RemoteException {
+        synchronized (connectedRMIClient){
+            connectedRMIClientFlag.remove(connectedRMIClient.indexOf(client));
+            connectedRMIClientFlag.add(connectedRMIClient.indexOf(client), true);
+        }
+        return true;
+    }
+
+    @Override
+    public boolean heartbeatStop(String client) throws RemoteException {
+        synchronized (connectedRMIClient){
+            noMoreHeartbeat.remove(connectedRMIClient.indexOf(client));
+            noMoreHeartbeat.add(connectedRMIClient.indexOf(client), true);
+            connectedRMIClientFlag.remove(connectedRMIClient.indexOf(client));
+        }
+        return true;
+    }
+
+    public synchronized void checkClientStatus(String client) throws ClientRMITimeoutException {
+        if(noMoreHeartbeat.get(connectedRMIClient.indexOf(client))) throw new NoMoreHeartbeatException();
+        if(!loggedNicknames.contains(client)) throw new AnotherClientRMITimeoutException();
+        if(!connectedRMIClientFlag.get(connectedRMIClient.indexOf(client))) throw new ClientRMITimeoutException();
+        // heartbeat 0 6 12 18 24
+        // reset 3 9 15 21 27
+        // control 7.5 13.5
     }
 
     public static void addPrevMatchSave(int matchID){
