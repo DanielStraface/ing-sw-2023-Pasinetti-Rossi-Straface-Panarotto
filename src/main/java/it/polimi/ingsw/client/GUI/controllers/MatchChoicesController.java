@@ -327,6 +327,7 @@ public class MatchChoicesController implements GUIController, Initializable {
      */
     public void wrongNickname(){
         flag = State.NICKNAME;
+        done = false;
         resetSceneAtBeginning();
         notifyLabel.setText("This nickname is already used!\nPlease choose another one");
         notifyLabel.setVisible(true);
