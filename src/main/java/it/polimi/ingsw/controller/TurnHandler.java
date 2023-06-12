@@ -59,20 +59,9 @@ public class TurnHandler {
     public void manageTurn(int matchID, Client o) throws RemoteException {
         Player player = game.getCurrentPlayer();
         if(turnChecker.manageCheck(player, game) || endGame) {
-            boolean temp = false;
-            if(!endGame){
-                player.addPoints(ENDGAME_POINTS);
-                temp = true;
-            }
+            if(!endGame) player.addPoints(ENDGAME_POINTS);
             endGame = true;
             game.setGameOverPointToken(true, player.getNickname());
-            if(temp){
-                try{
-                    TimeUnit.SECONDS.sleep(3);
-                } catch (InterruptedException e) {
-                    System.err.println("Cannot sleep in gameOver final point token: " + e.getMessage());
-                }
-            }
             Player firstPlayer = null;
             for (Player p : game.getPlayers()) {
                 if (p.getIsFirstPlayer()) firstPlayer = p;

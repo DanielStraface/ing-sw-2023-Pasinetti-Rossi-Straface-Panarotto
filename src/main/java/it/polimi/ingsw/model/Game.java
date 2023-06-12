@@ -25,12 +25,12 @@ public class Game extends ModelSubject implements Serializable {
     private static final int DIM_GAMEBOARD=9;
     private static final int PLAYABLE = 1;
     private static final int OCCUPIED = 2;
-    private int playersNumber;
-    private List<Player> players;
+    private final int playersNumber;
+    private final List<Player> players;
     private GameBoard gameboard;
     private int[][] validGrid = new int[DIM_GAMEBOARD][DIM_GAMEBOARD];
-    private Bag bag;
-    private List<CommonObjCard> commonObjCards;
+    private final Bag bag;
+    private final List<CommonObjCard> commonObjCards;
     private Player currentPlayer;
     private int prevClientID;
     private String gameOverFinalMessage;
@@ -212,7 +212,7 @@ public class Game extends ModelSubject implements Serializable {
     }
 
     public void setGameOverPointToken(boolean value, String nickname){
-        this.gameOverPointToken = true;
+        this.gameOverPointToken = value;
         this.gameOverPointPlayerName = nickname;
     }
 

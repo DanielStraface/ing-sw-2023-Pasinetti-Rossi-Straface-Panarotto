@@ -14,6 +14,7 @@ import java.rmi.server.RMIClientSocketFactory;
 import java.rmi.server.RMIServerSocketFactory;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class ClientImpl extends UnicastRemoteObject implements Client, Serializable {
     public enum ClientState {
@@ -23,6 +24,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Serializa
     transient UI view;
     transient String nickname;
     private int clientID;
+    private transient boolean gameOverPointTokenFlag = false;
 
     /**
      * Constructor method
@@ -101,8 +103,14 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Serializa
             this.clientState = ClientState.GAMEOVER;
             return;
         }
-        if(game.getGameOverPointToken()){
+        if(game.getGameOverPointToken() && !gameOverPointTokenFlag){
             this.view.gameOverPointTokenHandler(game, game.getGameOverPointPlayerNickname());
+            try{
+                TimeUnit.SECONDS.sleep(3);
+                gameOverPointTokenFlag = false;
+            } catch (InterruptedException e) {
+                System.err.println("Cannot sleep in gameOverPointToken handler: " + e.getMessage());
+            }
         }
         if(this.getClientState() != ClientState.PLAYING) this.clientState = ClientState.PLAYING;
         if(game.getCurrentPlayer().getClientID() == this.clientID){
