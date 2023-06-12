@@ -21,7 +21,7 @@ public class AppClientSocket extends AppClient {
     /**
      * Manages all aspects of socket connection, the choice between CLI/GUI and to either create or join a match
      * @param args -> Object[]
-     * @throws RemoteException if the server is unreachable
+     * @throws RemoteException if the execution of a remote method call goes wrong
      */
     public static void launchClient(Object[] args) throws RemoteException {
         String serverAddress = (String) args[1];

@@ -55,8 +55,9 @@ public class Player extends ModelSubject implements Serializable {
     /**
      *  method to put Items into personal shelf and remove them from the selectItems list
      * @param selectedCol the Shelf's column selected by the current player
-     * @throws OutOfBoundsException
-     * @throws InvalidNumberOfItemsException
+     * @throws OutOfBoundsException attempt to acces an array element with an index that is outside the valid range
+     * of the array
+     * @throws InvalidNumberOfItemsException if the items drawn by the player are more than three
      */
     public void putItemInShelf(int selectedCol) {
         int[] lastRows = myShelf.getLastRow();
@@ -77,8 +78,8 @@ public class Player extends ModelSubject implements Serializable {
     /**
      * updateLastRows updates the number of empty slots in the last row of the shelf. Return true if the update is
      * done successfully.
-     * @param selectedColumn
-     * @param numOfSelectItem
+     * @param selectedColumn int
+     * @param numOfSelectItem int
      * @return true if the update is done successfully.
      */
     public boolean updateLastRows(int selectedColumn, int numOfSelectItem){

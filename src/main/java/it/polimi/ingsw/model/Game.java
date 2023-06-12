@@ -40,8 +40,8 @@ public class Game extends ModelSubject implements Serializable {
     /**
      * constructor for Game class
      * @param playersNumber the number of players in a game
-     * @throws InvalidNumberOfPlayersException
-     * @throws RemoteException
+     * @throws InvalidNumberOfPlayersException if number of players entered is less than two or more than four
+     * @throws RemoteException if the creation of the game board goes wrong
      */
     public Game (int playersNumber) throws InvalidNumberOfPlayersException, RemoteException{
         if(playersNumber <= 1 || playersNumber >= 5) throw new InvalidNumberOfPlayersException();
@@ -126,7 +126,7 @@ public class Game extends ModelSubject implements Serializable {
 
     /**
      * Refills every PLAYABLE slot of the GameBoard with an Item of a random Category drawn from the Bag
-     * @throws RemoteException
+     * @throws RemoteException if the execution of a remote method call goes wrong
      */
     public void refillGameBoard() {
         int[][] vlg = this.gameboard.getValidGrid();
@@ -160,8 +160,8 @@ public class Game extends ModelSubject implements Serializable {
 
     /** set method that save the matchID.
      * @param player the current player
-     * @param matchID
-     * @throws RemoteException
+     * @param matchID int
+     * @throws RemoteException if the execution of setChangedAndNotifyListeners method call goes wrong
      */
     public void setAndSave(int matchID, Player player) throws RemoteException {
         this.currentPlayer = player;
@@ -173,8 +173,8 @@ public class Game extends ModelSubject implements Serializable {
 
     /**
      * set method for current player
-     * @param player
-     * @throws RemoteException
+     * @param player Player
+     * @throws RemoteException if the execution of setChangedAndNotifyListeners method call goes wrong
      */
     public void setCurrentPlayer(Player player) throws RemoteException{
         this.currentPlayer = player;
@@ -183,7 +183,7 @@ public class Game extends ModelSubject implements Serializable {
 
     /**
      * set method for a player who finished the turn.
-     * @param prevClientID
+     * @param prevClientID int
      */
     public void setTurnFinishedPlayerID(int prevClientID){
         this.prevClientID = prevClientID;
@@ -191,7 +191,7 @@ public class Game extends ModelSubject implements Serializable {
 
     /**
      * set method for the game board.
-     * @param gameboard
+     * @param gameboard GameBoard
      */
     public void setGameBoard (GameBoard gameboard) { this.gameboard = gameboard; }
 
@@ -204,7 +204,7 @@ public class Game extends ModelSubject implements Serializable {
     /**
      * set method for the game over message.
      * @param finalMessage
-     * @throws RemoteException
+     * @throws RemoteException if the execution of setChangedAndNotifyListeners method call goes wrong
      */
     public void setGameOverFinalMessage(String finalMessage) throws RemoteException {
         this.gameOverFinalMessage = finalMessage;
@@ -282,7 +282,7 @@ public class Game extends ModelSubject implements Serializable {
     /**
      * set method for the game.
      * @param gm
-     * @throws RemoteException
+     * @throws RemoteException if the execution of a remote method call goes wrong
      */
     private void setChangedAndNotifyListeners(Game gm) throws RemoteException{
         setChanged();

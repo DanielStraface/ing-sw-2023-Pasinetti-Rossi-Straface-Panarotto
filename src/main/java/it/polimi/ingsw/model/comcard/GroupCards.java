@@ -14,7 +14,7 @@ class GroupCards extends StrategyCheck implements Serializable {
     /* METHOD SECTION */
 
     /** constructor
-     * @param type
+     * @param type int
      */
     public GroupCards(int type){
         this.type = type;
@@ -49,7 +49,7 @@ class GroupCards extends StrategyCheck implements Serializable {
 
     /**
      * method that returns a true boolean if there are at least six groups containing two tiles of the same type
-     * @param grid
+     * @param grid -> Item[][]
      */
     private boolean groupOfTwo(Item[][] grid) {
 
@@ -93,7 +93,7 @@ class GroupCards extends StrategyCheck implements Serializable {
     /**
      * method that returns a true boolean if there are at least four groups containing four adjacent tiles of the
      * same type
-     * @param grid
+     * @param grid -> Item[][]
      */
     private boolean groupOfFour(Item[][] grid) {
         Category scanned;
@@ -123,7 +123,7 @@ class GroupCards extends StrategyCheck implements Serializable {
     /**
      * method that returns a true boolean if there are at least two groups containing four tiles of the same type
      * for both groups
-     * @param grid
+     * @param grid -> Item[][]
      */
     private boolean groupOfSquares(Item[][] grid) {
         int[] categoryReference = new int[6]; //category reference for comparison
@@ -153,7 +153,7 @@ class GroupCards extends StrategyCheck implements Serializable {
 
     /**
      * Method that returns a true boolean if there are 8 instances of the same category in the Player's Shelf
-     * @param grid
+     * @param grid -> Item[][]
      */
     private boolean groupOfEight(Item[][] grid) {
         int catCounter = 0;

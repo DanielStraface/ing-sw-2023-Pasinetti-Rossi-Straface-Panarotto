@@ -70,8 +70,9 @@ public class TextualUI implements UI, Serializable {
     /**
      * Method for the start of a turn
      * @param gameView to get and display the GameBoard and to check if the tiles and Shelf column selected are valid
-     * @throws RemoteException if the client (throw getNickname) or the server (throw displayTurnMenu) are unreachable
-     */
+     * @throws RemoteException if the execution of getNickname method call goes wrong
+     * */
+
     public void run(GameView gameView) throws RemoteException{
         this.displayNewTurn(gameView);
         System.out.println("-----------------------------------------------------------------------------------------");
@@ -248,7 +249,7 @@ public class TextualUI implements UI, Serializable {
     /**
      * Method for display the turn menu (play, display shelf and quit decisions)
      * @param gameView to get and display the player's shelf
-     * @throws RemoteException if the client is unreachable
+     * @throws RemoteException if the execution of getNickname method call goes wrong
      */
     private void displayTurnMenu(GameView gameView) throws RemoteException {
         String firstDecision;
@@ -306,7 +307,7 @@ public class TextualUI implements UI, Serializable {
     /**
      * Invokes all methods to check if the shelf's column choice is valid
      * @param sh ShelfView to modify the shelf's grid
-     * @throws RemoteException due to the modification of the shelf
+     * @throws RemoteException if the execution of a remote method call goes wrong
      * @throws FullColumnException when the shelf column is full
      */
     public void gameActionOnShelf(ShelfView sh) throws RemoteException, FullColumnException {
@@ -401,7 +402,7 @@ public class TextualUI implements UI, Serializable {
     /**
      * Invokes methods that set the "changed" flag to true and notifies observers about the client
      * and its tiles and the shelf's column choices
-     * @throws RemoteException if the server is unreachable
+     * @throws RemoteException if the execution of notifyObservers method call goes wrong
      */
     private void setChangedAndNotifyListener() throws RemoteException{
         setChanged();
@@ -426,7 +427,7 @@ public class TextualUI implements UI, Serializable {
      * @param o Client that made the choices
      * @param arg1 Tiles' coordinates chosen
      * @param arg2 Column chosen
-     * @throws RemoteException if the server is unreachable
+     * @throws RemoteException if the execution of update method call goes wrong
      */
     @Override
     public void notifyObservers(Client o, List<int[]> arg1, Integer arg2) throws RemoteException {

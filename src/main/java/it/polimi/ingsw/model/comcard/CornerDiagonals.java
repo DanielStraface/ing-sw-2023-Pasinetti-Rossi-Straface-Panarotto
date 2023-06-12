@@ -10,7 +10,7 @@ class CornerDiagonals extends StrategyCheck implements Serializable {
     /* METHODS SECTION */
 
     /** constructor method
-     * @param type
+     * @param type int
      */
     public CornerDiagonals(int type){
         this.type = type;
@@ -44,7 +44,7 @@ class CornerDiagonals extends StrategyCheck implements Serializable {
 
     /**
      * Method diagonals controls if there are five items of the same type that make a diagonal.
-     * @param grid
+     * @param grid -> Item[][]
      */
     public boolean diagonals(Item[][] grid) {
         boolean diag1 = true; //first main diagonal referencer
@@ -102,7 +102,7 @@ class CornerDiagonals extends StrategyCheck implements Serializable {
 
     /**
      * Method corners controls if there are four items of the same type at the four corners of the shelf.
-     * @param grid
+     * @param grid -> Item[][]
      */
     public boolean corners(Item[][] grid) {
         if (grid[0][0].getCategoryType() != null) {
@@ -120,7 +120,7 @@ class CornerDiagonals extends StrategyCheck implements Serializable {
      * Starting from the first column on the left or on the right,
      * each next column must be made of exactly one more tile.
      * Tiles can be of any type.
-     * @param grid
+     * @param grid -> Item[][]
      */
     public boolean descMatrix(Item[][] grid) {
         boolean inc = true;

@@ -124,7 +124,7 @@ public abstract class AppClient {
      * method that checks if the nickname is already taken, if not so it registers the client to the server
      * @param appS the match Server App
      * @param stub the corresponding ServerStub
-     * @throws RemoteException if the server is unreachable
+     * @throws RemoteException if the execution of log method call goes wrong
      */
     protected static boolean logginToAppServer(AppClient.UIType uiType, AppServer appS, ServerStub stub)
             throws RemoteException {

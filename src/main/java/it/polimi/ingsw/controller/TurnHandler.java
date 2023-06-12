@@ -31,7 +31,7 @@ public class TurnHandler {
     /**
      * Sets the next currentPlayer after the previous' one turn is over, checks if it's the last turn of the match
      * @param player player whose turn is over
-     * @throws RemoteException
+     * @throws RemoteException if the execution of saveModelAndSetPlayerID method call goes wrong
      */
     public void nextTurn(int matchID, Player player) throws RemoteException {
         game.setTurnFinishedPlayerID(player.getClientID());
@@ -52,7 +52,7 @@ public class TurnHandler {
      * Checks if the currentPlayer filled his Shelf and triggers the endgame accordingly, and manages the turn
      * cycle
      * @param o the Client of the player whose turn is over
-     * @throws Exception
+     * @throws RemoteException if the execution of  nextTurn method call goes wrong
      */
     public void manageTurn(int matchID, Client o) throws RemoteException {
         Player player = game.getCurrentPlayer();
@@ -122,7 +122,7 @@ public class TurnHandler {
      * Method used to help with the player turn cycle
      * @param matchID the matchID where the turn needs to be changed
      * @param player the player whose turn is over
-     * @throws RemoteException
+     * @throws RemoteException if the execution of setAndSve method call goes wrong
      */
     private void saveModelAndSetNewPlayer(int matchID, Player player) throws RemoteException {
         game.setAndSave(matchID, player);

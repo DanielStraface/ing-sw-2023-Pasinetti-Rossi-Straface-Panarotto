@@ -31,7 +31,7 @@ public class CommonObjCard implements Serializable {
      * CommonObjCard instance is different.
      * @param numberOfPlayers number of players in a match
      * @param type the type of CommonObjectiveCard
-     * @throws InvalidNumberOfPlayersException
+     * @throws InvalidNumberOfPlayersException if number of players entered is less than two or more than four
      */
     public CommonObjCard(int numberOfPlayers, int type) throws InvalidNumberOfPlayersException {
         /*The switch case are chosen by the number of players of the game.
@@ -69,7 +69,7 @@ public class CommonObjCard implements Serializable {
      * @param numberOfPlayers number of players in a match
      * @param type the type of CommonObjectiveCard
      * @param description the card's description taken from the json file
-     * @throws InvalidNumberOfPlayersException
+     * @throws InvalidNumberOfPlayersException if number of players entered is less than two or more than four.
      */
     public CommonObjCard(int numberOfPlayers, int type, String description) throws InvalidNumberOfPlayersException {
         /*The switch case are chosen by the number of players of the game.

@@ -17,7 +17,7 @@ public class PlayerView implements Serializable {
 
     /**
      * constructor method
-     * @param player
+     * @param player Player
      */
     public PlayerView(Player player) {
         this.score = player.getScore();

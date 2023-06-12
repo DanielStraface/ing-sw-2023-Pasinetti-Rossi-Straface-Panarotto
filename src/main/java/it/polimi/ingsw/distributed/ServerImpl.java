@@ -31,7 +31,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
     /**
      * Constructor method
      * @param numOfPlayers type of match chosen (enum) that tells the total number of players
-     * @throws RemoteException
+     * @throws RemoteException if the execution of a remote method call goes wrong
      */
     public ServerImpl(AppServer.typeOfMatch numOfPlayers) throws RemoteException {
         super();
@@ -55,7 +55,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
     /**
      * Makes the player join a new match lobby and starts the game if all players are connected, or it makes the player
      * join an unfinished match
-     * @throws RemoteException
+     * @throws RemoteException if the execution of update method call goes wrong
      */
     @Override
     public void startGame() throws RemoteException{
@@ -99,7 +99,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
      * with the just created ID
      * @param client client to register
      * @param nickname player's nickname
-     * @throws RemoteException
+     * @throws RemoteException if the execution of update method call goes wrong
      */
     @Override
     public void register(Client client, String nickname) throws RemoteException {
@@ -122,7 +122,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
      * @param client the choosing player
      * @param coords coordinates chosen
      * @param column the shelf column chosen
-     * @throws RemoteException 
+     * @throws RemoteException if the execution of the update method call goes wrong
      */
     @Override
     public void update(Client client, List<int[]> coords, Integer column) throws RemoteException {

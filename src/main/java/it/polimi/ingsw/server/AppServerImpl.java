@@ -41,7 +41,7 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
 
     /**
      * Constructor method
-     * @throws RemoteException
+     * @throws RemoteException if AppServerImpl call goes wrong
      */
     protected AppServerImpl() throws RemoteException {
     }
@@ -49,7 +49,7 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
     /**
      * Get method for the Server's instance
      * @return the Server's instance
-     * @throws RemoteException
+     * @throws RemoteException if AppServerImpl call goes wrong
      */
     public static AppServerImpl getInstance() throws RemoteException {
         if(instance == null){
@@ -102,7 +102,7 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
 
     /**
      * Starts RMI technology
-     * @throws RemoteException
+     * @throws RemoteException if the communication with the registry goes wrong
      */
     public static void startRMI() throws RemoteException {
         AppServerImpl server = getInstance();
@@ -113,7 +113,7 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
 
     /**
      * Starts socket technology
-     * @throws RemoteException
+     * @throws RemoteException if the execution of a remote method call goes wrong
      */
     public static void startSocket() throws RemoteException {
         AppServerImpl instance = getInstance();
@@ -309,8 +309,8 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
      * to manage the players' queue
      * @param type typeOfMatch enum
      * @return the match's server created
-     * @throws RemoteException
-     * @throws NotSupportedMatchesException
+     * @throws RemoteException if the execution of a remote method call goes wrong
+     * @throws NotSupportedMatchesException if there is an unsupported number of matches
      */
     @Override
     public Server connect(typeOfMatch type) throws RemoteException, NotSupportedMatchesException {
@@ -382,7 +382,7 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
     /**
      * Removes a logged nickname from the logged users String Set
      * @param nickname the player's nickname String to be removed
-     * @throws RemoteException
+     * @throws RemoteException if the execution of a remote method call goes wrong
      */
     @Override
     public void removeLoggedUser(String nickname) throws RemoteException {

@@ -12,7 +12,7 @@ class RowsColumnsCard extends StrategyCheck implements Serializable {
 
     /**
      * constructor method
-     * @param type
+     * @param type int
      */
     public RowsColumnsCard(int type){
         this.type = type;
@@ -43,7 +43,7 @@ class RowsColumnsCard extends StrategyCheck implements Serializable {
 
     /**
      * method that returns a true boolean if there are at least two full rows of items each formed by six different types
-     * @param grid
+     * @param grid -> Item[][]
      */
     private boolean rowsChecker(Item[][] grid) {
         int rowsCounter = 0; //this is the counter of the rows needed for the goal (at least 2)
@@ -87,7 +87,7 @@ class RowsColumnsCard extends StrategyCheck implements Serializable {
 
     /**
      * method that returns a true boolean if there are at least two full columns of items each formed by six different types
-     * @param grid
+     * @param grid -> Item[][]
      */
     private boolean columnsChecker(Item[][] grid) {
         int columnsCounter = 0; //this is the counter of the columns needed for the goal (at least 2)

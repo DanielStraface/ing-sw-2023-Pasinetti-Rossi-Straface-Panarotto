@@ -11,7 +11,7 @@ class XCards extends StrategyCheck implements Serializable {
     /* METHOD SECTION */
 
     /** constructor method
-     * @param type
+     * @param type int
       */
     public XCards(int type){
         this.type = type;

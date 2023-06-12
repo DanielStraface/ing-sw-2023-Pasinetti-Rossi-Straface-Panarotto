@@ -24,8 +24,8 @@ public interface AppServer extends Remote {
      * Connects a client to a server
      * @param type typeOfMatch enum
      * @return the Server connected to
-     * @throws RemoteException
-     * @throws NotSupportedMatchesException
+     * @throws RemoteException if the execution of a remote method call goes wrong
+     * @throws NotSupportedMatchesException if there is an unsupported number of matches
      */
     Server connect(typeOfMatch type) throws RemoteException, NotSupportedMatchesException;
 
@@ -40,7 +40,7 @@ public interface AppServer extends Remote {
     /**
      * Removes a logged nickname from the logged users String Set
      * @param nickname the player's nickname String to be removed
-     * @throws RemoteException
+     * @throws RemoteException if the execution of a remote method call goes wrong
      */
     void removeLoggedUser(String nickname) throws RemoteException;
 }

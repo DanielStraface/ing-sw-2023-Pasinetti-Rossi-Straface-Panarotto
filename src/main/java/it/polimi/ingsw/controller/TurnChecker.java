@@ -22,8 +22,7 @@ public class TurnChecker {
      * @param player the player whose turn in ending
      * @param game
      * @return shelfFull <==> boolean to check if the current player's shelf is full
-     * @throws InvalidPointerException
-     * @throws RemoteException
+     * @throws RemoteException if the refillGameBoardCheck method call goes wrong
      */
     public boolean manageCheck(Player player, Game game) {
         boolean shelfFull;
@@ -78,7 +77,7 @@ public class TurnChecker {
      * check if any of its adjacent places are occupied by an Item as well.
      * If there's a single adjacent item, there's no need to refill the GameBoard and the check is
      * set to false.
-     * @param game
+     * @param game Game
      * @throws RemoteException
      */
     private void refillGameBoardCheck(Game game) throws RemoteException {
@@ -140,7 +139,7 @@ public class TurnChecker {
 
     /**
      * Returns points to assign to the player based on the number of adjacent items
-     * @param player
+     * @param player Player
      * @return integer of the score to be added to the player
      */
     public int adjacentItemsCheck(Player player) {

@@ -42,7 +42,7 @@ public class ServerStub implements Server {
 
     /**
      * Writes a String containing "START GAME" to the ObjectOutputStream, then flushes and resets
-     * @throws RemoteException
+     * @throws RemoteException if the execution of method goes wrong
      */
     @Override
     public void startGame() throws RemoteException {
@@ -58,7 +58,7 @@ public class ServerStub implements Server {
      * Registers a client with his nickname to the server and invokes a method to send a "START GAME" message
      * @param client Client registered
      * @param nickname the client's nickname
-     * @throws RemoteException
+     * @throws RemoteException if the execution of startGame method call goes wrong
      */
     @Override
     public void register(Client client, String nickname) throws RemoteException {
@@ -71,7 +71,7 @@ public class ServerStub implements Server {
      * @param client Client giving the choice
      * @param coords Coordinates chosen
      * @param column Column chosen
-     * @throws RemoteException
+     * @throws RemoteException if the execution of method goes wrong
      */
     @Override
     public void update(Client client, List<int[]> coords, Integer column) throws RemoteException {
@@ -109,8 +109,8 @@ public class ServerStub implements Server {
      *             String: Calls a system.exit if it is equal to "NO_GAME_ON_SERVER"
      *
      * @param client Client from which the object is received
-     * @throws RemoteException
-     * @throws NotMessageFromServerYet
+     * @throws RemoteException if the execution of method goes wrong
+     * @throws NotMessageFromServerYet client doesn't receive messages from server
      */
     public void receive(Client client) throws RemoteException, NotMessageFromServerYet {
         Object o;
@@ -167,7 +167,7 @@ public class ServerStub implements Server {
 
     /**
      * Creates a new connection
-     * @throws RemoteException
+     * @throws RemoteException if the execution of method goes wrong
      */
     private void createConnection() throws RemoteException{
         try {
@@ -191,7 +191,7 @@ public class ServerStub implements Server {
     /**
      * Method used to flush and reset an Object Output Stream
      * @param o Object Output Stream
-     * @throws IOException
+     * @throws IOException if an I/O error has occurred, if reset() is invoked while serializing an object.
      */
     private void flushAndReset(ObjectOutputStream o) throws IOException {
         o.flush();
@@ -200,7 +200,7 @@ public class ServerStub implements Server {
 
     /**
      * Closes a socket
-     * @throws RemoteException
+     * @throws RemoteException if the execution of method goes wrong
      */
     public void close() throws RemoteException{
         try{
@@ -215,7 +215,7 @@ public class ServerStub implements Server {
      * if successful
      * @param nickname String
      * @return result boolean
-     * @throws RemoteException
+     * @throws RemoteException if the execution of method goes wrong
      */
     public boolean log(String nickname) throws RemoteException{
         Boolean result;
@@ -238,7 +238,7 @@ public class ServerStub implements Server {
     /**
      * Writes a nickname String (the logged player to be removed) to the ObjectOutputStream, then flushes and resets
      * @param nickname String
-     * @throws RemoteException
+     * @throws RemoteException if the execution of method goes wrong
      */
     public void removeLoggedUser(String nickname) throws RemoteException{
         try{
@@ -253,8 +253,8 @@ public class ServerStub implements Server {
      * Writes a AppServer.typeOfMatch (enum) to the ObjectOutputStream, then flushes and resets and sets the "result" boolean to true
      * if successful
      * @param type Match type enum
-     * @throws RemoteException
-     * @throws NotSupportedMatchesException
+     * @throws RemoteException if the execution of method goes wrong
+     * @throws NotSupportedMatchesException if there is an unsupported number of matches
      */
     public void connect(AppServer.typeOfMatch type) throws RemoteException, NotSupportedMatchesException {
         Object o;

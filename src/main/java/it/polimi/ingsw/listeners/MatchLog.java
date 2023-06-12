@@ -26,7 +26,7 @@ public class MatchLog implements Client {
     /**
      * Update method passing a GameView to save the match through the MatchLog
      * @param game GameView
-     * @throws RemoteException
+     * @throws RemoteException if the execution of a remote method call goes wrong
      */
     @Override
     public void update(GameView game) throws RemoteException {
@@ -39,7 +39,7 @@ public class MatchLog implements Client {
     /**
      * Update method passing a message String to save the match through the MatchLog
      * @param msg String
-     * @throws RemoteException
+     * @throws RemoteException if the execution of a remote method call goes wrong
      */
     @Override
     public void update(String msg) throws RemoteException {
@@ -50,7 +50,7 @@ public class MatchLog implements Client {
     /**
      * Update method passing a clientID to save the match through the MatchLog
      * @param clientID int
-     * @throws RemoteException
+     * @throws RemoteException if the execution of a remote method call goes wrong
      */
     @Override
     public void update(int clientID) throws RemoteException {
@@ -67,7 +67,7 @@ public class MatchLog implements Client {
     /**
      * Get method for a player's nickname String
      * @return nickname String
-     * @throws RemoteException
+     * @throws RemoteException if the execution of a remote method call goes wrong
      */
     @Override
     public String getNickname() throws RemoteException {
@@ -77,7 +77,7 @@ public class MatchLog implements Client {
     /**
      * Get method for a player's clientID
      * @return int -> clientID
-     * @throws RemoteException
+     * @throws RemoteException if the execution of a remote method call goes wrong
      */
     @Override
     public int getClientID() throws RemoteException {
@@ -89,7 +89,7 @@ public class MatchLog implements Client {
      * @param client the client making the choices
      * @param coords the item's coordinates chosen
      * @param column the shelf's column choice
-     * @throws RemoteException
+     * @throws RemoteException if the execution of a remote method call goes wrong
      */
     public void update(Client client, List<int[]> coords, Integer column) throws RemoteException {
         System.out.println("Log := match#" + matchID + ", user player " + client.getClientID() +

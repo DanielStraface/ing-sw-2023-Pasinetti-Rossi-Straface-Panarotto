@@ -45,7 +45,7 @@ public class ModelSubject {
      * @param o the client making the choices
      * @param coords the item's coordinates chosen
      * @param column the shelf's column choice
-     * @throws RemoteException
+     * @throws RemoteException if the execution of update method call goes wrong
      */
     public synchronized void informLog(Client o, List<int[]> coords, Integer column) throws RemoteException {
         /*
@@ -66,7 +66,7 @@ public class ModelSubject {
     /**
      * Notifies the Game class of most changes made in a match
      * @param arg - the game model
-     * @throws RemoteException
+     * @throws RemoteException if the execution of a remote method call goes wrong
      */
     public void notifyObservers(Game arg) {
         /*

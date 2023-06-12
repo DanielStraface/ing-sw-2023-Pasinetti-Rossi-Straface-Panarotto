@@ -13,8 +13,8 @@ public class PersonalObjCardView implements Serializable {
 
     /**
      * constructor method
-     * @param cardGrid
-     * @param desc
+     * @param cardGrid -> Item[][]
+     * @param desc String
      */
     public PersonalObjCardView(Item[][] cardGrid, String desc) {
         this.description = desc;

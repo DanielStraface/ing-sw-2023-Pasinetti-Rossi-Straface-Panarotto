@@ -65,7 +65,7 @@ public class ObjectivesController implements GUIController {
 
     /**
      * it assigns the corresponding image to the personal objective card of the player in the objective cards' window
-     * @param perObjCard
+     * @param perObjCard PersonalObjCardView
      */
     public void updatePersonalObjCard(PersonalObjCardView perObjCard){
         personalObjCard.setImage(new Image("/graphics/personal_goal_cards/" + perObjCard.getDescription() + ".png"));
@@ -73,7 +73,7 @@ public class ObjectivesController implements GUIController {
 
     /**
      * updates common objective cards point in the objective cards' window
-     * @param commonObjCardViews
+     * @param commonObjCardViews List
      */
     public void updateCommonObjCardsPoints(List<CommonObjCardView> commonObjCardViews){
         for(CommonObjCardView cocv : commonObjCardViews)

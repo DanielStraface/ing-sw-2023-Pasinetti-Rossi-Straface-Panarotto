@@ -25,7 +25,7 @@ public class ClientSkeleton implements Client {
 
     /**
      * Constructor method
-     * @throws RemoteException
+     * @throws RemoteException if the creation of streams goes wrong
      */
     public ClientSkeleton(Socket socket) throws RemoteException {
         try {
@@ -59,7 +59,7 @@ public class ClientSkeleton implements Client {
     /**
      * Writes a String containing a message to the ObjectOutputStream, then flushes and resets
      * @param msg String -> message
-     * @throws RemoteException
+     * @throws RemoteException if the execution of method goes wrong
      */
     @Override
     public void update(String msg) throws RemoteException {
@@ -74,7 +74,7 @@ public class ClientSkeleton implements Client {
     /**
      * Writes a clientID to the ObjectOutputStream, then flushes and resets
      * @param clientID clientID
-     * @throws RemoteException
+     * @throws RemoteException if the execution of method goes wrong
      */
     @Override
     public void update(int clientID) throws RemoteException {
@@ -100,7 +100,7 @@ public class ClientSkeleton implements Client {
     /**
      * Get method for a nickname string
      * @return nickname String
-     * @throws RemoteException
+     * @throws RemoteException  if the execution of method goes wrong
      */
     @Override
     public String getNickname() throws RemoteException {
@@ -110,7 +110,7 @@ public class ClientSkeleton implements Client {
     /**
      * Get method for a clientID
      * @return int -> clientID
-     * @throws RemoteException
+     * @throws RemoteException if the execution of method goes wrong
      */
     @Override
     public int getClientID() throws RemoteException {
@@ -120,7 +120,7 @@ public class ClientSkeleton implements Client {
     /**
      * Reads a nickname String from Object Input Stream and returns it
      * @return nickname String
-     * @throws RemoteException
+     * @throws RemoteException  if the execution of method goes wrong
      */
     public String receiveNicknameToLog() throws RemoteException{
         String nickname;
@@ -145,7 +145,7 @@ public class ClientSkeleton implements Client {
     /**
      * Writes a boolean with a positive(true) or negative(false) result to the ObjectOutputStream, then flushes and resets
      * @param result Boolean
-     * @throws RemoteException
+     * @throws RemoteException if the execution of method goes wrong
      */
     public void sendLoginResult(Boolean result) throws RemoteException{
         try{
@@ -159,7 +159,7 @@ public class ClientSkeleton implements Client {
     /**
      * Reads an AppServer.TypeOfMatch (enum) from Object Input Stream and returns it
      * @return Match Type enum
-     * @throws RemoteException
+     * @throws RemoteException if the execution of method goes wrong
      */
     public AppServer.typeOfMatch setupMatch() throws RemoteException {
         try{
@@ -177,7 +177,7 @@ public class ClientSkeleton implements Client {
      * Writes a boolean (true if the server has been successfully created)
      * to the ObjectOutputStream after flushing and resetting, then flushes again
      * @param value Boolean
-     * @throws RemoteException
+     * @throws RemoteException if the execution of method goes wrong
      */
     public void sendMatchServer(Boolean value) throws RemoteException{
         try{
@@ -197,8 +197,8 @@ public class ClientSkeleton implements Client {
      *        String: Starts a game if it is equal to "START GAME"
      * It also updates invoking the "update" method in the server with the coordinates or column given
      * @param server Server from which the object is received
-     * @throws RemoteException
-     * @throws ClientDisconnectionException
+     * @throws RemoteException  if the execution of method goes wrong
+     * @throws ClientDisconnectionException when server doesn't receive messages from client
      */
     public synchronized void receive(Server server) throws RemoteException, ClientDisconnectionException {
         Object o;
@@ -268,7 +268,7 @@ public class ClientSkeleton implements Client {
     /**
      * Method used to flush and reset an Object Output Stream
      * @param o Object Output Stream
-     * @throws IOException
+     * @throws IOException if an I/O error has occurred, if reset() is invoked while serializing an object.
      */
     private void flushAndReset(ObjectOutputStream o) throws IOException {
         o.flush();

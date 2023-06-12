@@ -30,7 +30,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Serializa
      * @param nickname Player's nickname
      * @param uiType TUI/GUI
      * @param guiReference used if GUI is chosen
-     * @throws RemoteException
+     * @throws RemoteException if the server is unreachable
      */
     public ClientImpl(Server server, String nickname, AppClient.UIType uiType, Object guiReference)
             throws RemoteException {
@@ -58,7 +58,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Serializa
     /**
      * Adds the match server as the client's view observer
      * @param server match Server
-     * @throws RemoteException
+     * @throws RemoteException if the execution of a remote method call goes wrong
      */
     private void initialize(Server server) throws RemoteException{
         this.view.addListener(server); //add the match server as this client view observer
@@ -74,7 +74,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Serializa
      * by changing the ClientState (enum) accordingly
      *
      * @param game GameView
-     * @throws RemoteException
+     * @throws RemoteException if the execution of a remote method call goes wrong
      */
     @Override
     public void update(GameView game) throws RemoteException {
@@ -136,7 +136,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Serializa
     /**
      * Invokes an update method in the UI containing a message String
      * @param msg String
-     * @throws RemoteException
+     * @throws RemoteException if the execution of a remote method call goes wrong
      */
     @Override
     public void update(String msg) throws RemoteException {
@@ -150,7 +150,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Serializa
      * Invokes an update method in the UI containing the player's ID, sets the Client that invoked this method
      * as reference and changes its state to WAITING_IN_LOBBY (enum)
      * @param clientID int playerID
-     * @throws RemoteException
+     * @throws RemoteException if the execution of a remote method call goes wrong
      */
     @Override
     public void update(int clientID) throws RemoteException {
@@ -176,7 +176,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Serializa
     /**
      * Get method for a clientID
      * @return int clientID
-     * @throws RemoteException
+     * @throws RemoteException if the execution of a remote method call goes wrong
      */
     @Override
     public int getClientID() throws RemoteException {return this.clientID;}

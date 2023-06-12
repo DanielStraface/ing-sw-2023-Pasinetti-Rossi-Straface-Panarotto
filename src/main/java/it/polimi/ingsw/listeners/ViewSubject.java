@@ -20,7 +20,7 @@ public interface ViewSubject {
      * @param o the client making the choices
      * @param arg1 the item's coordinates chosen
      * @param arg2 the shelf's column choice
-     * @throws RemoteException
+     * @throws RemoteException if the execution of a remote method call goes wrong
      */
     void notifyObservers(Client o, List<int[]> arg1, Integer arg2) throws RemoteException;
 
