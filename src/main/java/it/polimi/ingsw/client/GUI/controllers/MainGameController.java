@@ -444,9 +444,6 @@ public class MainGameController implements GUIController {
                 osf.relocate(1, 1);
                 osf.setVisible(false);
             });
-            /*List<BorderPane> bps = wrappersList.stream()
-                    .filter(borderPane -> borderPane.getStyleClass().size() == 1).toList();
-            this.borderPanes.addAll(bps);*/
             this.itemImgPath.addAll(ordinalBorderPanes.stream()
                     .map(borderPane -> ((ImageView) borderPane.getCenter()).getImage().getUrl()).toList());
             ordinalBorderPanes.forEach(borderPane -> borderPane.getStyleClass().clear());

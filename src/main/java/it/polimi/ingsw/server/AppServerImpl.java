@@ -193,6 +193,7 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
                                     System.out.println("Disconnection");
                                 }
                             } catch (IOException e) {
+                                if(finalServer != null && !matches.containsKey(finalServer.getMatchId())) return;
                                 System.out.println("THE USER OF " + finalNicknameToLog + " HAS DISCONNECTED!");
                                 try {
                                     if(finalServer != null && !finalServer.getInactiveMatch()){

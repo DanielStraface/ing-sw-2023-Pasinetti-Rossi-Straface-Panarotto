@@ -7,9 +7,11 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.personcard.PersonalObjCard;
 
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class TurnHandler {
     private final TurnChecker turnChecker;
@@ -57,9 +59,20 @@ public class TurnHandler {
     public void manageTurn(int matchID, Client o) throws RemoteException {
         Player player = game.getCurrentPlayer();
         if(turnChecker.manageCheck(player, game) || endGame) {
-            if(!endGame) player.addPoints(ENDGAME_POINTS);
+            boolean temp = false;
+            if(!endGame){
+                player.addPoints(ENDGAME_POINTS);
+                temp = true;
+            }
             endGame = true;
             game.setGameOverPointToken(true, player.getNickname());
+            if(temp){
+                try{
+                    TimeUnit.SECONDS.sleep(3);
+                } catch (InterruptedException e) {
+                    System.err.println("Cannot sleep in gameOver final point token: " + e.getMessage());
+                }
+            }
             Player firstPlayer = null;
             for (Player p : game.getPlayers()) {
                 if (p.getIsFirstPlayer()) firstPlayer = p;
