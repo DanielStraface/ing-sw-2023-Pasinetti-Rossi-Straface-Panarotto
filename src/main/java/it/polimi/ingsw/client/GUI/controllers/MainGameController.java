@@ -11,6 +11,7 @@ import it.polimi.ingsw.modelview.GameBoardView;
 import it.polimi.ingsw.modelview.ShelfView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -155,12 +156,14 @@ public class MainGameController implements GUIController {
     public void updateMessageBox(String msg, boolean Exception) {
         messageBox.setText(msg);
         if (Exception) {
-            messageBox.setBackground(Background.fill(Color.LIGHTSALMON));
+            messageBox.setBackground(new Background(new BackgroundFill(
+                    Color.LIGHTSALMON, CornerRadii.EMPTY, Insets.EMPTY)));
             messageBox.setTextFill(Color.RED);
             messageBox.setStyle("-fx-font-size: 25px");
         }
         else {
-            messageBox.setBackground(Background.fill(Color.TRANSPARENT));
+            messageBox.setBackground(new Background(new BackgroundFill(
+                    Color.TRANSPARENT, CornerRadii.EMPTY, Insets.EMPTY)));
             messageBox.setTextFill(Color.BLACK);
             messageBox.setStyle("-fx-font-size: 25px");
 
@@ -388,7 +391,8 @@ public class MainGameController implements GUIController {
             }
         } else {
             if(numOfItems >= 0){
-                messageBox.setBackground(Background.fill(Color.TRANSPARENT));
+                messageBox.setBackground(new Background(new BackgroundFill(
+                        Color.TRANSPARENT, CornerRadii.EMPTY, Insets.EMPTY)));
                 int index = selectedCoords.indexOf(selectedCoords.stream()
                         .filter(i -> i[0] == row && i[1] == col).findFirst().get());
                 selectedCoords.remove(index);

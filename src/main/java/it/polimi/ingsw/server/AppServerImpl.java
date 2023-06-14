@@ -408,6 +408,7 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
                         @Override
                         public void run() {
                             try {
+                                System.out.println("This is " + nickname + " heartbeat");
                                 checkClientStatus(nickname);
                             } catch (ClientRMITimeoutException e) {
                                 timer.cancel();
@@ -462,13 +463,13 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
                         }
                     }, 7500, CLIENT_TIMEOUT);
                     try{
-                        TimeUnit.SECONDS.sleep(3);
+                        TimeUnit.SECONDS.sleep(CLIENT_TIMEOUT / 2000);
                     } catch (InterruptedException ex) {
                         System.err.println("Cannot sleep while reset connection flag of client " + nickname);
                     }
                     while (true){
                         try{
-                            TimeUnit.SECONDS.sleep(6);
+                            TimeUnit.SECONDS.sleep(CLIENT_TIMEOUT / 1000);
                             synchronized (connectedRMIClient){
                                 if(!connectedRMIClient.contains(nickname)) return;
                                 connectedRMIClientFlag.remove(connectedRMIClient.indexOf(nickname));
