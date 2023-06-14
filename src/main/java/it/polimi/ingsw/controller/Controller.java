@@ -19,7 +19,6 @@ import java.util.concurrent.TimeUnit;
  * correct action, explicit by the player or implicit such as various check, for a specific player turn.
  * @see TurnHandler
  * @method chooseFirstPlayer(), saveGame(), loadGame(), update(UI, Integer), update(UI, String), update(UI, List<int[]>)
- * @author Matteo Panarotto
  */
 public class Controller {
     /* ATTRIBUTES SECTION */
@@ -52,7 +51,6 @@ public class Controller {
 
     /**
      * chooseFirstPlayer method decides the first player of the match
-     * @author Matteo Panarotto
      */
     public void chooseFirstPlayer() throws RemoteException{
         //extract a random number between zero and numberOfPlayers
@@ -85,7 +83,6 @@ public class Controller {
      * saveGame method saves the state of the game in a file
      * @param game - the current model of the match
      * @param fileName - the name of the saving file
-     * @author Christian Pasinetti
      */
     public static void saveGame(Game game, String fileName) {
         try{

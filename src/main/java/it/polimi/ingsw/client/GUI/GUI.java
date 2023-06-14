@@ -134,7 +134,7 @@ public class GUI extends Application implements UI {
 
     /**
      * Main method for GUI
-     * @param args
+     * @param args String[]
      */
     public static void main(String[] args){ launch(args);}
 
@@ -327,11 +327,19 @@ public class GUI extends Application implements UI {
         Platform.runLater(() -> mainGameController.updateGameboard(gb));
     }
 
+    /**
+     * update method
+     * @param game the GameView to be updated
+     */
     @Override
     public void update(GameView game) {
 
     }
 
+    /**
+     * update method
+     * @param gameGrid the game grid to be updated
+     */
     @Override
     public void update(Item[][] gameGrid) {
 

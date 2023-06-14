@@ -68,8 +68,8 @@ public class MatchChoicesController implements GUIController, Initializable {
 
     /**
      * sets the type of connection (SOCKET or RMI) and the address for the connection.
-     * @param typeOfConnection String
-     * @param address String
+     * @param typeOfConnection RMI/Socket
+     * @param address IP address string
      */
     public void setConnectionType(String typeOfConnection, String address){
         this.typeOfConnection = typeOfConnection;
@@ -82,7 +82,7 @@ public class MatchChoicesController implements GUIController, Initializable {
      * -type of match (new game or existing game)
      * -number of player (2,3 or 4 players)
      * notifies the choices made.
-     * @param event ActionEvent
+     * @param event event to be managed
      */
     public void confirmButtonAction(ActionEvent event){
         if(done) return;
@@ -198,7 +198,7 @@ public class MatchChoicesController implements GUIController, Initializable {
      * returns to the previous choice.
      * NICKNAME <-- TYPE OF MATCH
      * TYPE OF MATCH <-- NUMBER OF PLAYERS
-     * @param event ActionEvent
+     * @param event event to be managed
      */
     public void prevButtonAction(ActionEvent event){
         playSound(MenuSelection);
@@ -239,7 +239,7 @@ public class MatchChoicesController implements GUIController, Initializable {
 
     /**
      * returns to main menu
-     * @param event ActionEvent
+     * @param event event to be managed
      */
     public void backButtonAction(ActionEvent event){
         playSound(MenuSelection);
@@ -368,7 +368,7 @@ public class MatchChoicesController implements GUIController, Initializable {
     public void setOldMatchFalse(){ this.oldMatchFlag = false; }
 
     /**
-     * set method for the GUI.
+     * method to set gui for the application
      * @param gui GUI
      */
     @Override

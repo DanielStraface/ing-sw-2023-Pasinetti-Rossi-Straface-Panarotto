@@ -13,5 +13,10 @@ public abstract class StrategyCheck implements Serializable {
      * @return a boolean that is true if the condition is satisfied
      */
     public abstract boolean check(Item[][] grid);
+
+    /**
+     * get method
+     * @return type
+     */
     public int getType(){return this.type;}
 }

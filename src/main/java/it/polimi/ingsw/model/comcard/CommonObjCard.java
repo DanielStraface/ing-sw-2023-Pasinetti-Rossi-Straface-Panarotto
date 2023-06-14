@@ -112,6 +112,8 @@ public class CommonObjCard implements Serializable {
     /**
      * Method getPoint returns the points for this card based on what order the players has reached the goal.
      * @return result <==> objPoints[objLength - 1]
+     * @throws InvalidPointerException if the array length is zero
+     * @throws  OutOfBoundsException if all the points for the objcard are taken
      */
     public int getPoints() throws InvalidPointerException, OutOfBoundsException {
         if (objPoints.length - 1 < 0) throw new InvalidPointerException("The array length is zero");
@@ -132,7 +134,7 @@ public class CommonObjCard implements Serializable {
 
     /**
      * defines all the check methods depending on the type of card
-     * @param type
+     * @param type int
      */
     private void defineStrategy(int type){
         if(type == 2 || type == 6) strategyCheck = new RowsColumnsCard(type);
@@ -144,7 +146,7 @@ public class CommonObjCard implements Serializable {
 
     /**
      * doCheck method controls if the condition for distributes points subsist.
-     * @param player
+     * @param player the player
      * @return true <==> conditions of the commonObjCard subsists for the parameter player
      */
     public int doCheck(Player player) throws InvalidPointerException {

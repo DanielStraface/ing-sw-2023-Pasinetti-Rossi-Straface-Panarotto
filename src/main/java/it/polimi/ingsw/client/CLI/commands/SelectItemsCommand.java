@@ -213,9 +213,9 @@ public class SelectItemsCommand implements Command{
 
     /**
      * Invokes methods to ask the number of tiles, their coordinates and their order for when
-     * they're put in the shelf and to check if the choices made are valid
-     *
+     * they're put on the shelf and to check if the choices made are valid
      * @throws InvalidSelectionException when the items selection from the game board is not correct
+     * @throws FullColumnException when the shelf column is full
      */
     @Override
     public void execute() throws InvalidSelectionException, FullColumnException {

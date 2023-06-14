@@ -55,9 +55,6 @@ public class Player extends ModelSubject implements Serializable {
     /**
      *  method to put Items into personal shelf and remove them from the selectItems list
      * @param selectedCol the Shelf's column selected by the current player
-     * @throws OutOfBoundsException attempt to acces an array element with an index that is outside the valid range
-     * of the array
-     * @throws InvalidNumberOfItemsException if the items drawn by the player are more than three
      */
     public void putItemInShelf(int selectedCol) {
         int[] lastRows = myShelf.getLastRow();
@@ -118,7 +115,7 @@ public class Player extends ModelSubject implements Serializable {
 
     /**
      * the method sets the personal objective card of the player.
-     * @param card
+     * @param card PersonalObjCard
      */
     public void setPersonalObjCard(PersonalObjCard card){
         this.myPersonalObjCard = card;
@@ -126,7 +123,7 @@ public class Player extends ModelSubject implements Serializable {
 
     /**
      * the method sets the personal shelf of the player.
-     * @param shelf
+     * @param shelf Shelf
      */
     public void setMyShelf(Shelf shelf){this.myShelf = shelf;}
 
@@ -137,8 +134,8 @@ public class Player extends ModelSubject implements Serializable {
 
     /**
      * the method sets the nickname and the ClientId of the player.
-     * @param nickname
-     * @param clientID
+     * @param nickname name of the player
+     * @param clientID int
      */
     public void setNicknameAndClientID(String nickname, int clientID){
         this.nickname = nickname;
@@ -179,7 +176,7 @@ public class Player extends ModelSubject implements Serializable {
 
     /**
      * get method that return the personal shelf of the player.
-     * @return
+     * @return myShelf
      */
     public Shelf getMyShelf(){
         return this.myShelf;

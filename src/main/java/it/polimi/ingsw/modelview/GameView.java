@@ -21,7 +21,7 @@ public class GameView implements Serializable {
 
     /**
      * constructor method
-     * @param game
+     * @param game Game
      */
     public GameView(Game game) {
         this.commonObjCards = new ArrayList<>();
@@ -80,6 +80,7 @@ public class GameView implements Serializable {
      * @return boolean -> gameOverPointToken
      */
     public boolean getGameOverPointToken(){return this.gameOverPointToken;}
+
     /**
      * get method
      * @return String -> gameOverPointPlayerNickname

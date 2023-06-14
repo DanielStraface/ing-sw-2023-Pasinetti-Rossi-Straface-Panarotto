@@ -355,7 +355,7 @@ public class MainGameController implements GUIController {
      * from the selection, numbering the item from one to three according to the player's choice. Checks if the clicked
      * item is playable or not. Play a specific sound to indicate item selection. When an item is selected, its border
      * turns blue.
-     * @param event ActionEvent
+     * @param event the event to be managed
      */
     public void itemClick(ActionEvent event){
         this.updateMessageBox("", false);
@@ -428,7 +428,7 @@ public class MainGameController implements GUIController {
      * handles the action event when the confirm selection button is clicked. Checks the validity of the selected items.
      * If the selection is not corrected shows an error message, otherwise the message consists of asking in which column
      * of the library put the items.
-     * @param event ActionEvent
+     * @param event te event to be managed
      */
     public void confirmSelectionAction(ActionEvent event){
         confirmButtonFlag = true;
@@ -461,7 +461,7 @@ public class MainGameController implements GUIController {
      * handles the action event when a shelf column button is clicked. Sets the selected column based on the button
      * clicked, checks the selected column for validity and notifies the GUI. If the column is full shows en error
      * message and plays a specific sound.
-     * @param event ActionEvent
+     * @param event the event to be managed
      */
     public void shelfColumnButtonAction(ActionEvent event){
         String[] cols = {"1", "2", "3", "4", "5"};
@@ -561,20 +561,20 @@ public class MainGameController implements GUIController {
     }
 
     /**
-     * reset the game board Item Matrix.
+     * reset the game board Item Matrix
      */
     public void resetGameBoardItemMatrix(){this.gameboardItemMatrix = new boolean[DIM_GAMEBOARD][DIM_GAMEBOARD];}
 
     /**
-     * set method for valid grid for item selection.
+     * set method for valid grid for item selection
      * @param validGrid -> int[][]
      */
     public void setValidGridForItemSelection(int[][] validGrid){this.validGridForItemSelection = validGrid;}
 
     /**
-     * shows information dialog box about the match.
+     * shows information dialog box about the match and closes the provided stage upon confirmation
      * @param msg message that is displayed
-     * @param stage where the message is displayed
+     * @param stage the stage to be closed upon confirmation
      */
     public void matchLogInfo(String msg, Stage stage) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -600,8 +600,8 @@ public class MainGameController implements GUIController {
 
     /**
      * displays a disconnection alert dialog box.
-     * @param msg message that displayed
-     * @param stage String
+     * @param msg message to be displayed
+     * @param stage stage to be closed upon confirmation
      */
     public void disconnectionAlert(String msg, Stage stage){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -626,9 +626,9 @@ public class MainGameController implements GUIController {
     }
 
     /**
-     * display a dialog box if the bag is empty.
+     * display a dialog box if the bag is empty and closes the provided stage upon confirmation
      * @param msg message that is displayed
-     * @param stage String
+     * @param stage the stage to be closed upon confirmation
      */
     public void emptyBagAlert(String msg, Stage stage){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -661,14 +661,14 @@ public class MainGameController implements GUIController {
     }
 
     /**
-     * make the final point invisible.
+     * make the final point invisible
      */
     public void takeFinalPointToken(){
         finalPointToken.setVisible(false);
     }
 
     /**
-     * set method for the GUI.
+     * method to set gui for the application
      * @param gui GUI
      */
     @Override

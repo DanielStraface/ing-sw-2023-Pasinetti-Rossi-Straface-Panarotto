@@ -167,6 +167,11 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Serializa
         this.clientState = ClientState.WAITING_IN_LOBBY;
     }
 
+    /**
+     * update method
+     * @param notificationList List<Object>
+     * @throws RemoteException if the execution of a remote method call goes wrong
+     */
     @Override
     public synchronized void update(List<Object> notificationList) throws RemoteException {
         QuitState quitState = (QuitState) notificationList.get(0);

@@ -394,6 +394,11 @@ public class TextualUI implements UI, Serializable {
         this.refClient = client;
     }
 
+    /**
+     * to display the name of the player who fills the shelf
+     * @param game GameView
+     * @param playerNickname the player who fills the shelf
+     */
     @Override
     public void gameOverPointTokenHandler(GameView game, String playerNickname) {
         this.update("Player " + playerNickname + " completely filled the shelf.\nThis is the last turn cycle");
@@ -444,6 +449,11 @@ public class TextualUI implements UI, Serializable {
         }
     }
 
+    /**
+     * notifies about disconnection and sends a list of notification
+     * @param notificationList list of notification
+     * @throws RemoteException if the execution of update method call goes wrong
+     */
     @Override
     public void notifyDisconnection(List<String> notificationList) throws RemoteException {
         Object[] arrLocal;

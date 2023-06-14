@@ -65,7 +65,7 @@ public class SelectColumnCommand implements Command{
 
     /**
      * Set method for the column (choose column of the shelf)
-     * @param col int -> number of tiles taken
+     * @param col int -> number of chosen column
      */
     public void setColumn(int col){
         this.col = col - 1;
