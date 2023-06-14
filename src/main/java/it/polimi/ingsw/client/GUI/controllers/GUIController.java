@@ -4,7 +4,7 @@ import it.polimi.ingsw.client.GUI.GUI;
 
 public interface GUIController {
     /**
-     * set method for the GUI
+     * method to set gui for the application
      * @param gui GUI
      */
     void setGUI(GUI gui);

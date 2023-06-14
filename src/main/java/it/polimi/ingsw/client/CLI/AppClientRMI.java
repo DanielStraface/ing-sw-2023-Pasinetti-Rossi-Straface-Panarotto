@@ -28,11 +28,10 @@ public class AppClientRMI extends AppClient{
     private static final Object lock = new Object();
 
     /**
-     * Manages all aspects of RMI connection, the choice bewteen CLI/GUI and to either create or join a match
+     * Manages all aspects of RMI connection, the choice between CLI/GUI and to either create or join a match
      * @param args -> Object[]
-     * @throws RemoteException due to the invocation of methods: getRegistry and lookup in Registry,
-     * log in AppServer, connect in AppServer, removeLoggedUser in AppServer
-     *  @throws NotBoundException when a name is not currently bound
+     * @throws RemoteException due to the invocation of methods: getRegistry, lookup, connect, removeLoggedUser
+     * @throws NotBoundException when a name is not currently bound
      */
     public static void launchClient(Object[] args) throws RemoteException, NotBoundException {
         Server matchServerRef = null;

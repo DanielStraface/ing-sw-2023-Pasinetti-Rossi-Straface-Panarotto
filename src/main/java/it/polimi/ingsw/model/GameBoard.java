@@ -18,9 +18,9 @@ public class GameBoard implements Serializable {
 
     /**
      * constructor method for the game board.
-     * @param playersNumber
+     * @param playersNumber number of players
      * @throws InvalidNumberOfPlayersException number of players entered is less than two or more than four
-     * @throws RemoteException number of players entered is less than two or more than four
+     * @throws RemoteException if the execution of a remote method call goes wrong
      */
     public GameBoard(int playersNumber) throws InvalidNumberOfPlayersException, RemoteException {
         if(playersNumber <= 1 || playersNumber >= 5)

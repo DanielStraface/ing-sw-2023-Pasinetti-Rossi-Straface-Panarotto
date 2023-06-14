@@ -11,7 +11,6 @@ import java.io.Serializable;
  * the player must reach in his own shelf. The class has got a get method to return the cardGrid attribute and
  * a logic method (shelfCheck) that controls if the goal is reached.
  * @method getCardGrid(), shelfCheck()
- * @author Matteo Panarotto
  */
 
 public class PersonalObjCard implements Serializable {
@@ -28,7 +27,6 @@ public class PersonalObjCard implements Serializable {
     /**
      * Method getPersonalObjCardDescription returns a string with the description of this card.
      * @return this.personalObjCardDescription
-     * @author Matteo Panarotto
      */
     public String getPersonalObjCardDescription() {
         return this.personalObjCardDescription;
@@ -37,7 +35,6 @@ public class PersonalObjCard implements Serializable {
     /**
      * Method getCardGrid returns a reference to cardGrid.
      * @return this.cardGrid
-     * @author Matteo Panarotto
      */
     public Item[][] getCardGrid(){
         return this.cardGrid;
@@ -52,7 +49,6 @@ public class PersonalObjCard implements Serializable {
      *                              ((Item I1 in the (x,y) position in cardGrid template && I1 != null) ==>
      *                              (exists Item I2 in the (w,z) position in player's shelf with
      *                              x == w && y == z && I1.getCategoryType() == I2.getCategoryType())))
-     * @author Matteo Panarotto
      */
     public int shelfCheck(Shelf shelf) throws InvalidMatchesException {
         int matches = 0;

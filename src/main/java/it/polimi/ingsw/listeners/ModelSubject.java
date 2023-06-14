@@ -179,6 +179,13 @@ public class ModelSubject {
         }).start();
     }
 
+    /**
+     * notifies about disconnection
+     * @param game Game
+     * @param disconnectedName type od disconnection
+     * @param msg message to be  included in the notification
+     * @throws RemoteException if the execution of getClientID method call goes wrong
+     */
     public void notifyDisconnection(Game game, String disconnectedName, String msg) throws RemoteException{
         setChanged();
         /*

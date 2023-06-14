@@ -14,7 +14,7 @@ public class CommonObjCardView implements Serializable {
 
     /**
      * Constructor method
-     * @param card
+     * @param card CommonObjCard
      */
     public CommonObjCardView(CommonObjCard card) {
         this.card = card;

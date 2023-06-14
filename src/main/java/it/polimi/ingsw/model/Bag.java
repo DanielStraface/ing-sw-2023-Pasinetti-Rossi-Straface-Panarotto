@@ -11,7 +11,6 @@ import java.util.Random;
  * This class represent the bag of the game. It has got only one attribute, the list of the item cards, and three
  * methods: a setter, a getter and drawItem that pop an item from the bag list
  * @method setItemCards(Item), getItemCards(), drawItem()
- * @author Matteo Panarotto
  */
 public class Bag implements Serializable {
     /* ATTRIBUTES SECTION */
@@ -44,6 +43,7 @@ public class Bag implements Serializable {
      * @return Item item : (cardsList.size() + 1 == \old(cardsList.size())) &&
      *                      (forall item i; !i.equals(item); cardsList.contains(i) <==> \old(cardsList.contains(i))) &&
      *                      !cardsList.contains(item) ==> \old(cardsList.contains(item)
+     * @throws NoElementException if the bag is empty
      * */
     public Item drawItem() throws NoElementException {
         if(itemCards.size()>0){

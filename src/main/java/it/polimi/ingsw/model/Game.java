@@ -126,7 +126,6 @@ public class Game extends ModelSubject implements Serializable {
 
     /**
      * Refills every PLAYABLE slot of the GameBoard with an Item of a random Category drawn from the Bag
-     * @throws RemoteException if the execution of a remote method call goes wrong
      */
     public void refillGameBoard() {
         int[][] vlg = this.gameboard.getValidGrid();
@@ -153,6 +152,11 @@ public class Game extends ModelSubject implements Serializable {
         //setChangedAndNotifyListeners(this.gameboard);
     }
 
+    /**
+     * notifies that a player has reached a common objective card
+     * @param player player who has reached a common objective card
+     * @param toDisplay the message to be display
+     */
     public void commonObjCardReached(Player player, String toDisplay){
         setChanged();
         notifyObservers(player, toDisplay);
@@ -197,13 +201,13 @@ public class Game extends ModelSubject implements Serializable {
 
     /**
      * set metod for the valid grid.
-     * @param validGrid
+     * @param validGrid int[][]
      */
     public void setValidGrid (int[][] validGrid) { this.validGrid = validGrid; }
 
     /**
      * set method for the game over message.
-     * @param finalMessage
+     * @param finalMessage the game over message
      * @throws RemoteException if the execution of setChangedAndNotifyListeners method call goes wrong
      */
     public void setGameOverFinalMessage(String finalMessage) throws RemoteException {
@@ -211,6 +215,11 @@ public class Game extends ModelSubject implements Serializable {
         setChangedAndNotifyListeners(this);
     }
 
+    /**
+     * set method
+     * @param value true if a player has filled the shelf
+     * @param nickname name of the player who filled the library
+     */
     public void setGameOverPointToken(boolean value, String nickname){
         this.gameOverPointToken = value;
         this.gameOverPointPlayerName = nickname;
@@ -281,7 +290,7 @@ public class Game extends ModelSubject implements Serializable {
 
     /**
      * set method for the game.
-     * @param gm
+     * @param gm Fame
      * @throws RemoteException if the execution of a remote method call goes wrong
      */
     private void setChangedAndNotifyListeners(Game gm) throws RemoteException{

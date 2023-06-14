@@ -42,7 +42,7 @@ public class PlayersShelfController implements GUIController {
 
     /**
      * set method
-     * @param numOfPlayer ->int
+     * @param numOfPlayer the number of players
      */
     public void setNumOfPlayer(int numOfPlayer){
         this.numOfPlayers = numOfPlayer;
@@ -94,7 +94,7 @@ public class PlayersShelfController implements GUIController {
     }
 
     /**
-     * set method for the GUI.
+     * method to set gui for the application
      * @param gui GUI
      */
     @Override

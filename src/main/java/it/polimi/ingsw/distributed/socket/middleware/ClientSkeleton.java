@@ -44,7 +44,7 @@ public class ClientSkeleton implements Client {
     /**
      * Writes GameView to the ObjectOutputStream, then flushes and resets
      * @param game GameView
-     * @throws RemoteException
+     * @throws RemoteException if the execution of a remote method call goes wrong
      */
     @Override
     public void update(GameView game) throws RemoteException {
@@ -87,6 +87,11 @@ public class ClientSkeleton implements Client {
         }
     }
 
+    /**
+     * update method
+     * @param notificationList List<Object>
+     * @throws RemoteException if the execution of a remote method call goes wrong
+     */
     @Override
     public void update(List<Object> notificationList) throws RemoteException {
         try {

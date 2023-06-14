@@ -35,14 +35,14 @@ public class ChoicesMenuController implements GUIController, Initializable {
     private MediaPlayer mediaPlayer;
 
     /**
-     * method to set gui
+     * method to set gui for the application
      * @param gui -> GUI
      */
     public void setGUI(GUI gui){this.gui = gui;}
 
     /**
-     * backButtonAction handles the press of the back button that returns to the main menu.
-     * @param event -> ActionEvent
+     * backButtonAction handles the press of the back button that returns to the main menu
+     * @param event the event to be managed
      */
     public void backButtonAction(ActionEvent event) {
         playSound(MenuSelection);
@@ -53,8 +53,8 @@ public class ChoicesMenuController implements GUIController, Initializable {
     }
 
     /**
-     * confirmButtonAction handles the press of the confirm button.
-     * @param event
+     * confirmButtonAction handles the press of the confirm button
+     * @param event event to be managed
      */
     public void confirmButtonAction(ActionEvent event){
         playSound(MenuSelection);
@@ -96,6 +96,11 @@ public class ChoicesMenuController implements GUIController, Initializable {
         });
     }
 
+    /**
+     * initializes the choice box of connection with /RMI/SOCKET
+     * @param url URL
+     * @param resourceBundle ResourceBundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         networkChoices.getItems().addAll(networks);

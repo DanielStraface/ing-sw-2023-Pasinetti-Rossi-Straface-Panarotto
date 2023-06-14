@@ -20,9 +20,8 @@ public class TurnChecker {
     /**
      * all checks that have to be done before ending a player's turn
      * @param player the player whose turn in ending
-     * @param game
+     * @param game Game
      * @return shelfFull <==> boolean to check if the current player's shelf is full
-     * @throws RemoteException if the refillGameBoardCheck method call goes wrong
      */
     public boolean manageCheck(Player player, Game game) {
         boolean shelfFull;
@@ -78,7 +77,7 @@ public class TurnChecker {
      * If there's a single adjacent item, there's no need to refill the GameBoard and the check is
      * set to false.
      * @param game Game
-     * @throws RemoteException
+     * @throws RemoteException if the execution of a remote method call goes wrong
      */
     private void refillGameBoardCheck(Game game) throws RemoteException {
         boolean check = true;

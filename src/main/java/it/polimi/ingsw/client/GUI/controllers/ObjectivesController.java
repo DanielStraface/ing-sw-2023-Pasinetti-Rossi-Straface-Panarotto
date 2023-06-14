@@ -46,7 +46,7 @@ public class ObjectivesController implements GUIController {
     /**
      * it assigns the corresponding images and descriptions to the two objective cards of the match in the objective
      * cards' window
-     * @param comObjCards
+     * @param comObjCards list of comObjCards to be updated
      */
     public void updateComObjCards(List<CommonObjCardView> comObjCards){
         int cardType;
@@ -92,7 +92,7 @@ public class ObjectivesController implements GUIController {
     }
 
     /**
-     * set method for the GUI.
+     * method to set gui for the application.
      * @param gui GUI
      */
     @Override

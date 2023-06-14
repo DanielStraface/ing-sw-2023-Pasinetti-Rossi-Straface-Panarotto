@@ -15,7 +15,7 @@ public class GameBoardView implements Serializable {
 
     /**
      * constructor method
-     * @param gb
+     * @param gb GameBoard
      */
     public GameBoardView(GameBoard gb) {
         this.validGrid = new int[DIM_GAMEBOARD][DIM_GAMEBOARD];

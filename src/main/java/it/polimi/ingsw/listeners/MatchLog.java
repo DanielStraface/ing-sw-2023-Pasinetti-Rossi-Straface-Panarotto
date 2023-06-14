@@ -57,6 +57,11 @@ public class MatchLog implements Client {
         this.listenerID = clientID;
     }
 
+    /**
+     * update method
+     * @param notificationList List<Object>
+     * @throws RemoteException if the execution of a remote method call goes wrong
+     */
     @Override
     public void update(List<Object> notificationList) throws RemoteException {
         System.out.println("Log := match#" + matchID + ", client disconnection event : \n->" +

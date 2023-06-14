@@ -65,7 +65,7 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
     /**
      * Main method: Starts both RMI and socket technologies by invoking their respective method,
      * everything inside a run method
-     * @param args
+     * @param args String[]
      */
     public static void main(String[] args) {
         System.out.println("Server is starting...\nServer is ready!");
@@ -262,6 +262,10 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
         }
     }
 
+    /**
+     * remove a game forcefully
+     * @param matchID the ID of the game to be removed
+     */
     public synchronized static void forceGameRemove(int matchID){
         if(matches.size() > 0 && matches.containsKey(matchID)){
             System.out.println("The running match # " + matchID + " must be removed!");
@@ -299,6 +303,10 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
         //da sistemare
     }
 
+    /**
+     * sets up the active match ID to the next available value, based on the previous saved matches. If there are no previous matches, the
+     * active match ID is not set. If the maximum number of saved matches is reached, an error message  is printed
+     */
     private static void setupActiveMatchId(){
         for(int counter=0;counter<MAX_MATCHES_MANAGED;counter++){
             try {
@@ -498,6 +506,12 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
         }
     }
 
+    /**
+     * sends a heartbeat signal to the server to communicate that the client is still connected
+     * @param client  the identifier of the client
+     * @return true to indicate the success of the signal
+     * @throws RemoteException if the execution of a remote method call goes wrong
+     */
     @Override
     public boolean heartbeat(String client) throws RemoteException {
         synchronized (connectedRMIClient){
@@ -507,6 +521,12 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
         return true;
     }
 
+    /**
+     * stops the heartbeat signal from the client
+     * @param client the identifier of the client
+     * @return true to indicate the success of the  stop signal
+     * @throws RemoteException if the execution of a remote method call goes wrong
+     */
     @Override
     public boolean heartbeatStop(String client) throws RemoteException {
         synchronized (connectedRMIClient){
@@ -517,6 +537,11 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
         return true;
     }
 
+    /**
+     * check the status of the specified client for RMI connectivity and heartbeat signals
+     * @param client the identifier of the client
+     * @throws ClientRMITimeoutException if client RMI has disconnected during setup situations
+     */
     public synchronized void checkClientStatus(String client) throws ClientRMITimeoutException {
         if(noMoreHeartbeat.get(connectedRMIClient.indexOf(client))) throw new NoMoreHeartbeatException();
         if(!loggedNicknames.contains(client)) throw new AnotherClientRMITimeoutException();
@@ -526,6 +551,10 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
         // control 7.5 13.5
     }
 
+    /**
+     * adds the match ID to the list of previously saved matches
+     * @param matchID the ID of match to be saved
+     */
     public static void addPrevMatchSave(int matchID){
         previousMatch.add(matchID);
     }
@@ -545,5 +574,9 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
                 .get(0);
     }
 
+    /**
+     * get method
+     * @return the list of the previously saved match IDs
+     */
     public static List<Integer> getPreviousMatch(){return previousMatch;}
 }

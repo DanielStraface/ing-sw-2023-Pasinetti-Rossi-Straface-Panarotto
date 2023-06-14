@@ -26,7 +26,7 @@ public class MainMenuController implements GUIController{
 
     /**
      * handles the action of press "play" button in this way the application start.
-     * @param event ActionEvent
+     * @param event event to be managed
      */
     public void playButtonAction(ActionEvent event) throws IOException {
         System.out.println("Play button pressed, application start");
@@ -44,7 +44,7 @@ public class MainMenuController implements GUIController{
     /**
      * handles the event of press "quit" button, in this way the application is closed and the
      * player is logged out.
-     * @param event ActionEvent
+     * @param event event to be managed
      */
     public void quitButtonAction(ActionEvent event){
         playSound(MenuSelection);
