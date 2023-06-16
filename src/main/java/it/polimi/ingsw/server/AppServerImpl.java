@@ -482,25 +482,32 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
                     } catch (ClientRMITimeoutException e) {
                         timer.cancel();
                         if(e instanceof AnotherClientRMITimeoutException){
-                            /*connectedRMIClientFlag.remove(connectedRMIClient.indexOf(nickname));
-                            noMoreHeartbeat.remove(connectedRMIClient.indexOf(nickname));
-                            connectedRMIClient.remove(nickname);
+                            connectedRMIClientFlag.remove(nickname);
+                            noMoreHeartbeat.remove(nickname);
+                            int key = 0;
+                            for(Map.Entry<Integer, String> entry : connectedRMIClient.entrySet())
+                                if(entry.getValue().equals(nickname))
+                                    key = entry.getKey();
+                            connectedRMIClient.remove(key);
                             System.out.println("rmiClientFlag := " + connectedRMIClientFlag.size());
                             System.out.println("rmiClientNickname := " + connectedRMIClient.size());
-                            System.out.println("noMoreHeartbeat := " + noMoreHeartbeat.size());*/
+                            System.out.println("noMoreHeartbeat := " + noMoreHeartbeat.size());
                         } else if(e instanceof NoMoreHeartbeatException) {
                             System.out.println("Client " + nickname + " is entered in the game phase," +
                                     "no more heartbeat needed");
                             noMoreHeartbeat.remove(nickname);
                             connectedRMIClient.remove(nickname);
                         } else {
-                            /*connectedRMIClientFlag.remove(connectedRMIClient.indexOf(nickname));
-                            noMoreHeartbeat.remove(connectedRMIClient.indexOf(nickname));
-                            connectedRMIClient.remove(nickname);
+                            connectedRMIClientFlag.remove(nickname);
+                            noMoreHeartbeat.remove(nickname);
+                            int key = 0;
+                            for(Map.Entry<Integer, String> entry : connectedRMIClient.entrySet())
+                                if(entry.getValue().equals(nickname))
+                                    key = entry.getKey();
+                            connectedRMIClient.remove(key);
                             System.out.println("rmiClientFlag := " + connectedRMIClientFlag.size());
                             System.out.println("rmiClientNickname := " + connectedRMIClient.size());
-                            System.out.println("noMoreHeartbeat := " + noMoreHeartbeat.size());*/
-                            connectedRMIClient.remove(nickname);
+                            System.out.println("noMoreHeartbeat := " + noMoreHeartbeat.size());
                             if(waitingQueue.size() > 0){
                                 List<List<String>> allWaitingMatchesNickname =
                                         waitingQueue.values().stream().map(ServerImpl::getMatchNicknames).toList();
