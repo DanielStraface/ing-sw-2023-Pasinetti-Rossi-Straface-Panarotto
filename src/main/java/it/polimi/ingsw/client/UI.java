@@ -18,7 +18,8 @@ public interface UI extends ViewSubject {
                 input.contains("/") || input.contains("£") || input.contains("$") || input.contains("€") ||
                 input.contains("disconnected") || input.contains("searching") || input.contains("TWO") ||
                 input.contains("THREE") || input.contains("FOUR") || input.contains("unfinished") ||
-                input.contains("is playing") || input.contains("BYE") || input.contains("Joining a lobby..."))
+                input.contains("is playing") || input.contains("BYE") || input.contains("Joining a lobby...") ||
+                input.contains("Correct"))
             return false;
         else return true;
     }
