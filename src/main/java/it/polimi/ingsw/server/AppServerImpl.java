@@ -481,13 +481,13 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
                         checkClientStatus(nickname);
                     } catch (ClientRMITimeoutException e) {
                         timer.cancel();
+                        int key = 0;
+                        for(Map.Entry<Integer, String> entry : connectedRMIClient.entrySet())
+                            if(entry.getValue().equals(nickname))
+                                key = entry.getKey();
                         if(e instanceof AnotherClientRMITimeoutException){
                             connectedRMIClientFlag.remove(nickname);
                             noMoreHeartbeat.remove(nickname);
-                            int key = 0;
-                            for(Map.Entry<Integer, String> entry : connectedRMIClient.entrySet())
-                                if(entry.getValue().equals(nickname))
-                                    key = entry.getKey();
                             connectedRMIClient.remove(key);
                             System.out.println("rmiClientFlag := " + connectedRMIClientFlag.size());
                             System.out.println("rmiClientNickname := " + connectedRMIClient.size());
@@ -496,14 +496,10 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
                             System.out.println("Client " + nickname + " is entered in the game phase," +
                                     "no more heartbeat needed");
                             noMoreHeartbeat.remove(nickname);
-                            connectedRMIClient.remove(nickname);
+                            connectedRMIClient.remove(key);
                         } else {
                             connectedRMIClientFlag.remove(nickname);
                             noMoreHeartbeat.remove(nickname);
-                            int key = 0;
-                            for(Map.Entry<Integer, String> entry : connectedRMIClient.entrySet())
-                                if(entry.getValue().equals(nickname))
-                                    key = entry.getKey();
                             connectedRMIClient.remove(key);
                             System.out.println("rmiClientFlag := " + connectedRMIClientFlag.size());
                             System.out.println("rmiClientNickname := " + connectedRMIClient.size());
