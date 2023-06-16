@@ -76,7 +76,7 @@ public class SelectColumnCommand implements Command{
      * @throws FullColumnException when the shelf column is full
      */
     @Override
-    public void execute() throws FullColumnException, InvalidSelectionException {
+    public void execute() throws FullColumnException{
         this.askUser();
         this.check();
     }
@@ -87,7 +87,7 @@ public class SelectColumnCommand implements Command{
      * @throws FullColumnException when the shelf column is full
      */
     @Override
-    public void check() throws InvalidSelectionException, FullColumnException {
+    public void check() throws FullColumnException {
         columnCheck(this.col);
         this.columnReference.add(this.col);
     }

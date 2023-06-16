@@ -1,7 +1,6 @@
 package it.polimi.ingsw.client.CLI.commands;
 
-import it.polimi.ingsw.exceptions.FullColumnException;
-import it.polimi.ingsw.exceptions.InvalidSelectionException;
+import it.polimi.ingsw.exceptions.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,18 +64,17 @@ public class SelectOrderCommand implements Command{
      * @throws  FullColumnException when the shelf column is full
      */
     @Override
-    public void execute() throws InvalidSelectionException, FullColumnException {
+    public void execute() throws FullColumnException {
         this.askUser();
         this.check();
     }
 
     /**
      * Checks if the column selected isn't full and saves the choice made in a List of int arrays
-     * @throws InvalidSelectionException when the items selection from the game board is not correct
      * @throws FullColumnException when the shelf column is full
      */
     @Override
-    public void check() throws InvalidSelectionException, FullColumnException {
+    public void check() throws FullColumnException {
         List<int[]> temp = new ArrayList<>();
         for(Integer i : this.sortingOrder)
             temp.add(this.coordsToOrder.get(i));

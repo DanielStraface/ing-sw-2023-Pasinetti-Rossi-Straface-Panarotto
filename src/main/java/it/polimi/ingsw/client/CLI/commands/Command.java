@@ -1,7 +1,6 @@
 package it.polimi.ingsw.client.CLI.commands;
 
-import it.polimi.ingsw.exceptions.FullColumnException;
-import it.polimi.ingsw.exceptions.InvalidSelectionException;
+import it.polimi.ingsw.exceptions.*;
 
 
 public interface Command {
@@ -10,12 +9,12 @@ public interface Command {
      * @throws InvalidSelectionException when the items selection from the game board is not correct
      * @throws FullColumnException  when the shelf column is full
      */
-    void execute() throws InvalidSelectionException, FullColumnException;
+    void execute() throws SelectionInvalidOrEmptySlotException,NoFreeSidesException,NotSameRowOrColException,NoConsecutiveSelectionException,FullColumnException;
 
     /**
      * Method implemented in all "Command" Classes in order to do a check
      * @throws InvalidSelectionException when the items selection is not correct
      * @throws FullColumnException when the shelf column is full
      */
-    void check() throws InvalidSelectionException, FullColumnException;
+    void check() throws SelectionInvalidOrEmptySlotException,NoFreeSidesException,NotSameRowOrColException,NoConsecutiveSelectionException,FullColumnException;
 }

@@ -314,10 +314,8 @@ public class TextualUI implements UI, Serializable {
         SelectItemsCommand sic = (SelectItemsCommand) this.gameActionMenu.get(0);
         scc.setShelfView(sh);
         scc.setMaxNumOfItems(sic.getNumOfItems());
-        try {
-            scc.execute();
-        } catch (InvalidSelectionException ignored) {
-        }
+        scc.execute();
+
     }
 
     /**
