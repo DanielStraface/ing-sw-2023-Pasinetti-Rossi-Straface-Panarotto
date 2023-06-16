@@ -522,7 +522,7 @@ public class GUI extends Application implements UI {
         Platform.runLater(() -> {
             mainGameController.playSound(PointsGet);
             mainGameController.updateMessageBox("Player " + playerNickname +
-                    " completely filled the shelf.\nThis is the last turn cycle", false);
+                    " gets a point by\ncompletely filling the shelf!\nThis is the last turn cycle!", false);
             mainGameController.takeFinalPointToken();
         });
     }

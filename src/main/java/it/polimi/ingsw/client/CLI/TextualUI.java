@@ -400,7 +400,8 @@ public class TextualUI implements UI, Serializable {
      */
     @Override
     public void gameOverPointTokenHandler(GameView game, String playerNickname) {
-        this.update("Player " + playerNickname + " completely filled the shelf.\nThis is the last turn cycle");
+        this.update("Player " + playerNickname + " gets a point by\ncompletely filling the shelf!\n" +
+                "This is the last turn cycle!");
     }
 
     /**
