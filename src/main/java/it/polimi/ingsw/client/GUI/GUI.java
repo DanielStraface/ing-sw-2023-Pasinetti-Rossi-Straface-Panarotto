@@ -150,6 +150,7 @@ public class GUI extends Application implements UI {
         if(alert.showAndWait().get() == ButtonType.OK){
             System.out.println("You're successfully logged out");
             stage.close();
+            System.exit(-4);
         }
     }
 

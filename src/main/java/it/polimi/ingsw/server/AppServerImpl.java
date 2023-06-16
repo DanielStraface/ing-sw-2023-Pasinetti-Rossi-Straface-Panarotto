@@ -1,8 +1,6 @@
 package it.polimi.ingsw.server;
 
-import it.polimi.ingsw.client.CLI.AppClientRMI;
 import it.polimi.ingsw.controller.Controller;
-import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.distributed.Server;
 import it.polimi.ingsw.distributed.ServerImpl;
 import it.polimi.ingsw.distributed.socket.middleware.ClientSkeleton;
@@ -22,7 +20,6 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 
 public class AppServerImpl extends UnicastRemoteObject implements AppServer {
@@ -286,7 +283,6 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
         if(waitingQueue.size() > 0 && waitingQueue.containsKey(matchID)){
             System.out.println("The waiting match # " + matchID + " must be removed!");
             List<String> matchNicknames = (waitingQueue.get(matchID)).getMatchNicknames();
-            matchNicknames.forEach(n -> System.out.println(n + " "));
             for(String nickname : matchNicknames){
                 if(nickname != null) {
                     try {
@@ -300,7 +296,6 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
             System.out.println("The waiting match # " + matchID + " is correctly removed!\nThere are "
                     + waitingQueue.size() + " waiting matches now");
             }
-        //da sistemare
     }
 
     /**
@@ -404,91 +399,7 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
             boolean temp = loggedNicknames.add(nickname);
             if(temp) System.out.println("New client correctly logged in! Its name is " + nickname);
             else System.out.println("A client tried to log in but its nickname was already been chosen.");
-            if(isRMI){
-                new Thread(() -> {
-                    synchronized (connectedRMIClient){
-                        connectedRMIClient.add(nickname);
-                        connectedRMIClientFlag.add(true);
-                        noMoreHeartbeat.add(false);
-                    }
-                    Timer timer = new Timer();
-                    timer.schedule(new TimerTask() {
-                        @Override
-                        public void run() {
-                            try {
-                                System.out.println("This is " + nickname + " heartbeat");
-                                checkClientStatus(nickname);
-                            } catch (ClientRMITimeoutException e) {
-                                timer.cancel();
-                                if(e instanceof AnotherClientRMITimeoutException){
-                                } else if(e instanceof NoMoreHeartbeatException) {
-                                    System.out.println("Client " + nickname + " is entered in the game phase," +
-                                            "no more heartbeat needed");
-                                    timer.cancel();
-                                    connectedRMIClient.remove(nickname);
-                                } else {
-                                    if(waitingQueue.size() > 0){
-                                        List<List<String>> allWaitingMatchesNickname =
-                                                waitingQueue.values().stream().map(ServerImpl::getMatchNicknames).toList();
-                                        for(List<String> waitingMatchNicknames : allWaitingMatchesNickname){
-                                            if(waitingMatchNicknames.contains(nickname)){
-                                                for(String name : waitingMatchNicknames) {
-                                                    try {
-                                                        if(name != null) instance.removeLoggedUser(name);
-                                                    } catch (RemoteException ex) {
-                                                        System.err.println("Cannot removed nickname " + nickname +
-                                                                " in ClientRMiTimeoutException waitingMatch: "
-                                                                + ex.getMessage());
-                                                    }
-                                                }
-
-                                                System.out.println("flag := " +
-                                                        allWaitingMatchesNickname.indexOf(waitingMatchNicknames));
-                                                ServerImpl serverMatch = waitingQueue.get(
-                                                        waitingQueue.keySet().stream().toList().get(
-                                                                allWaitingMatchesNickname.indexOf(waitingMatchNicknames)
-                                                        )
-                                                        );
-                                                List<String> notificationList = Collections.singletonList(nickname);
-                                                try {
-                                                    serverMatch.update(notificationList);
-                                                } catch (RemoteException ex) {
-                                                    System.err.println("Cannot notify disconnectionList: " + e.getMessage());
-                                                }
-                                            }
-                                            break;
-                                        }
-                                    } else {
-                                        try {
-                                            instance.removeLoggedUser(nickname);
-                                        } catch (RemoteException ex) {
-                                            System.err.println("Cannot removed nickname " + nickname +
-                                                    " in ClientRMiTimeoutException: " + ex.getMessage());
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }, 7500, CLIENT_TIMEOUT);
-                    try{
-                        TimeUnit.SECONDS.sleep(CLIENT_TIMEOUT / 2000);
-                    } catch (InterruptedException ex) {
-                        System.err.println("Cannot sleep while reset connection flag of client " + nickname);
-                    }
-                    while (true){
-                        try{
-                            TimeUnit.SECONDS.sleep(CLIENT_TIMEOUT / 1000);
-                            synchronized (connectedRMIClient){
-                                if(!connectedRMIClient.contains(nickname)) return;
-                                connectedRMIClientFlag.remove(connectedRMIClient.indexOf(nickname));
-                                connectedRMIClientFlag.add(connectedRMIClient.indexOf(nickname), false);
-                            }
-                        } catch (InterruptedException ex) {
-                            System.err.println("Cannot sleep while reset connection flag of client " + nickname);
-                        }
-                    }
-                }).start();
-            }
+            if(isRMI) heartbeatManagerRMI(nickname);
             return temp;
         }
     }
@@ -546,9 +457,91 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
         if(noMoreHeartbeat.get(connectedRMIClient.indexOf(client))) throw new NoMoreHeartbeatException();
         if(!loggedNicknames.contains(client)) throw new AnotherClientRMITimeoutException();
         if(!connectedRMIClientFlag.get(connectedRMIClient.indexOf(client))) throw new ClientRMITimeoutException();
-        // heartbeat 0 6 12 18 24
-        // reset 3 9 15 21 27
-        // control 7.5 13.5
+    }
+
+    /**
+     * wrapper method that manage the heartbeat for RMI connection.
+     * for first it resets the client flag to false and the check if the client flag has been set to true
+     * (by the remote client heartbeat call)
+     * @param nickname the identifier of the client
+     */
+    public void heartbeatManagerRMI(String nickname){
+        new Thread(() -> {
+            synchronized (connectedRMIClient){
+                connectedRMIClient.add(nickname);
+                connectedRMIClientFlag.add(true);
+                noMoreHeartbeat.add(false);
+            }
+            Timer timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    try {
+                        checkClientStatus(nickname);
+                    } catch (ClientRMITimeoutException e) {
+                        timer.cancel();
+                        if(e instanceof AnotherClientRMITimeoutException){
+                        } else if(e instanceof NoMoreHeartbeatException) {
+                            System.out.println("Client " + nickname + " is entered in the game phase," +
+                                    "no more heartbeat needed");
+                            connectedRMIClient.remove(nickname);
+                        } else {
+                            connectedRMIClient.remove(nickname);
+                            if(waitingQueue.size() > 0){
+                                List<List<String>> allWaitingMatchesNickname =
+                                        waitingQueue.values().stream().map(ServerImpl::getMatchNicknames).toList();
+                                for(List<String> waitingMatchNicknames : allWaitingMatchesNickname){
+                                    if(waitingMatchNicknames.contains(nickname)){
+                                        for(String name : waitingMatchNicknames) {
+                                            try {
+                                                if(name != null) instance.removeLoggedUser(name);
+                                            } catch (RemoteException ex) {
+                                                System.err.println("Cannot removed nickname " + nickname +
+                                                        " in ClientRMiTimeoutException waitingMatch: "
+                                                        + ex.getMessage());
+                                            }
+                                        }
+                                        ServerImpl serverMatch = waitingQueue.get(
+                                                waitingQueue.keySet().stream().toList().get(
+                                                        allWaitingMatchesNickname.indexOf(waitingMatchNicknames)
+                                                )
+                                        );
+                                        List<String> notificationList = Collections.singletonList(nickname);
+                                        try {
+                                            serverMatch.update(notificationList);
+                                        } catch (RemoteException ex) {
+                                            System.err.println("Cannot notify disconnectionList: " + e.getMessage());
+                                        }
+                                    }
+                                    break;
+                                }
+                            } else {
+                                try {
+                                    instance.removeLoggedUser(nickname);
+                                } catch (RemoteException ex) {
+                                    System.err.println("Cannot removed nickname " + nickname +
+                                            " in ClientRMiTimeoutException: " + ex.getMessage());
+                                }
+                            }
+                        }
+                    }
+                }
+            }, 7500, CLIENT_TIMEOUT);
+            Timer disconnectioCheckerTimer = new Timer();
+            disconnectioCheckerTimer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    synchronized (connectedRMIClient){
+                        if(!connectedRMIClient.contains(nickname)) {
+                            disconnectioCheckerTimer.cancel();
+                            return;
+                        }
+                        connectedRMIClientFlag.remove(connectedRMIClient.indexOf(nickname));
+                        connectedRMIClientFlag.add(connectedRMIClient.indexOf(nickname), false);
+                    }
+                }
+            }, CLIENT_TIMEOUT / 2, CLIENT_TIMEOUT);
+        }).start();
     }
 
     /**

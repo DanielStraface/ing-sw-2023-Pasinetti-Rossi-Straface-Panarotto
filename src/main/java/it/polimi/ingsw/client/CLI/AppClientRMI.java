@@ -21,7 +21,6 @@ import java.util.concurrent.TimeUnit;
 
 public class AppClientRMI extends AppClient{
     private static final String APPSERVER_REGISTRY_NAME = "it.polimi.ingsw.server.AppServer";
-    private static final String SERVER_ADDRESS = "192.168.181.61";
     private static final int SERVER_PORT = 1099;
     private static final long HEARTBEAT_INTERVAL = 6000;
     private static boolean inGameFlag = false;
@@ -51,7 +50,8 @@ public class AppClientRMI extends AppClient{
                 if(!isOk) System.out.print("\nThis nickname is already used by another user, you must choose another one.");
             } while (!isOk);
             System.out.print("Log successfully completed!");
-            new Thread(() -> {
+            startHeartbeat(serverApp);
+            /*new Thread(() -> {
                 Timer timer = new Timer();
                 timer.schedule(new TimerTask() {
                     @Override
@@ -59,6 +59,7 @@ public class AppClientRMI extends AppClient{
                         try {
                             //synchronized (lock){
                                 if(!inGameFlag){
+                                    System.out.println("CCCCC");
                                     serverApp.heartbeat(nickname);
                                 } else {
                                     timer.cancel();
@@ -69,8 +70,8 @@ public class AppClientRMI extends AppClient{
                             System.err.println("Cannot call the heartbeat method: " + e.getMessage());
                         }
                     }
-                }, HEARTBEAT_INTERVAL, HEARTBEAT_INTERVAL);
-            }).start();
+                }, 0, HEARTBEAT_INTERVAL);
+            }).start();*/
             decisions = TextualUI.setupConnectionByUser();
         }
         if(args[0].equals("GUI")){
@@ -135,6 +136,9 @@ public class AppClientRMI extends AppClient{
                 System.exit(QUIT_IN_APPCLIENTRMI_ERROR);
             }
         }
+
+        if(args[0].equals("GUI")) startHeartbeat(serverApp);
+
         ClientImpl finalRefClientImpl = refClientImpl;
         new Thread(() -> {
             Timer timer = new Timer();
@@ -151,5 +155,31 @@ public class AppClientRMI extends AppClient{
             }, HEARTBEAT_INTERVAL, HEARTBEAT_INTERVAL);
         }).start();
         if(matchServerRef != null) matchServerRef.startGame();
+    }
+
+    /**
+     * Manage the haertbeat by client side aspect.
+     * Call the remote heartbeat method on server side periodically in order to implement the heartbeat.
+     * @param serverApp -> AppServer, the current serverApp of the game
+     */
+    private static void startHeartbeat(AppServer serverApp){
+        new Thread(() -> {
+            Timer timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    try {
+                        if(!inGameFlag){
+                            serverApp.heartbeat(nickname);
+                        } else {
+                            timer.cancel();
+                            serverApp.heartbeatStop(nickname);
+                        }
+                    } catch (RemoteException e) {
+                        System.err.println("Cannot call the heartbeat method: " + e.getMessage());
+                    }
+                }
+            }, 0, HEARTBEAT_INTERVAL);
+        }).start();
     }
 }
