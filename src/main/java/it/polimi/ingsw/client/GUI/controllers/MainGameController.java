@@ -443,6 +443,7 @@ public class MainGameController implements GUIController {
                 b.setDisable(false);
             }
             confirmSelection.setOpacity(0.6);
+            activateShelf();
             ordinalSelectionFlag.forEach(osf -> {
                 osf.relocate(1, 1);
                 osf.setVisible(false);
