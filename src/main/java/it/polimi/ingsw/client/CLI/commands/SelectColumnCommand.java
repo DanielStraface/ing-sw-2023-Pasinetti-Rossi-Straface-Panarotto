@@ -83,7 +83,6 @@ public class SelectColumnCommand implements Command{
 
     /**
      * Checks if it is valid and saves it in an Integer List
-     * @throws InvalidSelectionException  when the items selection from the game board is not correct
      * @throws FullColumnException when the shelf column is full
      */
     @Override

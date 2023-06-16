@@ -1,8 +1,8 @@
 package it.polimi.ingsw.exceptions;
 
 /**
- * CLass SelectionInvalidOrEmptySlotException is thrown when items selected from the game board are taken
- * from empty o invalid slot.
+ * Class SelectionInvalidOrEmptySlotException is thrown when items selected from the game board are taken
+ * from empty or invalid slot.
  */
 public class SelectionInvalidOrEmptySlotException extends InvalidSelectionException{
     /**

@@ -192,7 +192,10 @@ public class SelectItemsCommand implements Command{
 
     /**
      * Invokes all methods that check if the coordinates chosen are valid
-     * @throws InvalidSelectionException when the items selection from the game board is not correct
+     * @throws SelectionInvalidOrEmptySlotException when items taken from the gameBoard are from empty or invalid slots
+     * @throws NoFreeSidesException when one of the items selected has no free sides on the gameBoard
+     * @throws NotSameRowOrColException when the selected items aren't from the same row or column
+     * @throws NoConsecutiveSelectionException when the selected items aren't adjacent
      */
     public void selectionChecker()throws SelectionInvalidOrEmptySlotException,NoFreeSidesException,NotSameRowOrColException,NoConsecutiveSelectionException{
         noItemSelectedChecker(gb.getValidGrid());
@@ -215,7 +218,10 @@ public class SelectItemsCommand implements Command{
     /**
      * Invokes methods to ask the number of tiles, their coordinates and their order for when
      * they're put on the shelf and to check if the choices made are valid
-     * @throws InvalidSelectionException when the items selection from the game board is not correct
+     * @throws SelectionInvalidOrEmptySlotException when items taken from the gameBoard are from empty or invalid slots
+     * @throws NoFreeSidesException when one of the items selected has no free sides on the gameBoard
+     * @throws NotSameRowOrColException when the selected items aren't from the same row or column
+     * @throws NoConsecutiveSelectionException when the selected items aren't adjacent
      * @throws FullColumnException when the shelf column is full
      */
     @Override
@@ -228,7 +234,10 @@ public class SelectItemsCommand implements Command{
 
     /**
      * Checks if the choices made are valid
-     * @throws InvalidSelectionException when the items selection from the game board is not correct
+     * @throws SelectionInvalidOrEmptySlotException when items taken from the gameBoard are from empty or invalid slots
+     * @throws NoFreeSidesException when one of the items selected has no free sides on the gameBoard
+     * @throws NotSameRowOrColException when the selected items aren't from the same row or column
+     * @throws NoConsecutiveSelectionException when the selected items aren't adjacent
      */
     @Override
     public void check() throws SelectionInvalidOrEmptySlotException,NoFreeSidesException,NotSameRowOrColException,NoConsecutiveSelectionException {

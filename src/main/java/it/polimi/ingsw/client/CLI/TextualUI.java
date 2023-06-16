@@ -306,16 +306,14 @@ public class TextualUI implements UI, Serializable {
     /**
      * Invokes all methods to check if the shelf's column choice is valid
      * @param sh ShelfView to modify the shelf's grid
-     * @throws RemoteException if the execution of a remote method call goes wrong
      * @throws FullColumnException when the shelf column is full
      */
-    public void gameActionOnShelf(ShelfView sh) throws RemoteException, FullColumnException {
+    public void gameActionOnShelf(ShelfView sh) throws FullColumnException {
         SelectColumnCommand scc = (SelectColumnCommand) this.gameActionMenu.get(1);
         SelectItemsCommand sic = (SelectItemsCommand) this.gameActionMenu.get(0);
         scc.setShelfView(sh);
         scc.setMaxNumOfItems(sic.getNumOfItems());
         scc.execute();
-
     }
 
     /**
