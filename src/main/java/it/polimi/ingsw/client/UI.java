@@ -15,7 +15,10 @@ public interface UI extends ViewSubject {
     static boolean nicknameController(String input){
         if(input.length() > MAX_NICKNAME_LEN | input.contains("%") || input.contains("!") || input.contains("?") || input.contains("=") ||
                 input.contains("(") || input.contains(")") || input.contains("'") ||
-                input.contains("/") || input.contains("£") || input.contains("$") || input.contains("€"))
+                input.contains("/") || input.contains("£") || input.contains("$") || input.contains("€") ||
+                input.contains("disconnected") || input.contains("searching") || input.contains("TWO") ||
+                input.contains("THREE") || input.contains("FOUR") || input.contains("unfinished") ||
+                input.contains("is playing") || input.contains("BYE") || input.contains("Joining a lobby..."))
             return false;
         else return true;
     }

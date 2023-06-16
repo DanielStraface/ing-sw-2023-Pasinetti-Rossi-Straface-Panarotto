@@ -44,8 +44,7 @@ public class TextualUI implements UI, Serializable {
         while(!UI.nicknameController(input)) {
             System.out.print("""
                     
-                    The max nickname length must be 15 chars.
-                    This chars are not allowed !£$%&/()=?' , please try again
+                    This nickname is not allowed, please try again.
                     >>""");
             input = scanner.nextLine();
         }

@@ -105,9 +105,7 @@ public class MatchChoicesController implements GUIController, Initializable {
                     return;
                 } else {
                     notifyLabel.setText("""
-                    Invalid nickname selection.
-                    The max nickname length must be 15 chars.
-                    This chars are not allowed !£$%&/()=?'""");
+                    This nickname is not allowed, please try again.""");
                     notifyLabel.setVisible(true);
                     return;
                 }

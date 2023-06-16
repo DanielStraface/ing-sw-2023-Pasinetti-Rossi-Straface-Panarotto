@@ -456,7 +456,7 @@ public class MainGameController implements GUIController {
             this.updateMessageBox("Where do you want\nto put these items?", false);
         } catch (InvalidSelectionException e) {
             playSound(warning);
-            this.updateMessageBox("Invalid items selection:\n" + e.getMessage(), true);
+            this.updateMessageBox("You can't pick these item tiles!\nPlease choose 1 to 3 items again.", true);
         } catch (FullColumnException ignored) {
         }
     }
