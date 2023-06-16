@@ -36,9 +36,10 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
     private static final String APPSERVER_REGISTRY_NAME = "it.polimi.ingsw.server.AppServer";
     public static final int MAX_MATCHES_MANAGED = 100;
     private static final int ERROR_WHILE_CREATING_SERVER_SOCKET = 1;
-    private static final List<String> connectedRMIClient = new ArrayList<>();
-    private static final List<Boolean> connectedRMIClientFlag = new ArrayList<>();
-    private static final List<Boolean> noMoreHeartbeat = new ArrayList<>();
+    private static final Map<Integer, String> connectedRMIClient = new HashMap<>();
+    private static final Map<String, Boolean> connectedRMIClientFlag = new HashMap<>();
+    private static final Map<String, Boolean> noMoreHeartbeat = new HashMap<>();
+    private static int rmiClientHeartbeatKey;
 
     /**
      * Constructor method
@@ -426,8 +427,7 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
     @Override
     public boolean heartbeat(String client) throws RemoteException {
         synchronized (connectedRMIClient){
-            connectedRMIClientFlag.remove(connectedRMIClient.indexOf(client));
-            connectedRMIClientFlag.add(connectedRMIClient.indexOf(client), true);
+            connectedRMIClientFlag.replace(client, true);
         }
         return true;
     }
@@ -441,9 +441,8 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
     @Override
     public boolean heartbeatStop(String client) throws RemoteException {
         synchronized (connectedRMIClient){
-            noMoreHeartbeat.remove(connectedRMIClient.indexOf(client));
-            noMoreHeartbeat.add(connectedRMIClient.indexOf(client), true);
-            connectedRMIClientFlag.remove(connectedRMIClient.indexOf(client));
+            noMoreHeartbeat.replace(client, true);
+            connectedRMIClientFlag.remove(client);
         }
         return true;
     }
@@ -454,9 +453,9 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
      * @throws ClientRMITimeoutException if client RMI has disconnected during setup situations
      */
     public synchronized void checkClientStatus(String client) throws ClientRMITimeoutException {
-        if(noMoreHeartbeat.get(connectedRMIClient.indexOf(client))) throw new NoMoreHeartbeatException();
+        if(noMoreHeartbeat.get(client)) throw new NoMoreHeartbeatException();
         if(!loggedNicknames.contains(client)) throw new AnotherClientRMITimeoutException();
-        if(!connectedRMIClientFlag.get(connectedRMIClient.indexOf(client))) throw new ClientRMITimeoutException();
+        if(!connectedRMIClientFlag.get(client)) throw new ClientRMITimeoutException();
     }
 
     /**
@@ -468,24 +467,39 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
     public void heartbeatManagerRMI(String nickname){
         new Thread(() -> {
             synchronized (connectedRMIClient){
-                connectedRMIClient.add(nickname);
-                connectedRMIClientFlag.add(true);
-                noMoreHeartbeat.add(false);
+                connectedRMIClient.put(rmiClientHeartbeatKey, nickname);
+                connectedRMIClientFlag.put(nickname, true);
+                noMoreHeartbeat.put(nickname, false);
+                rmiClientHeartbeatKey++;
             }
             Timer timer = new Timer();
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
                     try {
+                        System.out.println("This is " + nickname + " heartbeat");
                         checkClientStatus(nickname);
                     } catch (ClientRMITimeoutException e) {
                         timer.cancel();
                         if(e instanceof AnotherClientRMITimeoutException){
+                            /*connectedRMIClientFlag.remove(connectedRMIClient.indexOf(nickname));
+                            noMoreHeartbeat.remove(connectedRMIClient.indexOf(nickname));
+                            connectedRMIClient.remove(nickname);
+                            System.out.println("rmiClientFlag := " + connectedRMIClientFlag.size());
+                            System.out.println("rmiClientNickname := " + connectedRMIClient.size());
+                            System.out.println("noMoreHeartbeat := " + noMoreHeartbeat.size());*/
                         } else if(e instanceof NoMoreHeartbeatException) {
                             System.out.println("Client " + nickname + " is entered in the game phase," +
                                     "no more heartbeat needed");
+                            noMoreHeartbeat.remove(nickname);
                             connectedRMIClient.remove(nickname);
                         } else {
+                            /*connectedRMIClientFlag.remove(connectedRMIClient.indexOf(nickname));
+                            noMoreHeartbeat.remove(connectedRMIClient.indexOf(nickname));
+                            connectedRMIClient.remove(nickname);
+                            System.out.println("rmiClientFlag := " + connectedRMIClientFlag.size());
+                            System.out.println("rmiClientNickname := " + connectedRMIClient.size());
+                            System.out.println("noMoreHeartbeat := " + noMoreHeartbeat.size());*/
                             connectedRMIClient.remove(nickname);
                             if(waitingQueue.size() > 0){
                                 List<List<String>> allWaitingMatchesNickname =
@@ -532,12 +546,11 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
                 @Override
                 public void run() {
                     synchronized (connectedRMIClient){
-                        if(!connectedRMIClient.contains(nickname)) {
+                        if(!connectedRMIClient.containsValue(nickname)) {
                             disconnectioCheckerTimer.cancel();
                             return;
                         }
-                        connectedRMIClientFlag.remove(connectedRMIClient.indexOf(nickname));
-                        connectedRMIClientFlag.add(connectedRMIClient.indexOf(nickname), false);
+                        connectedRMIClientFlag.replace(nickname, false);
                     }
                 }
             }, CLIENT_TIMEOUT / 2, CLIENT_TIMEOUT);
