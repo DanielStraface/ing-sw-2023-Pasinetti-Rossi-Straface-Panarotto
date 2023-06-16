@@ -76,18 +76,17 @@ public class SelectColumnCommand implements Command{
      * @throws FullColumnException when the shelf column is full
      */
     @Override
-    public void execute() throws FullColumnException, InvalidSelectionException {
+    public void execute() throws FullColumnException{
         this.askUser();
         this.check();
     }
 
     /**
      * Checks if it is valid and saves it in an Integer List
-     * @throws InvalidSelectionException  when the items selection from the game board is not correct
      * @throws FullColumnException when the shelf column is full
      */
     @Override
-    public void check() throws InvalidSelectionException, FullColumnException {
+    public void check() throws FullColumnException {
         columnCheck(this.col);
         this.columnReference.add(this.col);
     }

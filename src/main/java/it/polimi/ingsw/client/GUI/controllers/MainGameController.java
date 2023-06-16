@@ -4,8 +4,7 @@ import it.polimi.ingsw.client.CLI.commands.Command;
 import it.polimi.ingsw.client.CLI.commands.SelectColumnCommand;
 import it.polimi.ingsw.client.CLI.commands.SelectItemsCommand;
 import it.polimi.ingsw.client.GUI.GUI;
-import it.polimi.ingsw.exceptions.FullColumnException;
-import it.polimi.ingsw.exceptions.InvalidSelectionException;
+import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.Category;
 import it.polimi.ingsw.modelview.GameBoardView;
 import it.polimi.ingsw.modelview.ShelfView;
@@ -444,6 +443,7 @@ public class MainGameController implements GUIController {
                 b.setDisable(false);
             }
             confirmSelection.setOpacity(0.6);
+            activateShelf();
             ordinalSelectionFlag.forEach(osf -> {
                 osf.relocate(1, 1);
                 osf.setVisible(false);
@@ -454,10 +454,20 @@ public class MainGameController implements GUIController {
             this.setMaxNumOfItems(numOfItems);
             numOfItems = 0;
             this.updateMessageBox("Where do you want\nto put these items?", false);
-        } catch (InvalidSelectionException e) {
+        } catch (SelectionInvalidOrEmptySlotException e) {
             playSound(warning);
             this.updateMessageBox("You can't pick these item tiles!\nPlease choose 1 to 3 items again.", true);
-        } catch (FullColumnException ignored) {
+        } catch (NoFreeSidesException e){
+            playSound(warning);
+            this.updateMessageBox("The items selected have no free sides!\nPlease choose 1 to 3 items again.", true);
+        } catch (NotSameRowOrColException e){
+            playSound(warning);
+            this.updateMessageBox("These items aren't part\nof the same row or column!\nPlease choose 1 to 3 items again.", true);
+        } catch (NoConsecutiveSelectionException e){
+            playSound(warning);
+            this.updateMessageBox("The items you picked aren't adjacent!\nPlease choose 1 to 3 items again.", true);
+        }
+        catch (FullColumnException ignored) {
         }
     }
 

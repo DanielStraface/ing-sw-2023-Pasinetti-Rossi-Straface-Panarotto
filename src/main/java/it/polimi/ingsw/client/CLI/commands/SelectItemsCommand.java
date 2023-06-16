@@ -71,9 +71,9 @@ public class SelectItemsCommand implements Command{
     /**
      * Checks if all the coordinates selected contain a tile
      * @param validGrid an int Matrix with all the GameBoard's coordinates' info
-     * @throws InvalidSelectionException when the items selection from the game board is not correct
+     * @throws SelectionInvalidOrEmptySlotException when the items selection from the game board is not correct
      */
-    private void noItemSelectedChecker(int[][] validGrid) throws InvalidSelectionException {
+    private void noItemSelectedChecker(int[][] validGrid) throws SelectionInvalidOrEmptySlotException {
         for(int i=0;i<coords.size();i++){
             if(validGrid[coords.get(i)[0]][coords.get(i)[1]] == INVALID)
                 throw new SelectionInvalidOrEmptySlotException("selected item in invalid slot");
@@ -85,9 +85,9 @@ public class SelectItemsCommand implements Command{
     /**
      * Checks if all coordinates selected have at least one free side
      * @param validGrid an int Matrix with all the GameBoard's coordinates' info
-     * @throws InvalidSelectionException when the items selection from the game board is not correct
+     * @throws NoFreeSidesException when the items selection from the game board is not correct
      */
-    private void freeSideChecker(int[][] validGrid) throws InvalidSelectionException {
+    private void freeSideChecker(int[][] validGrid) throws NoFreeSidesException {
         for (int i = 0; i < coords.size(); i++) {
             final int FIRST_ROW = 0;
             final int LAST_ROW = 8;
@@ -106,9 +106,10 @@ public class SelectItemsCommand implements Command{
 
     /**
      * Checks if all the coordinates chosen are from either the same row or column
-     * @throws InvalidSelectionException when the items selection from the game board is not correct
+     * @throws NotSameRowOrColException when the items selection from the game board is not correct
+     * @throws NoConsecutiveSelectionException when two non-consecutive items are drawn from the game board
      */
-    private void rowAndColChecker() throws InvalidSelectionException {
+    private void rowAndColChecker() throws NotSameRowOrColException, NoConsecutiveSelectionException {
         boolean sameX = true;
         boolean sameY = true;
         int XOfFirstCoordinate = coords.get(0)[0];
@@ -191,9 +192,12 @@ public class SelectItemsCommand implements Command{
 
     /**
      * Invokes all methods that check if the coordinates chosen are valid
-     * @throws InvalidSelectionException when the items selection from the game board is not correct
+     * @throws SelectionInvalidOrEmptySlotException when items taken from the gameBoard are from empty or invalid slots
+     * @throws NoFreeSidesException when one of the items selected has no free sides on the gameBoard
+     * @throws NotSameRowOrColException when the selected items aren't from the same row or column
+     * @throws NoConsecutiveSelectionException when the selected items aren't adjacent
      */
-    public void selectionChecker()throws InvalidSelectionException{
+    public void selectionChecker()throws SelectionInvalidOrEmptySlotException,NoFreeSidesException,NotSameRowOrColException,NoConsecutiveSelectionException{
         noItemSelectedChecker(gb.getValidGrid());
         freeSideChecker(gb.getValidGrid());
         rowAndColChecker();
@@ -214,11 +218,14 @@ public class SelectItemsCommand implements Command{
     /**
      * Invokes methods to ask the number of tiles, their coordinates and their order for when
      * they're put on the shelf and to check if the choices made are valid
-     * @throws InvalidSelectionException when the items selection from the game board is not correct
+     * @throws SelectionInvalidOrEmptySlotException when items taken from the gameBoard are from empty or invalid slots
+     * @throws NoFreeSidesException when one of the items selected has no free sides on the gameBoard
+     * @throws NotSameRowOrColException when the selected items aren't from the same row or column
+     * @throws NoConsecutiveSelectionException when the selected items aren't adjacent
      * @throws FullColumnException when the shelf column is full
      */
     @Override
-    public void execute() throws InvalidSelectionException, FullColumnException {
+    public void execute() throws SelectionInvalidOrEmptySlotException,NoFreeSidesException,NotSameRowOrColException,NoConsecutiveSelectionException,FullColumnException {
         this.askUser();
         this.check();
         this.sortingCommand.itemToOrder(this.coords);
@@ -227,10 +234,13 @@ public class SelectItemsCommand implements Command{
 
     /**
      * Checks if the choices made are valid
-     * @throws InvalidSelectionException when the items selection from the game board is not correct
+     * @throws SelectionInvalidOrEmptySlotException when items taken from the gameBoard are from empty or invalid slots
+     * @throws NoFreeSidesException when one of the items selected has no free sides on the gameBoard
+     * @throws NotSameRowOrColException when the selected items aren't from the same row or column
+     * @throws NoConsecutiveSelectionException when the selected items aren't adjacent
      */
     @Override
-    public void check() throws InvalidSelectionException {
+    public void check() throws SelectionInvalidOrEmptySlotException,NoFreeSidesException,NotSameRowOrColException,NoConsecutiveSelectionException {
         this.selectionChecker();
     }
 }

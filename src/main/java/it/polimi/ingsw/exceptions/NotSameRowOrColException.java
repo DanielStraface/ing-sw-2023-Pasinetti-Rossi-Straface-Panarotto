@@ -1,7 +1,7 @@
 package it.polimi.ingsw.exceptions;
 
 /**
- * Class NotSameRowOrColException is thrown when the selected items are nt form the same row or column:
+ * Class NotSameRowOrColException is thrown when the selected items aren't from the same row or column:
  */
 public class NotSameRowOrColException extends InvalidSelectionException{
     /**
