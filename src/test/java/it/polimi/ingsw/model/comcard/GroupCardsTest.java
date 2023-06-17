@@ -38,17 +38,17 @@ public class GroupCardsTest {
         grid10 = new Item[ROWS][COLS];
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLS; j++) {
-                grid0[i][j] = new Item(null);
-                grid1[i][j] = new Item(null);
-                grid2[i][j] = new Item(null);
-                grid3[i][j] = new Item(null);
-                grid4[i][j] = new Item(null);
-                grid5[i][j] = new Item(null);
-                grid6[i][j] = new Item(null);
-                grid7[i][j] = new Item(null);
-                grid8[i][j] = new Item(null);
-                grid9[i][j] = new Item(null);
-                grid10[i][j] = new Item(null);
+                grid0[i][j] = new Item(null,0);
+                grid1[i][j] = new Item(null,0);
+                grid2[i][j] = new Item(null,0);
+                grid3[i][j] = new Item(null,0);
+                grid4[i][j] = new Item(null,0);
+                grid5[i][j] = new Item(null,0);
+                grid6[i][j] = new Item(null,0);
+                grid7[i][j] = new Item(null,0);
+                grid8[i][j] = new Item(null,0);
+                grid9[i][j] = new Item(null,0);
+                grid10[i][j] = new Item(null,0);
             }
         }
     }
@@ -63,20 +63,20 @@ public class GroupCardsTest {
     public void checkSixGroupOfTwo() {
         /* The grid contains six groups of two items of the same type. check() to return true. */
         card = new GroupCards(TYPE_GROUP_OF_TWO);
-        grid0[0][0] = new Item(Category.FRAME);
-        grid0[0][1] = new Item(Category.FRAME);
-        grid0[0][4] = new Item(Category.BOOK);
-        grid0[1][4] = new Item(Category.BOOK);
-        grid0[1][0] = new Item(Category.CAT);
-        grid0[2][0] = new Item(Category.CAT);
-        grid0[2][2] = new Item(Category.CAT);
-        grid0[3][2] = new Item(Category.CAT);
-        grid0[4][2] = new Item(Category.TROPHY);
-        grid0[4][3] = new Item(Category.TROPHY);
-        grid0[5][1] = new Item(Category.PLANT);
-        grid0[5][2] = new Item(Category.PLANT);
-        grid0[5][3] = new Item(Category.CAT);
-        grid0[0][3] = new Item(Category.GAME);
+        grid0[0][0] = new Item(Category.FRAME,1);
+        grid0[0][1] = new Item(Category.FRAME,1);
+        grid0[0][4] = new Item(Category.BOOK,1);
+        grid0[1][4] = new Item(Category.BOOK,1);
+        grid0[1][0] = new Item(Category.CAT,1);
+        grid0[2][0] = new Item(Category.CAT,1);
+        grid0[2][2] = new Item(Category.CAT,1);
+        grid0[3][2] = new Item(Category.CAT,1);
+        grid0[4][2] = new Item(Category.TROPHY,1);
+        grid0[4][3] = new Item(Category.TROPHY,1);
+        grid0[5][1] = new Item(Category.PLANT,1);
+        grid0[5][2] = new Item(Category.PLANT,1);
+        grid0[5][3] = new Item(Category.CAT,1);
+        grid0[0][3] = new Item(Category.GAME,1);
 
 
         assertTrue(card.check(grid0), "The grid doesn't contain six groups of two items of the same type!");
@@ -87,39 +87,39 @@ public class GroupCardsTest {
     public void checkNotSixGroupsOfTwo() {
         /* The grid contains less than six groups of two items of the same type. check() to return false. */
         card = new GroupCards(TYPE_GROUP_OF_TWO);
-        grid1[0][0] = new Item(Category.FRAME);
-        grid1[0][1] = new Item(Category.FRAME);
-        grid1[0][4] = new Item(Category.BOOK);
-        grid1[1][4] = new Item(Category.BOOK);
-        grid1[1][0] = new Item(Category.CAT);
-        grid1[2][0] = new Item(Category.PLANT);
-        grid1[2][2] = new Item(Category.CAT);
-        grid1[3][2] = new Item(Category.CAT);
-        grid1[4][2] = new Item(Category.BOOK);
-        grid1[4][3] = new Item(Category.TROPHY);
-        grid1[5][1] = new Item(Category.PLANT);
-        grid1[5][2] = new Item(Category.PLANT);
-        grid1[5][3] = new Item(Category.CAT);
-        grid1[0][3] = new Item(Category.GAME);
+        grid1[0][0] = new Item(Category.FRAME,1);
+        grid1[0][1] = new Item(Category.FRAME,1);
+        grid1[0][4] = new Item(Category.BOOK,1);
+        grid1[1][4] = new Item(Category.BOOK,1);
+        grid1[1][0] = new Item(Category.CAT,1);
+        grid1[2][0] = new Item(Category.PLANT,1);
+        grid1[2][2] = new Item(Category.CAT,1);
+        grid1[3][2] = new Item(Category.CAT,1);
+        grid1[4][2] = new Item(Category.BOOK,1);
+        grid1[4][3] = new Item(Category.TROPHY,1);
+        grid1[5][1] = new Item(Category.PLANT,1);
+        grid1[5][2] = new Item(Category.PLANT,1);
+        grid1[5][3] = new Item(Category.CAT,1);
+        grid1[0][3] = new Item(Category.GAME,1);
 
         assertFalse(card.check(grid1), "The grid contains six groups of two items of the same type!");
 
         /* The grid contains more than six groups of two items of the same type. check() to return false. */
-        grid1[0][0] = new Item(Category.FRAME);
-        grid1[0][1] = new Item(Category.FRAME);
-        grid1[0][4] = new Item(Category.BOOK);
-        grid1[1][4] = new Item(Category.BOOK);
-        grid1[1][0] = new Item(Category.CAT);
-        grid1[2][0] = new Item(Category.CAT);
-        grid1[2][2] = new Item(Category.CAT);
-        grid1[3][2] = new Item(Category.CAT);
-        grid1[4][2] = new Item(Category.TROPHY);
-        grid1[4][3] = new Item(Category.TROPHY);
-        grid1[5][1] = new Item(Category.PLANT);
-        grid1[5][2] = new Item(Category.PLANT);
-        grid1[5][3] = new Item(Category.CAT);
-        grid1[5][4] = new Item(Category.CAT);
-        grid1[0][3] = new Item(Category.GAME);
+        grid1[0][0] = new Item(Category.FRAME,1);
+        grid1[0][1] = new Item(Category.FRAME,1);
+        grid1[0][4] = new Item(Category.BOOK,1);
+        grid1[1][4] = new Item(Category.BOOK,1);
+        grid1[1][0] = new Item(Category.CAT,1);
+        grid1[2][0] = new Item(Category.CAT,1);
+        grid1[2][2] = new Item(Category.CAT,1);
+        grid1[3][2] = new Item(Category.CAT,1);
+        grid1[4][2] = new Item(Category.TROPHY,1);
+        grid1[4][3] = new Item(Category.TROPHY,1);
+        grid1[5][1] = new Item(Category.PLANT,1);
+        grid1[5][2] = new Item(Category.PLANT,1);
+        grid1[5][3] = new Item(Category.CAT,1);
+        grid1[5][4] = new Item(Category.CAT,1);
+        grid1[0][3] = new Item(Category.GAME,1);
 
         assertFalse(card.check(grid1), "The grid contains six groups of two items of the same type!");
 
@@ -139,8 +139,8 @@ public class GroupCardsTest {
         card = new GroupCards(TYPE_GROUP_OF_SQUARES);
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 2; j++) {
-                grid3[i][j] = new Item(Category.CAT);
-                grid3[i+1][j+2] = new Item(Category.CAT);
+                grid3[i][j] = new Item(Category.CAT,1);
+                grid3[i+1][j+2] = new Item(Category.CAT,1);
             }
         }
         assertTrue(card.check(grid3), "The grid doesn't contain two squares of items of the same type!");
@@ -153,20 +153,20 @@ public class GroupCardsTest {
         card = new GroupCards(TYPE_GROUP_OF_SQUARES);
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 2; j++) {
-                grid4[i][j] = new Item(Category.CAT);
+                grid4[i][j] = new Item(Category.CAT,1);
             }
         }
-        grid4[4][2] = new Item(Category.PLANT);
-        grid4[5][0] = new Item(Category.GAME);
+        grid4[4][2] = new Item(Category.PLANT,1);
+        grid4[5][0] = new Item(Category.GAME,1);
         assertFalse(card.check(grid4), "The grid contains two squares of four items of the same type, not less then two");
 
         /* The grid contains more than two squares of four items of the same type. check() to return false*/
         card = new GroupCards(TYPE_GROUP_OF_SQUARES);
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 2; j++) {
-                grid4[i][j] = new Item(Category.CAT);
-                grid4[i][j + 2] = new Item(Category.CAT);
-                grid4[i + 2][j] = new Item(Category.CAT);
+                grid4[i][j] = new Item(Category.CAT,1);
+                grid4[i][j + 2] = new Item(Category.CAT,1);
+                grid4[i + 2][j] = new Item(Category.CAT,1);
             }
         }
         assertFalse(card.check(grid4), "The grid contains two squares of four items of the same type, not more than two");
@@ -180,8 +180,8 @@ public class GroupCardsTest {
         card = new GroupCards(TYPE_GROUP_OF_SQUARES);
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 2; j++) {
-                grid5[i][j] = new Item(Category.GAME);
-                grid5[i][j + 2] = new Item(Category.CAT);
+                grid5[i][j] = new Item(Category.GAME,1);
+                grid5[i][j + 2] = new Item(Category.CAT,1);
             }
         }
         assertFalse(card.check(grid5), "The grid contains two squares of four items of the same type");
@@ -193,10 +193,10 @@ public class GroupCardsTest {
         /* The grid contains four groups of four items of the same type. check() to return true. */
         card = new GroupCards(TYPE_GROUP_OF_FOUR);
         for (int j = 0; j < 4; j++) {
-            grid6[0][j] = new Item(Category.CAT);
-            grid6[1][j] = new Item(Category.GAME);
-            grid6[2][j] = new Item(Category.PLANT);
-            grid6[3][j] = new Item(Category.CAT);
+            grid6[0][j] = new Item(Category.CAT,1);
+            grid6[1][j] = new Item(Category.GAME,1);
+            grid6[2][j] = new Item(Category.PLANT,1);
+            grid6[3][j] = new Item(Category.CAT,1);
         }
         assertTrue(card.check(grid6), "The grid doesn't contain four groups four item of the same type");
     }
@@ -207,9 +207,9 @@ public class GroupCardsTest {
         /* The grid contains less than four groups of four items of the same time. check() to return false.*/
         card = new GroupCards(TYPE_GROUP_OF_FOUR);
         for (int j = 0; j < 4; j++) {
-            grid7[0][j] = new Item(Category.CAT);
-            grid7[1][j] = new Item(Category.GAME);
-            grid7[2][j] = new Item(Category.PLANT);
+            grid7[0][j] = new Item(Category.CAT,1);
+            grid7[1][j] = new Item(Category.GAME,1);
+            grid7[2][j] = new Item(Category.PLANT,1);
         }
         assertFalse(card.check(grid7), "The grid contains four groups four item of the same type, not less than four");
 
@@ -217,11 +217,11 @@ public class GroupCardsTest {
     /* The grid contains less than four groups of four items of the same time. check() to return false.*/
         card = new GroupCards(TYPE_GROUP_OF_FOUR);
         for(int j = 0;j<4;j++){
-        grid7[0][j] = new Item(Category.CAT);
-        grid7[1][j] = new Item(Category.GAME);
-        grid7[2][j] = new Item(Category.PLANT);
-        grid7[3][j] = new Item(Category.CAT);
-        grid7[4][j] = new Item(Category.BOOK);
+        grid7[0][j] = new Item(Category.CAT,1);
+        grid7[1][j] = new Item(Category.GAME,1);
+        grid7[2][j] = new Item(Category.PLANT,1);
+        grid7[3][j] = new Item(Category.CAT,1);
+        grid7[4][j] = new Item(Category.BOOK,1);
         }
         assertFalse(card.check(grid7), "The grid contains four groups of four items of the same type, not more than four");
     }
@@ -238,14 +238,14 @@ public class GroupCardsTest {
     public void CheckGroupOfEight(){
         /* The grid contains eight items of the same type. check() to return true */
         card = new GroupCards(TYPE_GROUP_OF_EIGHT);
-        grid9[0][0]= new Item(Category.BOOK);
-        grid9[0][4]= new Item(Category.BOOK);
-        grid9[1][0]= new Item(Category.BOOK);
-        grid9[2][4]= new Item(Category.BOOK);
-        grid9[2][1]= new Item(Category.BOOK);
-        grid9[3][3]= new Item(Category.BOOK);
-        grid9[4][4]= new Item(Category.BOOK);
-        grid9[5][0]= new Item(Category.BOOK);
+        grid9[0][0]= new Item(Category.BOOK,1);
+        grid9[0][4]= new Item(Category.BOOK,1);
+        grid9[1][0]= new Item(Category.BOOK,1);
+        grid9[2][4]= new Item(Category.BOOK,1);
+        grid9[2][1]= new Item(Category.BOOK,1);
+        grid9[3][3]= new Item(Category.BOOK,1);
+        grid9[4][4]= new Item(Category.BOOK,1);
+        grid9[5][0]= new Item(Category.BOOK,1);
 
         assertTrue(card.check(grid9), "The grid doesn't contain eight items of the same type");
     }
@@ -255,13 +255,13 @@ public class GroupCardsTest {
     public void checkLessThanGroupOfEight() {
         /* The grid contains less than eight items of the same type. check() to return false */
         card = new GroupCards(TYPE_GROUP_OF_EIGHT);
-        grid9[0][0] = new Item(Category.BOOK);
-        grid9[0][4] = new Item(Category.BOOK);
-        grid9[1][0] = new Item(Category.BOOK);
-        grid9[2][4] = new Item(Category.BOOK);
-        grid9[2][1] = new Item(Category.BOOK);
-        grid9[3][3] = new Item(Category.BOOK);
-        grid9[4][4] = new Item(Category.BOOK);
+        grid9[0][0] = new Item(Category.BOOK,1);
+        grid9[0][4] = new Item(Category.BOOK,1);
+        grid9[1][0] = new Item(Category.BOOK,1);
+        grid9[2][4] = new Item(Category.BOOK,1);
+        grid9[2][1] = new Item(Category.BOOK,1);
+        grid9[3][3] = new Item(Category.BOOK,1);
+        grid9[4][4] = new Item(Category.BOOK,1);
 
 
         assertFalse(card.check(grid9), "The grid contains eight items of the same type, not less than eight");
@@ -271,7 +271,7 @@ public class GroupCardsTest {
     public void setUpGrid9() {
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 5; j++) {
-                grid9[i][j] = new Item(null);
+                grid9[i][j] = new Item(null,0);
             }
         }
     }
@@ -281,15 +281,15 @@ public class GroupCardsTest {
     public void checkMoreThanGroupOfEight(){
          /*The grid contains more than eight items of the same type. check() to return false */
        card = new GroupCards(TYPE_GROUP_OF_EIGHT);
-        grid9[0][0]= new Item(Category.BOOK);
-        grid9[0][4]= new Item(Category.BOOK);
-        grid9[1][0]= new Item(Category.BOOK);
-        grid9[2][4]= new Item(Category.BOOK);
-        grid9[2][1]= new Item(Category.BOOK);
-        grid9[3][3]= new Item(Category.BOOK);
-        grid9[4][4]= new Item(Category.BOOK);
-        grid9[5][0]= new Item(Category.BOOK);
-        grid9[5][3]= new Item(Category.BOOK);
+        grid9[0][0]= new Item(Category.BOOK,1);
+        grid9[0][4]= new Item(Category.BOOK,1);
+        grid9[1][0]= new Item(Category.BOOK,1);
+        grid9[2][4]= new Item(Category.BOOK,1);
+        grid9[2][1]= new Item(Category.BOOK,1);
+        grid9[3][3]= new Item(Category.BOOK,1);
+        grid9[4][4]= new Item(Category.BOOK,1);
+        grid9[5][0]= new Item(Category.BOOK,1);
+        grid9[5][3]= new Item(Category.BOOK,1);
 
         assertTrue(card.check(grid9), "The grid contains eight items of the same type, not more than eight");
     }

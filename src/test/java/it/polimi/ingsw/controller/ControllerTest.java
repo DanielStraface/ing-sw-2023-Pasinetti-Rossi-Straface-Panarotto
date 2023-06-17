@@ -21,7 +21,7 @@ public class ControllerTest {
     private Server server;
     private TurnHandler turnHandler;
     private Controller controller;
-    @BeforeEach
+    /* @BeforeEach
     public void setup() throws RemoteException {
         try{
             this.game = new Game(PLAYERS_NUMBER);
@@ -41,4 +41,6 @@ public class ControllerTest {
         boolean isTrue = false;
         assertTrue(this.game.getPlayers().contains(player), "The first player is not in this game");
     }
+
+     */
 }

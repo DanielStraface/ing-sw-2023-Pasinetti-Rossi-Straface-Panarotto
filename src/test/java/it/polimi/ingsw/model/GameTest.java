@@ -41,7 +41,7 @@ public class GameTest {
      * Method to test if players are successfully created in a match
      */
     @Test
-    public void playerCreationTest(){
+    public void createPlayersTest(){
         boolean checker = true;
         for(int i=0;i<players.size();i++) {
             if (!Objects.equals(players.get(i).getNickname(), null) &&
@@ -59,7 +59,7 @@ public class GameTest {
      *  Method to test if the bag is created successfully
      */
     @Test
-    public void bagCreation(){
+    public void createBag(){
         Bag bag;
         bag = game.getBag();
         for(Item item: bag.getItemCards()){

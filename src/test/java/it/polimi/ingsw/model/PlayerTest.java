@@ -62,7 +62,7 @@ public class PlayerTest {
         Item[][] expectedShelf= new Item[SHELF_ROWS][SHELF_COLUMNS];
         for (int i = 0; i < SHELF_ROWS; i++) {
             for (int j = 0; j < SHELF_COLUMNS; j++) {
-                expectedShelf[i][j] =new Item(null);
+                expectedShelf[i][j] =new Item(null,0);
             }
         }
         assertFalse(testPlayer.getIsFirstPlayer());
@@ -288,7 +288,7 @@ public class PlayerTest {
             }
             System.out.println();
         }
-        gameBoard[ROW][COL+1]=new Item(null);
+        gameBoard[ROW][COL+1]=new Item(null,0);
         for (int i = 0; i < gameBoard.length; i++) {
             for (int j = 0; j < gameBoard[i].length; j++) {
                 System.out.print(gameBoard[i][j].getCategoryType() + " ");
@@ -316,7 +316,7 @@ public class PlayerTest {
             }
             System.out.println();
         }
-        gameBoard[ROW+1][COL]=new Item(null);
+        gameBoard[ROW+1][COL]=new Item(null,0);
         for (int i = 0; i < gameBoard.length; i++) {
             for (int j = 0; j < gameBoard[i].length; j++) {
                 System.out.print(gameBoard[i][j].getCategoryType() + " ");
@@ -432,8 +432,8 @@ public class PlayerTest {
     public void noAvailableColumnTest() throws Exception{
         final int INVALID_COLUMN=6;
         selectedCol=INVALID_COLUMN;
-        selectItems.add(new Item(Category.TROPHY));
-        selectItems.add(new Item(Category.CAT));
+        selectItems.add(new Item(Category.TROPHY,1));
+        selectItems.add(new Item(Category.CAT,1));
 
         Exception e=assertThrows(OutOfBoundsException.class,()-> testPlayer.putItemInShelf(selectedCol));
         assertEquals("selectedCol must be less than 5", e.getMessage());
@@ -447,10 +447,10 @@ public class PlayerTest {
     @Test
     public void noAvailableDimensionOfSelectItems() throws Exception{
         selectedCol=3;
-        selectItems.add(new Item(Category.TROPHY));
-        selectItems.add(new Item(Category.CAT));
-        selectItems.add(new Item(Category.PLANT));
-        selectItems.add(new Item(Category.FRAME));
+        selectItems.add(new Item(Category.TROPHY,1));
+        selectItems.add(new Item(Category.CAT,1));
+        selectItems.add(new Item(Category.PLANT,1));
+        selectItems.add(new Item(Category.FRAME,1));
 
         Exception e=assertThrows(InvalidNumberOfItemsException.class,()-> testPlayer.putItemInShelf(selectedCol));
     }
@@ -464,11 +464,11 @@ public class PlayerTest {
         final int VALID_COLUMN=3;
         final int LAST_ROW=5;
         selectedCol=VALID_COLUMN;
-        selectItems.add(new Item(Category.TROPHY));
-        selectItems.add(new Item(Category.CAT));
+        selectItems.add(new Item(Category.TROPHY,1));
+        selectItems.add(new Item(Category.CAT,1));
         List<Item> expectedItems=new ArrayList<>();
-        expectedItems.add(new Item(Category.TROPHY));
-        expectedItems.add(new Item(Category.CAT));
+        expectedItems.add(new Item(Category.TROPHY,1));
+        expectedItems.add(new Item(Category.CAT,1));
         for(int i=0;i<selectItems.size();i++) {
             System.out.println(selectItems.get(i).getCategoryType() + " ");
         }

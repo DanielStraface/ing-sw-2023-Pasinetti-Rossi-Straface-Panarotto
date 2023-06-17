@@ -31,12 +31,12 @@ public class CornerDiagonalsTest {
         grid5 = new Item[ROWS][COLS];
         for(int i=0;i<ROWS;i++){
             for(int j=0;j<COLS;j++){
-                grid0[i][j] = new Item(null);
-                grid1[i][j] = new Item(null);
-                grid2[i][j] = new Item(null);
-                grid3[i][j] = new Item(null);
-                grid4[i][j] = new Item(null);
-                grid5[i][j] = new Item(null);
+                grid0[i][j] = new Item(null,0);
+                grid1[i][j] = new Item(null,0);
+                grid2[i][j] = new Item(null,0);
+                grid3[i][j] = new Item(null,0);
+                grid4[i][j] = new Item(null,0);
+                grid5[i][j] = new Item(null,0);
             }
         }
     }
@@ -56,10 +56,10 @@ public class CornerDiagonalsTest {
     public void checkCornersOkTest(){
         /* The corner has got the same category type. check() to return true */
         card = new CornerDiagonals(TYPE_CORNERS);
-        grid1[0][0] = new Item(Category.TROPHY);
-        grid1[0][4] = new Item(Category.TROPHY);
-        grid1[5][0] = new Item(Category.TROPHY);
-        grid1[5][4] = new Item(Category.TROPHY);
+        grid1[0][0] = new Item(Category.TROPHY,1);
+        grid1[0][4] = new Item(Category.TROPHY,1);
+        grid1[5][0] = new Item(Category.TROPHY,1);
+        grid1[5][4] = new Item(Category.TROPHY,1);
         assertTrue(card.check(grid1), "Wrong: there is a different corner");
     }
 
@@ -67,10 +67,10 @@ public class CornerDiagonalsTest {
     public void checkCornersFailTest(){
         /* One of the corners has got a null category type. check() to return false */
         card = new CornerDiagonals(TYPE_CORNERS);
-        grid1[0][0] = new Item(Category.TROPHY);
-        grid1[0][4] = new Item(null);
-        grid1[5][0] = new Item(Category.CAT);
-        grid1[5][4] = new Item(Category.TROPHY);
+        grid1[0][0] = new Item(Category.TROPHY,1);
+        grid1[0][4] = new Item(null,0);
+        grid1[5][0] = new Item(Category.CAT,1);
+        grid1[5][4] = new Item(Category.TROPHY,1);
         assertFalse(card.check(grid1), "Wrong: the corners are the same");
     }
 
@@ -79,13 +79,13 @@ public class CornerDiagonalsTest {
         /* The diagonals contain the same item category type not null. check() to return true */
         card = new CornerDiagonals(TYPE_DIAGONALS);
         for(int i=0;i<5;i++){
-            grid2[i][i] = new Item(Category.FRAME);
-            grid2[i+1][i] = new Item(Category.GAME);
+            grid2[i][i] = new Item(Category.FRAME,1);
+            grid2[i+1][i] = new Item(Category.GAME,1);
         }
         assertTrue(card.check(grid2), "The main diagonals contain different types");
         for(int i=0;i<5;i++){
-            grid2[i][4-i] = new Item(Category.PLANT);
-            grid2[i+1][4-i] = new Item(null);
+            grid2[i][4-i] = new Item(Category.PLANT,1);
+            grid2[i+1][4-i] = new Item(null,0);
         }
         assertTrue(card.check(grid2), "The reverse diagonals contain different types");
     }
@@ -96,8 +96,8 @@ public class CornerDiagonalsTest {
         /* fail the main diagonals */
         card = new CornerDiagonals(TYPE_DIAGONALS);
         assertFalse(card.check(grid3), "The main diagonals are not null");
-        for(int i=0;i<5;i++) grid3[i][i] = new Item(Category.FRAME);
-        grid3[2][2] = new Item(Category.CAT);
+        for(int i=0;i<5;i++) grid3[i][i] = new Item(Category.FRAME,1);
+        grid3[2][2] = new Item(Category.CAT,1);
         assertFalse(card.check(grid3), "The reverse diagonals contains the same element");
     }
 
@@ -108,11 +108,11 @@ public class CornerDiagonalsTest {
         card = new CornerDiagonals(TYPE_DIAGONALS);
         for(int i=0;i<ROWS;i++){
             for(int j=0;j<COLS;j++){
-                grid3[i][j] = new Item(null);
+                grid3[i][j] = new Item(null,0);
             }
         }
-        grid3[0][4] = new Item(Category.CAT);
-        grid3[1][4] = new Item(Category.BOOK);
+        grid3[0][4] = new Item(Category.CAT,1);
+        grid3[1][4] = new Item(Category.BOOK,1);
         assertFalse(card.check(grid0), "The grid contains item category != null");
     }
 
@@ -122,16 +122,16 @@ public class CornerDiagonalsTest {
         card = new CornerDiagonals(TYPE_DESC_MATRIX);
         /* controls the main diagonals */
         for(int i=0;i<5;i++){
-            grid4[i+1][i] = new Item(Category.PLANT);
+            grid4[i+1][i] = new Item(Category.PLANT,1);
         }
-        grid4[3][2] = new Item(Category.TROPHY);
+        grid4[3][2] = new Item(Category.TROPHY,1);
         assertTrue(card.check(grid4), "The main diagonal contains a null type");
 
         /* controls the opposite diagonals */
         for(int i=0;i<5;i++){
-            grid4[i+1][4-i] = new Item(Category.BOOK);
+            grid4[i+1][4-i] = new Item(Category.BOOK,1);
         }
-        grid4[3][2] = new Item(Category.GAME);
+        grid4[3][2] = new Item(Category.GAME,1);
         assertTrue(card.check(grid4), "The opposite diagonal contains a null type");
     }
 
@@ -145,9 +145,9 @@ public class CornerDiagonalsTest {
 
         /* controls the opposite diagonals */
         for(int i=0;i<5;i++){
-            grid5[i+1][4-i] = new Item(Category.CAT);
+            grid5[i+1][4-i] = new Item(Category.CAT,1);
         }
-        grid5[2][3] = new Item(null);
+        grid5[2][3] = new Item(null,0);
         assertFalse(card.check(grid5),
                 "The opposite diagonal contains in a certain position a category type != null");
     }

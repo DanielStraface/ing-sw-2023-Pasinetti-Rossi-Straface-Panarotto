@@ -25,15 +25,15 @@ public class PersonalObjCardTest {
         shelf = new Shelf();
         for(int i=0;i<ROWS;i++){
             for(int j=0;j<COLS;j++){
-                shelf.getShelfGrid()[i][j] = new Item(null);
+                shelf.getShelfGrid()[i][j] = new Item(null,0);
             }
         }
-        shelf.getShelfGrid()[0][0] = new Item(Category.PLANT);
-        shelf.getShelfGrid()[0][2] = new Item(Category.FRAME);
-        shelf.getShelfGrid()[1][4] = new Item(Category.CAT);
-        shelf.getShelfGrid()[2][3] = new Item(Category.BOOK);
-        shelf.getShelfGrid()[3][1] = new Item(Category.GAME);
-        shelf.getShelfGrid()[5][2] = new Item(Category.TROPHY);
+        shelf.getShelfGrid()[0][0] = new Item(Category.PLANT,1);
+        shelf.getShelfGrid()[0][2] = new Item(Category.FRAME,1);
+        shelf.getShelfGrid()[1][4] = new Item(Category.CAT,1);
+        shelf.getShelfGrid()[2][3] = new Item(Category.BOOK,1);
+        shelf.getShelfGrid()[3][1] = new Item(Category.GAME,1);
+        shelf.getShelfGrid()[5][2] = new Item(Category.TROPHY,1);
         reader = new PersonalCardReader();
     }
     @BeforeEach
@@ -96,7 +96,7 @@ public class PersonalObjCardTest {
     @Test
     public void goalReachedNegativeTest() throws Exception {
         final int FIRST_CARD = 0;
-        shelf.getShelfGrid()[0][0] = new Item(Category.BOOK);
+        shelf.getShelfGrid()[0][0] = new Item(Category.BOOK,1);
         List<PersonalObjCard> cardsList = new LinkedList<>(reader.readFromFile());
         Player player = new Player();
         card = cardsList.remove(FIRST_CARD);

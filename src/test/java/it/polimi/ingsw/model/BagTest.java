@@ -81,7 +81,7 @@ public class BagTest {
      */
     @Test
     public void setItemCardsTest(){
-        item = new Item(Category.CAT);
+        item = new Item(Category.CAT,1);
         bag.setItemCards(item);
         assertSame(Category.CAT,bag.getItemCards().get(bag.getItemCards().size()-1).getCategoryType(),
                   "The item added is not a cat");

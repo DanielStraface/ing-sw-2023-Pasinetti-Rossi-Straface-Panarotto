@@ -26,7 +26,7 @@ public class ShelfTest {
         shelf = new Shelf();
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLUMS; j++) {
-                shelf.getShelfGrid()[i][j] = new Item(Category.BOOK);
+                shelf.getShelfGrid()[i][j] = new Item(Category.BOOK,1);
             }
         }
         assertSame(true, shelf.isFull(), "The shelf is empty");
@@ -38,10 +38,10 @@ public class ShelfTest {
         final int COLUMS = 5;
         shelf = new Shelf();
         for (int i = 0; i < COLUMS; i++) {
-            shelf.getShelfGrid()[0][i] = new Item(Category.BOOK);
+            shelf.getShelfGrid()[0][i] = new Item(Category.BOOK,1);
 
         }
-        shelf.getShelfGrid()[0][3] = new Item(null);
+        shelf.getShelfGrid()[0][3] = new Item(null,0);
 
         assertSame(false, shelf.isFull(), "The shelf is full");
     }
@@ -54,7 +54,7 @@ public class ShelfTest {
         shelf = new Shelf();
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLUMS; j++) {
-                shelf.getShelfGrid()[i][j] = new Item(null);
+                shelf.getShelfGrid()[i][j] = new Item(null,0);
             }
         }
         assertSame(false, shelf.isFull(), "The shelf is not empty");

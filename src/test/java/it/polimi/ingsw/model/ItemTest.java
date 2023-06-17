@@ -19,35 +19,35 @@ public class ItemTest {
    /** method to test if the item is null */
     @Test
     public void itemCreationOfNullCategory(){
-        item = new Item(null);
+        item = new Item(null,0);
         assertSame(null, item.getCategoryType(), "The item is not null");
     }
 
     /** method to test if the Item category exists */
     @Test
     public void existingItemCategory(){
-        item = new Item(Category.CAT);
+        item = new Item(Category.CAT,1);
         assertSame(Category.CAT, item.getCategoryType(), "The item is not cat");
     }
 
    /** method to test if two items are the same */
    @Test
     public void categoryIsNotSame(){
-        item = new Item(Category.CAT);
+        item = new Item(Category.CAT,1);
         assertNotSame(Category.FRAME, item.getCategoryType(), "The item is the same");
     }
 
     /** method to test that an item category isn't null*/
     @Test
     public void getCategoryTestNull(){
-        item = new Item(null);
+        item = new Item(null,0);
         Category categoryGotten = item.getCategoryType();
         assertSame(null, categoryGotten, "The category is not same");
     }
 
     @Test
     public void getCategoryTestNotNull(){
-        item = new Item(Category.BOOK);
+        item = new Item(Category.BOOK,1);
         Category categoryGotten = item.getCategoryType();
         assertSame(Category.BOOK, categoryGotten, "The category is not same");
     }

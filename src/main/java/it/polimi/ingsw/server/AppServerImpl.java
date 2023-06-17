@@ -452,7 +452,7 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
 
     /**
      * wrapper method that manage the heartbeat for RMI connection.
-     * for first it resets the client flag to false and the check if the client flag has been set to true
+     * First it resets the client flag to false and the check if the client flag has been set to true
      * (by the remote client heartbeat call)
      * @param nickname the identifier of the client
      */
@@ -553,7 +553,7 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
     }
 
     /**
-     * Get method for the matchID int to be apply to the server
+     * Get method for the matchID int to be applied to the server
      * @return int -> next match's ID
      */
     public static int nextMatchID(){

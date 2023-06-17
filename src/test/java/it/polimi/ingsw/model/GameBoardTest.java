@@ -1,8 +1,11 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.exceptions.InvalidNumberOfPlayersException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+
+import java.rmi.RemoteException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -24,9 +27,9 @@ public class GameBoardTest {
      * Test method allItemNull controls that every item of the grid is null
      */
     @Test
-    public void allItemNull(){
+    public void allItemNull() throws InvalidNumberOfPlayersException, RemoteException {
         final int DIM = 9;
-        gameboard = new GameBoard();
+        gameboard = new GameBoard(2);
         for(int i=0;i<DIM;i++){
             for(int j=0;j<DIM;j++){
                 assertSame(null, gameboard.getGameGrid()[i][j], "The item in this position is not null");

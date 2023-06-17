@@ -26,7 +26,7 @@ public class RowsColumnsCardTest {
         grid = new Item[ROWS][COLS];
         for(int i=0;i<ROWS;i++){
             for(int j=0;j<COLS;j++){
-                grid[i][j] = new Item(null);
+                grid[i][j] = new Item(null,0);
             }
         }
     }
@@ -46,7 +46,7 @@ public class RowsColumnsCardTest {
         List<Category> itemList = new LinkedList<>(Arrays.asList(Category.values()));
         for(int i=0;i<3;i++){
             for(int j=0;j<ROWS;j++){
-                grid[j][i] = new Item(itemList.get(j));
+                grid[j][i] = new Item(itemList.get(j),1);
             }
         }
         assertTrue(card.check(grid), "The grid contains full columns with a repeat category type");
@@ -60,10 +60,10 @@ public class RowsColumnsCardTest {
         List<Category> itemList = new LinkedList<>(Arrays.asList(Category.values()));
         for(int i=0;i<2;i++){
             for(int j=0;j<ROWS;j++){
-                grid[j][i+2] = new Item(itemList.get(j));
+                grid[j][i+2] = new Item(itemList.get(j),1);
             }
         }
-        grid[4][3] = new Item(Category.CAT);
+        grid[4][3] = new Item(Category.CAT,1);
         assertFalse(card.check(grid), "The grid contains full columns with no repetition");
     }
 
@@ -74,7 +74,7 @@ public class RowsColumnsCardTest {
         List<Category> itemList = new LinkedList<>(Arrays.asList(Category.values()));
         for(int i=0;i<3;i++){
             for(int j=0;j<COLS;j++){
-                grid[i][j] = new Item(itemList.get(j));
+                grid[i][j] = new Item(itemList.get(j),1);
             }
         }
         assertTrue(card.check(grid), "The grid contains rows with a repeat category type");
@@ -88,10 +88,10 @@ public class RowsColumnsCardTest {
         List<Category> itemList = new LinkedList<>(Arrays.asList(Category.values()));
         for(int i=0;i<2;i++){
             for(int j=0;j<COLS;j++){
-                grid[i][j] = new Item(itemList.get(j));
+                grid[i][j] = new Item(itemList.get(j),1);
             }
         }
-        grid[0][0] = new Item(Category.BOOK);
+        grid[0][0] = new Item(Category.BOOK,1);
         assertFalse(card.check(grid), "The grid contains rows with no repeat category type");
     }
 }

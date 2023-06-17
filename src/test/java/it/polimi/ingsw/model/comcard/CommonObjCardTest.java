@@ -27,10 +27,10 @@ public class CommonObjCardTest {
     public void setupPlayer() throws Exception {
         player = new Player();
         Shelf shelf = new Shelf();
-        shelf.getShelfGrid()[0][0] = new Item(Category.BOOK);
-        shelf.getShelfGrid()[0][4] = new Item(Category.BOOK);
-        shelf.getShelfGrid()[5][0] = new Item(Category.BOOK);
-        shelf.getShelfGrid()[5][4] = new Item(Category.BOOK);
+        shelf.getShelfGrid()[0][0] = new Item(Category.BOOK,1);
+        shelf.getShelfGrid()[0][4] = new Item(Category.BOOK,1);
+        shelf.getShelfGrid()[5][0] = new Item(Category.BOOK,1);
+        shelf.getShelfGrid()[5][4] = new Item(Category.BOOK,1);
         player.setMyShelf(shelf);
     }
 
@@ -123,10 +123,10 @@ public class CommonObjCardTest {
     @Test
     public void wrongCheckTest() throws InvalidPointerException {
         Shelf shelf = new Shelf();
-        shelf.getShelfGrid()[0][0] = new Item(Category.BOOK);
-        shelf.getShelfGrid()[0][4] = new Item(Category.BOOK);
-        shelf.getShelfGrid()[5][0] = new Item(Category.BOOK);
-        shelf.getShelfGrid()[5][4] = new Item(Category.CAT);
+        shelf.getShelfGrid()[0][0] = new Item(Category.BOOK,1);
+        shelf.getShelfGrid()[0][4] = new Item(Category.BOOK,1);
+        shelf.getShelfGrid()[5][0] = new Item(Category.BOOK,1);
+        shelf.getShelfGrid()[5][4] = new Item(Category.CAT,1);
         player.setMyShelf(shelf);
         card.doCheck(player);
         assertEquals(0, player.getScore(), "The check method hints");

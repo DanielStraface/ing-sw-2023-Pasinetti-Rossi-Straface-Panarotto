@@ -22,7 +22,7 @@ public class XCardsTest {
         grid = new Item[ROWS][COLS];
         for(int i=0;i<ROWS;i++){
             for(int j=0;j<COLS;j++){
-                grid[i][j] = new Item(null);
+                grid[i][j] = new Item(null,0);
             }
         }
     }
@@ -36,17 +36,17 @@ public class XCardsTest {
     @Test
     public void gridWithTwoX(){
         /* The item grid contains two x. check() to return true */
-        grid[1][2] = new Item(Category.CAT);
-        grid[0][1] = new Item(Category.CAT);
-        grid[0][3] = new Item(Category.CAT);
-        grid[2][2] = new Item(Category.CAT);
-        grid[2][3] = new Item(Category.CAT);
+        grid[1][2] = new Item(Category.CAT,1);
+        grid[0][1] = new Item(Category.CAT,1);
+        grid[0][3] = new Item(Category.CAT,1);
+        grid[2][2] = new Item(Category.CAT,1);
+        grid[2][3] = new Item(Category.CAT,1);
 
-        grid[4][2] = new Item(Category.BOOK);
-        grid[3][1] = new Item(Category.BOOK);
-        grid[3][3] = new Item(Category.BOOK);
-        grid[5][1] = new Item(Category.BOOK);
-        grid[5][3] = new Item(Category.BOOK);
+        grid[4][2] = new Item(Category.BOOK,1);
+        grid[3][1] = new Item(Category.BOOK,1);
+        grid[3][3] = new Item(Category.BOOK,1);
+        grid[5][1] = new Item(Category.BOOK,1);
+        grid[5][3] = new Item(Category.BOOK,1);
 
         assertTrue(card.check(grid), "The grid doesn't contain an x");
     }
