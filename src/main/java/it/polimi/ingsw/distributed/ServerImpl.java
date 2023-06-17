@@ -41,6 +41,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
             System.err.println(e.getMessage());
         }
         this.controller = new Controller(game);
+        this.controller.setMatchID(AppServerImpl.nextMatchID());
         this.toConnect = new boolean[this.game.getPlayers().size()];
     }
 
@@ -61,7 +62,6 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
     public void startGame() throws RemoteException{
         if(this.controller.getClients().size() == this.controller.getGame().getPlayers().size()){
             this.controller.getClients().get(this.controller.getClients().size() - 1).update("Joining a lobby...");
-            this.controller.setMatchID(AppServerImpl.getMatchID(this));
             MatchLog thisMatchLog = new MatchLog(this.controller.getMatchID());
             thisMatchLog.update(5);
             this.game.addListener(thisMatchLog);
@@ -221,11 +221,6 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
             }
         }
         return false;
-    }
-
-    public void notifyDisconnectionWhileSetup(String name) throws RemoteException {
-        String msg = "The user of player " + name + " has disconnected!";
-        this.controller.getGame().notifyDisconnection(game, name, msg);
     }
 
     /**

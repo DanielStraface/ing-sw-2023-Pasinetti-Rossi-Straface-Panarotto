@@ -234,8 +234,7 @@ public class ModelSubject {
         List<Integer> clientIDTempList = Arrays.stream(arrLocal).map(elem -> {
             try {
                 return elem.getClientID();
-            } catch (RemoteException e) {
-                System.err.println("Cannot obtain the clientID: " + e.getMessage());
+            } catch (RemoteException ignored) {
             }
             return null;
         }).toList();
