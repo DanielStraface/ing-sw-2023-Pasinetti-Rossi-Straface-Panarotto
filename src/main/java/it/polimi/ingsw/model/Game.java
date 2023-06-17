@@ -136,7 +136,7 @@ public class Game extends ModelSubject implements Serializable {
                         this.gameboard.getGameGrid()[i][j] = this.bag.drawItem();
                         this.gameboard.getValidGrid()[i][j] = OCCUPIED;
                     } catch (NoElementException e) {
-                        System.out.println(e.getMessage() + ", client notification and termination of the game");
+                        System.err.println(e.getMessage() + ", client notification and termination of the game");
                         try {
                             this.notifyDisconnection(this, ":Empty Bag", e.getMessage());
                             return;
