@@ -131,6 +131,11 @@ public class TurnHandler {
     }
 
     /**
+     * Method used for testing only
+     */
+    public void callGameOverHandler(){ this.gameOverHandler();}
+
+    /**
      * Get method for GameOver boolean
      * @return GameOver boolean that indicates whether the game is on its last turn or not
      */
