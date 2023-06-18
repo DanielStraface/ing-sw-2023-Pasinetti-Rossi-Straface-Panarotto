@@ -1,46 +1,114 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.distributed.Client;
-import it.polimi.ingsw.distributed.Server;
 import it.polimi.ingsw.distributed.ClientImpl;
+import it.polimi.ingsw.distributed.Server;
+import it.polimi.ingsw.distributed.ServerImpl;
+import it.polimi.ingsw.exceptions.InvalidNumberOfPlayersException;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.server.AppServer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.rmi.RemoteException;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class ControllerTest {
-    private static final int PLAYERS_NUMBER = 3;
+    private static final int PLAYERS_NUMBER = 4;
     private Game game;
-    private Client view;
-    private Server server;
     private TurnHandler turnHandler;
     private Controller controller;
-    /* @BeforeEach
-    public void setup() throws RemoteException {
-        try{
-            this.game = new Game(PLAYERS_NUMBER);
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-        }
 
-        this.view = new ClientImpl(server, 3, "attempt");
-        this.turnHandler = new TurnHandler(this.game);
-        this.controller = new Controller(this.game, this.view);
-    }
-
-    @Test
-    public void chooseFirstPlayerTest() throws RemoteException {
-        this.controller.chooseFirstPlayer();
-        Player player = this.game.getCurrentPlayer();
-        boolean isTrue = false;
-        assertTrue(this.game.getPlayers().contains(player), "The first player is not in this game");
-    }
-
+    /**
+     * Setup method for all tests
+     * @throws RemoteException if the execution of a remote method call goes wrong
+     * @throws InvalidNumberOfPlayersException if the number of players int given is invalid
      */
+    @BeforeEach
+    public void setup() throws RemoteException, InvalidNumberOfPlayersException {
+        this.game = new Game(PLAYERS_NUMBER);
+        this.turnHandler = new TurnHandler(this.game);
+        this.controller = new Controller(this.game);
+    }
+
+    /**
+     * Tests if FileNotFound or IOExceptions are correctly thrown when failing to load a saved game
+     */
+    @Test
+    public void loadGameTest(){
+       String filename = "wrong.jpg";
+       assertThrows(FileNotFoundException.class,()->{
+           game = this.controller.loadGame(filename);
+       });
+       String filename2 = "match99.ser";
+        assertThrows(IOException.class,()->{
+            game = this.controller.loadGame(filename2);
+        });
+    }
+
+    /**
+     * Tests if the game attribute in controller class has been correctly substituted
+     * @throws InvalidNumberOfPlayersException if the number of players int given is invalid
+     * @throws RemoteException if the execution of a remote method call goes wrong
+     */
+    @Test
+    public void substituteGameModelTest() throws InvalidNumberOfPlayersException, RemoteException {
+        Game game2 = new Game(4);
+        controller.substituteGameModel(game2);
+        assertSame(controller.getGame(),game2,"The game hasn't been substituted correctly");
+    }
+
+    /**
+     * setMatchID set method test
+     */
+    @Test
+    public void setMatchIDTest(){
+        int matchID = 40;
+        controller.setMatchID(matchID);
+        assertSame(controller.getMatchID(),matchID);
+    }
+
+    /**
+     * getGame get method test
+     */
+    @Test
+    public void getGameTest(){
+        Game game3 = controller.getGame();
+        assertSame(controller.getGame(),game3,"The gave given isn't the same");
+    }
+
+    /**
+     * getClients get method test
+     */
+    @Test
+    public void getClientsTest(){
+        List<Client> clients = controller.getClients();
+        assertSame(controller.getClients(),clients,"The client list given isn't the same");
+    }
+
+    /**
+     * getGameOver get method test
+     */
+    @Test
+    public void getGameOverTest(){
+        boolean gameOver = controller.getGameOver();
+        assertSame(controller.getGameOver(),gameOver,"The GameOver flag given isn't the same");
+    }
+
+    /**
+     * getMatchID get method test
+     */
+    @Test
+    public void getMatchIDTest(){
+        int matchID = controller.getMatchID();
+        assertSame(controller.getMatchID(),matchID,"The matchID int given isn't the same");
+    }
+
 }
