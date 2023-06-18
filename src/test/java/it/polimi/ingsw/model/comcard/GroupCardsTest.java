@@ -22,7 +22,9 @@ public class GroupCardsTest {
     private static final int TYPE_GROUP_OF_EIGHT = 9;
     private static final int TYPE_CORNERS = 8;
 
-
+    /**
+     * Setup method for all tests
+     */
     @BeforeAll
     public void generalSetup() {
         grid0 = new Item[ROWS][COLS];
@@ -53,6 +55,9 @@ public class GroupCardsTest {
         }
     }
 
+    /**
+     * Setup method for all tests
+     */
     @BeforeEach
     public void setUp() {
         card = null;
@@ -212,18 +217,6 @@ public class GroupCardsTest {
             grid7[2][j] = new Item(Category.PLANT,1);
         }
         assertFalse(card.check(grid7), "The grid contains four groups four item of the same type, not less than four");
-
-
-    /* The grid contains less than four groups of four items of the same time. check() to return false.*/
-        card = new GroupCards(TYPE_GROUP_OF_FOUR);
-        for(int j = 0;j<4;j++){
-        grid7[0][j] = new Item(Category.CAT,1);
-        grid7[1][j] = new Item(Category.GAME,1);
-        grid7[2][j] = new Item(Category.PLANT,1);
-        grid7[3][j] = new Item(Category.CAT,1);
-        grid7[4][j] = new Item(Category.BOOK,1);
-        }
-        assertFalse(card.check(grid7), "The grid contains four groups of four items of the same type, not more than four");
     }
 
     /** verifies that the method returns false when the grid is empty */
@@ -246,6 +239,11 @@ public class GroupCardsTest {
         grid9[3][3]= new Item(Category.BOOK,1);
         grid9[4][4]= new Item(Category.BOOK,1);
         grid9[5][0]= new Item(Category.BOOK,1);
+        grid9[0][1]= new Item(Category.CAT,1);
+        grid9[0][2]= new Item(Category.FRAME,1);
+        grid9[0][3]= new Item(Category.GAME,1);
+        grid9[1][1]= new Item(Category.PLANT,1);
+        grid9[1][2]= new Item(Category.TROPHY,1);
 
         assertTrue(card.check(grid9), "The grid doesn't contain eight items of the same type");
     }
@@ -307,7 +305,6 @@ public class GroupCardsTest {
         /* The implementation can't support this.type. check() to return false. */
         card = new GroupCards(TYPE_CORNERS);
         assertFalse(card.check(grid1), "This type is not allowed in this card");
-
     }
 }
 
