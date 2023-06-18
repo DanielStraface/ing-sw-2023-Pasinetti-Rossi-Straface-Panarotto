@@ -15,6 +15,9 @@ public class XCardsTest {
     private XCards card;
     private Item[][] grid;
 
+    /**
+     * Setup method for all tests
+     */
     @BeforeEach
     public void setup(){
         card = null;
@@ -27,12 +30,18 @@ public class XCardsTest {
         }
     }
 
+    /**
+     * Checks if the Card n.10's objective correctly fails
+     */
     @Test
     public void gridNullTest(){
         /* The item grid is null. check() to return false */
         assertFalse(card.check(grid), "The grid contains an x");
     }
 
+    /**
+     * Checks if the Card n.10's objective is correctly reached
+     */
     @Test
     public void gridWithTwoX(){
         /* The item grid contains two x. check() to return true */

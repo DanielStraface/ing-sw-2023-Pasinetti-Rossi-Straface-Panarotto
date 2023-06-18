@@ -20,6 +20,9 @@ public class RowsColumnsCardTest {
     private RowsColumnsCard card;
     private Item[][] grid;
 
+    /**
+     * Setup method for all tests
+     */
     @BeforeEach
     public void setup(){
         card = null;
@@ -31,6 +34,9 @@ public class RowsColumnsCardTest {
         }
     }
 
+    /**
+     * Checks if the Card n.3's objective correctly fails
+     */
     @Test
     public void nullGridTest(){
         /* The grid is null. check() to return false */
@@ -39,6 +45,9 @@ public class RowsColumnsCardTest {
         assertFalse(card.check(grid));
     }
 
+    /**
+     * Checks if the Card n.2's objective is correctly reached
+     */
     @Test
     public void colsCheckerOkTest(){
         /* The grid contains three columns with six different category types. check() to return true */
@@ -52,6 +61,9 @@ public class RowsColumnsCardTest {
         assertTrue(card.check(grid), "The grid contains full columns with a repeat category type");
     }
 
+    /**
+     * Checks if the Card n.2's objective correctly fails
+     */
     @Test
     public void colsCheckerFailTest(){
         /* The grid contains one column with six different category types and another with a category type repetition.
@@ -67,6 +79,9 @@ public class RowsColumnsCardTest {
         assertFalse(card.check(grid), "The grid contains full columns with no repetition");
     }
 
+    /**
+     * Checks if the Card n.6's objective is correctly reached
+     */
     @Test
     public void rowsCheckerOkTest(){
         /* The grid contains three rows with five different category types. check() to return true */
@@ -80,6 +95,9 @@ public class RowsColumnsCardTest {
         assertTrue(card.check(grid), "The grid contains rows with a repeat category type");
     }
 
+    /**
+     * Checks if the Card n.6's objective correctly fails
+     */
     @Test
     public void rowsCheckerFailTest(){
         /* The grid contains one rows with five different category types and a one column with a category repetition.

@@ -21,6 +21,9 @@ public class ThreeDifferentTypesTest {
     private Item[][] grid;
     private ThreeDifferentTypes card;
 
+    /**
+     * Setup method for all tests
+     */
     @BeforeEach
     public void setup(){
         card = null;
@@ -128,6 +131,9 @@ public class ThreeDifferentTypesTest {
     }
 
 
+    /**
+     * Checks if the Card n.7's objective correctly fails
+     */
     @Test
     public void checkdifferentRowsFailTest2(){
         card = new ThreeDifferentTypes(DIFFERENT_ROWS);
@@ -155,7 +161,9 @@ public class ThreeDifferentTypesTest {
         assertFalse(card.check(grid),"The grid satisfies the CommonObjectiveCard n.7");
     }
 
-
+    /**
+     * Checks if the Card n.7's objective correctly fails
+     */
     @Test
     public void checkdifferentRowsFailTest3(){
         card = new ThreeDifferentTypes(DIFFERENT_ROWS);
@@ -257,7 +265,9 @@ public class ThreeDifferentTypesTest {
 
     }
 
-
+    /**
+     * Checks if the Card n.5's objective correctly fails
+     */
     @Test
     public void checkDifferentColumnsFailTest2(){
         card = new ThreeDifferentTypes(DIFFERENT_COLS);
@@ -281,7 +291,9 @@ public class ThreeDifferentTypesTest {
         assertFalse(card.check(grid),"The grid satisfies the CommonObjectiveCard n.5");
     }
 
-
+    /**
+     * Checks if the Card n.5's objective correctly fails
+     */
     @Test
     public void checkDifferentColumnsFailTest3(){
         card = new ThreeDifferentTypes(DIFFERENT_COLS);
