@@ -25,6 +25,8 @@ public class GameBoardTest {
 
     /**
      * Test method allItemNull controls that every item of the grid is null
+     * @throws InvalidNumberOfPlayersException if the number of players int given is invalid
+     * @throws RemoteException if the execution of a remote method call goes wrong
      */
     @Test
     public void allItemNull() throws InvalidNumberOfPlayersException, RemoteException {
@@ -39,6 +41,8 @@ public class GameBoardTest {
 
     /**
      * Test method gridForTwoTester controls that the grid is set for two players
+     * @throws InvalidNumberOfPlayersException if the number of players int given is invalid
+     * @throws RemoteException if the execution of a remote method call goes wrong
      */
     @Test
     public void gridForTwoTester() throws InvalidNumberOfPlayersException, RemoteException {
@@ -57,6 +61,8 @@ public class GameBoardTest {
 
     /**
      * Test method gridForThreeTester controls that the grid is set for three players
+     * @throws InvalidNumberOfPlayersException if the number of players int given is invalid
+     * @throws RemoteException if the execution of a remote method call goes wrong
      */
     @Test
     public void gridForThreeTester() throws InvalidNumberOfPlayersException, RemoteException {
@@ -76,7 +82,9 @@ public class GameBoardTest {
     }
 
     /**
-     *  Test method gridForFourTester controls that the grid is set for four player
+     * Test method gridForFourTester controls that the grid is set for four player
+     * @throws InvalidNumberOfPlayersException if the number of players int given is invalid
+     * @throws RemoteException if the execution of a remote method call goes wrong
      */
     @Test
     public void gridForFourTester() throws InvalidNumberOfPlayersException, RemoteException {

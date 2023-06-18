@@ -175,6 +175,17 @@ public class GameTest {
     }
 
     /**
+     * setCommonObjCard set method test
+     * @throws InvalidNumberOfPlayersException when the number of players given is invalid
+     */
+    @Test
+    public void setCommonObjCardsTest() throws InvalidNumberOfPlayersException {
+        game.setCommonObjCards(0,0);
+        assertSame(game.getCommonObjCard().get(0).getType(),1,"The commonObjCard 1 set is not the same");
+        assertSame(game.getCommonObjCard().get(1).getType(),2,"The commonObjCard 2 set is not the same");
+    }
+
+    /**
      * setGameOverPointToken set method test
      */
     @Test

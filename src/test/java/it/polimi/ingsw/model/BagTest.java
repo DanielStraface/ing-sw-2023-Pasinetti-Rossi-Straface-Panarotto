@@ -19,6 +19,9 @@ public class BagTest {
     private Item item;
 
 
+    /**
+     * Setup method for all tests
+     */
     @BeforeEach
     public void cleanBag() {
         bag = null;

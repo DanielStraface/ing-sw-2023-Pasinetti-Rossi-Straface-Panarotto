@@ -101,7 +101,6 @@ public class Controller {
      * loadGame method loads a saved game from a file
      * @param fileName - the name of the file in which the game was saved
      * @return the game instance that represent the model stored in the fileName
-     * @author Christian Pasinetti
      */
     public static Game loadGame(String fileName) throws FileNotFoundException {
         try {
@@ -140,7 +139,6 @@ public class Controller {
      * getGame method return the game reference in controller. It is synchronized due to view interactions,
      * TurnChecker and PlayerAction operations
      * @return this.game
-     * @author Matteo Panarotto
      */
     public synchronized Game getGame(){
         return this.game;

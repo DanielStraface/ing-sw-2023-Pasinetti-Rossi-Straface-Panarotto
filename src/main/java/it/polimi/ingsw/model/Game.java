@@ -206,6 +206,21 @@ public class Game extends ModelSubject implements Serializable {
     public void setValidGrid (int[][] validGrid) { this.validGrid = validGrid; }
 
     /**
+     * Method to set specific CommonObjCards, used only for tests
+     * @param type1 first CommonObjCard type
+     * @param type2 second CommonObjCard type
+     * @throws InvalidNumberOfPlayersException when the number of players given is invalid
+     */
+    public void setCommonObjCards(int type1,int type2) throws InvalidNumberOfPlayersException {
+        CommonObjCardReader descrReader = new CommonObjCardReader();
+        List<String> descriptions = new LinkedList<>(descrReader.readFromFile());
+        List<Integer> type = new LinkedList<Integer>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12));
+        this.getCommonObjCard().clear();
+        this.commonObjCards.add( new CommonObjCard(this.playersNumber, type.remove(type1), descriptions.remove(type1)));
+        this.commonObjCards.add( new CommonObjCard(this.playersNumber, type.remove(type2), descriptions.remove(type2)));
+    }
+
+    /**
      * set method for the game over message.
      * @param finalMessage the game over message
      * @throws RemoteException if the execution of setChangedAndNotifyListeners method call goes wrong

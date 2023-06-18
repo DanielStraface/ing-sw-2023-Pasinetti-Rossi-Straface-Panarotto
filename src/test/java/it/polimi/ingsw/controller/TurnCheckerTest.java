@@ -1,8 +1,11 @@
 package it.polimi.ingsw.controller;
 
 
+import it.polimi.ingsw.exceptions.InvalidNumberOfPlayersException;
 import it.polimi.ingsw.exceptions.InvalidPointerException;
+import it.polimi.ingsw.exceptions.OutOfBoundsException;
 import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.model.comcard.CommonObjCard;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -20,45 +23,51 @@ import static org.junit.jupiter.api.Assertions.*;
 public class TurnCheckerTest {
 
     private Shelf shelf;
-    private Player player;
     private TurnChecker turnChecker;
     private Game game;
+    private Player player;
     private static final int INVALID=0;
     private static final int PLAYABLE=1;
     private static final int OCCUPIED=2;
 
 
-
+    /**
+     * Setup method for all tests
+     */
     @BeforeEach
     public void setup() throws Exception {
-        shelf = new Shelf();
-        player = new Player();
-        turnChecker = new TurnChecker();
         game = new Game(4);
+        shelf = new Shelf();
+        turnChecker = new TurnChecker();
+        player = game.getPlayers().get(0);
+        player.setIsFirstPlayer();
     }
 
 
     /**
      * Tests if the commonObjCard check doesn't assign points to the current player
-     * @throws InvalidPointerException
-     * @throws RemoteException
+     * @throws InvalidNumberOfPlayersException when the number of players given is invalid
      */
     @Test
-    public void manageCheckCommonObjCardTest() throws InvalidPointerException, RemoteException {
-        game.setCurrentPlayer(player);
-        turnChecker.manageCheck(game.getCurrentPlayer(),game);
-        assertEquals(0,game.getCurrentPlayer().getScore(),"Points have been wrongly added!");
+    public void manageCheckCommonObjCardTest() throws InvalidNumberOfPlayersException{
+        turnChecker.manageCheck(player,game);
+        assertEquals(0,player.getScore(),"Points have been wrongly added!");
+        for(int i=0;i<6;i++){
+            for(int j=0;j<5;j++){
+                player.getMyShelf().getShelfGrid()[i][j] = new Item(Category.CAT,1);
+            }
+        }
+        game.setCommonObjCards(8,9);
+        turnChecker.manageCheck(player,game);
+        assertEquals(16,player.getScore(),"Points haven't been correctly added!");
     }
 
 
     /**
      * Tests if the gameBoard is refilled under the correct conditions
-     * @throws InvalidPointerException
-     * @throws RemoteException
      */
     @Test
-    public void manageCheckRefillGameBoardCheck() throws InvalidPointerException, RemoteException {
-        game.setCurrentPlayer(player);
+    public void manageCheckRefillGameBoardCheck(){
         int[][] validGrid;
         GameBoard gameBoard;
         validGrid = game.getValidGrid();
@@ -80,7 +89,7 @@ public class TurnCheckerTest {
         validGrid[6][4] = OCCUPIED;
         game.setGameBoard(gameBoard);
         game.setValidGrid(validGrid);
-        turnChecker.manageCheck(game.getCurrentPlayer(),game);
+        turnChecker.manageCheck(player,game);
         for(int i=0; i<9; i++){
             for(int j=0; j<9; j++){
                 if(game.getValidGrid()[i][j] != INVALID && game.getGameboard().getGameGrid()[i][j].getCategoryType()==null){
@@ -94,17 +103,14 @@ public class TurnCheckerTest {
 
     /**
      * Checks if lastTurn is triggered or not under the correct conditions
-     * @throws InvalidPointerException
-     * @throws RemoteException
      */
     @Test
-    public void manageCheckLastTurnTest() throws InvalidPointerException, RemoteException {
+    public void manageCheckLastTurnTest(){
         Shelf shelf;
         boolean check;
-        game.setCurrentPlayer(player);
-        check = turnChecker.manageCheck(game.getCurrentPlayer(),game);
+        check = turnChecker.manageCheck(player,game);
         assertFalse(check,"Last turn has been triggered even if the player's shelf isn't full!");
-        shelf = game.getCurrentPlayer().getMyShelf();
+        shelf = player.getMyShelf();
         Random random = new Random();
         List<Category> categories = new ArrayList<Category>(Arrays.asList(Category.values()));
         for(int i=0; i<6; i++){
@@ -112,14 +118,14 @@ public class TurnCheckerTest {
                shelf.getShelfGrid()[i][j]= new Item(categories.get(random.nextInt(6)),1);
             }
         }
-        game.getCurrentPlayer().setMyShelf(shelf);
-        check = turnChecker.manageCheck(game.getCurrentPlayer(),game);
+        player.setMyShelf(shelf);
+        check = turnChecker.manageCheck(player,game);
         assertTrue(check,"Last turn hasn't been triggered even if the player's shelf is full!");
     }
 
 
     /**
-     *  Tests every amount of points assigned (2,3,5,8) for adjacent Items
+     * Tests every amount of points assigned (2,3,5,8) for adjacent Items
      */
     @Test
     public void adjacentPointsCheck(){
