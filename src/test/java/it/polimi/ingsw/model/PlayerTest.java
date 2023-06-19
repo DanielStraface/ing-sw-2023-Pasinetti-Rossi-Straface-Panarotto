@@ -1,14 +1,12 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.exceptions.InvalidNumberOfItemsException;
-import it.polimi.ingsw.exceptions.InvalidSelectionException;
-import it.polimi.ingsw.exceptions.InvalidStateException;
-import it.polimi.ingsw.exceptions.OutOfBoundsException;
+import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.personcard.PersonalObjCard;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,18 +16,20 @@ import static org.junit.jupiter.api.Assertions.*;
 public class PlayerTest {
     Player testPlayer;
     private Shelf myShelf;
-    private PersonalObjCard myPersonalObjCard;
     private List<Item> selectItems;
-    private boolean isFirstPlayer;
     private Game testGame;
     private List<int[]> selectedCoords;
     private int selectedCol;
-    private List<Item> sortedItems;
     private Item[][] gameBoard;
     private int[][] validGrid;
 
+    /**
+     * Setup method for all tests
+     * @throws InvalidNumberOfPlayersException if the number of players int given is invalid
+     * @throws RemoteException if the execution of a remote method call goes wrong
+     */
     @BeforeEach
-    void creationPlayerAndGame() throws Exception {
+    void creationPlayerAndGame() throws InvalidNumberOfPlayersException, RemoteException {
         final int NUM_OF_PLAYER = 4;
         testGame = new Game(NUM_OF_PLAYER);
         testPlayer = new Player();
@@ -41,10 +41,9 @@ public class PlayerTest {
 
     /**
      * Method to test if player is successfully created
-     * @throws Exception
      */
     @Test
-    public void setTestPlayer() throws Exception {
+    public void setTestPlayer(){
         assertNull(testPlayer.getNickname());
         assertEquals(0, testPlayer.getClientID());
         System.out.println("Nickname: " + testPlayer.getNickname());
@@ -53,10 +52,9 @@ public class PlayerTest {
 
     /**
      * Method to test if isFirstPlayer and score attributes are successfully set
-     * @throws Exception
      */
     @Test
-    public void setAttributesTestPlayer() throws Exception {
+    public void setAttributesTestPlayer(){
         final int SHELF_ROWS=6;
         final int SHELF_COLUMNS=5;
         Item[][] expectedShelf= new Item[SHELF_ROWS][SHELF_COLUMNS];
@@ -83,230 +81,12 @@ public class PlayerTest {
 
     }
 
-    /**
-     * Method to test InvalidStateException when selectedCoords list is empty
-     * @throws Exception
-     */
-    @Test
-    public void emptyListOfCoordinates() throws Exception{
-        selectedCoords=new ArrayList<>();
-        Exception e= assertThrows(InvalidStateException.class, ()-> testPlayer.pickItems(selectedCoords,gameBoard,validGrid));
-        assertEquals("selectedCoords is empty", e.getMessage());
-    }
-
-    /**
-     *  Method to test InvalidStateException when coordinates in selectedCoords list
-     *  are not available according to the validGrid values
-     * @throws Exception
-     */
-    @Test
-    public void invalidCoordsSelectionTest() throws Exception{
-        selectedCoords=new ArrayList<>();
-        int[] coord1 = {0, 0};
-        int[] coord2 = {0, 1};
-        selectedCoords.add(coord1);
-        selectedCoords.add(coord2);
-        Exception e=assertThrows(InvalidSelectionException.class,()-> testPlayer.pickItems(selectedCoords,gameBoard,validGrid));
-        assertEquals("Selected item in invalid slot", e.getMessage());
-    }
-
-    /**
-     *  Method to test InvalidSelectionException when coordinates in selectedCoords list
-     *  are not available because of different rows and columns values
-     * @throws Exception
-     */
-    @Test
-    public void diffRowsAndColumnsTest() throws Exception{
-        selectedCoords=new ArrayList<>();
-        int[] coord1 = {0, 3};
-        int[] coord2 = {1, 4};
-        int[] coord3 = {2, 5};
-        selectedCoords.add(coord1);
-        selectedCoords.add(coord2);
-        selectedCoords.add(coord3);
-        Exception e=assertThrows(InvalidSelectionException.class,()-> testPlayer.pickItems(selectedCoords,gameBoard,validGrid));
-        assertEquals("Invalid selection: no same rows or cols", e.getMessage());
-    }
-
-    /**
-     * Method to test InvalidSelectionException when coordinates in selectedCoords list
-     * are not available because are not consecutive (case1: 3 coordinates, no consecutive rows)
-     * @throws Exception
-     */
-    @Test
-    public void NoConsecutive3RowsTest() throws Exception{
-        final int COLUMN=2;
-        selectedCoords=new ArrayList<>();
-        int[] coord1 = {2, COLUMN};
-        int[] coord2 = {3, COLUMN};
-        int[] coord3 = {5, COLUMN};
-        selectedCoords.add(coord1);
-        selectedCoords.add(coord2);
-        selectedCoords.add(coord3);
-        Exception e=assertThrows(InvalidSelectionException.class,()-> testPlayer.pickItems(selectedCoords,gameBoard,validGrid));
-        assertEquals("Invalid selection: No consecutive selection", e.getMessage());
-    }
-
-    /**
-     * Method to test InvalidSelectionException when coordinates in selectedCoords list
-     * are not available because are not consecutive (case2: 2 coordinates, no consecutive rows)
-     * @throws Exception
-     */
-    @Test
-    public void NoConsecutive2RowsTest() throws Exception{
-        final int COLUMN=2;
-        selectedCoords=new ArrayList<>();
-        int[] coord1 = {4, COLUMN};
-        int[] coord2 = {2, COLUMN};
-        selectedCoords.add(coord1);
-        selectedCoords.add(coord2);
-
-        Exception e=assertThrows(InvalidSelectionException.class,()-> testPlayer.pickItems(selectedCoords,gameBoard,validGrid));
-        assertEquals("Invalid selection: No consecutive selection", e.getMessage());
-    }
-
-    /**
-     * Method to test InvalidSelectionException when coordinates in selectedCoords list
-     * are not available because are not consecutive (case3: 3 coordinates, no consecutive columns)
-     * @throws Exception
-     */
-    @Test
-    public void NoConsecutive3ColumnsTest() throws Exception{
-        final int ROW=2;
-        selectedCoords=new ArrayList<>();
-        int[] coord1 = {ROW, 2};
-        int[] coord2 = {ROW, 3};
-        int[] coord3 = {ROW, 5};
-        selectedCoords.add(coord1);
-        selectedCoords.add(coord2);
-        selectedCoords.add(coord3);
-        Exception e=assertThrows(InvalidSelectionException.class,()-> testPlayer.pickItems(selectedCoords,gameBoard,validGrid));
-        assertEquals("Invalid selection: No consecutive selection", e.getMessage());
-    }
-
-    /**
-     * Method to test InvalidSelectionException when coordinates in selectedCoords list
-     * are not available because are not consecutive (case4: 2 coordinates, no consecutive columns)
-     * @throws Exception
-     */
-    @Test
-    public void NoConsecutive2ColumnsTest() throws Exception{
-        final int ROW=2;
-        selectedCoords=new ArrayList<>();
-        int[] coord1 = {ROW, 2};
-        int[] coord2 = {ROW, 4};
-        selectedCoords.add(coord1);
-        selectedCoords.add(coord2);
-
-        Exception e=assertThrows(InvalidSelectionException.class,()-> testPlayer.pickItems(selectedCoords,gameBoard,validGrid));
-        assertEquals("Invalid selection: No consecutive selection", e.getMessage());
-    }
-
-    /**
-     * Method to test InvalidSelectionException when three random coordinates in selectedCoords list
-     * are not available because of no free side exception
-     * @throws Exception
-     */
-    @Test
-    public void FreeSideTest() throws Exception{
-        final int ROW=2;
-        for (int i = 0; i < validGrid.length; i++) {
-            for (int j = 0; j < validGrid[i].length; j++) {
-                System.out.print(validGrid[i][j] + " ");
-            }
-            System.out.println();
-        }
-        for (int i = 0; i < gameBoard.length; i++) {
-            for (int j = 0; j < gameBoard[i].length; j++) {
-                System.out.print(gameBoard[i][j].getCategoryType() + " ");
-            }
-            System.out.println();
-        }
-        selectedCoords=new ArrayList<>();
-        int[] coord1 = {ROW, 2};
-        int[] coord2 = {ROW, 3};
-        int[] coord3 = {ROW, 4};
-        selectedCoords.add(coord1);
-        selectedCoords.add(coord2);
-        selectedCoords.add(coord3);
-        Exception e=assertThrows(InvalidSelectionException.class,()-> testPlayer.pickItems(selectedCoords,gameBoard,validGrid));
-        assertEquals("Invalid selection: no free sides", e.getMessage());
-    }
-
-    /**
-     * Method to test if first row items are available to be picked because they always have free side
-     * @throws Exception
-     */
-    @Test
-    public void FreeSideFirstROWTest() throws Exception{
-        final int ROW=0;
-        for (int i = 0; i < validGrid.length; i++) {
-            for (int j = 0; j < validGrid[i].length; j++) {
-                System.out.print(validGrid[i][j] + " ");
-            }
-            System.out.println();
-        }
-        for (int i = 0; i < gameBoard.length; i++) {
-            for (int j = 0; j < gameBoard[i].length; j++) {
-                System.out.print(gameBoard[i][j].getCategoryType() + " ");
-            }
-            System.out.println();
-        }
-        selectedCoords=new ArrayList<>();
-        int[] coord1 = {ROW, 3};
-        int[] coord2 = {ROW, 4};
-        selectedCoords.add(coord1);
-        selectedCoords.add(coord2);
-        assertDoesNotThrow(()->testPlayer.pickItems(selectedCoords,gameBoard,validGrid));
-
-        for (int i = 0; i < validGrid.length; i++) {
-            for (int j = 0; j < validGrid[i].length; j++) {
-                System.out.print(validGrid[i][j] + " ");
-            }
-            System.out.println();
-        }
-        for (int i = 0; i < gameBoard.length; i++) {
-            for (int j = 0; j < gameBoard[i].length; j++) {
-                System.out.print(gameBoard[i][j].getCategoryType() + " ");
-            }
-            System.out.println();
-        }
-    }
-
-    /**
-     *  Method to test if an item which has the next column free can be picked
-     * @throws Exception
-     */
-    @Test
-    public void FreeSideNextColIsFreeTest() throws Exception{
-        final int ROW=3;
-        final int COL=3;
-        validGrid[ROW][COL+1]=1;
-        for (int i = 0; i < validGrid.length; i++) {
-            for (int j = 0; j < validGrid[i].length; j++) {
-                System.out.print(validGrid[i][j] + " ");
-            }
-            System.out.println();
-        }
-        gameBoard[ROW][COL+1]=new Item(null,0);
-        for (int i = 0; i < gameBoard.length; i++) {
-            for (int j = 0; j < gameBoard[i].length; j++) {
-                System.out.print(gameBoard[i][j].getCategoryType() + " ");
-            }
-            System.out.println();
-        }
-        selectedCoords=new ArrayList<>();
-        int[] coord1 = {ROW, COL};
-        selectedCoords.add(coord1);
-        assertDoesNotThrow(()->testPlayer.pickItems(selectedCoords,gameBoard,validGrid));
-    }
 
     /**
      * Method to test if an item which has the next row free can be picked
-     * @throws Exception
      */
     @Test
-    public void FreeSideNexTrowIsFreeTest() throws Exception{
+    public void FreeSideNexTrowIsFreeTest(){
         final int ROW=3;
         final int COL=3;
         validGrid[ROW+1][COL]=1;
@@ -332,10 +112,9 @@ public class PlayerTest {
 
     /**
      * Method to test if validGrid and GameGrid values are successfully set after pickItems call
-     * @throws Exception
      */
     @Test
-    public void rightValuesInValidAndGameGridTest() throws Exception{
+    public void rightValuesInValidAndGameGridTest(){
         final int ROW=0;
         for (int[] ints : validGrid) {
             for (int j = 0; j < ints.length; j++) {
@@ -376,10 +155,9 @@ public class PlayerTest {
 
     /**
      *  Method to test if selected items in GameBoard are the same in selectedItems list
-     * @throws Exception
      */
     @Test
-    public void rightItemsInSelectItemsTest() throws Exception {
+    public void rightItemsInSelectItemsTest(){
         final int ROW = 0;
         for (int i = 0; i < validGrid.length; i++) {
             for (int j = 0; j < validGrid[i].length; j++) {
@@ -425,42 +203,10 @@ public class PlayerTest {
     }
 
     /**
-     *  Method to test OutOfBoundsException if the column selected is not available
-     * @throws Exception
-     */
-    @Test
-    public void noAvailableColumnTest() throws Exception{
-        final int INVALID_COLUMN=6;
-        selectedCol=INVALID_COLUMN;
-        selectItems.add(new Item(Category.TROPHY,1));
-        selectItems.add(new Item(Category.CAT,1));
-
-        Exception e=assertThrows(OutOfBoundsException.class,()-> testPlayer.putItemInShelf(selectedCol));
-        assertEquals("selectedCol must be less than 5", e.getMessage());
-
-    }
-
-    /**
-     * Method to test if selectedItems list has more than three items
-     * @throws Exception
-     */
-    @Test
-    public void noAvailableDimensionOfSelectItems() throws Exception{
-        selectedCol=3;
-        selectItems.add(new Item(Category.TROPHY,1));
-        selectItems.add(new Item(Category.CAT,1));
-        selectItems.add(new Item(Category.PLANT,1));
-        selectItems.add(new Item(Category.FRAME,1));
-
-        Exception e=assertThrows(InvalidNumberOfItemsException.class,()-> testPlayer.putItemInShelf(selectedCol));
-    }
-
-    /**
      * Method to test if Items of selectedItems list are successfully placed in personal shelf
-     * @throws Exception
      */
     @Test
-    public void rightPositionsOfItemsInMyShelfTest() throws Exception{
+    public void rightPositionsOfItemsInMyShelfTest(){
         final int VALID_COLUMN=3;
         final int LAST_ROW=5;
         selectedCol=VALID_COLUMN;
@@ -488,23 +234,57 @@ public class PlayerTest {
     }
 
     /**
-     * Method to test if points are successfully added to personal score
-     * @throws Exception
+     * Tests if the Shelf lastRows are updated correctly
      */
     @Test
-    public void addPointsTest() throws Exception{
+    public void updateLastRowsTest(){
+        int selectedItems = 1;
+        int selectedColumn = 1;
+        assertTrue(testPlayer.updateLastRows(selectedColumn,selectedItems),"The LastRow hasn't been updated correctly");
+        selectedItems = 2;
+        assertTrue(testPlayer.updateLastRows(selectedColumn,selectedItems),"The LastRow hasn't been updated correctly");
+        selectedItems = 3;
+        assertTrue(testPlayer.updateLastRows(selectedColumn,selectedItems),"The LastRow hasn't been updated correctly");
+    }
+
+    /**
+     * Method to test if points are successfully added to personal score
+     */
+    @Test
+    public void addPointsTest(){
         final int POINTS=10;
         testPlayer.addPoints(POINTS);
 
         assertEquals(POINTS,testPlayer.getScore(), "Score is not updated");
     }
 
+    /**
+     * setMyShelf set method test
+     */
+    @Test
+    public void setMyShelfTest(){
+        Shelf shelf = new Shelf();
+        for(int i=0; i<6; i++){
+            for(int j=0; j<5; j++){
+                shelf.getShelfGrid()[i][j] = new Item(Category.CAT,1);
+            }
+        }
+        testPlayer.setMyShelf(shelf);
+        assertSame(testPlayer.getMyShelf(),shelf,"The shelf set is not the same");
+    }
+
+    /**
+     * setFirstPlayer set method test
+     */
     @Test
     public void setFirstPlayerTest(){
         testPlayer.setIsFirstPlayer();
         assertTrue(testPlayer.getIsFirstPlayer(),"isFirstPlayer is not true");
     }
 
+    /**
+     * setNickNameAndClientID set method test
+     */
     @Test
     public void setNicknameAndClientIDTest(){
         final String NICKNAME = "Player0";
@@ -515,6 +295,15 @@ public class PlayerTest {
         testPlayer.setNicknameAndClientID(NICKNAME, CLIENTID);
         assertEquals(NICKNAME, testPlayer.getNickname(), "The player name is not set correctly");
         assertSame(CLIENTID, testPlayer.getClientID(), "The player's clientID is not set correctly");
+    }
+
+    /**
+     * getMyPersonalObjCard get method test
+     */
+    @Test
+    public void getMyPersonalObjCardTest(){
+        PersonalObjCard personalObjCard = testPlayer.getMyPersonalOBjCard();
+        assertSame(testPlayer.getMyPersonalOBjCard(),personalObjCard,"The PersonalObjCard gotten is not the same");
     }
 }
 

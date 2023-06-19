@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.listeners.ModelSubject;
 import it.polimi.ingsw.model.personcard.PersonalObjCard;
 
@@ -107,11 +106,6 @@ public class Player extends ModelSubject implements Serializable {
      * @param points points to be added to the player
      * @param toDisplay displays the completion to the player
      */
-    public void addPointsByCommonObjCard(int points, String toDisplay) {
-        this.score += points;
-    }
-
-    /* set methods */
 
     /**
      * the method sets the personal objective card of the player.
