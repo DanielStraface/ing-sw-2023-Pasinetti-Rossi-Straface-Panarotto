@@ -1,11 +1,9 @@
 package it.polimi.ingsw.model;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -13,6 +11,9 @@ public class ShelfTest {
 
     private Shelf shelf;
 
+    /**
+     * Setup method for all tests
+     */
     @BeforeEach
     public void SetUp() {
         shelf = null;

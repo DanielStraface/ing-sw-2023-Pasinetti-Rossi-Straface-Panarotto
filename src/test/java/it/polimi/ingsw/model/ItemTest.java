@@ -11,6 +11,9 @@ public class ItemTest {
 
     private Item item;
 
+    /**
+     * Setup method for all tests
+     */
     @BeforeEach
     public void cleanItem(){
         item = null;
@@ -45,10 +48,23 @@ public class ItemTest {
         assertSame(null, categoryGotten, "The category is not same");
     }
 
+    /**
+     * getCategory get method test
+     */
     @Test
     public void getCategoryTestNotNull(){
         item = new Item(Category.BOOK,1);
         Category categoryGotten = item.getCategoryType();
         assertSame(Category.BOOK, categoryGotten, "The category is not same");
+    }
+
+    /**
+     * getVariant get method test
+     */
+    @Test
+    public void getVariantTest(){
+        Item itemToGet = new Item(Category.CAT,2);
+        int variant = itemToGet.getVariant();
+        assertSame(itemToGet.getVariant(),variant,"The variant int given is not the same");
     }
 }
