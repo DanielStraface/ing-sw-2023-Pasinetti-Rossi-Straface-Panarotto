@@ -12,6 +12,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
 
+/**
+ * The AppClientRMI class represents a specific type of AppClient class used for the RMI connection type.
+ * It contains a heartbeat method to monitor the client activity connection status.
+ * See AppClient class documentation for more information.
+ */
 public class ModelSubject {
     private boolean changed = false;
     private Vector<Client> obs;
@@ -48,12 +53,7 @@ public class ModelSubject {
      * @throws RemoteException if the execution of update method call goes wrong
      */
     public synchronized void informLog(Client o, List<int[]> coords, Integer column) throws RemoteException {
-        /*
-         * a temporary array buffer, used as a snapshot of the state of
-         * current Observers.
-         */
         Object[] arrLocal;
-
         synchronized (this) {arrLocal = obs.toArray();}
 
         for (int i = arrLocal.length-1; i>=0; i--){
@@ -62,31 +62,14 @@ public class ModelSubject {
         }
     }
 
-
     /**
      * Notifies the Game class of most changes made in a match
      * @param arg - the game model
      */
     public void notifyObservers(Game arg) {
-        /*
-         * a temporary array buffer, used as a snapshot of the state of
-         * current Observers.
-         */
         Object[] arrLocal;
 
-        synchronized (this) {
-            /* We don't want the Observer doing callbacks into
-             * arbitrary code while holding its own Monitor.
-             * The code where we extract each Observable from
-             * the Vector and store the state of the Observer
-             * needs synchronization, but notifying observers
-             * does not (should not).  The worst result of any
-             * potential race-condition here is that:
-             * 1) a newly-added Observer will miss a
-             *   notification in progress
-             * 2) a recently unregistered Observer will be
-             *   wrongly notified when it doesn't care
-             */
+        synchronized(this){
             if (!changed)
                 return;
             arrLocal = obs.toArray();
@@ -140,25 +123,9 @@ public class ModelSubject {
      * @param arg the completion message String
      */
     public void notifyObservers(Player player, String arg) {
-        /*
-         * a temporary array buffer, used as a snapshot of the state of
-         * current Observers.
-         */
         Object[] arrLocal;
 
-        synchronized (this) {
-            /* We don't want the Observer doing callbacks into
-             * arbitrary code while holding its own Monitor.
-             * The code where we extract each Observable from
-             * the Vector and store the state of the Observer
-             * needs synchronization, but notifying observers
-             * does not (should not).  The worst result of any
-             * potential race-condition here is that:
-             * 1) a newly-added Observer will miss a
-             *   notification in progress
-             * 2) a recently unregistered Observer will be
-             *   wrongly notified when it doesn't care
-             */
+        synchronized(this){
             if (!changed)
                 return;
             arrLocal = obs.toArray();
@@ -188,25 +155,9 @@ public class ModelSubject {
      */
     public void notifyDisconnection(Game game, String disconnectedName, String msg) throws RemoteException{
         setChanged();
-        /*
-         * a temporary array buffer, used as a snapshot of the state of
-         * current Observers.
-         */
         Client[] arrLocal = new Client[obs.size()];
 
-        synchronized (this) {
-            /* We don't want the Observer doing callbacks into
-             * arbitrary code while holding its own Monitor.
-             * The code where we extract each Observable from
-             * the Vector and store the state of the Observer
-             * needs synchronization, but notifying observers
-             * does not (should not).  The worst result of any
-             * potential race-condition here is that:
-             * 1) a newly-added Observer will miss a
-             *   notification in progress
-             * 2) a recently unregistered Observer will be
-             *   wrongly notified when it doesn't care
-             */
+        synchronized(this){
             if (!changed)
                 return;
             obs.toArray(arrLocal);

@@ -6,6 +6,11 @@ import it.polimi.ingsw.modelview.GameView;
 import java.rmi.RemoteException;
 import java.util.List;
 
+/**
+ * The AppClientRMI class represents a specific type of AppClient class used for the RMI connection type.
+ * It contains a heartbeat method to monitor the client activity connection status.
+ * See AppClient class documentation for more information.
+ */
 public class MatchLog implements Client {
 
     private final int matchID;
@@ -58,6 +63,22 @@ public class MatchLog implements Client {
     }
 
     /**
+     * Update method passing a client and all his choices made to save the match through the MatchLog
+     * @param client the client making the choices
+     * @param coords the item's coordinates chosen
+     * @param column the shelf's column choice
+     * @throws RemoteException if the execution of a remote method call goes wrong
+     */
+    public void update(Client client, List<int[]> coords, Integer column) throws RemoteException {
+        System.out.println("Log := match#" + matchID + ", user player " + client.getClientID() +
+                " has taken and reorder from the gameboard the following items (in coords):");
+        for(int[] arr : coords){
+            System.out.print(arr[0] + "," + arr[1] + " ");
+        }
+        System.out.println("\nThose items will be insert in the " + (column + 1) + "th column");
+    }
+
+    /**
      * update method
      * @param notificationList List<Object>
      * @throws RemoteException if the execution of a remote method call goes wrong
@@ -87,21 +108,5 @@ public class MatchLog implements Client {
     @Override
     public int getClientID() throws RemoteException {
         return this.listenerID;
-    }
-
-    /**
-     * Update method passing a client and all his choices made to save the match through the MatchLog
-     * @param client the client making the choices
-     * @param coords the item's coordinates chosen
-     * @param column the shelf's column choice
-     * @throws RemoteException if the execution of a remote method call goes wrong
-     */
-    public void update(Client client, List<int[]> coords, Integer column) throws RemoteException {
-        System.out.println("Log := match#" + matchID + ", user player " + client.getClientID() +
-                " has taken and reorder from the gameboard the following items (in coords):");
-        for(int[] arr : coords){
-            System.out.print(arr[0] + "," + arr[1] + " ");
-        }
-        System.out.println("\nThose items will be insert in the " + (column + 1) + "th column");
     }
 }
