@@ -6,6 +6,11 @@ import it.polimi.ingsw.exceptions.NotSupportedMatchesException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
+/**
+ * The AppServer interface is the representation of the Server computer that manages all the matches.
+ * It contains methods in order to log and connect client, create and monitor matches.
+ * It also contains methods that control the client connection status.
+ */
 public interface AppServer extends Remote {
     long CLIENT_TIMEOUT = 6000;
 

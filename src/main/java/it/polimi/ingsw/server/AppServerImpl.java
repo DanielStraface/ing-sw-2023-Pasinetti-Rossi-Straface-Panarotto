@@ -22,6 +22,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 
+/**
+ * The AppServerImpl is the implementation of AppServer interface.
+ * See AppServer documentation for more information.
+ */
 public class AppServerImpl extends UnicastRemoteObject implements AppServer {
     private static AppServerImpl instance;
     private final ExecutorService executorService = Executors.newCachedThreadPool();
@@ -29,7 +33,6 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
     private static final Map<Integer, ServerImpl> waitingQueue = new HashMap<>();
     private static final Set<String> loggedNicknames = new TreeSet<>();
     private static final List<Integer> previousMatch = new ArrayList<>();
-    private static int waitingMatchKey = 0;
     private static int matchesKey = 0;
     private static int FIRST_WAITING_MATCH = 0;
     private static final int SERVER_PORT = 1234;
@@ -558,21 +561,6 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
      */
     public static int nextMatchID(){
         return matchesKey;
-    }
-
-    /**
-     * Get method for the matchID int given its Server
-     * @param server the Server to get its matchID from
-     * @return int -> match's ID
-     */
-    public static int getMatchID(Server server){
-        return matches.entrySet()
-                .stream()
-                .filter(entry -> server.equals(entry.getValue()))
-                .mapToInt(Map.Entry::getKey)
-                .boxed()
-                .toList()
-                .get(0);
     }
 
     /**

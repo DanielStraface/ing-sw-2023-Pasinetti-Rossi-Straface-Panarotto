@@ -5,6 +5,9 @@ import it.polimi.ingsw.model.Player;
 import java.io.Serial;
 import java.io.Serializable;
 
+/**
+ * The immutable view of Player
+ */
 public class PlayerView implements Serializable {
     @Serial
     private static final long serialVersionUID = 2L;

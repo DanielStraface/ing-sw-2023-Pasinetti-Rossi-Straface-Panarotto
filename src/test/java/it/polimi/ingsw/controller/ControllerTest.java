@@ -1,5 +1,8 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.client.CLI.AppClient;
+import it.polimi.ingsw.client.CLI.TextualUI;
+import it.polimi.ingsw.client.GUI.GUI;
 import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.distributed.ClientImpl;
 import it.polimi.ingsw.distributed.Server;
@@ -15,6 +18,7 @@ import org.junit.jupiter.api.TestInstance;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -25,6 +29,7 @@ public class ControllerTest {
     private Game game;
     private TurnHandler turnHandler;
     private Controller controller;
+    private List<Client> clients;
 
     /**
      * Setup method for all tests
@@ -36,6 +41,26 @@ public class ControllerTest {
         this.game = new Game(PLAYERS_NUMBER);
         this.turnHandler = new TurnHandler(this.game);
         this.controller = new Controller(this.game);
+        this.clients = new ArrayList<>();
+    }
+
+    @Test
+    public void addClientTest(){
+        try {
+            Server server = new ServerImpl(AppServer.typeOfMatch.newTwoPlayersGame);
+            Client client = new ClientImpl(server, "clientTest", AppClient.UIType.CLI, null);
+            this.clients.add(client);
+            controller.addClient(client);
+            assertEquals(controller.getClients().get(0), this.clients.get(0), "the client added is not the same");
+            this.clients.clear();
+            controller.getClients().clear();
+            Client newClient = new ClientImpl(server, "newClientTest", AppClient.UIType.GUI, new GUI());
+            this.clients.add(newClient);
+            controller.addClient(newClient);
+            assertEquals(controller.getClients().get(0), this.clients.get(0), "the client added is not the same");
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**

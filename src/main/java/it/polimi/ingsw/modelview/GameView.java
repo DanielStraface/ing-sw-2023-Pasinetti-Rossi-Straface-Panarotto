@@ -7,6 +7,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The immutable view of Game
+ */
 public class GameView implements Serializable {
     @Serial
     private static final long serialVersionUID = 2L;

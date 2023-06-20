@@ -5,6 +5,9 @@ import it.polimi.ingsw.model.Item;
 import java.io.Serial;
 import java.io.Serializable;
 
+/**
+ * The immutable view of PersonalObjCard
+ */
 public class PersonalObjCardView implements Serializable {
     @Serial
     private static final long serialVersionUID = 2L;
