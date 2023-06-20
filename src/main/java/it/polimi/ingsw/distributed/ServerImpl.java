@@ -14,18 +14,21 @@ import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.rmi.RemoteException;
-import java.rmi.server.RMIClientSocketFactory;
-import java.rmi.server.RMIServerSocketFactory;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Collections;
 import java.util.List;
 
 
+/**
+ * The AppClientRMI class represents a specific type of AppClient class used for the RMI connection type.
+ * It contains a heartbeat method to monitor the client activity connection status.
+ * See AppClient class documentation for more information.
+ */
 public class ServerImpl extends UnicastRemoteObject implements Server {
     public int connectedClient;
-    private Controller controller;
+    private final Controller controller;
     private Game game = null;
-    private boolean[] toConnect;
+    private final boolean[] toConnect;
     private boolean inactiveMatch;
 
     /**
@@ -43,14 +46,6 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
         this.controller = new Controller(game);
         this.controller.setMatchID(AppServerImpl.nextMatchID());
         this.toConnect = new boolean[this.game.getPlayers().size()];
-    }
-
-    public ServerImpl(int port) throws RemoteException {
-        super(port);
-    }
-
-    public ServerImpl(int port, RMIClientSocketFactory csf, RMIServerSocketFactory ssf) throws RemoteException {
-        super(port, csf, ssf);
     }
 
     /**

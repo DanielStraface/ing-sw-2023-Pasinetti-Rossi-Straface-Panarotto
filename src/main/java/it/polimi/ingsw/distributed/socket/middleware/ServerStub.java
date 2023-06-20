@@ -16,8 +16,12 @@ import java.net.Socket;
 import java.rmi.RemoteException;
 import java.util.List;
 
+/**
+ * The AppClientRMI class represents a specific type of AppClient class used for the RMI connection type.
+ * It contains a heartbeat method to monitor the client activity connection status.
+ * See AppClient class documentation for more information.
+ */
 public class ServerStub implements Server {
-
     private final String ip;
     private final int port;
     private Socket socket;
@@ -121,11 +125,10 @@ public class ServerStub implements Server {
         } catch (ClassNotFoundException e) {
             throw new RemoteException("Cannot cast event: " + e.getMessage());
         }
-        //if(o == null) return;
         new Thread(() -> {
             GameView gmv;
             String msg;
-            Integer id;
+            int id;
             List<Object> notificationList;
             try {
                 if(o instanceof String){
@@ -135,18 +138,12 @@ public class ServerStub implements Server {
                         try{
                             msg = (String) ois.readObject();
                             toTerminate = true;
-                        } catch (IOException e) {
-                            //throw new RemoteException("Cannot receive event: " + e.getMessage());
-                        } catch (ClassNotFoundException e) {
-                            //throw new RemoteException("Cannot cast event: " + e.getMessage());
+                        } catch (IOException | ClassNotFoundException ignored) {
                         }
                     }
                     client.update(msg);
                     if(toTerminate) System.exit(3);
                 }
-                //--------------------------------------------------------------------------------------------------------------
-                //game --> readObject() = integer --> update(GameBoardView, int)
-                //--------------------------------------------------------------------------------------------------------------
                 if(o instanceof GameView){
                     gmv = (GameView) o;
                     client.update(gmv);
@@ -159,8 +156,7 @@ public class ServerStub implements Server {
                     notificationList = (List<Object>) o;
                     client.update(notificationList);
                 }
-            } catch (RemoteException e) {
-                System.err.println("I am here");
+            } catch (RemoteException ignored) {
             }
         }).start();
     }

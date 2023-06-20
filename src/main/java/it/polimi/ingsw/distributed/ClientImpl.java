@@ -10,12 +10,15 @@ import it.polimi.ingsw.client.UI;
 
 import java.io.Serializable;
 import java.rmi.RemoteException;
-import java.rmi.server.RMIClientSocketFactory;
-import java.rmi.server.RMIServerSocketFactory;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * The AppClientRMI class represents a specific type of AppClient class used for the RMI connection type.
+ * It contains a heartbeat method to monitor the client activity connection status.
+ * See AppClient class documentation for more information.
+ */
 public class ClientImpl extends UnicastRemoteObject implements Client, Serializable {
     public enum ClientState {
         LAUNCH, WAITING_IN_LOBBY, PLAYING, GAMEOVER
@@ -43,28 +46,6 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Serializa
         if(uiType == AppClient.UIType.GUI) this.view = (GUI) guiReference;
         server.register(this, nickname);
         this.view.addListener(server);
-    }
-
-
-    public ClientImpl(Server server, int port) throws RemoteException {
-        super(port);
-        initialize(server);
-    }
-
-    public ClientImpl(Server server, int port, RMIClientSocketFactory csf, RMIServerSocketFactory ssf)
-            throws RemoteException {
-        super(port, csf, ssf);
-        initialize(server);
-    }
-
-    /**
-     * Adds the match server as the client's view observer
-     * @param server match Server
-     * @throws RemoteException if the execution of a remote method call goes wrong
-     */
-    private void initialize(Server server) throws RemoteException{
-        this.view.addListener(server); //add the match server as this client view observer
-        //per Damiani e\' diverso
     }
 
     /**
