@@ -8,6 +8,6 @@ public class FullColumnException extends Exception{
      * Constructor for FullColumnException class with the specific message of the error.
      */
     public FullColumnException(){
-        super("This column is full");
+        super("Hey! This column is full. Choose another one");
     }
 }
