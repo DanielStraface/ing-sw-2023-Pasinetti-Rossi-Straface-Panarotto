@@ -14,8 +14,12 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The AppClientRMI class represents a specific type of AppClient class used for the RMI connection type.
+ * It contains a heartbeat method to monitor the client activity connection status.
+ * See AppClient class documentation for more information.
+ */
 public class ClientSkeleton implements Client {
-
     private final ObjectOutputStream oos;
     private final ObjectInputStream ois;
     private int clientID;
