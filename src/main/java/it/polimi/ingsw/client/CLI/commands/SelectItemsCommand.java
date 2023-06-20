@@ -81,9 +81,9 @@ public class SelectItemsCommand implements Command{
     private void noItemSelectedChecker(int[][] validGrid) throws SelectionInvalidOrEmptySlotException {
         for(int i=0;i<coords.size();i++){
             if(validGrid[coords.get(i)[0]][coords.get(i)[1]] == INVALID)
-                throw new SelectionInvalidOrEmptySlotException("selected item in invalid slot");
+                throw new SelectionInvalidOrEmptySlotException("Hey, you are selecting an invalid slot! Try again");
             else if(validGrid[coords.get(i)[0]][coords.get(i)[1]] == PLAYABLE )
-                throw new SelectionInvalidOrEmptySlotException("selected item in empty slot");
+                throw new SelectionInvalidOrEmptySlotException("Hey, you are selecting an empty slot! Try again");
         }
     }
 
@@ -104,7 +104,7 @@ public class SelectItemsCommand implements Command{
             if (col != FIRST_COLUMN && col != LAST_COLUMN && row != FIRST_ROW && row != LAST_ROW) {
                 if (validGrid[row][col - 1] == OCCUPIED && validGrid[row][col + 1] == OCCUPIED &&
                         validGrid[row - 1][col] == OCCUPIED && validGrid[row + 1][col] == OCCUPIED)
-                    throw new NoFreeSidesException("selected item with no free sides");
+                    throw new NoFreeSidesException("Hey, all the items you want to select must have at least one free side! Try again");
             }
         }
     }
@@ -132,7 +132,8 @@ public class SelectItemsCommand implements Command{
         }
         /* If all coordinates haven't the same x or the same y: items can not be picked from the game board */
         if (!sameX && !sameY) {
-            throw new NotSameRowOrColException("no same rows or cols selection");
+            throw new NotSameRowOrColException("\n" +
+                    "Hey, all the items you want to select must belong to the same row or column! Try again");
         }
         boolean consecutiveX = true;
         boolean consecutiveY = true;
@@ -161,7 +162,7 @@ public class SelectItemsCommand implements Command{
                 }
             }
             if (!consecutiveY) {
-                throw new NoConsecutiveSelectionException("no consecutive items selection");
+                throw new NoConsecutiveSelectionException("Hey, all the items you want to select must be consecutive! Try again");
             }
         }
 
@@ -190,7 +191,7 @@ public class SelectItemsCommand implements Command{
                 }
             }
             if (!consecutiveX) {
-                throw new NoConsecutiveSelectionException("no consecutive item selection");
+                throw new NoConsecutiveSelectionException("Hey, all the items you want to select must be consecutive! Try again");
             }
         }
     }
