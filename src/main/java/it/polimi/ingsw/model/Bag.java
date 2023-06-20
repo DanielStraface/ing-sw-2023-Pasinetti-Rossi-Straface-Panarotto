@@ -14,7 +14,7 @@ import java.util.Random;
  */
 public class Bag implements Serializable {
     /* ATTRIBUTES SECTION */
-    private List<Item> itemCards;
+    private final List<Item> itemCards;
 
     /*METHODS SECTION */
     /**  constructor

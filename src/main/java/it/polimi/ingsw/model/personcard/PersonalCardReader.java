@@ -13,10 +13,8 @@ import java.util.List;
  * personal goal cards.
  */
 public class PersonalCardReader {
-
     /* ATTRIBUTES SECTIONS */
     private final String file;
-
     /* METHOD SECTION */
 
     /* -- constructors --*/

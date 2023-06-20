@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * A specific CommonObjCard group type (commonObjCardID 4, 3, 1, 9)
+ */
 class GroupCards extends StrategyCheck implements Serializable {
     /* ATTRIBUTES SECTION */
 
@@ -84,10 +87,7 @@ class GroupCards extends StrategyCheck implements Serializable {
                 groups++;
             }
         }
-        if(groups == 6){
-            return true;
-        }
-        return false;
+        return groups == 6;
     }
 
     /**

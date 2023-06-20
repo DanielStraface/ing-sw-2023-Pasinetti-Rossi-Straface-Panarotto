@@ -5,6 +5,9 @@ import it.polimi.ingsw.model.Item;
 
 import java.io.Serializable;
 
+/**
+ * A specific CommonObjCard group type (commonObjCardID 11, 8, 12)
+ */
 class CornerDiagonals extends StrategyCheck implements Serializable {
     /* ATTRIBUTES SECTION */
     /* METHODS SECTION */
@@ -137,10 +140,7 @@ class CornerDiagonals extends StrategyCheck implements Serializable {
                 inc = false;
             }
         }
-        if(dec == true || inc == true){
-            return true;
-        }
-        return false;
+        return dec || inc;
 
     }
 }

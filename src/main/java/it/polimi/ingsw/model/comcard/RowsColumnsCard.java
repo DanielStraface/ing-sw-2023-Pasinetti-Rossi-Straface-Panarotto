@@ -5,9 +5,11 @@ import it.polimi.ingsw.model.Item;
 
 import java.io.Serializable;
 
-class RowsColumnsCard extends StrategyCheck implements Serializable {
-    /* ATTRIBUTES SECTION */
 
+/**
+ * A specific CommonObjCard group type (commonObjCardID 6, 2)
+ */class RowsColumnsCard extends StrategyCheck implements Serializable {
+    /* ATTRIBUTES SECTION */
     /* METHODS SECTION */
 
     /**

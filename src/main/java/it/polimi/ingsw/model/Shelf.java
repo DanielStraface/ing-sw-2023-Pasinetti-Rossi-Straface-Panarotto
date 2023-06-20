@@ -3,11 +3,10 @@ package it.polimi.ingsw.model;
 import java.io.Serializable;
 
 public class Shelf implements Serializable {
-
     private static final int SHELF_ROWS=6;
     private static final int SHELF_COLUMNS=5;
     private static final int ARRAY_LENGTH = 5;
-    private static final int TOP_ROW=0;
+    private static final int TOP_ROW = 0;
     private final Item[][] shelfGrid;
     private final int[] lastRows;
 

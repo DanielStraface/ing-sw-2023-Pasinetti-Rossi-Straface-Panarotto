@@ -8,6 +8,9 @@ import java.io.Reader;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * The CommonObjCardReader class is the JSON reader necessary for commonObjCard creation.
+ */
 public class CommonObjCardReader {
     /* ATTRIBUTES SECTIONS */
     private final String file;

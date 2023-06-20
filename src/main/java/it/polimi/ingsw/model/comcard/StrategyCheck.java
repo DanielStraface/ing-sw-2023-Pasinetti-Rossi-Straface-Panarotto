@@ -4,6 +4,10 @@ import it.polimi.ingsw.model.Item;
 
 import java.io.Serializable;
 
+/**
+ * The StrategyCheck class is the implementation of the strategy design pattern to the CommonObjCard.
+ * It contains the type of the card and the abstract method that permit to check the goal of the card.
+ */
 public abstract class StrategyCheck implements Serializable {
     protected int type;
 

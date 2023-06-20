@@ -6,9 +6,11 @@ import it.polimi.ingsw.model.Category;
 import java.io.Serializable;
 import java.util.HashSet;
 
+/**
+ * A specific CommonObjCard group type (commonObjCardID 7,5)
+ */
 class ThreeDifferentTypes extends StrategyCheck implements Serializable {
     /* ATTRIBUTES SECTION */
-
     /* METHOD SECTION */
 
     /** constructor
@@ -91,14 +93,11 @@ class ThreeDifferentTypes extends StrategyCheck implements Serializable {
                     uniqueObjects.add(scanned);
                 }
             }
-            if (uniqueObjects.size() <= 3 && invalidColumn == false) {
+            if (uniqueObjects.size() <= 3 && !invalidColumn) {
                 columnCounter++;
             }
             invalidColumn = false;
         }
-        if(columnCounter>=3){
-            return true;
-        }
-        return false;
+        return columnCounter >= 3;
     }
 }

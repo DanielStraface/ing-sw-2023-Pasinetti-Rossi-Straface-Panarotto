@@ -5,9 +5,11 @@ import it.polimi.ingsw.model.Item;
 
 import java.io.Serializable;
 
+/**
+ * A specific CommonObjCard group type (commonObjCardID 10)
+ */
 class XCards extends StrategyCheck implements Serializable {
     /* ATTRIBUTES SECTION */
-
     /* METHOD SECTION */
 
     /** constructor method

@@ -47,18 +47,16 @@ public class Game extends ModelSubject implements Serializable {
         if(playersNumber <= 1 || playersNumber >= 5) throw new InvalidNumberOfPlayersException();
         this.playersNumber = playersNumber;
         this.prevClientID = -1;
-        this.players = new ArrayList<Player>(playersNumber);
+        this.players = new ArrayList<>(playersNumber);
         this.bag = new Bag();
         this.gameboard = new GameBoard(playersNumber);
-        this.commonObjCards = new ArrayList<CommonObjCard>();
+        this.commonObjCards = new ArrayList<>();
         createPlayers();
         createBag();
         refillGameBoard();
         generatePersonalObjCards();
         generateCommonObjCards();
     }
-
-    //***********************************************
 
     /**
      * Creates x number of Players (x = playersNumber)
@@ -116,12 +114,10 @@ public class Game extends ModelSubject implements Serializable {
                 int n = random.nextInt(type.size());
                 //add to commonObjCards list the first new commonObjCard with is points array and type set
                 this.commonObjCards.add( new CommonObjCard(this.playersNumber, type.remove(n), descriptions.remove(n)));
-                //this.commonObjCards.add( new CommonObjCard(this.playersNumber, type.remove(n)));
             }
         } catch (InvalidNumberOfPlayersException e){
             System.err.println("Error: creation of commonObjCards");
         }
-
     }
 
     /**
@@ -149,7 +145,6 @@ public class Game extends ModelSubject implements Serializable {
                 }
             }
         }
-        //setChangedAndNotifyListeners(this.gameboard);
     }
 
     /**
@@ -214,7 +209,7 @@ public class Game extends ModelSubject implements Serializable {
     public void setCommonObjCards(int type1,int type2) throws InvalidNumberOfPlayersException {
         CommonObjCardReader descrReader = new CommonObjCardReader();
         List<String> descriptions = new LinkedList<>(descrReader.readFromFile());
-        List<Integer> type = new LinkedList<Integer>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12));
+        List<Integer> type = new LinkedList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12));
         this.getCommonObjCard().clear();
         this.commonObjCards.add( new CommonObjCard(this.playersNumber, type.remove(type1), descriptions.remove(type1)));
         this.commonObjCards.add( new CommonObjCard(this.playersNumber, type.remove(type2), descriptions.remove(type2)));
@@ -305,10 +300,9 @@ public class Game extends ModelSubject implements Serializable {
 
     /**
      * set method for the game.
-     * @param gm Fame
-     * @throws RemoteException if the execution of a remote method call goes wrong
+     * @param gm Game
      */
-    private void setChangedAndNotifyListeners(Game gm) throws RemoteException{
+    private void setChangedAndNotifyListeners(Game gm) {
         setChanged();
         notifyObservers(gm);
     }

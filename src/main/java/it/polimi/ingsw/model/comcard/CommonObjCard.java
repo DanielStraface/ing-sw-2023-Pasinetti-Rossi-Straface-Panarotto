@@ -20,7 +20,7 @@ public class CommonObjCard implements Serializable {
     private final int[] objPoints;
     private int nextPoints;
     private StrategyCheck strategyCheck;
-    private List<Player> playersDone;
+    private final List<Player> playersDone;
 
     /* METHODS SECTION */
 
@@ -60,7 +60,7 @@ public class CommonObjCard implements Serializable {
             }
         }
         defineStrategy(type);
-        playersDone = new ArrayList<Player>();
+        playersDone = new ArrayList<>();
     }
 
     /**
@@ -98,7 +98,7 @@ public class CommonObjCard implements Serializable {
             }
         }
         defineStrategy(type);
-        playersDone = new ArrayList<Player>();
+        playersDone = new ArrayList<>();
     }
 
     /* -- get methods */
@@ -113,14 +113,14 @@ public class CommonObjCard implements Serializable {
      * Method getPoint returns the points for this card based on what order the players has reached the goal.
      * @return result <==> objPoints[objLength - 1]
      * @throws InvalidPointerException if the array length is zero
-     * @throws  OutOfBoundsException if all the points for the objcard are taken
+     * @throws  OutOfBoundsException if all the points for the objective card are taken
      */
     public int getPoints() throws InvalidPointerException, OutOfBoundsException {
         if (objPoints.length - 1 < 0) throw new InvalidPointerException("The array length is zero");
         if(nextPoints < 0) throw new OutOfBoundsException("All the points for this card are taken");
-            int tempPoints = objPoints[nextPoints];
-            nextPoints = nextPoints - 1;
-            return tempPoints;
+        int tempPoints = objPoints[nextPoints];
+        nextPoints = nextPoints - 1;
+        return tempPoints;
     }
 
     /**
@@ -130,6 +130,7 @@ public class CommonObjCard implements Serializable {
     public String getDescription() {
         return description;
     }
+
     /* -- logic methods */
 
     /**
@@ -167,7 +168,7 @@ public class CommonObjCard implements Serializable {
     /**
      * copyPointsArray copy the points configuration of objPoints array in temp array. the configuration is chosen
      * by the number of players of the game.
-     * @return temp
+     * @return int[] -> temp
      */
     public int[] copyPointsArray(){
         int[] temp = new int[4];
