@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- * The AppClientRMI class represents the first class of MyShelfie client section.
+ * The MyShelfieAppClient class represents the first class of MyShelfie client section.
  * It is the root towards AppClientRMI or AppClientSocket (based on the connection type)
  * See AppClient class documentation for more information.
  */

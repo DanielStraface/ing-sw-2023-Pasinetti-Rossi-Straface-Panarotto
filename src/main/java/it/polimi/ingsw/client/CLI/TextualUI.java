@@ -18,8 +18,13 @@ import java.rmi.RemoteException;
 import java.util.*;
 
 /**
- *
- */
+ * The TextualUI class represents a textual user interface for a game.
+ * It contains a method to get the player's nickname and all the methods
+ * to display the game elements and information regarding the turn and the score.
+ * It contains also methods which get actions by the current player on the tiles and his shelf.
+ * It implements the UI interface.
+*/
+
 public class TextualUI implements UI {
     private final Scanner scanner = new Scanner(System.in);
 
