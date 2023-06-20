@@ -3,6 +3,13 @@ package it.polimi.ingsw.client.CLI.commands;
 import it.polimi.ingsw.exceptions.*;
 
 
+/**
+ * The Command interface represents an implementation of command design pattern.
+ * It manages the user decision:
+ *  - column selection -> SelectColumnCommand
+ *  - items selection -> SelectItemsCommand
+ *  - order selection -> SelectOrderCommand
+ */
 public interface Command {
     /**
      * Method implemented in all "Command" Classes: it asks the player for a choice and then invokes a check method

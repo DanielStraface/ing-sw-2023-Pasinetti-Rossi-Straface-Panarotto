@@ -3,7 +3,6 @@ package it.polimi.ingsw.client.GUI.controllers;
 import it.polimi.ingsw.client.GUI.GUI;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.layout.AnchorPane;
@@ -19,7 +18,6 @@ public class MainMenuController implements GUIController{
     @FXML
     private AnchorPane scenePane;
     private Stage stage;
-    private Scene scene;
     private GUI gui;
     private String MenuSelection = "sounds/MenuSelection.wav";
     private MediaPlayer mediaPlayer;
@@ -31,14 +29,7 @@ public class MainMenuController implements GUIController{
     public void playButtonAction(ActionEvent event) throws IOException {
         System.out.println("Play button pressed, application start");
         playSound(MenuSelection);
-        //Parent root = FXMLLoader.load(getClass().getResource("/fxml/ChoicesMenu.fxml"));
-        //stage = (Stage) (((Node) event.getSource()).getScene().getWindow());
         gui.changeScene("ChoicesMenu.fxml");
-        //scene = new Scene(root);
-        //stage.setScene(scene);
-        //String css = this.getClass().getResource("/css/MainMenu.css").toExternalForm();
-        //scene.getStylesheets().add(css);
-        //stage.show();
     }
 
     /**

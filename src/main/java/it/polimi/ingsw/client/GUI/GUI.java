@@ -22,9 +22,13 @@ import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.*;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
-
+/**
+ * The GUI class manages the UX/UI via graphical representation.
+ * It contains everything necessary to set up a game, in-game action,
+ * display info such as player's shelf, gameboard etc...
+ * Allows methods in order to notify the match server about player decisions
+ */
 public class GUI extends Application implements UI {
     private static final String MAIN_MENU = "MainMenu.fxml";
     private static final String SETUP_CHOICES = "ChoicesMenu.fxml";
@@ -51,9 +55,9 @@ public class GUI extends Application implements UI {
     private boolean isRefilledFlag = true;
     private String winner = null;
     private List<CommonObjCardView> commonObjCardViewList;
-    private String TurnChange = "sounds/TurnChange.wav";
-    private String GameWin = "sounds/GameWin.wav";
-    private String GameLose = "sounds/GameLose.wav";
+    private final String TurnChange = "sounds/TurnChange.wav";
+    private final String GameWin = "sounds/GameWin.wav";
+    private final String GameLose = "sounds/GameLose.wav";
     private final String PointsGet = "sounds/PointsGet.wav";
     private static final int DIM_GAMEBOARD = 9;
     private static final int OCCUPIED = 2;
@@ -329,22 +333,18 @@ public class GUI extends Application implements UI {
     }
 
     /**
-     * update method
+     * update method - not implement
      * @param game the GameView to be updated
      */
     @Override
-    public void update(GameView game) {
-
-    }
+    public void update(GameView game) {}
 
     /**
-     * update method
+     * update method - not implement
      * @param gameGrid the game grid to be updated
      */
     @Override
-    public void update(Item[][] gameGrid) {
-
-    }
+    public void update(Item[][] gameGrid) {}
 
     /**
      * Updates with all the changes made to a player's shelf during a turn
@@ -660,10 +660,10 @@ public class GUI extends Application implements UI {
     public void adjustFinalScore(GameView gameView){
         List<PlayerView> players = gameView.getPlayers();
         int max=0;
-        for(int i=0; i<players.size(); i++){
-            if(players.get(i).getScore()>max){
-                winner = players.get(i).getNickname();
-                max = players.get(i).getScore();
+        for (PlayerView player : players) {
+            if (player.getScore() > max) {
+                winner = player.getNickname();
+                max = player.getScore();
             }
         }
         int score = gameView.getPlayers().stream()

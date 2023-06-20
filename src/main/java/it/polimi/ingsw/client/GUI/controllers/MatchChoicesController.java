@@ -168,28 +168,7 @@ public class MatchChoicesController implements GUIController, Initializable {
                 }).start();
             }
             done = true;
-            //gui.changeScene("MainGame.fxml");
         }
-
-        /*type
-        if(typeOfMatchBoxValue.equals("Create a new match")){
-            numOfItemsLabel.setOpacity(1);
-            numOfPlayersBox.setDisable(false);
-            numOfPlayersBox.setOpacity(1);
-        }
-        String numOfPlayersBoxValue = numOfPlayersBox.getValue();
-        if(numOfPlayersBoxValue != null && typeOfMatchBoxValue.equals("Join an existing match")){
-            alert.setTitle("ERROR");
-            alert.setHeaderText("Invalid selection!");
-            alert.setContentText("You insert to join an existing match with a numOfPlayer selected!");
-            alert.showAndWait();
-            return;
-        }
-        System.out.println("Ready to execute the user request");
-        alert.setTitle("ERROR");
-        alert.setHeaderText("Invalid nickname!");
-        alert.setContentText("Your forgot to enter your name!");*/
-
     }
 
     /**
@@ -255,8 +234,6 @@ public class MatchChoicesController implements GUIController, Initializable {
      * If the message is "correct", if the current state is WAIT_IN_LOBBY, it moves to the MATCH_START state, otherwise
      * it displays a loading pane; then sets the main game window as the next window.
      * If the message isn't "joining a lobby..." the method updates the notification label with the message.
-     *
-     *
      * @param msg information message displayed
      */
     public void displayMsgInfo(String msg){
@@ -402,6 +379,4 @@ public class MatchChoicesController implements GUIController, Initializable {
         typeOfMatchBox.getItems().addAll(typeOfMatch);
         numOfPlayersBox.getItems().addAll(numOfPlayers);
     }
-
-
 }

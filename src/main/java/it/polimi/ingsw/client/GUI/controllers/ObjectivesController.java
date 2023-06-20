@@ -41,7 +41,6 @@ public class ObjectivesController implements GUIController {
     private List<Integer> prevKeyPoints = new ArrayList<>();
     private GUI gui;
     private MediaPlayer mediaPlayer;
-    private final String PointsGet = "sounds/PointsGet.wav";
 
     /**
      * it assigns the corresponding images and descriptions to the two objective cards of the match in the objective

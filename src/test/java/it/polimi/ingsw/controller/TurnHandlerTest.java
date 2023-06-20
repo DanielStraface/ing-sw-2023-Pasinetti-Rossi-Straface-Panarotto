@@ -1,10 +1,7 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.distributed.Client;
-import it.polimi.ingsw.exceptions.InvalidMatchesException;
-import it.polimi.ingsw.exceptions.InvalidNumberOfItemsException;
 import it.polimi.ingsw.exceptions.InvalidNumberOfPlayersException;
-import it.polimi.ingsw.exceptions.InvalidPointerException;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.personcard.PersonalObjCard;
 import org.junit.jupiter.api.BeforeAll;
@@ -13,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
 
-import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -148,7 +144,7 @@ public class TurnHandlerTest {
         points = player2.getScore();
 
 
-        turnHandler.manageTurn(controller.getMatchID(),o);
+        turnHandler.manageTurn(controller.getMatchID());
         assertEquals(points + 1, player2.getScore());
         turnHandler.nextTurn(controller.getMatchID(), player2);
         assertEquals(player3, game.getCurrentPlayer());
@@ -194,7 +190,7 @@ public class TurnHandlerTest {
         assertFalse(turnChecker.manageCheck(player1, game));
         assertEquals(game.getPlayers().indexOf(player1), game.getPlayers().indexOf(player2) - 1);
         points = player1.getScore();
-        turnHandler.manageTurn(controller.getMatchID(),o);
+        turnHandler.manageTurn(controller.getMatchID());
         assertEquals(points, player1.getScore());
         turnHandler.nextTurn(controller.getMatchID(), player1);
     }
@@ -224,7 +220,7 @@ public class TurnHandlerTest {
         game.setCurrentPlayer(player3);
         turnChecker.manageCheck(player2, game);
         assertFalse(turnChecker.manageCheck(player3,game));
-        turnHandler.manageTurn(controller.getMatchID(),o);
+        turnHandler.manageTurn(controller.getMatchID());
         points3 = player3.getScore();
         assertEquals(points3, player3.getScore());
 

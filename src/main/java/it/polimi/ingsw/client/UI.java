@@ -10,6 +10,11 @@ import it.polimi.ingsw.modelview.ShelfView;
 
 import java.rmi.RemoteException;
 
+/**
+ * The AppClientRMI class represents a specific type of AppClient class used for the RMI connection type.
+ * It contains a heartbeat method to monitor the client activity connection status.
+ * See AppClient class documentation for more information.
+ */
 public interface UI extends ViewSubject {
     int MAX_NICKNAME_LEN = 15;
     static boolean nicknameController(String input){
@@ -76,8 +81,8 @@ public interface UI extends ViewSubject {
 
     /**
      * handles the game over point when a player fills the shelf
-     * @param game
-     * @param playerNickname
+     * @param game the game model view
+     * @param playerNickname the nickname of the player that has completed the card
      */
     void gameOverPointTokenHandler(GameView game, String playerNickname);
 }

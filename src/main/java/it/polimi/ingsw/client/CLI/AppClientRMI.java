@@ -17,8 +17,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.TimeUnit;
 
+/**
+ * The AppClientRMI class represents a specific type of AppClient class used for the RMI connection type.
+ * It contains a heartbeat method to monitor the client activity connection status.
+ * See AppClient class documentation for more information.
+ */
 public class AppClientRMI extends AppClient{
     private static final String APPSERVER_REGISTRY_NAME = "it.polimi.ingsw.server.AppServer";
     private static final int SERVER_PORT = 1099;
@@ -51,27 +55,6 @@ public class AppClientRMI extends AppClient{
             } while (!isOk);
             System.out.print("Log successfully completed!");
             startHeartbeat(serverApp);
-            /*new Thread(() -> {
-                Timer timer = new Timer();
-                timer.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        try {
-                            //synchronized (lock){
-                                if(!inGameFlag){
-                                    System.out.println("CCCCC");
-                                    serverApp.heartbeat(nickname);
-                                } else {
-                                    timer.cancel();
-                                    serverApp.heartbeatStop(nickname);
-                                }
-                            //}
-                        } catch (RemoteException e) {
-                            System.err.println("Cannot call the heartbeat method: " + e.getMessage());
-                        }
-                    }
-                }, 0, HEARTBEAT_INTERVAL);
-            }).start();*/
             decisions = TextualUI.setupConnectionByUser();
         }
         if(args[0].equals("GUI")){
@@ -132,9 +115,7 @@ public class AppClientRMI extends AppClient{
                 }
                 refClientImpl = new ClientImpl(matchServerRef, nickname, uiType, uiReference);
             }
-            default -> {
-                System.exit(QUIT_IN_APPCLIENTRMI_ERROR);
-            }
+            default -> System.exit(QUIT_IN_APPCLIENTRMI_ERROR);
         }
 
         if(args[0].equals("GUI")) startHeartbeat(serverApp);

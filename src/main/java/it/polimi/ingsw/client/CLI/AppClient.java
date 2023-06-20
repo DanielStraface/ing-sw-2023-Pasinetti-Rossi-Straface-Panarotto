@@ -9,6 +9,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * The AppClient class represents the player as a user in a client/server application pattern.
+ * It contains everything necessary in order to play to this game such as notification to the match server,
+ * UX/UI methods reference, view management ect...
+ */
 public abstract class AppClient {
     protected static final int TYPE_OF_MATCH_POSITION = 0;
     protected static final int CREATE_A_NEW_MATCH = 1;
@@ -43,11 +48,9 @@ public abstract class AppClient {
             }
             default -> {}
         }
-        //int guiChoice = askForGUI();
         List<Integer> playersDecision = new ArrayList<>();
         playersDecision.add(decision);
         playersDecision.add(numbOfPlayers);
-        //playersDecision.add(guiChoice);
         return playersDecision;
     }
 
@@ -73,37 +76,6 @@ public abstract class AppClient {
     }
 
     /**
-     * method to ask the player to choose between TUI or GUI
-     * @return the choice made
-     */
-    private static int askForGUI() {
-        int temp;
-        System.out.print("\nSelect the type of UI:\n1)CLI\n2)GUI\n>>");
-        temp = scanner.nextInt();
-        while(temp < 1 || temp > 2){
-            System.out.print("\nInvalid UI selection, please try again: >>");
-            temp = scanner.nextInt();
-        }
-        return temp;
-    }
-
-    /**
-     * method to ask the player to choose a nickname with no special characters
-     */
-    protected static void askNickname(){
-        String input;
-        System.out.print("\nInsert your nickname >>");
-        input = scanner.nextLine();
-        while(input.contains("%") || input.contains("!") || input.contains("?") || input.contains("=") ||
-                input.contains("(") || input.contains(")") || input.contains("'") ||
-                input.contains("/") || input.contains("£") || input.contains("$") || input.contains("€")){
-            System.out.print("\nThis chars are not allowed !£$%&/()=?' , please try again\n>>");
-            input = scanner.nextLine();
-        }
-        nickname = input;
-    }
-
-    /**
      * method to ask how many players are/will be in the type of match selected
      * @return the number of players
      */
@@ -113,8 +85,10 @@ public abstract class AppClient {
         System.out.print(insertNumberOfPlayer);
         choice = scanner.nextInt();
         while(choice < 2 || choice > 4){
-            System.out.print("\nInvalid player selection, please try again (note that the game admits two," +
-                    "three or four players)\n>>");
+            System.out.print("""
+
+                    Invalid player selection, please try again (note that the game admits two,three or four players)
+                    >>""");
             choice = scanner.nextInt();
         }
         return choice;
@@ -131,37 +105,8 @@ public abstract class AppClient {
         if(uiType == UIType.CLI) nickname = TextualUI.askNickname();
         if(appS != null){
             return appS.log(nickname, true);
-            //else System.out.print("\nThis nickname is already used by another user, you must choose another one.");
         } else {
             return stub.log(nickname);
-            //else System.out.print("\nThis nickname is already used by another user, you must choose another one.");
         }
-        /*while(true){
-            if(uiType == AppClient.UIType.CLI) nickname = TextualUI.askNickname();
-            if(appS != null){
-                if(appS.log(nickname)) break;
-                else System.out.print("\nThis nickname is already used by another user, you must choose another one.");
-            } else {
-                if(stub.log(nickname)) break;
-                else System.out.print("\nThis nickname is already used by another user, you must choose another one.");
-            }
-        }
-        System.out.print("Log successfully completed!");*/
     }
-
-    /*public static void readyToLog(String nickname, String typeOfMatch, String numOfPlayers){
-        logginToAppServer();
-        while(true){
-            if(!fromGUI) askNickname();
-            if(appS != null){
-                if(appS.log(nickname)) break;
-                else System.out.print("\nThis nickname is already used by another user, you must choose another one.");
-            } else {
-                if(stub.log(nickname)) break;
-                else System.out.print("\nThis nickname is already used by another user, you must choose another one.");
-            }
-        }
-        System.out.print("Log successfully completed!");
-    }*/
-
 }

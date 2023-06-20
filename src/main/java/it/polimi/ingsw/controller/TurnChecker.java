@@ -10,12 +10,15 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 
+/**
+ * The AppClientRMI class represents a specific type of AppClient class used for the RMI connection type.
+ * It contains a heartbeat method to monitor the client activity connection status.
+ * See AppClient class documentation for more information.
+ */
 public class TurnChecker {
-
     private static final int OCCUPIED = 2;
     private static final int SHELF_ROWS=6;
     private static final int SHELF_COLUMNS=5;
-
 
     /**
      * all checks that have to be done before ending a player's turn

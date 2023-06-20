@@ -34,8 +34,6 @@ public class MainGameController implements GUIController {
     @FXML
     private AnchorPane gameboardPane;
     @FXML
-    private Button objectivesButton;
-    @FXML
     private Label messageBox;
     @FXML
     private Label scoreLabel;
@@ -64,8 +62,6 @@ public class MainGameController implements GUIController {
     @FXML
     private ImageView closedBag;
     @FXML
-    private List<ImageView> imgsList;
-    @FXML
     private List<BorderPane> wrappersList;
     private final Map<String, BorderPane> wrapperMap = new HashMap<>();
     @FXML
@@ -90,7 +86,7 @@ public class MainGameController implements GUIController {
     private boolean[][] gameboardItemMatrix;
     private List<int[]> selectedCoords = new ArrayList<>();
     private List<Integer> columnReference = new ArrayList<>();
-    private List<Command> commands = Arrays.asList(new SelectItemsCommand(this.selectedCoords),
+    private final List<Command> commands = Arrays.asList(new SelectItemsCommand(this.selectedCoords),
             new SelectColumnCommand(this.columnReference));
     private GUI gui;
     private final List<Label> activeLabels = new ArrayList<>();
@@ -100,10 +96,10 @@ public class MainGameController implements GUIController {
     private int prevColSelected;
     private boolean confirmButtonFlag = false;
     private int[][] validGridForItemSelection;
-    private String warning = "sounds/Warning.wav";
-    private String MenuSelection = "sounds/MenuSelection.wav";
-    private String ItemSelect = "sounds/ItemSelect.wav";
-    private String GameBoardRefill = "sounds/GBRefill.wav";
+    private final String warning = "sounds/Warning.wav";
+    private final String MenuSelection = "sounds/MenuSelection.wav";
+    private final String ItemSelect = "sounds/ItemSelect.wav";
+    private final String GameBoardRefill = "sounds/GBRefill.wav";
     private MediaPlayer mediaPlayer;
     private static final int SHELF_ROWS = 6;
     private static final int SHELF_COLS = 5;

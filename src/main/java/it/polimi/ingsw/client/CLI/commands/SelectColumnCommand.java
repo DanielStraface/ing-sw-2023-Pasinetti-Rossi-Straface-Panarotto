@@ -1,12 +1,16 @@
 package it.polimi.ingsw.client.CLI.commands;
 
 import it.polimi.ingsw.exceptions.FullColumnException;
-import it.polimi.ingsw.exceptions.InvalidSelectionException;
 import it.polimi.ingsw.modelview.ShelfView;
 
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * The AppClientRMI class represents a specific type of AppClient class used for the RMI connection type.
+ * It contains a heartbeat method to monitor the client activity connection status.
+ * See AppClient class documentation for more information.
+ */
 public class SelectColumnCommand implements Command{
     private final Scanner scanner;
     private int col;

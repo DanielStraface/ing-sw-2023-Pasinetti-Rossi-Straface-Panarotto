@@ -14,15 +14,17 @@ import it.polimi.ingsw.client.CLI.commands.SelectColumnCommand;
 import it.polimi.ingsw.client.CLI.commands.SelectItemsCommand;
 import it.polimi.ingsw.client.UI;
 
-import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.*;
 
-public class TextualUI implements UI, Serializable {
-    private final transient Scanner scanner = new Scanner(System.in);
+/**
+ *
+ */
+public class TextualUI implements UI {
+    private final Scanner scanner = new Scanner(System.in);
 
-    private transient boolean changed = false;
-    private transient final Vector<Server> observers = new Vector<>();
+    private boolean changed = false;
+    private final Vector<Server> observers = new Vector<>();
 
     /**
      * A method that invokes another method to continue reading choices from the client (from connection to match choices)
@@ -51,8 +53,8 @@ public class TextualUI implements UI, Serializable {
         return input;
     }
 
-    private transient List<int[]> coords;
-    private transient List<Integer> columnReference;
+    private final transient List<int[]> coords;
+    private final transient List<Integer> columnReference;
     private transient Client refClient;
     private final transient List<Command> gameActionMenu;
 

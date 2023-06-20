@@ -186,7 +186,7 @@ public class Controller {
                 game.getCurrentPlayer().putItemInShelf(column);
                 for(Client c : this.clients)
                     if(c.getClientID() == o.getClientID())
-                        this.turnHandler.manageTurn(this.getMatchID(), c);
+                        this.turnHandler.manageTurn(this.getMatchID());
             }
         } catch (RemoteException e) {
             if(e.getCause() != null && e.getCause() instanceof SocketException){
@@ -194,6 +194,5 @@ public class Controller {
                 throw new RMIClientDisconnectionException();
             }
         }
-
     }
 }

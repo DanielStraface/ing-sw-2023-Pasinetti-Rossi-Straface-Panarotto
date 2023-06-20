@@ -5,13 +5,11 @@ import it.polimi.ingsw.client.GUI.GUI;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.net.URL;
@@ -20,18 +18,14 @@ import java.util.ResourceBundle;
 
 public class ChoicesMenuController implements GUIController, Initializable {
     @FXML
-    private Label networkLabel;
-    @FXML
     private ChoiceBox<String> networkChoices;
     @FXML
     private Label invalidIpLabel;
     @FXML
     private TextField serverAddressTextField;
-    private Stage stage;
-    private Scene scene;
-    private String[] networks = {"", "RMI", "SOCKET"};
+    private final String[] networks = {"", "RMI", "SOCKET"};
     private GUI gui;
-    private String MenuSelection = "sounds/MenuSelection.wav";
+    private final String MenuSelection = "sounds/MenuSelection.wav";
     private MediaPlayer mediaPlayer;
 
     /**

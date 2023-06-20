@@ -7,6 +7,11 @@ import it.polimi.ingsw.exceptions.*;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * The AppClientRMI class represents a specific type of AppClient class used for the RMI connection type.
+ * It contains a heartbeat method to monitor the client activity connection status.
+ * See AppClient class documentation for more information.
+ */
 public class SelectItemsCommand implements Command{
     private final Scanner scanner;
     private List<int[]> coords;

@@ -1,18 +1,20 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.server.AppServerImpl;
-import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.exceptions.InvalidMatchesException;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.personcard.PersonalObjCard;
 
-import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
+/**
+ * The AppClientRMI class represents a specific type of AppClient class used for the RMI connection type.
+ * It contains a heartbeat method to monitor the client activity connection status.
+ * See AppClient class documentation for more information.
+ */
 public class TurnHandler {
     private final TurnChecker turnChecker;
     private final Game game;
@@ -40,10 +42,8 @@ public class TurnHandler {
         if(!gameOver) {
             if (game.getPlayers().indexOf(player) == (game.getPlayers().size() - 1)) {
                 saveModelAndSetNewPlayer(matchID, game.getPlayers().get(0));
-                //game.setCurrentPlayer(game.getPlayers().get(0));
             } else {
                 saveModelAndSetNewPlayer(matchID, game.getPlayers().get((game.getPlayers().indexOf(player)) + 1));
-                //game.setCurrentPlayer(game.getPlayers().get((game.getPlayers().indexOf(player)) + 1));
             }
         } else {
             gameOverHandler();
@@ -53,10 +53,9 @@ public class TurnHandler {
     /**
      * Checks if the currentPlayer filled his Shelf and triggers the endgame accordingly, and manages the turn
      * cycle
-     * @param o the Client of the player whose turn is over
      * @throws RemoteException if the execution of  nextTurn method call goes wrong
      */
-    public void manageTurn(int matchID, Client o) throws RemoteException {
+    public void manageTurn(int matchID) throws RemoteException {
         Player player = game.getCurrentPlayer();
         if(turnChecker.manageCheck(player, game) || endGame) {
             if(!endGame) player.addPoints(ENDGAME_POINTS);

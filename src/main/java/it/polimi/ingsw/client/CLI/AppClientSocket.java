@@ -14,8 +14,11 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The AppClientSocket class represents a specific type of AppClient class used for the Socket connection type.
+ * See AppClient class documentation for more information.
+ */
 public class AppClientSocket extends AppClient {
-    private static final String SERVER_ADDRESS = "192.168.181.61";
     private static final int SERVER_PORT = 1234;
 
     /**
