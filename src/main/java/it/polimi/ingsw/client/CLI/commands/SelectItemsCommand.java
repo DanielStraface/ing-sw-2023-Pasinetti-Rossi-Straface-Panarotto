@@ -8,10 +8,10 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- * The AppClientRMI class represents a specific type of AppClient class used for the RMI connection type.
- * It contains a heartbeat method to monitor the client activity connection status.
- * See AppClient class documentation for more information.
+ * The SelectItemsCommand class represents a command for picking tiles from the game board.
+ * It contains all checker methods in order to respect all the constraints of the game rules
  */
+
 public class SelectItemsCommand implements Command{
     private final Scanner scanner;
     private List<int[]> coords;
