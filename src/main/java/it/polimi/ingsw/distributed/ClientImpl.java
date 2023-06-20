@@ -48,6 +48,15 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Serializa
     @Override
     public void update(GameView game) throws RemoteException {
         ShelfView sh;
+        if(game.getExceptionToDisplay() != null){
+            this.view.update("Something went wrong in " + game.getCurrentPlayer().getNickname() + " turn:\n\t" +
+                    game.getExceptionToDisplay().getMessage());
+            if(this.clientID == game.getCurrentPlayer().getClientID()){
+                System.out.println("Repeat the turn, please");
+                this.view.run(game);
+            }
+            return;
+        }
         if(game.getGameOverFinalMessage() != null){
             this.view.update("THE MATCH IS FINISHED, THE GAMEOVER IS REACHED!\n" +
                     "The final game board is reported below:");

@@ -21,10 +21,16 @@ public class MatchLog implements Client {
     }
     @Override
     public void update(GameView game) throws RemoteException {
-        System.out.println("Log := match#" + matchID + ", turn n. " + turnCounter + " : " +
-                "player " + game.getCurrentPlayer().getNickname() + " with clientID " +
-                game.getCurrentPlayer().getClientID() + " is currently playing.");
-        turnCounter++;
+        System.out.print("\nLog := match#" + matchID + ", turn n. " + turnCounter + " : " +
+                "player " + game.getCurrentPlayer().getNickname() + " with clientID ");
+        if(game.getExceptionToDisplay() != null){
+            System.out.print(" got an error: " + game.getExceptionToDisplay().getMessage() +
+                    "\nThe turn must be repeated");
+            return;
+        } else {
+            System.out.print(game.getCurrentPlayer().getClientID() + " is currently playing.");
+            turnCounter++;
+        }
     }
 
     @Override

@@ -71,9 +71,7 @@ public class ModelSubject {
         for (int i = arrLocal.length-1; i>=0; i--){
             Client vl = (Client) arrLocal[i];
             if(vl.getClientID() == arg.getCurrentPlayer().getClientID()) turnUserClient = vl;
-            else {
-                vl.update(gmv);
-            }
+            else vl.update(gmv);
         }
         if(turnUserClient != null) turnUserClient.update(gmv);
     }

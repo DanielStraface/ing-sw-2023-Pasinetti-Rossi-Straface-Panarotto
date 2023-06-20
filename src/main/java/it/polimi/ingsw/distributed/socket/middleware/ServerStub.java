@@ -96,7 +96,6 @@ public class ServerStub implements Server {
         //--------------------------------------------------------------------------------------------------------------
         if(o instanceof GameView){
             gmv = (GameView) o;
-            if(client instanceof MatchLog) System.out.println("RERER");
             client.update(gmv);
         }
         if(o instanceof Integer){
