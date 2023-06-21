@@ -15,9 +15,8 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
- * The AppClientRMI class represents a specific type of AppClient class used for the RMI connection type.
- * It contains a heartbeat method to monitor the client activity connection status.
- * See AppClient class documentation for more information.
+ * The ClientImpl class is an implementation of the Client Interface. It represents a client connected with the server.
+ * it contains method to handle game updates, messages and client's information.
  */
 public class ClientImpl extends UnicastRemoteObject implements Client, Serializable {
     public enum ClientState {

@@ -17,9 +17,12 @@ import java.rmi.RemoteException;
 import java.util.List;
 
 /**
- * The AppClientRMI class represents a specific type of AppClient class used for the RMI connection type.
- * It contains a heartbeat method to monitor the client activity connection status.
- * See AppClient class documentation for more information.
+ * The ServerStub class represents an implementation of the Server Interface.
+ * It contains method to create a connection with a remote server through a socket connection, through which
+ * receives and sends object.
+ * Through this class clients can interact with the server for example by starting a game or receiving notifications.
+ * It contains also method for logging users, removing logged users and connecting to different types of matches on the
+ * server.
  */
 public class ServerStub implements Server {
     private final String ip;

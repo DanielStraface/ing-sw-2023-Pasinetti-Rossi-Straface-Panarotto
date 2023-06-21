@@ -6,9 +6,8 @@ import java.util.List;
 
 
 /**
- * The AppClientRMI class represents a specific type of AppClient class used for the RMI connection type.
- * It contains a heartbeat method to monitor the client activity connection status.
- * See AppClient class documentation for more information.
+ * The Server class represents an Interface for ServerImpl and ServerStub classes.
+ * It contains methods to handle game lobbies and player registration and updates.
  */
 public interface Server extends Remote {
 

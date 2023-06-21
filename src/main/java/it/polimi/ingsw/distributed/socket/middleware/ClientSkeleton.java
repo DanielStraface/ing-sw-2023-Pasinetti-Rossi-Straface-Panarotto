@@ -15,9 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The AppClientRMI class represents a specific type of AppClient class used for the RMI connection type.
- * It contains a heartbeat method to monitor the client activity connection status.
- * See AppClient class documentation for more information.
+ * The ClientSkeleton class represents a client skeleton that implements the Client interface.
+ * It contains methods for updated the client with messages, game information and client ID, but also method for
+ * processing and receiving server notifications.
  */
 public class ClientSkeleton implements Client {
     private final ObjectOutputStream oos;
