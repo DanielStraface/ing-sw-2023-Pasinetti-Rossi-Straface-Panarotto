@@ -13,9 +13,9 @@ import java.util.List;
 import java.util.Vector;
 
 /**
- * The AppClientRMI class represents a specific type of AppClient class used for the RMI connection type.
- * It contains a heartbeat method to monitor the client activity connection status.
- * See AppClient class documentation for more information.
+ * The ModelSubject class is used as a means to send notifications with information about the state of a game
+ * (connections/disconnections, choices made, objectives reached, etc.).
+ * It also adds or removes client listeners through two methods (addListener/deleteListeners)
  */
 public class ModelSubject {
     private boolean changed = false;
@@ -149,8 +149,8 @@ public class ModelSubject {
     /**
      * notifies about disconnection
      * @param game Game
-     * @param disconnectedName type od disconnection
-     * @param msg message to be  included in the notification
+     * @param disconnectedName type of disconnection
+     * @param msg message to be included in the notification
      * @throws RemoteException if the execution of getClientID method call goes wrong
      */
     public void notifyDisconnection(Game game, String disconnectedName, String msg) throws RemoteException{

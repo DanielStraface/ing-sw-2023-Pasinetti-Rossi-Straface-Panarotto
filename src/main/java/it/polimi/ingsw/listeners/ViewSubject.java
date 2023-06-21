@@ -7,9 +7,8 @@ import java.rmi.RemoteException;
 import java.util.List;
 
 /**
- * The AppClientRMI class represents a specific type of AppClient class used for the RMI connection type.
- * It contains a heartbeat method to monitor the client activity connection status.
- * See AppClient class documentation for more information.
+ * ViewSubject is an interface implemented in all UI classes, it contains notification update
+ * methods about choices made by a player and disconnections
  */
 public interface ViewSubject {
     /**

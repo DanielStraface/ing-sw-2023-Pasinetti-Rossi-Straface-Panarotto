@@ -7,9 +7,8 @@ import java.rmi.RemoteException;
 import java.util.List;
 
 /**
- * The AppClientRMI class represents a specific type of AppClient class used for the RMI connection type.
- * It contains a heartbeat method to monitor the client activity connection status.
- * See AppClient class documentation for more information.
+ * The MatchLog contains various methods to keep track and update statistics about a running match
+ * (connection/disconnections, choices made by the players, etc.) and display them on the server
  */
 public class MatchLog implements Client {
 
@@ -29,7 +28,7 @@ public class MatchLog implements Client {
     }
 
     /**
-     * Update method passing a GameView to save the match through the MatchLog
+     * Update method passing a GameView to display a match's info
      * @param game GameView
      * @throws RemoteException if the execution of a remote method call goes wrong
      */
@@ -42,7 +41,7 @@ public class MatchLog implements Client {
     }
 
     /**
-     * Update method passing a message String to save the match through the MatchLog
+     * Update method passing a message String to display a notification about one of the clients playing
      * @param msg String
      * @throws RemoteException if the execution of a remote method call goes wrong
      */
@@ -53,7 +52,7 @@ public class MatchLog implements Client {
     }
 
     /**
-     * Update method passing a clientID to save the match through the MatchLog
+     * Update method passing a clientID to set a listenerID to a client
      * @param clientID int
      * @throws RemoteException if the execution of a remote method call goes wrong
      */
@@ -63,7 +62,7 @@ public class MatchLog implements Client {
     }
 
     /**
-     * Update method passing a client and all his choices made to save the match through the MatchLog
+     * Update method passing a client and all his choices made to display those
      * @param client the client making the choices
      * @param coords the item's coordinates chosen
      * @param column the shelf's column choice
