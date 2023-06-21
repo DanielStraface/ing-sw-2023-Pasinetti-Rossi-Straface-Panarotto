@@ -11,9 +11,9 @@ import java.util.concurrent.TimeUnit;
 
 
 /**
- * The AppClientRMI class represents a specific type of AppClient class used for the RMI connection type.
- * It contains a heartbeat method to monitor the client activity connection status.
- * See AppClient class documentation for more information.
+ * The TurnChecker class is responsible for managing checks about CommonObjectiveCards' goal,
+ * the number of adjacent items and possibly the need to refill the game bord which have to
+ * be performed before ending a player's turn.
  */
 public class TurnChecker {
     private static final int OCCUPIED = 2;

@@ -20,6 +20,12 @@ import java.rmi.RemoteException;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
+/**
+ * The MatchChoicesController class is responsible for controlling the match choices window in the GUI.
+ * It implements the GUIController and Initializable interfaces.
+ * The class controls the choices menu screen, which allows the user to select the nickname and the type of match.
+ * It displays appropriate messages and options based on the user's choices.
+ */
 public class MatchChoicesController implements GUIController, Initializable {
     private boolean done;
     private boolean oldMatchFlag;

@@ -11,9 +11,9 @@ import it.polimi.ingsw.modelview.ShelfView;
 import java.rmi.RemoteException;
 
 /**
- * The AppClientRMI class represents a specific type of AppClient class used for the RMI connection type.
- * It contains a heartbeat method to monitor the client activity connection status.
- * See AppClient class documentation for more information.
+ * The UI interface represents the user interface component of the application.
+ * It extends the ViewSubject interface.
+ * It provides methods for updating various UI components and running the game.
  */
 public interface UI extends ViewSubject {
     int MAX_NICKNAME_LEN = 15;

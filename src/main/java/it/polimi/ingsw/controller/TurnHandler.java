@@ -11,9 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The AppClientRMI class represents a specific type of AppClient class used for the RMI connection type.
- * It contains a heartbeat method to monitor the client activity connection status.
- * See AppClient class documentation for more information.
+ * The TurnHandler class manages the turns in a game and handles the game flow.
+ * It keeps track of the current player, checks for endgame conditions, and manages the turn cycle.
  */
 public class TurnHandler {
     private final TurnChecker turnChecker;

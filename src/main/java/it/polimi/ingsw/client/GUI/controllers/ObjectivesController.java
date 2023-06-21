@@ -15,6 +15,11 @@ import java.util.*;
 
 import static java.util.Map.entry;
 
+/**
+ * The ObjectivesController class implements the GUIController interface
+ * and controls the objective cards' window in the application.
+ * It manages the display and updates of the common objective cards and the personal objective card.
+ */
 public class ObjectivesController implements GUIController {
     private static final Integer MAX_POINTS = 8;
     @FXML

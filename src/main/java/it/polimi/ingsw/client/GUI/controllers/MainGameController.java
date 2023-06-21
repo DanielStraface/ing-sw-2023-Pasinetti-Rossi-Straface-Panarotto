@@ -27,6 +27,12 @@ import javafx.util.Duration;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * The MainGameController class implements the GUIController interface and serves
+ * as the controller for the main game screen.
+ * It manages the game board, player information, item selection, disconnection events
+ * and all other graphical elements.
+ */
 public class MainGameController implements GUIController {
     private static final int OCCUPIED = 2;
     private static final int PLAYABLE = 1;

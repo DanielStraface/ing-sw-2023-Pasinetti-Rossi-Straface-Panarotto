@@ -16,6 +16,9 @@ import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
+/** The ChoicesMenuController class implements the GUIController and Initializable interfaces.
+ * It controls the choices menu screen, which allows the user to select a network type and server address.
+ */
 public class ChoicesMenuController implements GUIController, Initializable {
     @FXML
     private ChoiceBox<String> networkChoices;

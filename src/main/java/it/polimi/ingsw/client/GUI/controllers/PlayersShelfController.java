@@ -15,6 +15,13 @@ import java.util.Map;
 
 import static java.util.Map.entry;
 
+/**
+ * This class represents a controller for the players' shelf in a GUI application.
+ * It implements the GUIController interface.
+ * The players' shelf is a grid of image views that display items belonging to the players.
+ * ach player has their own shelf represented by a pane in the GUI.
+ * The class provides methods to initialize the shelf, update the shelf for other players.
+ */
 public class PlayersShelfController implements GUIController {
     private static final int SHELF_ROWS = 6;
     private static final int SHELF_COLS = 5;

@@ -14,6 +14,11 @@ import javafx.util.Duration;
 import java.io.IOException;
 import java.util.Objects;
 
+/**
+ * The MainMenuController class implements the GUIController interface and handles the main menu of the application.
+ * It controls the actions performed when the user interacts with the main menu buttons
+ * in order to start or to quit the application.
+ */
 public class MainMenuController implements GUIController{
     @FXML
     private AnchorPane scenePane;
