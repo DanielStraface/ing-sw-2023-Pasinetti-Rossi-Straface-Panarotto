@@ -2,20 +2,28 @@ package it.polimi.ingsw.model;
 
 import java.io.Serializable;
 
+/**
+ * This class represent the shelf of the player. It has got two attribute, the shelf grid and the array of
+ * the last occupied row, and three methods: two getter and the method that show if the shelf is full.
+ * methods: a setter, a getter and drawItem that pop an item from the bag list
+ * @method getShelfGrid(Item), getLastRow(), isFull()
+ */
 public class Shelf implements Serializable {
-
     private static final int SHELF_ROWS=6;
     private static final int SHELF_COLUMNS=5;
     private static final int ARRAY_LENGTH = 5;
-    private static final int TOP_ROW=0;
+    private static final int TOP_ROW = 0;
     private final Item[][] shelfGrid;
     private final int[] lastRows;
 
+    /**
+     * constructor
+     */
     public Shelf() {
         this.shelfGrid = new Item[SHELF_ROWS][SHELF_COLUMNS];
         for (int row = 0; row < SHELF_ROWS; row++) {
             for (int col = 0; col < SHELF_COLUMNS; col++) {
-                shelfGrid[row][col] = new Item(null);
+                shelfGrid[row][col] = new Item(null, 0);
             }
         }
         this.lastRows = new int[ARRAY_LENGTH];
@@ -35,11 +43,17 @@ public class Shelf implements Serializable {
         return true;
     }
 
-    /* get methods */
+    /** get method
+     * @return shelfGrid
+     */
     public Item[][] getShelfGrid(){
         return shelfGrid;
     }
 
+    /**
+     * get method
+     * @return lastRows , the last rows of the shelf.
+     */
     public int[] getLastRow(){ return lastRows; }
 
 }

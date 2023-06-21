@@ -7,22 +7,24 @@ import it.polimi.ingsw.model.comcard.CommonObjCard;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 
+/**
+ * The TurnChecker class is responsible for managing checks about CommonObjectiveCards' goal,
+ * the number of adjacent items and possibly the need to refill the game bord which have to
+ * be performed before ending a player's turn.
+ */
 public class TurnChecker {
-
     private static final int OCCUPIED = 2;
     private static final int SHELF_ROWS=6;
     private static final int SHELF_COLUMNS=5;
 
-
     /**
      * all checks that have to be done before ending a player's turn
      * @param player the player whose turn in ending
-     * @param game
+     * @param game Game
      * @return shelfFull <==> boolean to check if the current player's shelf is full
-     * @throws InvalidPointerException
-     * @throws RemoteException
      */
     public boolean manageCheck(Player player, Game game) {
         boolean shelfFull;
@@ -41,22 +43,30 @@ public class TurnChecker {
      * checks if the Player currently playing has reached any of the two CommonObjectiveCards' goal
      * after his turn and adds points to its Score tally , throws an InvalidPointerException if
      * all the points of one CommonObjectiveCard have already been taken
-     * @param player
-     * @param game
-     * @throws InvalidPointerException
+     * @param player - the player to be tested for this card
+     * @param game - the model (contains the commonObjCard list)
      */
     private void commonObjCardCheck(Player player, Game game) {
-        CommonObjCard commonObjCard;
-
         // check if the current player has reached the goal for both CommonObjectiveCards in Game
-        for(int i=0; i<game.getCommonObjCard().size(); i++){
-            commonObjCard = game.getCommonObjCard().get(i);
+        for(CommonObjCard commonObjCard : game.getCommonObjCard()){
             try{
                 int numOfPoints = commonObjCard.doCheck(player);
-                if(numOfPoints == -1) return;
-                player.addPoints(numOfPoints);
-                game.commonObjCardReached(player ,"Common Objective Card " + commonObjCard.getType() +
-                        " goal reach!\n" + "Obtain +" + numOfPoints + " points!");
+                if(numOfPoints != -1){
+                    player.addPoints(numOfPoints);
+                    CommonObjCard goalCard = game.getCommonObjCard().stream()
+                            .filter(card -> card.getType() == commonObjCard.getType())
+                            .toList()
+                            .get(0);
+                    int index = game.getCommonObjCard().indexOf(goalCard);
+                    index += 1;
+                    game.commonObjCardReached(player ,"Common Objective Card " + index +
+                            " goal reached!\n"+ player.getNickname() + " obtains +" + numOfPoints + " points!");
+                    try{
+                        TimeUnit.SECONDS.sleep(3);
+                    } catch (InterruptedException e) {
+                        System.err.println("Cannot sleep while commonObjCard: " + e.getMessage());
+                    }
+                }
             } catch (InvalidPointerException e) {
                 System.err.println("Something went wrong, the obj points list of this card is less than zero: "
                         + e.getMessage());
@@ -69,8 +79,8 @@ public class TurnChecker {
      * check if any of its adjacent places are occupied by an Item as well.
      * If there's a single adjacent item, there's no need to refill the GameBoard and the check is
      * set to false.
-     * @param game
-     * @throws RemoteException
+     * @param game Game
+     * @throws RemoteException if the execution of a remote method call goes wrong
      */
     private void refillGameBoardCheck(Game game) throws RemoteException {
         boolean check = true;
@@ -131,7 +141,7 @@ public class TurnChecker {
 
     /**
      * Returns points to assign to the player based on the number of adjacent items
-     * @param player
+     * @param player Player
      * @return integer of the score to be added to the player
      */
     public int adjacentItemsCheck(Player player) {

@@ -1,13 +1,12 @@
 package it.polimi.ingsw.controller;
 
 
-import it.polimi.ingsw.exceptions.InvalidPointerException;
+import it.polimi.ingsw.exceptions.InvalidNumberOfPlayersException;
 import it.polimi.ingsw.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -17,48 +16,58 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 
+/**
+ * Class TurnCheckerTest tests TurnChecker class
+ * @see TurnChecker
+ */
 public class TurnCheckerTest {
 
     private Shelf shelf;
-    private Player player;
     private TurnChecker turnChecker;
     private Game game;
+    private Player player;
     private static final int INVALID=0;
     private static final int PLAYABLE=1;
     private static final int OCCUPIED=2;
 
 
-
+    /**
+     * Setup method for all tests
+     */
     @BeforeEach
     public void setup() throws Exception {
-        shelf = new Shelf();
-        player = new Player();
-        turnChecker = new TurnChecker();
         game = new Game(4);
+        shelf = new Shelf();
+        turnChecker = new TurnChecker();
+        player = game.getPlayers().get(0);
+        player.setIsFirstPlayer();
     }
 
 
     /**
      * Tests if the commonObjCard check doesn't assign points to the current player
-     * @throws InvalidPointerException
-     * @throws RemoteException
+     * @throws InvalidNumberOfPlayersException when the number of players given is invalid
      */
     @Test
-    public void manageCheckCommonObjCardTest() throws InvalidPointerException, RemoteException {
-        game.setCurrentPlayer(player);
-        turnChecker.manageCheck(game.getCurrentPlayer(),game);
-        assertEquals(0,game.getCurrentPlayer().getScore(),"Points have been wrongly added!");
+    public void manageCheckCommonObjCardTest() throws InvalidNumberOfPlayersException{
+        turnChecker.manageCheck(player,game);
+        assertEquals(0,player.getScore(),"Points have been wrongly added!");
+        for(int i=0;i<6;i++){
+            for(int j=0;j<5;j++){
+                player.getMyShelf().getShelfGrid()[i][j] = new Item(Category.CAT,1);
+            }
+        }
+        game.setCommonObjCards(8,9);
+        turnChecker.manageCheck(player,game);
+        assertEquals(16,player.getScore(),"Points haven't been correctly added!");
     }
 
 
     /**
      * Tests if the gameBoard is refilled under the correct conditions
-     * @throws InvalidPointerException
-     * @throws RemoteException
      */
     @Test
-    public void manageCheckRefillGameBoardCheck() throws InvalidPointerException, RemoteException {
-        game.setCurrentPlayer(player);
+    public void manageCheckRefillGameBoardCheck(){
         int[][] validGrid;
         GameBoard gameBoard;
         validGrid = game.getValidGrid();
@@ -67,20 +76,20 @@ public class TurnCheckerTest {
         for(int i=0; i<9; i++){
             for(int j=0; j<9; j++){
                 if( validGrid[i][j] != INVALID){
-                    gameBoard.getGameGrid()[i][j] = new Item(null);
+                    gameBoard.getGameGrid()[i][j] = new Item(null,0);
                     validGrid[i][j] = PLAYABLE;
                 }
             }
         }
-        gameBoard.getGameGrid()[3][3] = new Item(Category.PLANT);
+        gameBoard.getGameGrid()[3][3] = new Item(Category.PLANT,1);
         validGrid[3][3] = OCCUPIED;
-        gameBoard.getGameGrid()[5][5] = new Item(Category.TROPHY);
+        gameBoard.getGameGrid()[5][5] = new Item(Category.TROPHY,1);
         validGrid[5][5] = OCCUPIED;
-        gameBoard.getGameGrid()[6][4] = new Item(Category.CAT);
+        gameBoard.getGameGrid()[6][4] = new Item(Category.CAT,1);
         validGrid[6][4] = OCCUPIED;
         game.setGameBoard(gameBoard);
         game.setValidGrid(validGrid);
-        turnChecker.manageCheck(game.getCurrentPlayer(),game);
+        turnChecker.manageCheck(player,game);
         for(int i=0; i<9; i++){
             for(int j=0; j<9; j++){
                 if(game.getValidGrid()[i][j] != INVALID && game.getGameboard().getGameGrid()[i][j].getCategoryType()==null){
@@ -94,45 +103,42 @@ public class TurnCheckerTest {
 
     /**
      * Checks if lastTurn is triggered or not under the correct conditions
-     * @throws InvalidPointerException
-     * @throws RemoteException
      */
     @Test
-    public void manageCheckLastTurnTest() throws InvalidPointerException, RemoteException {
+    public void manageCheckLastTurnTest(){
         Shelf shelf;
         boolean check;
-        game.setCurrentPlayer(player);
-        check = turnChecker.manageCheck(game.getCurrentPlayer(),game);
+        check = turnChecker.manageCheck(player,game);
         assertFalse(check,"Last turn has been triggered even if the player's shelf isn't full!");
-        shelf = game.getCurrentPlayer().getMyShelf();
+        shelf = player.getMyShelf();
         Random random = new Random();
         List<Category> categories = new ArrayList<Category>(Arrays.asList(Category.values()));
         for(int i=0; i<6; i++){
             for(int j=0; j<5; j++){
-               shelf.getShelfGrid()[i][j]= new Item(categories.get(random.nextInt(6)));
+               shelf.getShelfGrid()[i][j]= new Item(categories.get(random.nextInt(6)),1);
             }
         }
-        game.getCurrentPlayer().setMyShelf(shelf);
-        check = turnChecker.manageCheck(game.getCurrentPlayer(),game);
+        player.setMyShelf(shelf);
+        check = turnChecker.manageCheck(player,game);
         assertTrue(check,"Last turn hasn't been triggered even if the player's shelf is full!");
     }
 
 
     /**
-     *  Tests every amount of points assigned (2,3,5,8) for adjacent Items
+     * Tests every amount of points assigned (2,3,5,8) for adjacent Items
      */
     @Test
     public void adjacentPointsCheck(){
         for(int i=0; i<3; i++){
-            shelf.getShelfGrid()[0][i] = new Item(Category.CAT);
-            shelf.getShelfGrid()[4][i] = new Item(Category.TROPHY);
+            shelf.getShelfGrid()[0][i] = new Item(Category.CAT,1);
+            shelf.getShelfGrid()[4][i] = new Item(Category.TROPHY,1);
         }
         for(int i=0; i<4 ; i++){
-            shelf.getShelfGrid()[1][i] = new Item(Category.BOOK);
+            shelf.getShelfGrid()[1][i] = new Item(Category.BOOK,1);
         }
         for(int i=0; i<5; i++){
-            shelf.getShelfGrid()[2][i] = new Item(Category.FRAME);
-            shelf.getShelfGrid()[3][i] = new Item(Category.TROPHY);
+            shelf.getShelfGrid()[2][i] = new Item(Category.FRAME,1);
+            shelf.getShelfGrid()[3][i] = new Item(Category.TROPHY,1);
         }
         player.setMyShelf(shelf);
         assertEquals(18,turnChecker.adjacentItemsCheck(player),"The score hasn't been correctly calculated");
@@ -145,27 +151,27 @@ public class TurnCheckerTest {
     @Test
     public void adjacentPointExampleCheck(){
         for(int i=0; i<2; i++){
-            shelf.getShelfGrid()[0][i] = new Item(Category.PLANT);
-            shelf.getShelfGrid()[1][i] = new Item(Category.PLANT);
-            shelf.getShelfGrid()[2][i] = new Item(Category.FRAME);
-            shelf.getShelfGrid()[5][i] = new Item(Category.TROPHY);
+            shelf.getShelfGrid()[0][i] = new Item(Category.PLANT,1);
+            shelf.getShelfGrid()[1][i] = new Item(Category.PLANT,1);
+            shelf.getShelfGrid()[2][i] = new Item(Category.FRAME,1);
+            shelf.getShelfGrid()[5][i] = new Item(Category.TROPHY,1);
         }
         for(int i=2; i<4 ; i++){
-            shelf.getShelfGrid()[1][i] = new Item(Category.PLANT);
-            shelf.getShelfGrid()[2][i] = new Item(Category.PLANT);
-            shelf.getShelfGrid()[i][4] = new Item(Category.BOOK);
+            shelf.getShelfGrid()[1][i] = new Item(Category.PLANT,1);
+            shelf.getShelfGrid()[2][i] = new Item(Category.PLANT,1);
+            shelf.getShelfGrid()[i][4] = new Item(Category.BOOK,1);
         }
         for(int i=3; i<5; i++){
-            shelf.getShelfGrid()[4][i] = new Item(Category.CAT);
-            shelf.getShelfGrid()[5][i] = new Item(Category.CAT);
-            shelf.getShelfGrid()[i][0] = new Item(Category.FRAME);
+            shelf.getShelfGrid()[4][i] = new Item(Category.CAT,1);
+            shelf.getShelfGrid()[5][i] = new Item(Category.CAT,1);
+            shelf.getShelfGrid()[i][0] = new Item(Category.FRAME,1);
         }
         for(int i=1; i<4; i++){
-            shelf.getShelfGrid()[3][i] = new Item(Category.GAME);
+            shelf.getShelfGrid()[3][i] = new Item(Category.GAME,1);
         }
-        shelf.getShelfGrid()[4][1] = new Item(Category.TROPHY);
-        shelf.getShelfGrid()[4][2] = new Item(Category.CAT);
-        shelf.getShelfGrid()[5][2] = new Item(Category.TROPHY);
+        shelf.getShelfGrid()[4][1] = new Item(Category.TROPHY,1);
+        shelf.getShelfGrid()[4][2] = new Item(Category.CAT,1);
+        shelf.getShelfGrid()[5][2] = new Item(Category.TROPHY,1);
         player.setMyShelf(shelf);
         assertEquals(21,turnChecker.adjacentItemsCheck(player),"The score hasn't been correctly calculated");
     }
@@ -180,7 +186,7 @@ public class TurnCheckerTest {
         List<Category> categories = new ArrayList<Category>(Arrays.asList(Category.values()));
         for(int i=0; i<6; i++){
             for(int j=0; j<5; j++){
-                shelf.getShelfGrid()[i][j]= new Item(categories.get(random.nextInt(6)));
+                shelf.getShelfGrid()[i][j]= new Item(categories.get(random.nextInt(6)),1);
             }
         }
         player.setMyShelf(shelf);

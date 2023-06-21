@@ -5,6 +5,9 @@ import it.polimi.ingsw.exceptions.InvalidNumberOfPlayersException;
 import java.io.Serializable;
 import java.rmi.RemoteException;
 
+/**
+ * GameBoard class represents the game table of the game. It is implemented as a 9x9 matrix of Item.
+ */
 public class GameBoard implements Serializable {
     // the GameBoard is a 9x9 matrix of Items
     private static final int DIM_GAMEBOARD=9;
@@ -13,6 +16,12 @@ public class GameBoard implements Serializable {
     private final int[][] validGrid = new int[DIM_GAMEBOARD][DIM_GAMEBOARD];
     private final Item[][] gameGrid = new Item[DIM_GAMEBOARD][DIM_GAMEBOARD];
 
+    /**
+     * constructor method for the game board.
+     * @param playersNumber number of players
+     * @throws InvalidNumberOfPlayersException number of players entered is less than two or more than four
+     * @throws RemoteException if the execution of a remote method call goes wrong
+     */
     public GameBoard(int playersNumber) throws InvalidNumberOfPlayersException, RemoteException {
         if(playersNumber <= 1 || playersNumber >= 5)
             throw new InvalidNumberOfPlayersException();
@@ -100,7 +109,16 @@ public class GameBoard implements Serializable {
             }
         }
     }
-    // get methods
+
+    /**
+     * get method of the game grid.
+     * @return gameGrid
+     */
     public Item[][] getGameGrid(){return gameGrid;}
+
+    /**
+     * get method for the valid grid.
+     * @return validGrid.
+     */
     public int[][] getValidGrid(){return validGrid;}
 }

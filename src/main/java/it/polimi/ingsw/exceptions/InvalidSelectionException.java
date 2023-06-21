@@ -7,6 +7,10 @@ package it.polimi.ingsw.exceptions;
  * -have not almost a free side on the game board.
  */
 public class InvalidSelectionException extends Exception {
+    /**
+     * Constructor for InvalidSelectionException class with the specific message of the error.
+     * @param message the specific message of the error.
+     */
     public InvalidSelectionException(String message){
         super(message);
     }

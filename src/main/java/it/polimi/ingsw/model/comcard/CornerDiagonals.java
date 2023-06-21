@@ -5,11 +5,16 @@ import it.polimi.ingsw.model.Item;
 
 import java.io.Serializable;
 
+/**
+ * A specific CommonObjCard group type (commonObjCardID 11, 8, 12)
+ */
 class CornerDiagonals extends StrategyCheck implements Serializable {
     /* ATTRIBUTES SECTION */
     /* METHODS SECTION */
 
-    /* -- constructor -- */
+    /** constructor method
+     * @param type int
+     */
     public CornerDiagonals(int type){
         this.type = type;
     }
@@ -41,14 +46,14 @@ class CornerDiagonals extends StrategyCheck implements Serializable {
     }
 
     /**
-     * Method diagonals controls if the conditions express in the second common objective card subsists.
-     * @param grid
+     * Method diagonals controls if there are five items of the same type that make a diagonal.
+     * @param grid -> Item[][]
      */
     public boolean diagonals(Item[][] grid) {
         boolean diag1 = true; //first main diagonal referencer
         boolean diag2 = true; //second main diagonal referencer
         boolean diag3 = true; //first opposite diagonal referencer
-        boolean diag4 = true; //secondo opposite diagonal referencer
+        boolean diag4 = true; //second opposite diagonal referencer
         /* Main diagonals check */
         Category c1 = grid[0][0].getCategoryType(); //first element of diag1
         Category c2 = grid[1][0].getCategoryType(); //first element of diag2
@@ -99,8 +104,8 @@ class CornerDiagonals extends StrategyCheck implements Serializable {
 
 
     /**
-     * Method corners controls if the conditions express in the third common objective card subsists.
-     * @param grid
+     * Method corners controls if there are four items of the same type at the four corners of the shelf.
+     * @param grid -> Item[][]
      */
     public boolean corners(Item[][] grid) {
         if (grid[0][0].getCategoryType() != null) {
@@ -113,6 +118,13 @@ class CornerDiagonals extends StrategyCheck implements Serializable {
         return false;
     }
 
+    /**
+     * method descMatrix controls if there are Five columns of increasing or decreasing height.
+     * Starting from the first column on the left or on the right,
+     * each next column must be made of exactly one more tile.
+     * Tiles can be of any type.
+     * @param grid -> Item[][]
+     */
     public boolean descMatrix(Item[][] grid) {
         boolean inc = true;
         boolean dec = true;
@@ -128,10 +140,7 @@ class CornerDiagonals extends StrategyCheck implements Serializable {
                 inc = false;
             }
         }
-        if(dec == true || inc == true){
-            return true;
-        }
-        return false;
+        return dec || inc;
 
     }
 }

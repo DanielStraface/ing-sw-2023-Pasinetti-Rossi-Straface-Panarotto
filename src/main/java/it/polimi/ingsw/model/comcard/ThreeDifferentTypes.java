@@ -6,12 +6,16 @@ import it.polimi.ingsw.model.Category;
 import java.io.Serializable;
 import java.util.HashSet;
 
+/**
+ * A specific CommonObjCard group type (commonObjCardID 7,5)
+ */
 class ThreeDifferentTypes extends StrategyCheck implements Serializable {
     /* ATTRIBUTES SECTION */
-
     /* METHOD SECTION */
 
-    /* -- constructor --*/
+    /** constructor
+     * @param type int
+     */
     public ThreeDifferentTypes(int type){
         this.type = type;
     }
@@ -40,7 +44,7 @@ class ThreeDifferentTypes extends StrategyCheck implements Serializable {
     /**
      * Method that returns a true boolean if there are at least 4 full rows in the Player's Shelf with 3 different Item
      * categories at max, this is done by using a HashSet with one slot reserved for every type of category
-     * @param grid
+     * @param grid -> Item[][]
      */
     private boolean rowsDifferentTypes(Item[][] grid) {
         int rowCounter = 0;
@@ -72,7 +76,7 @@ class ThreeDifferentTypes extends StrategyCheck implements Serializable {
     /**
      * Method that returns a true boolean if there are at least 3 full columns in the Player's Shelf with 3 different
      * Item categories at max, this is done by using a HashSet with one slot reserved for every type of category
-     * @param grid
+     * @param grid -> Item[][]
      */
     private boolean columnsDifferentTypes(Item[][] grid) {
         int columnCounter = 0;
@@ -89,14 +93,11 @@ class ThreeDifferentTypes extends StrategyCheck implements Serializable {
                     uniqueObjects.add(scanned);
                 }
             }
-            if (uniqueObjects.size() <= 3 && invalidColumn == false) {
+            if (uniqueObjects.size() <= 3 && !invalidColumn) {
                 columnCounter++;
             }
             invalidColumn = false;
         }
-        if(columnCounter>=3){
-            return true;
-        }
-        return false;
+        return columnCounter >= 3;
     }
 }
