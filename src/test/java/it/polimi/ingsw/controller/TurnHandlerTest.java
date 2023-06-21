@@ -13,12 +13,11 @@ import java.rmi.RemoteException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-
 /**
- * TurnHandlerTest class tests TurnHandler class.
- * @see TurnHandler
+ *  TurnHandlerTest class tests TurnHandler class.
+ *  @see TurnHandler
  */
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class TurnHandlerTest {
     private Player player1, player2, player3;
     private Game game;

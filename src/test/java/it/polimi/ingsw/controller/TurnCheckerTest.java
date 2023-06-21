@@ -14,12 +14,11 @@ import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-
 /**
  * Class TurnCheckerTest tests TurnChecker class
  * @see TurnChecker
  */
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class TurnCheckerTest {
 
     private Shelf shelf;
