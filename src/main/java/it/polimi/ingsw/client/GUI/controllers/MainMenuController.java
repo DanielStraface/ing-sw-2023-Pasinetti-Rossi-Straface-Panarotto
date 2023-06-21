@@ -31,7 +31,7 @@ public class MainMenuController implements GUIController{
      * handles the action of press "play" button in this way the application start.
      * @param event event to be managed
      */
-    public void playButtonAction(ActionEvent event) throws IOException {
+    public void playButtonAction(ActionEvent event) {
         System.out.println("Play button pressed, application start");
         playSound(MenuSelection);
         gui.changeScene("ChoicesMenu.fxml");

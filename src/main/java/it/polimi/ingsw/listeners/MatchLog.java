@@ -79,7 +79,7 @@ public class MatchLog implements Client {
 
     /**
      * update method
-     * @param notificationList List<Object>
+     * @param notificationList the list of object contains the disconnection information
      * @throws RemoteException if the execution of a remote method call goes wrong
      */
     @Override

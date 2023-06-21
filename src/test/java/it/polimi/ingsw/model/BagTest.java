@@ -42,10 +42,9 @@ public class BagTest {
 
     /**
      * Method to test if an Item is successfully drawn from the bag
-     * @throws Exception
      */
     @Test
-    public void drawItemTest() throws NoElementException {
+    public void drawItemTest() {
         try {
             List<Category> categoryList = Arrays.asList(Category.values());
             Item itemDraw = bag.drawItem();

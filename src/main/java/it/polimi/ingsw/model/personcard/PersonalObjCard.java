@@ -10,7 +10,6 @@ import java.io.Serializable;
  * This class is a representation of the PersonalObjCard entity. With one attribute cardGrid, it stored the goal that
  * the player must reach in his own shelf. The class has got a get method to return the cardGrid attribute and
  * a logic method (shelfCheck) that controls if the goal is reached.
- * @method getCardGrid(), shelfCheck()
  */
 public class PersonalObjCard implements Serializable {
 
@@ -45,9 +44,10 @@ public class PersonalObjCard implements Serializable {
      * template grid of the card. This grid was loaded from a Json file.
      * @param shelf - the shelf that must be checked
      * @return The corresponding points of i, and i.equals( the count of :
-     *                              ((Item I1 in the (x,y) position in cardGrid template && I1 != null) ==>
+     *                              ((Item I1 in the (x,y) position in cardGrid template and I1 != null) ==>
      *                              (exists Item I2 in the (w,z) position in player's shelf with
-     *                              x == w && y == z && I1.getCategoryType() == I2.getCategoryType())))
+     *                              x == w and y == z and I1.getCategoryType() == I2.getCategoryType())))
+     * @throws InvalidMatchesException if there are more than six adjacent matches
      */
     public int shelfCheck(Shelf shelf) throws InvalidMatchesException {
         int matches = 0;

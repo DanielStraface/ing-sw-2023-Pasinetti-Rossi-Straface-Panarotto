@@ -33,6 +33,7 @@ public class TurnCheckerTest {
 
     /**
      * Setup method for all tests
+     * @throws Exception generic exception throws if something get wrong during game construction
      */
     @BeforeEach
     public void setup() throws Exception {

@@ -179,8 +179,8 @@ public class MatchChoicesController implements GUIController, Initializable {
 
     /**
      * returns to the previous choice.
-     * NICKNAME <-- TYPE OF MATCH
-     * TYPE OF MATCH <-- NUMBER OF PLAYERS
+     * from TYPE OF MATCH to NICKNAME
+     * from TYPE OF MATCH to NUMBER OF PLAYERS
      * @param event event to be managed
      */
     public void prevButtonAction(ActionEvent event){

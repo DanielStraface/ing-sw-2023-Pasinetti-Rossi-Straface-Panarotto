@@ -47,6 +47,9 @@ public class ControllerTest {
     }
 
     @Test
+    /**
+     * Test if given a client it is correctly added to the clients list
+     */
     public void addClientTest(){
         try {
             Server server = new ServerImpl(AppServer.typeOfMatch.newTwoPlayersGame);

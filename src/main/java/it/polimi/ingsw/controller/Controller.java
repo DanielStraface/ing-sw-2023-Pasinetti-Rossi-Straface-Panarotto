@@ -18,7 +18,6 @@ import java.util.concurrent.TimeUnit;
  * one to the model (attribute game), one to the view (attribute view) and one to the turnHandler, that defines the
  * correct action, explicit by the player or implicit such as various check, for a specific player turn.
  * @see TurnHandler
- * @method chooseFirstPlayer(), saveGame(), loadGame(), update(UI, Integer), update(UI, String), update(UI, List<int[]>)
  */
 public class Controller {
     /* ATTRIBUTES SECTION */
@@ -33,6 +32,7 @@ public class Controller {
 
     /**
      * Constructor method
+     * @param game the game model
      */
     public Controller(Game game) {
         this.game = game;
@@ -51,6 +51,7 @@ public class Controller {
 
     /**
      * chooseFirstPlayer method decides the first player of the match
+     * @throws RemoteException if it is not possible to notify the clients
      */
     public void chooseFirstPlayer() throws RemoteException{
         //extract a random number between zero and numberOfPlayers
@@ -101,6 +102,7 @@ public class Controller {
      * loadGame method loads a saved game from a file
      * @param fileName - the name of the file in which the game was saved
      * @return the game instance that represent the model stored in the fileName
+     * @throws FileNotFoundException if the file which name is fileName not exist
      */
     public static Game loadGame(String fileName) throws FileNotFoundException {
         try {
@@ -169,6 +171,7 @@ public class Controller {
      * @param o Client
      * @param coords Coordinates chosen
      * @param column Column chosen
+     * @throws RMIClientDisconnectionException if a client connected via RMI has disconnected
      */
     public void update(Client o, List<int[]> coords, Integer column) throws RMIClientDisconnectionException {
         boolean fromValidClient = false;

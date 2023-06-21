@@ -29,6 +29,7 @@ public class ClientSkeleton implements Client {
 
     /**
      * Constructor method
+     * @param socket the socket of this connection
      * @throws RemoteException if the creation of streams goes wrong
      */
     public ClientSkeleton(Socket socket) throws RemoteException {
@@ -93,7 +94,7 @@ public class ClientSkeleton implements Client {
 
     /**
      * update method
-     * @param notificationList List<Object>
+     * @param notificationList the list of object that contains the disconnection notification
      * @throws RemoteException if the execution of a remote method call goes wrong
      */
     @Override
@@ -201,7 +202,7 @@ public class ClientSkeleton implements Client {
     /**
      * Method that reads any type of object from the Object Input Stream received from the server and acts accordingly
      * based on the object received:
-     *        List<int[]>: is assigned to the "coords" List
+     *        List of int array: is assigned to the "coords" List
      *        Integer: is assigned to the "column" Integer
      *        String: Starts a game if it is equal to "START GAME"
      * It also updates invoking the "update" method in the server with the coordinates or column given

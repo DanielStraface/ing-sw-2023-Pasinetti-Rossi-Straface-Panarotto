@@ -23,6 +23,7 @@ public class TurnHandler {
 
     /**
      * Constructor method
+     * @param game the current game model
      */
     public TurnHandler(Game game){
         this.turnChecker= new TurnChecker();

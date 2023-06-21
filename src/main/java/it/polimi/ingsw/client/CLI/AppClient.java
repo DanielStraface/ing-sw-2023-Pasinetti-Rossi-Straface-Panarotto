@@ -25,6 +25,12 @@ public abstract class AppClient {
     protected static final int QUIT_IN_APPLCLIENTSOCKET_ERROR = -4;;
     protected static String nickname;
     private static final Scanner scanner = new Scanner(System.in);
+
+    /**
+     * The UIType represents the type of UI implemented in MyShelfie:
+     *      CLI - Command Line Interface
+     *      GUI - Graphical User Interface
+     */
     public enum UIType {CLI, GUI}
 
     /**
@@ -57,7 +63,7 @@ public abstract class AppClient {
     /**
      * method that check if the given string is in the form x.x.x.x with x in [0, 255] inclusive.
      * @param ip - the string to be checked
-     * @return true <==> String ip -> is an ip string type
+     * @return true iff String ip -> is an ip string type
      */
     public static boolean checkIp(String ip) {
         if(ip.endsWith(".")) return false;
@@ -96,9 +102,11 @@ public abstract class AppClient {
 
     /**
      * method that checks if the nickname is already taken, if not so it registers the client to the server
+     * @param uiType the type of the chosen UI
      * @param appS the match Server App
      * @param stub the corresponding ServerStub
      * @throws RemoteException if the execution of log method call goes wrong
+     * @return true iff the user nickname is accepted
      */
     protected static boolean logginToAppServer(AppClient.UIType uiType, AppServer appS, ServerStub stub)
             throws RemoteException {

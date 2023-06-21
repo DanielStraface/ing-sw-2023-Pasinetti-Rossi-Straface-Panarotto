@@ -237,6 +237,7 @@ public class Game extends ModelSubject implements Serializable {
 
     /**
      * get method that returns the number of players.
+     * @return the number of player of this match
      */
     public int getPlayersNumber(){return this.playersNumber;}
 

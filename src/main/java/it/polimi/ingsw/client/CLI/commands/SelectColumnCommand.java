@@ -19,6 +19,8 @@ public class SelectColumnCommand implements Command{
 
     /**
      * Constructor method
+     * @param param the list of Integer that passed the reference to the column variable used in order to make the
+     *                  column choice
      */
     public SelectColumnCommand(List<Integer> param){
         this.scanner = new Scanner(System.in);

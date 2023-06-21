@@ -24,7 +24,7 @@ public class TurnChecker {
      * all checks that have to be done before ending a player's turn
      * @param player the player whose turn in ending
      * @param game Game
-     * @return shelfFull <==> boolean to check if the current player's shelf is full
+     * @return shelfFull iff boolean to check if the current player's shelf is full
      */
     public boolean manageCheck(Player player, Game game) {
         boolean shelfFull;

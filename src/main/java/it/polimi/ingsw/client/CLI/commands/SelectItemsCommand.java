@@ -26,6 +26,7 @@ public class SelectItemsCommand implements Command{
 
     /**
      * Constructor method
+     * @param param the reference to the list of array of int used in order to make the items choice
      */
     public SelectItemsCommand(List<int[]> param){
         this.scanner = new Scanner(System.in);

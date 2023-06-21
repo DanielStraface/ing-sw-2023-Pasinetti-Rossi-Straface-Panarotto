@@ -19,6 +19,13 @@ import java.util.concurrent.TimeUnit;
  * it contains method to handle game updates, messages and client's information.
  */
 public class ClientImpl extends UnicastRemoteObject implements Client, Serializable {
+    /**
+     * The ClientState represents the state in which the client could be.
+     *  LAUNCH - the client is in the setup phase
+     *  WAITING_IN_LOBBY - the client is waiting for other players
+     *  PLAYING - the client is playing is match
+     *  GAMEOVER - the match is over
+     */
     public enum ClientState {
         LAUNCH, WAITING_IN_LOBBY, PLAYING, GAMEOVER
     }
@@ -149,7 +156,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Serializa
 
     /**
      * update method
-     * @param notificationList List<Object>
+     * @param notificationList the object list that contains the disconnection information
      * @throws RemoteException if the execution of a remote method call goes wrong
      */
     @Override

@@ -221,7 +221,7 @@ public class CommonObjCardTest {
 
     /**
      * getNextPoints get method test
-     * @throws InvalidNumberOfPlayersException
+     * @throws InvalidNumberOfPlayersException if the number of player is not allowed
      */
     @Test
     public void getNextPointsTest() throws InvalidNumberOfPlayersException {

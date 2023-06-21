@@ -38,6 +38,7 @@ public interface AppServer extends Remote {
     /**
      * Prints a login message and adds the nicknames to the logged users String Set
      * @param nickname the joined player's nickname String
+     * @param isRMI flag used if the client is connected via RMI
      * @return true boolean if the nickname isn't already present
      * @throws RemoteException if the execution of a remote method call goes wrong
      */
@@ -52,11 +53,15 @@ public interface AppServer extends Remote {
 
     /**
      * Send ping method called from client in order to verify disconnection
+     * @param client the nickname of the specific user client
+     * @return true
      * @throws RemoteException if the execution of a remote method call goes wrong
      */
     boolean heartbeat(String client) throws RemoteException;
     /**
      * The corresponding method of heartbeat called from client in order to stop the disconnection verification
+     * @param client the nickname of the specific user client
+     * @return true
      * @throws RemoteException if the execution of a remote method call goes wrong
      */
     boolean heartbeatStop(String client) throws RemoteException;

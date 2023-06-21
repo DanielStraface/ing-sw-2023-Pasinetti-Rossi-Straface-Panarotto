@@ -13,6 +13,12 @@ import java.util.List;
  */
 public interface Client extends Remote {
 
+    /**
+     * The QuitState represent the cause behind a client disconnection:
+     *      NORMAL stands for a voluntary disconnection
+     *      EMPTY_BAG stand for a disconnection due to an empty bag
+     *      QUIT stand for any other type of disconnection
+     */
     enum QuitState {NORMAL, EMPTY_BAG, QUIT};
 
     /**
@@ -37,8 +43,8 @@ public interface Client extends Remote {
     void update(int clientID) throws RemoteException;
 
     /**
-     * Update method passing a disconnection notification List (List<Object>)
-     * @param notificationList List<Object>
+     * Update method passing a disconnection notification List (Object List)
+     * @param notificationList the object list that contains disconnection information
      * @throws RemoteException if the execution of method goes wrong
      */
     void update(List<Object> notificationList) throws RemoteException;

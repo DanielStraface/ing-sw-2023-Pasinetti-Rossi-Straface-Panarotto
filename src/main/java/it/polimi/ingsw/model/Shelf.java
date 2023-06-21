@@ -6,7 +6,6 @@ import java.io.Serializable;
  * This class represent the shelf of the player. It has got two attribute, the shelf grid and the array of
  * the last occupied row, and three methods: two getter and the method that show if the shelf is full.
  * methods: a setter, a getter and drawItem that pop an item from the bag list
- * @method getShelfGrid(Item), getLastRow(), isFull()
  */
 public class Shelf implements Serializable {
     private static final int SHELF_ROWS=6;

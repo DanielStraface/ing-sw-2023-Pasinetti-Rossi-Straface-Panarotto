@@ -30,7 +30,7 @@ public interface ViewSubject {
     /**
      * notifies about disconnection
      * @param notificationList list of possible disconnection
-     * @throws RemoteException List<String>
+     * @throws RemoteException if another client has disconnected
      */
     void notifyDisconnection(List<String> notificationList) throws RemoteException;
 }

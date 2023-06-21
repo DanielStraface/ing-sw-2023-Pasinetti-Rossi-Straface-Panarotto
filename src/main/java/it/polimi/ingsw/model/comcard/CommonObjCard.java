@@ -105,13 +105,13 @@ public class CommonObjCard implements Serializable {
     /**
      * Method getCommonObjCardDescription returns a string with the description of this card
      * -- Maybe this method must be edited in function of JSON loading strings
-     * @return result <==> commonObjCardDescription
+     * @return commonObjCardDescription
      */
     public int getType(){return this.strategyCheck.getType();}
 
     /**
      * Method getPoint returns the points for this card based on what order the players has reached the goal.
-     * @return result <==> objPoints[objLength - 1]
+     * @return objPoints[objLength - 1]
      * @throws InvalidPointerException if the array length is zero
      * @throws  OutOfBoundsException if all the points for the objective card are taken
      */
@@ -148,7 +148,8 @@ public class CommonObjCard implements Serializable {
     /**
      * doCheck method controls if the condition for distributes points subsist.
      * @param player the player
-     * @return true <==> conditions of the commonObjCard subsists for the parameter player
+     * @return the points obtained iff conditions of the commonObjCard subsists for the parameter player
+     * @throws InvalidPointerException if there are no points to be drawn
      */
     public int doCheck(Player player) throws InvalidPointerException {
         if(!this.playersDone.contains(player)){
