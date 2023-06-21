@@ -6,6 +6,10 @@ import org.junit.jupiter.api.TestInstance;
 
 import static org.junit.jupiter.api.Assertions.assertSame;
 
+/**
+ * Class ShelfTest tests Shelf class
+ * @see Shelf
+ */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class ShelfTest {
 

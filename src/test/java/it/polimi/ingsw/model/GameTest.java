@@ -12,6 +12,10 @@ import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Class GameTest tests Game class
+ * @see Game
+ */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class GameTest {
 

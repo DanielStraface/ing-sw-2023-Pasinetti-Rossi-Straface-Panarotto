@@ -2,15 +2,11 @@ package it.polimi.ingsw.controller;
 
 
 import it.polimi.ingsw.exceptions.InvalidNumberOfPlayersException;
-import it.polimi.ingsw.exceptions.InvalidPointerException;
-import it.polimi.ingsw.exceptions.OutOfBoundsException;
 import it.polimi.ingsw.model.*;
-import it.polimi.ingsw.model.comcard.CommonObjCard;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -20,6 +16,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 
+/**
+ * Class TurnCheckerTest tests TurnChecker class
+ * @see TurnChecker
+ */
 public class TurnCheckerTest {
 
     private Shelf shelf;

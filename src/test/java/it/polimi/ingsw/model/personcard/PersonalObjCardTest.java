@@ -15,6 +15,10 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Class PersonalObjCardTest tests PersonalObjCard class
+ * @see PersonalObjCard
+ */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class PersonalObjCardTest {
     private PersonalObjCard card;

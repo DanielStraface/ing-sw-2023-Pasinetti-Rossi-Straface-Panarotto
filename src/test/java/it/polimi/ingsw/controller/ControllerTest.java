@@ -1,7 +1,6 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.client.CLI.AppClient;
-import it.polimi.ingsw.client.CLI.TextualUI;
 import it.polimi.ingsw.client.GUI.GUI;
 import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.distributed.ClientImpl;
@@ -9,7 +8,6 @@ import it.polimi.ingsw.distributed.Server;
 import it.polimi.ingsw.distributed.ServerImpl;
 import it.polimi.ingsw.exceptions.InvalidNumberOfPlayersException;
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.server.AppServer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,6 +21,10 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Class ControllerTest tests Controller class
+ * @see Controller
+ */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class ControllerTest {
     private static final int PLAYERS_NUMBER = 4;

@@ -3,7 +3,6 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.exceptions.InvalidNumberOfPlayersException;
 import it.polimi.ingsw.model.*;
-import it.polimi.ingsw.model.personcard.PersonalObjCard;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * TurnHandlerTest class tests TurnHandler class.
+ * @see TurnHandler
  */
 public class TurnHandlerTest {
     private Player player1, player2, player3;
@@ -26,11 +26,9 @@ public class TurnHandlerTest {
     private TurnChecker turnChecker;
     private Controller controller;
     private Shelf shelf0, shelf1, shelf2, shelf3, shelf4, shelf5, shelf6;
-    private PersonalObjCard card1, card2, card3;
     private Item[][] grid0, grid1, grid2, grid3;
     private final int ROWS = 6;
     private final int COLS = 5;
-    private Client o;
 
     /**
      * Setup method for all tests

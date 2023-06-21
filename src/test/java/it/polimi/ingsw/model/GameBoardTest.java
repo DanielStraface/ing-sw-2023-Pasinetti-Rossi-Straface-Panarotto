@@ -9,6 +9,10 @@ import java.rmi.RemoteException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Class GameBoardTest tests GameBoard class
+ * @see GameBoard
+ */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class GameBoardTest {
 

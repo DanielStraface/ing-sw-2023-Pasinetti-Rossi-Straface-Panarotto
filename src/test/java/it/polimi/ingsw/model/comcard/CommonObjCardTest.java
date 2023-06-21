@@ -16,6 +16,10 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Class CommonObjCardTest tests CommonObjCard class
+ * @see CommonObjCard
+ */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class CommonObjCardTest {
     private CommonObjCard card;

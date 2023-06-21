@@ -9,6 +9,10 @@ import org.junit.jupiter.api.TestInstance;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Class CornerDiagonalsTest tests CornerDiagonals class
+ * @see CornerDiagonals
+ */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class CornerDiagonalsTest {
     private static final int TYPE_X = 10;

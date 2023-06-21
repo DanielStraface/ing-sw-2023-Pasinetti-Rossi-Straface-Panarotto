@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.comcard;
 
+import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.model.Category;
 import it.polimi.ingsw.model.Item;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,6 +12,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+/**
+ * Class RowsColumnsCardTest tests RowsColumnsCard class
+ * @see RowsColumnsCard
+ */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class RowsColumnsCardTest {
     private static final int ROWS = 6;

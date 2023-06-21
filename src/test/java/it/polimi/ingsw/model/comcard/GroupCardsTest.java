@@ -10,6 +10,10 @@ import org.junit.jupiter.api.TestInstance;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+/**
+ * Class GroupCardsTest tests GroupCards class
+ * @see GroupCards
+ */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class GroupCardsTest {
     private GroupCards card;

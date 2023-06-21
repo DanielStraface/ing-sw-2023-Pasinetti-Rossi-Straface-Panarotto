@@ -9,6 +9,10 @@ import org.junit.jupiter.api.TestInstance;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Class ThreeDifferentTypesTest tests ThreeDifferentTypes class
+ * @see ThreeDifferentTypes
+ */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class ThreeDifferentTypesTest {
 

@@ -6,6 +6,10 @@ import org.junit.jupiter.api.TestInstance;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Class ItemTest tests Item class
+ * @see Item
+ */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class ItemTest {
 

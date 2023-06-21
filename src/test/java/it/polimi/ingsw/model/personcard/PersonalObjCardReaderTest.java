@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.personcard;
 
+import it.polimi.ingsw.controller.Controller;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -7,7 +8,10 @@ import org.junit.jupiter.api.TestInstance;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
+/**
+ * Class PersonalObjCardReaderTest tests PersonalObjCardReader class
+ * @see PersonalCardReader
+ */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class PersonalObjCardReaderTest {
     PersonalCardReader personalCardReader;

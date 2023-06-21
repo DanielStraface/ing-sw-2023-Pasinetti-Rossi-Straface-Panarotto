@@ -10,6 +10,10 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Class BagTest tests Bag class
+ * @see Bag
+ */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class BagTest {
 

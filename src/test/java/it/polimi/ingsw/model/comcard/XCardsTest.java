@@ -7,6 +7,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+/**
+ * Class XCardsTest tests XCards class
+ * @see XCards
+ */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class XCardsTest {
     private static final int TYPE_X = 10;
