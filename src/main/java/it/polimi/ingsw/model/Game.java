@@ -160,9 +160,8 @@ public class Game extends ModelSubject implements Serializable {
     /** set method that save the matchID.
      * @param player the current player
      * @param matchID int
-     * @throws RemoteException if the execution of setChangedAndNotifyListeners method call goes wrong
      */
-    public void setAndSave(int matchID, Player player) throws RemoteException {
+    public void setAndSave(int matchID, Player player){
         this.currentPlayer = player;
         String fileName = "match" + matchID + ".ser";
         Controller.saveGame(this, fileName);
@@ -173,9 +172,8 @@ public class Game extends ModelSubject implements Serializable {
     /**
      * set method for current player
      * @param player Player
-     * @throws RemoteException if the execution of setChangedAndNotifyListeners method call goes wrong
      */
-    public void setCurrentPlayer(Player player) throws RemoteException{
+    public void setCurrentPlayer(Player player){
         this.currentPlayer = player;
         setChangedAndNotifyListeners(this);
     }
