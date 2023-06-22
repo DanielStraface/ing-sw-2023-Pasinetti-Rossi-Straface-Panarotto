@@ -8,7 +8,8 @@ import java.io.Serializable;
 
 /**
  * A specific CommonObjCard group type (commonObjCardID 6, 2)
- */class RowsColumnsCard extends StrategyCheck implements Serializable {
+ */
+class RowsColumnsCard extends StrategyCheck implements Serializable {
     /* ATTRIBUTES SECTION */
     /* METHODS SECTION */
 
