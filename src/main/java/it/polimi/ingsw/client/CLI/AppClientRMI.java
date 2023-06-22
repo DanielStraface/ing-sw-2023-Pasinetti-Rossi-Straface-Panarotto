@@ -9,6 +9,7 @@ import it.polimi.ingsw.exceptions.NotSupportedMatchesException;
 import it.polimi.ingsw.exceptions.TooManyMatchesException;
 import it.polimi.ingsw.server.AppServer;
 
+import java.net.SocketException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -157,7 +158,11 @@ public class AppClientRMI extends AppClient{
                             serverApp.heartbeatStop(nickname);
                         }
                     } catch (RemoteException e) {
-                        System.err.println("Cannot call the heartbeat method: " + e.getMessage());
+                        System.err.println("Cannot call the heartbeat method: ");
+                        if(e.getCause() instanceof SocketException){
+                            System.err.println("Disconnection occurred - " + e.getCause().getMessage());
+                            System.exit(-2);
+                        } else System.err.print(e.getMessage());
                     }
                 }
             }, 0, HEARTBEAT_INTERVAL);
