@@ -498,25 +498,44 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
                                 connectedRMIClient.remove(key);
                             }
                             synchronized (connectedRMIClient){
-                                if(waitingQueue.size() > 0){
-                                    List<List<String>> allWaitingMatchesNickname =
-                                            waitingQueue.values().stream().map(ServerImpl::getMatchNicknames).toList();
-                                    for(List<String> waitingMatchNicknames : allWaitingMatchesNickname){
-                                        if(waitingMatchNicknames.contains(nickname)){
-                                            ServerImpl serverMatch = waitingQueue.get(
-                                                    waitingQueue.keySet().stream().toList().get(
-                                                            allWaitingMatchesNickname.indexOf(waitingMatchNicknames)
-                                                    )
-                                            );
-                                            List<String> notificationList = Collections.singletonList(nickname);
-                                            try {
-                                                serverMatch.update(notificationList);
-                                            } catch (RemoteException ex) {
-                                                System.err.println("Cannot notify disconnectionList: " + ex.getMessage());
+                                ServerImpl serverMatch = null;
+                                List<String> notificationList = null;
+                                if(waitingQueue.size() > 0 || matches.size() > 0){
+                                    if(matches.size() > 0){
+                                        List<List<String>> allMatchesNicknames =
+                                                matches.values().stream().map(ServerImpl::getMatchNicknames).toList();
+                                        for(List<String> matchNicknames : allMatchesNicknames){
+                                            if(matchNicknames.contains(nickname)){
+                                                serverMatch = matches.get(
+                                                        matches.keySet().stream().toList().get(
+                                                                allMatchesNicknames.indexOf(matchNicknames)
+                                                        )
+                                                );
+                                                notificationList = Collections.singletonList(nickname);
+                                                break;
                                             }
-                                            break;
+                                        }
+                                    } else {
+                                        List<List<String>> allWaitingMatchesNickname =
+                                                waitingQueue.values().stream().map(ServerImpl::getMatchNicknames).toList();
+                                        for(List<String> waitingMatchNicknames : allWaitingMatchesNickname){
+                                            if(waitingMatchNicknames.contains(nickname)){
+                                                serverMatch = waitingQueue.get(
+                                                        waitingQueue.keySet().stream().toList().get(
+                                                                allWaitingMatchesNickname.indexOf(waitingMatchNicknames)
+                                                        )
+                                                );
+                                                notificationList = Collections.singletonList(nickname);
+                                                break;
+                                            }
                                         }
                                     }
+                                    if(notificationList != null && serverMatch != null)
+                                        try {
+                                            serverMatch.update(notificationList);
+                                        } catch (RemoteException ex) {
+                                            System.err.println("Cannot notify disconnectionList: " + ex.getMessage());
+                                        }
                                 } else {
                                     try {
                                         instance.removeLoggedUser(nickname);
