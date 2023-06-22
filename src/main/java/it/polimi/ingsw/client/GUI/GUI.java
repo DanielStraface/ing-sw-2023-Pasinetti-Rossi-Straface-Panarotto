@@ -551,9 +551,12 @@ public class GUI extends Application implements UI {
             this.setChanged();
             this.notifyObservers(this.refClient, coords, column);
         } catch (RemoteException e) {
-            String msg = "Remote exception occurred: " + e.getMessage();
-            System.err.println(msg);
-            Platform.runLater(() -> mainGameController.updateMessageBox(msg, true));
+            String msg = "Network error, you may be disconnected!";
+            System.err.println("Remote exception occurred: " + e.getMessage());
+            Platform.runLater(() -> {
+                mainGameController.updateMessageBox(msg, true);
+                mainGameController.disconnectionAlert(msg, this.stage);
+            });
         }
     }
 

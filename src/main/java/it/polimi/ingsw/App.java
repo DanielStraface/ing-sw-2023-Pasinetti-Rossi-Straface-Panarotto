@@ -13,6 +13,8 @@ import java.util.Scanner;
  */
 public class App {
     public static void main( String[] args ) throws RemoteException {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
         Scanner scanner = new Scanner(System.in);
         System.out.print("Welcome to MyShelfie!\nWhat do you want to launch?\n1)Server\n2)CLI\n3)GUI\n>>");
         int decision = scanner.nextInt();
