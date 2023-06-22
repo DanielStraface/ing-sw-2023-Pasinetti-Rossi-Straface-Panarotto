@@ -28,7 +28,7 @@ public class AppClientRMI extends AppClient{
     private static final String APPSERVER_REGISTRY_NAME = "it.polimi.ingsw.server.AppServer";
     private static final int SERVER_PORT = 1099;
     private static final long HEARTBEAT_INTERVAL = 6000;
-    private static boolean inGameFlag = false;
+    private static boolean inGameFlag = true;
     private static final Object lock = new Object();
 
     /**
@@ -128,8 +128,8 @@ public class AppClientRMI extends AppClient{
                 @Override
                 public void run() {
                     synchronized (lock){
-                        if(finalRefClientImpl.getClientState() == ClientImpl.ClientState.PLAYING){
-                            inGameFlag = true;
+                        if(finalRefClientImpl.getClientState() == ClientImpl.ClientState.GAMEOVER){
+                            inGameFlag = false;
                             timer.cancel();
                         }
                     }
@@ -151,7 +151,7 @@ public class AppClientRMI extends AppClient{
                 @Override
                 public void run() {
                     try {
-                        if(!inGameFlag){
+                        if(inGameFlag){
                             serverApp.heartbeat(nickname);
                         } else {
                             timer.cancel();

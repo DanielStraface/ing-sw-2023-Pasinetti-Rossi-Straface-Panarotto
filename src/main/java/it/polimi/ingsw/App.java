@@ -4,6 +4,7 @@ import it.polimi.ingsw.client.CLI.MyShelfieAppClient;
 import it.polimi.ingsw.server.AppServerImpl;
 import it.polimi.ingsw.client.GUI.GUI;
 
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.Scanner;
 
@@ -13,8 +14,19 @@ import java.util.Scanner;
  */
 public class App {
     public static void main( String[] args ) throws RemoteException {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
+        try{
+            String[] cmds = new String[1];
+            if(System.getProperty("os.name").contains("Windows")){
+                cmds[0] = "cls";
+                Runtime.getRuntime().exec(cmds);
+            }
+            else{
+                cmds[0] = "clear";
+                Runtime.getRuntime().exec(cmds);
+            }
+        } catch (IOException e) {
+            System.err.println("Cannot clear the terminal screen");
+        }
         Scanner scanner = new Scanner(System.in);
         System.out.print("Welcome to MyShelfie!\nWhat do you want to launch?\n1)Server\n2)CLI\n3)GUI\n>>");
         int decision = scanner.nextInt();
