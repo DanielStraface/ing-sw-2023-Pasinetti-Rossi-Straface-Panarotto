@@ -13,6 +13,12 @@ import java.util.Scanner;
  * See AppServer and MyShelfieAppClient documentations for more information.
  */
 public class App {
+
+    /**
+     * Method main opens a server,CLI or GUI based on input
+     * @param args args of type String[]
+     * @throws RemoteException if the execution of a remote method goes wrong
+     */
     public static void main( String[] args ) throws RemoteException {
         try{
             String[] cmds = new String[1];
