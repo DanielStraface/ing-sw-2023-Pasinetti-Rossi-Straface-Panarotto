@@ -393,9 +393,11 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
     public boolean log(String nickname, boolean isRMI) {
         synchronized (loggedNicknames){
             boolean temp = loggedNicknames.add(nickname);
-            if(temp) System.out.println("New client correctly logged in! Its name is " + nickname);
+            if(temp){
+                System.out.println("New client correctly logged in! Its name is " + nickname);
+                if(isRMI) heartbeatManagerRMI(nickname);
+            }
             else System.out.println("A client tried to log in but its nickname was already been chosen.");
-            if(isRMI) heartbeatManagerRMI(nickname);
             return temp;
         }
     }
