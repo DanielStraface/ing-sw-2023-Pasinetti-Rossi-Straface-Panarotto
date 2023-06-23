@@ -498,54 +498,29 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
                                 connectedRMIClient.remove(key);
                             }
                             synchronized (connectedRMIClient){
-                                ServerImpl serverMatch = null;
-                                List<String> notificationList = null;
-                                if(waitingQueue.size() > 0 || matches.size() > 0){
-                                    if(matches.size() > 0){
-                                        List<List<String>> allMatchesNicknames =
-                                                matches.values().stream().map(ServerImpl::getMatchNicknames).toList();
-                                        for(List<String> matchNicknames : allMatchesNicknames){
-                                            if(matchNicknames.contains(nickname)){
-                                                serverMatch = matches.get(
-                                                        matches.keySet().stream().toList().get(
-                                                                allMatchesNicknames.indexOf(matchNicknames)
-                                                        )
-                                                );
-                                                notificationList = Collections.singletonList(nickname);
-                                                break;
-                                            }
-                                        }
-                                    } else {
-                                        List<List<String>> allWaitingMatchesNickname =
-                                                waitingQueue.values().stream().map(ServerImpl::getMatchNicknames).toList();
-                                        for(List<String> waitingMatchNicknames : allWaitingMatchesNickname){
-                                            if(waitingMatchNicknames.contains(nickname)){
-                                                serverMatch = waitingQueue.get(
-                                                        waitingQueue.keySet().stream().toList().get(
-                                                                allWaitingMatchesNickname.indexOf(waitingMatchNicknames)
-                                                        )
-                                                );
-                                                notificationList = Collections.singletonList(nickname);
-                                                break;
-                                            }
-                                        }
-                                    }
-                                    if(notificationList != null && serverMatch != null)
+                                ServerImpl serverMatch;
+                                List<String> notificationList;
+                                serverMatch = findTheTargetRemovedMatch(matches, nickname);
+                                if(serverMatch == null){
+                                    serverMatch = findTheTargetRemovedMatch(waitingQueue, nickname);
+                                    if(serverMatch == null){
+                                        System.out.println("A user has disconnected during the setup phase");
                                         try {
-                                            serverMatch.update(notificationList);
+                                            instance.removeLoggedUser(nickname);
                                         } catch (RemoteException ex) {
-                                            System.err.println("Cannot notify disconnectionList: " + ex.getMessage());
+                                            System.err.println("Cannot removed nickname " + nickname +
+                                                    " in ClientRMiTimeoutException: " + ex.getMessage());
                                         }
-                                } else {
-                                    try {
-                                        instance.removeLoggedUser(nickname);
-                                    } catch (RemoteException ex) {
-                                        System.err.println("Cannot removed nickname " + nickname +
-                                                " in ClientRMiTimeoutException: " + ex.getMessage());
+                                        return;
                                     }
                                 }
+                                notificationList = Collections.singletonList(nickname);
+                                try {
+                                    serverMatch.update(notificationList);
+                                } catch (RemoteException ex) {
+                                    System.err.println("Cannot notify disconnectionList: " + ex.getMessage());
+                                }
                             }
-
                         }
                     }
                 }
@@ -564,6 +539,28 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
                 }
             }, CLIENT_TIMEOUT / 2, CLIENT_TIMEOUT);
         }).start();
+    }
+
+    /**
+     * find the match server by a given nickname
+     * @param tempMatchList the collections of all the matches (running or waiting)
+     * @param nickname the given nickname
+     */
+    private static ServerImpl findTheTargetRemovedMatch(Map<Integer, ServerImpl> tempMatchList, String nickname){
+        ServerImpl serverMatch;
+        List<List<String>> allMatchesNicknames = tempMatchList.values().stream()
+                                                                        .map(ServerImpl::getMatchNicknames).toList();
+        for(List<String> matchNicknames : allMatchesNicknames){
+            if(matchNicknames.contains(nickname)){
+                serverMatch = tempMatchList.get(
+                        tempMatchList.keySet().stream().toList().get(
+                                allMatchesNicknames.indexOf(matchNicknames)
+                        )
+                );
+                return serverMatch;
+            }
+        }
+        return null;
     }
 
     /**
