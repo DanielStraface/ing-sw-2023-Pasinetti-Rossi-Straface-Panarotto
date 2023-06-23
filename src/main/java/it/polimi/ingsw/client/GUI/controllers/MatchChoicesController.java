@@ -159,6 +159,7 @@ public class MatchChoicesController implements GUIController, Initializable {
                         AppClientRMI.launchClient(parameters);
                     } catch (RemoteException e) {
                         System.err.println("Error while running the AppClientRMI");
+                        System.exit(-2);
                     } catch (NotBoundException e) {
                         System.err.println("Error on registry");
                     }
@@ -170,6 +171,7 @@ public class MatchChoicesController implements GUIController, Initializable {
                         AppClientSocket.launchClient(parameters);
                     } catch (RemoteException e) {
                         System.err.println("Error while running the AppClientSocket");
+                        System.exit(-2);
                     }
                 }).start();
             }
