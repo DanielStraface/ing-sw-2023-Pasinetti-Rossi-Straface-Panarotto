@@ -136,6 +136,12 @@ public class Controller {
      */
     public void setMatchID(int matchID) {this.matchID = matchID;}
 
+    /**
+     * Method used for testing only
+     * @param turnHandler to set to the controller
+     */
+    public void setTurnHandler(TurnHandler turnHandler) { this.turnHandler = turnHandler; }
+
     /* get methods */
     /**
      * getGame method return the game reference in controller. It is synchronized due to view interactions,

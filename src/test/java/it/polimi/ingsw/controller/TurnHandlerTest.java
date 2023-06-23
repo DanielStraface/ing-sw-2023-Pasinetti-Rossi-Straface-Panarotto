@@ -3,16 +3,18 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.exceptions.InvalidNumberOfPlayersException;
 import it.polimi.ingsw.model.*;
-import it.polimi.ingsw.server.AppServerImpl;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import org.mockito.Mockito;
 
 
 import java.rmi.RemoteException;
 
+
 import static org.junit.jupiter.api.Assertions.*;
+
 
 /**
  *  TurnHandlerTest class tests TurnHandler class.
@@ -48,17 +50,17 @@ public class TurnHandlerTest {
         grid3 = new Item[ROWS][COLS];
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLS; j++) {
-                shelf1.getShelfGrid()[i][j] = new Item(null,0);
-                shelf2.getShelfGrid()[i][j] = new Item(null,0);
-                shelf3.getShelfGrid()[i][j] = new Item(null,0);
-                shelf0.getShelfGrid()[i][j] = new Item(null,0);
-                shelf4.getShelfGrid()[i][j] = new Item(null,0);
-                shelf5.getShelfGrid()[i][j] = new Item(null,0);
-                shelf6.getShelfGrid()[i][j] = new Item(null,0);
-                grid1[i][j] = new Item(null,0);
-                grid2[i][j] = new Item(null,0);
-                grid3[i][j] = new Item(null,0);
-                grid0[i][j] = new Item(null,0);
+                shelf1.getShelfGrid()[i][j] = new Item(null, 0);
+                shelf2.getShelfGrid()[i][j] = new Item(null, 0);
+                shelf3.getShelfGrid()[i][j] = new Item(null, 0);
+                shelf0.getShelfGrid()[i][j] = new Item(null, 0);
+                shelf4.getShelfGrid()[i][j] = new Item(null, 0);
+                shelf5.getShelfGrid()[i][j] = new Item(null, 0);
+                shelf6.getShelfGrid()[i][j] = new Item(null, 0);
+                grid1[i][j] = new Item(null, 0);
+                grid2[i][j] = new Item(null, 0);
+                grid3[i][j] = new Item(null, 0);
+                grid0[i][j] = new Item(null, 0);
             }
         }
 
@@ -66,6 +68,7 @@ public class TurnHandlerTest {
 
     /**
      * Setup method for all tests
+     *
      * @throws InvalidNumberOfPlayersException if the number of players int given is invalid
      * @throws RemoteException if the execution of a remote method call goes wrong
      */
@@ -88,10 +91,11 @@ public class TurnHandlerTest {
 
     /**
      * correctNextTurnShift verify that the turn has passed correctly to the next player.
+     *
      * @throws RemoteException if the execution of a remote method call goes wrong
      */
     @Test
-     public void correctNextTurnShift() throws RemoteException {
+    public void correctNextTurnShift() throws RemoteException {
         game.setCurrentPlayer(player1);
         turnHandler.nextTurn(controller.getMatchID(), player1);
         assertEquals(player2, game.getCurrentPlayer());
@@ -106,6 +110,7 @@ public class TurnHandlerTest {
 
     /**
      * correctCallToGameOver verify that gameOverHandler method is called when the game is over.
+     *
      * @throws RemoteException if the execution of a remote method call goes wrong
      */
     @Test
@@ -124,15 +129,16 @@ public class TurnHandlerTest {
     /**
      * ManageTurnPlayerNotFirstPlayer verify that ManageTurn added a point to the first player who fills the library
      * and if the player isn't the FirstPlayer or the last one, passes the turn to the next player.
+     *
      * @throws RemoteException if the execution of a remote method call goes wrong
      */
     @Test
-    public void ManageTurnPlayerNotFirstPlayer() throws RemoteException{
+    public void ManageTurnPlayerNotFirstPlayer() throws RemoteException {
         int points;
         shelf4 = player2.getMyShelf();
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 5; j++) {
-                shelf4.getShelfGrid()[i][j] = new Item(Category.TROPHY,1);
+                shelf4.getShelfGrid()[i][j] = new Item(Category.TROPHY, 1);
             }
         }
         player1.setIsFirstPlayer();
@@ -154,7 +160,7 @@ public class TurnHandlerTest {
     public void setUpShelf4() {
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 5; j++) {
-                shelf4.getShelfGrid()[i][j] = new Item(null,0);
+                shelf4.getShelfGrid()[i][j] = new Item(null, 0);
             }
         }
     }
@@ -164,21 +170,21 @@ public class TurnHandlerTest {
      * @throws RemoteException if the execution of a remote method call goes wrong
      */
     @Test
-    public void ManageTurnIsFirstPlayer() throws RemoteException{
+    public void ManageTurnIsFirstPlayer() throws RemoteException {
         int points;
         shelf4 = player2.getMyShelf();
         shelf5 = player1.getMyShelf();
         shelf6 = player3.getMyShelf();
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 5; j++) {
-                shelf4.getShelfGrid()[i][j] = new Item(Category.TROPHY,1);
+                shelf4.getShelfGrid()[i][j] = new Item(Category.TROPHY, 1);
             }
         }
 
-        shelf5.getShelfGrid()[0][2] = new Item(Category.TROPHY,1);
-        shelf5.getShelfGrid()[5][2] = new Item(Category.CAT,1);
-        shelf6.getShelfGrid()[2][2] = new Item(Category.BOOK,1);
-        shelf6.getShelfGrid()[0][4] = new Item(Category.TROPHY,1);
+        shelf5.getShelfGrid()[0][2] = new Item(Category.TROPHY, 1);
+        shelf5.getShelfGrid()[5][2] = new Item(Category.CAT, 1);
+        shelf6.getShelfGrid()[2][2] = new Item(Category.BOOK, 1);
+        shelf6.getShelfGrid()[0][4] = new Item(Category.TROPHY, 1);
 
         player2.setIsFirstPlayer();
         game.setCurrentPlayer(player1);
@@ -197,32 +203,59 @@ public class TurnHandlerTest {
      * @throws RemoteException if the execution of a remote method call goes wrong
      */
     @Test
-    public void manageTurnLastPlayer() throws RemoteException{
+    public void manageTurnLastPlayer() throws RemoteException {
         int points2, points3;
         shelf4 = player2.getMyShelf();
         shelf5 = player1.getMyShelf();
         shelf6 = player3.getMyShelf();
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 5; j++) {
-                shelf4.getShelfGrid()[i][j] = new Item(Category.TROPHY,1);
+                shelf4.getShelfGrid()[i][j] = new Item(Category.TROPHY, 1);
             }
         }
 
-        shelf5.getShelfGrid()[0][2] = new Item(Category.TROPHY,1);
-        shelf5.getShelfGrid()[5][2] = new Item(Category.CAT,1);
-        shelf6.getShelfGrid()[2][2] = new Item(Category.BOOK,1);
-        shelf6.getShelfGrid()[0][4] = new Item(Category.TROPHY,1);
+        shelf5.getShelfGrid()[0][2] = new Item(Category.TROPHY, 1);
+        shelf5.getShelfGrid()[5][2] = new Item(Category.CAT, 1);
+        shelf6.getShelfGrid()[2][2] = new Item(Category.BOOK, 1);
+        shelf6.getShelfGrid()[0][4] = new Item(Category.TROPHY, 1);
 
         player1.setIsFirstPlayer();
         game.setCurrentPlayer(player3);
         turnChecker.manageCheck(player2, game);
-        assertFalse(turnChecker.manageCheck(player3,game));
+        assertFalse(turnChecker.manageCheck(player3, game));
         turnHandler.manageTurn(controller.getMatchID());
         points3 = player3.getScore();
         assertEquals(points3, player3.getScore());
     }
 
+    /**
+     * Tests if a player winner is correctly picked
+     * @throws InvalidNumberOfPlayersException if the number of players int given is invalid
+     * @throws RemoteException if the execution of a remote method call goes wrong
+     */
+    @Test
+    public void handleGameOverTest() throws InvalidNumberOfPlayersException, RemoteException {
+        Game game1 = Mockito.spy(new Game(4));
+        Controller controller1 = new Controller(game1);
+        game1.getPlayers().get(0).setNicknameAndClientID("player1", 0);
+        game1.getPlayers().get(0).addPoints(20);
+        game1.getPlayers().get(1).setNicknameAndClientID("player2", 10);
+        game1.getPlayers().get(0).addPoints(10);
+        game1.getPlayers().get(2).setNicknameAndClientID("player3", 20);
+        game1.getPlayers().get(0).addPoints(15);
+        game1.getPlayers().get(3).setNicknameAndClientID("player4", 30);
+
+        Mockito.doNothing().when(game1).setGameOverFinalMessage(Mockito.anyString());
+
+        TurnHandler turnHandler1 = new TurnHandler(game1);
+        controller1.setTurnHandler(turnHandler1);
+        turnHandler1.callGameOverHandler();
+        assertSame(turnHandler1.getTestWinner(),game1.getPlayers().get(0),"The winner hasn't been picked correctly");
+    }
+
 }
+
+
 
 
 

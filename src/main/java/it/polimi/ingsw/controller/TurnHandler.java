@@ -15,6 +15,8 @@ import java.util.List;
  * It keeps track of the current player, checks for endgame conditions, and manages the turn cycle.
  */
 public class TurnHandler {
+
+    private Player testWinner;
     private final TurnChecker turnChecker;
     private final Game game;
     private boolean endGame;
@@ -78,8 +80,17 @@ public class TurnHandler {
 
     /**
      * At the end of the match it calculates every player's points and declares a winner based on who has the most
+     * and calls a method to remove the saved match
      */
     private void gameOverHandler() {
+        this.handleGameOver();
+        AppServerImpl.gameFinished();
+    }
+
+    /**
+     * At the end of the match it calculates every player's points and declares a winner based on who has the most
+     */
+    private void handleGameOver(){
         System.out.println("This match has got a game over");
         List<Player> players = new ArrayList<Player>();
         List<Integer> adjacentPointsAdded = new ArrayList<>();
@@ -99,6 +110,7 @@ public class TurnHandler {
             }
         }
         Player winner = game.getPlayers().get(0);
+        this.testWinner = winner;
         for(int i=0;i<game.getPlayers().size();i++){
             if(winner.getScore() < game.getPlayers().get(i).getScore()) winner = game.getPlayers().get(i);
         }
@@ -116,7 +128,6 @@ public class TurnHandler {
         } catch (RemoteException e) {
             System.err.println("Cannot notify the gameOver: " + e.getMessage());
         }
-        AppServerImpl.gameFinished();
     }
 
     /**
@@ -132,11 +143,17 @@ public class TurnHandler {
     /**
      * Method used for testing only
      */
-    public void callGameOverHandler(){ this.gameOverHandler();}
+    public void callGameOverHandler(){ this.handleGameOver();}
 
     /**
      * Get method for GameOver boolean
      * @return GameOver boolean that indicates whether the game is on its last turn or not
      */
     public boolean getGameOver(){return this.gameOver;}
+
+    /**
+     * Method used for testing only
+     * @return the winning player
+     */
+    public Player getTestWinner(){ return this.testWinner; }
 }
