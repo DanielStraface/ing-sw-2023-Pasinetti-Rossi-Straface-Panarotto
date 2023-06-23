@@ -27,7 +27,7 @@ import java.util.TimerTask;
 public class AppClientRMI extends AppClient{
     private static final String APPSERVER_REGISTRY_NAME = "it.polimi.ingsw.server.AppServer";
     private static final int SERVER_PORT = 1099;
-    private static final long HEARTBEAT_INTERVAL = 6000;
+    private static final long HEARTBEAT_INTERVAL = 12000;
     private static boolean inGameFlag = true;
     private static final Object lock = new Object();
 

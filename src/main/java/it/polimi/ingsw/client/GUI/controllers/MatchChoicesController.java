@@ -141,7 +141,7 @@ public class MatchChoicesController implements GUIController, Initializable {
             case NUM_OF_PLAYER -> {
                 playSound(MenuSelection);
                 numOfPlayersBoxValue = numOfPlayersBox.getValue();
-                if(numOfPlayersBoxValue.equals("")) return;
+                if(numOfPlayersBoxValue == null || numOfPlayersBoxValue.equals("")) return;
                 flag = State.CHOICE_OBTAIN;
                 System.out.println(numOfPlayersBoxValue);
             }

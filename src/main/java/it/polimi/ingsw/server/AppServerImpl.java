@@ -492,6 +492,7 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
                             noMoreHeartbeat.remove(nickname);
                             connectedRMIClient.remove(key);
                         } else {
+                            System.out.println("The user of " + nickname + " client has disconnected");
                             synchronized (connectedRMIClient){
                                 connectedRMIClientFlag.remove(nickname);
                                 noMoreHeartbeat.remove(nickname);
@@ -524,7 +525,7 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
                         }
                     }
                 }
-            }, 7500, CLIENT_TIMEOUT);
+            }, (CLIENT_TIMEOUT * 5) / 4, CLIENT_TIMEOUT);
             Timer disconnectioCheckerTimer = new Timer();
             disconnectioCheckerTimer.schedule(new TimerTask() {
                 @Override

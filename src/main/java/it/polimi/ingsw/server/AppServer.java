@@ -12,7 +12,7 @@ import java.rmi.RemoteException;
  * It also contains methods that control the client connection status.
  */
 public interface AppServer extends Remote {
-    long CLIENT_TIMEOUT = 6000;
+    long CLIENT_TIMEOUT = 12000;
 
     /**
      * Enumeration for the type of match:
