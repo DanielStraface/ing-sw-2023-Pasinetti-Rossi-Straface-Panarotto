@@ -220,7 +220,6 @@ public class TurnHandlerTest {
         turnHandler.manageTurn(controller.getMatchID());
         points3 = player3.getScore();
         assertEquals(points3, player3.getScore());
-
     }
 
 }
