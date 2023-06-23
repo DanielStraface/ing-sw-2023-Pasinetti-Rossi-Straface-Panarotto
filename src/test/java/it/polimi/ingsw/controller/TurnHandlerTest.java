@@ -3,6 +3,7 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.exceptions.InvalidNumberOfPlayersException;
 import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.server.AppServerImpl;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,6 +27,7 @@ public class TurnHandlerTest {
     private Controller controller;
     private Shelf shelf0, shelf1, shelf2, shelf3, shelf4, shelf5, shelf6;
     private Item[][] grid0, grid1, grid2, grid3;
+    private AppServerImpl server;
     private final int ROWS = 6;
     private final int COLS = 5;
 
@@ -81,7 +83,7 @@ public class TurnHandlerTest {
         player1 = game.getPlayers().get(0);
         player2 = game.getPlayers().get(1);
         player3 = game.getPlayers().get(2);
-
+        server = AppServerImpl.getInstance();
 
     }
 
@@ -220,6 +222,13 @@ public class TurnHandlerTest {
         turnHandler.manageTurn(controller.getMatchID());
         points3 = player3.getScore();
         assertEquals(points3, player3.getScore());
+    }
+
+    @Test
+    public void provaTest() {
+        String nickname = "Jim Clark";
+        boolean value = server.log(nickname, false);
+        assertTrue(value, "The result is false, incorrect log");
     }
 
 }
