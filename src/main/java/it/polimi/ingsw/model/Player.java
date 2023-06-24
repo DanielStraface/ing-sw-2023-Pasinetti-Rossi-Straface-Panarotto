@@ -14,7 +14,7 @@ import java.util.List;
 
  */
 public class Player extends ModelSubject implements Serializable {
-    private String nickname;    /** has to be unique */
+    private String nickname;    // has to be unique
 
     private int score;
     private int clientID;
