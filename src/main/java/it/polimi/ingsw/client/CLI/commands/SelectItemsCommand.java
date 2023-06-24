@@ -52,15 +52,14 @@ public class SelectItemsCommand implements Command{
             int coordsInput = 10;
             System.out.print("\nInsert the row value of the item: >>");
             coordsInput = this.scanner.nextInt();
-            while(coordsInput < 0 || coordsInput > 9 ){
+            while(coordsInput < 0 || coordsInput > 8 ){
                 System.out.print("\nInvalid row value, please choose a valid row >>");
                 coordsInput = this.scanner.nextInt();
             }
             coordsArray[0] = coordsInput;
-            coordsInput = 10;
             System.out.print("Insert the column value of the item: >>");
             coordsInput = this.scanner.nextInt();
-            while(coordsInput < 0 || coordsInput > 9 ){
+            while(coordsInput < 0 || coordsInput > 8 ){
                 System.out.print("\nInvalid column value, please choose a valid column >>");
                 coordsInput = this.scanner.nextInt();
             }
