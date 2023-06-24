@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import org.mockito.Mockito;
 
 import java.io.*;
 import java.rmi.RemoteException;
@@ -176,6 +177,60 @@ public class ControllerTest {
     public void getMatchIDTest(){
         int matchID = controller.getMatchID();
         assertSame(controller.getMatchID(),matchID,"The matchID int given isn't the same");
+    }
+
+    /**
+     * Tests if the coordinates and column chosen by a client are correctly sent to the Server
+     * @throws InvalidNumberOfPlayersException if the number of players int given is invalid
+     * @throws RemoteException if the execution of a remote method call goes wrong
+     */
+    @Test
+    public void UpdateTest() throws InvalidNumberOfPlayersException, RemoteException {
+
+        // Coordinates and column picked
+        List<int[]> coords = new ArrayList<>();
+        int[] coordinates1 = {1,3};
+        int[] coordinates2 = {1,4};
+        coords.add(coordinates1);
+        coords.add(coordinates2);
+        Integer column = 1;
+        int counter = 0;
+
+        // game created
+        Game game1 = new Game(4);
+        game1.getPlayers().get(0).setNicknameAndClientID("player1", 0);
+        game1.getPlayers().get(1).setNicknameAndClientID("player2", 10);
+        game1.getPlayers().get(2).setNicknameAndClientID("player3", 20);
+        game1.getPlayers().get(3).setNicknameAndClientID("player4", 30);
+
+        // controller associated to game
+        Controller controller1 = new Controller(game1);
+
+        Server server1 = new ServerImpl(AppServer.typeOfMatch.newTwoPlayersGame);
+        Client client1 = new ClientImpl(server1, "clientTest1", AppClient.UIType.CLI, null);
+        this.clients.add(client1);
+        controller1.addClient(client1);
+
+        controller1.chooseFirstPlayer();
+
+        TurnHandler turnHandler1 = Mockito.spy(new TurnHandler(game1));
+        controller1.setTurnHandler(turnHandler1);
+        Mockito.doNothing().when(turnHandler1).manageTurn(Mockito.anyInt());
+
+        // method tested
+        controller1.update(controller1.getClients().get(0), coords,column);
+
+        assertSame(game1.getGameboard().getGameGrid()[1][3].getCategoryType(),null,"The item hasn't been picked");
+        assertSame(game1.getGameboard().getGameGrid()[1][4].getCategoryType(),null,"The item hasn't been picked");
+
+        // Invalid Client reject check
+        Client client2 = new ClientImpl(server1, "clientTest2", AppClient.UIType.CLI, null);
+        ByteArrayOutputStream errorStream = new ByteArrayOutputStream();
+        PrintStream errorPrintStream = new PrintStream(errorStream);
+        System.setErr(errorPrintStream);
+        controller1.update(client2,coords,column);
+        String errorMessage = errorStream.toString();
+        assertTrue(errorMessage.contains("discarding notification from client"),"The client hasn't been rejected");
     }
 
 }
