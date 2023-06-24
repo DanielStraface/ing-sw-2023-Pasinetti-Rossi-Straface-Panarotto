@@ -8,6 +8,9 @@ import java.io.Reader;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * The CommonObjCardReader class is the JSON reader necessary for commonObjCard creation.
+ */
 public class CommonObjCardReader {
     /* ATTRIBUTES SECTIONS */
     private final String file;
@@ -15,16 +18,15 @@ public class CommonObjCardReader {
     /* METHOD SECTION */
 
     /* -- constructors --*/
-    public CommonObjCardReader(){this.file = "commonObjCardDescription.json";}
+    public CommonObjCardReader(){this.file = "json/commonObjCardDescription.json";}
     public CommonObjCardReader(String file){this.file = file;}
 
     /**
      * Method readFromFile reads from a Json file the information about all the personalObjCard and returns that as list
      * Must be the caller to select the card randomly for each player
-     * @return List<PersonalObjCard> LIST <==>  (forall PersonalObjCard P1 contained in JSON file
-     *                                          exists PersonalObjCad P2 contained in LIST) &&
-     *                                          P1.equals(P2)
-     * @author Matteo Panarotto
+     * @return List of PersonalObjCard LIST iff     (forall PersonalObjCard P1 contained in JSON file
+     *                                              exists PersonalObjCad P2 contained in LIST) and
+     *                                              P1.equals(P2)
      */
     public List<String> readFromFile() {
         /* Preliminary operations: gson and reader from Json file creation */

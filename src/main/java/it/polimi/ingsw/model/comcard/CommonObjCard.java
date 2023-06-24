@@ -9,12 +9,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-// ONE --> Quadrati2x2
-// TWO --> Columns6Element
-// THREE --> nostra 5
-// FOUR --> nostra 1
-// FIVE
 
+/**
+ * CommonObjCard class represents the common objective cards of the game.
+ */
 public class CommonObjCard implements Serializable {
 
     /* ATTRIBUTES SECTION */
@@ -22,7 +20,7 @@ public class CommonObjCard implements Serializable {
     private final int[] objPoints;
     private int nextPoints;
     private StrategyCheck strategyCheck;
-    private List<Player> playersDone;
+    private final List<Player> playersDone;
 
     /* METHODS SECTION */
 
@@ -33,7 +31,7 @@ public class CommonObjCard implements Serializable {
      * CommonObjCard instance is different.
      * @param numberOfPlayers number of players in a match
      * @param type the type of CommonObjectiveCard
-     * @throws InvalidNumberOfPlayersException
+     * @throws InvalidNumberOfPlayersException if number of players entered is less than two or more than four
      */
     public CommonObjCard(int numberOfPlayers, int type) throws InvalidNumberOfPlayersException {
         /*The switch case are chosen by the number of players of the game.
@@ -62,7 +60,7 @@ public class CommonObjCard implements Serializable {
             }
         }
         defineStrategy(type);
-        playersDone = new ArrayList<Player>();
+        playersDone = new ArrayList<>();
     }
 
     /**
@@ -71,7 +69,7 @@ public class CommonObjCard implements Serializable {
      * @param numberOfPlayers number of players in a match
      * @param type the type of CommonObjectiveCard
      * @param description the card's description taken from the json file
-     * @throws InvalidNumberOfPlayersException
+     * @throws InvalidNumberOfPlayersException if number of players entered is less than two or more than four.
      */
     public CommonObjCard(int numberOfPlayers, int type, String description) throws InvalidNumberOfPlayersException {
         /*The switch case are chosen by the number of players of the game.
@@ -100,36 +98,44 @@ public class CommonObjCard implements Serializable {
             }
         }
         defineStrategy(type);
-        playersDone = new ArrayList<Player>();
+        playersDone = new ArrayList<>();
     }
 
     /* -- get methods */
     /**
      * Method getCommonObjCardDescription returns a string with the description of this card
      * -- Maybe this method must be edited in function of JSON loading strings
-     * @return result <==> commonObjCardDescription
+     * @return commonObjCardDescription
      */
     public int getType(){return this.strategyCheck.getType();}
 
     /**
      * Method getPoint returns the points for this card based on what order the players has reached the goal.
-     * @return result <==> objPoints[objLength - 1]
+     * @return objPoints[objLength - 1]
+     * @throws InvalidPointerException if the array length is zero
+     * @throws  OutOfBoundsException if all the points for the objective card are taken
      */
     public int getPoints() throws InvalidPointerException, OutOfBoundsException {
         if (objPoints.length - 1 < 0) throw new InvalidPointerException("The array length is zero");
         if(nextPoints < 0) throw new OutOfBoundsException("All the points for this card are taken");
-            int tempPoints = objPoints[nextPoints];
-            nextPoints = nextPoints - 1;
-            return tempPoints;
+        int tempPoints = objPoints[nextPoints];
+        nextPoints = nextPoints - 1;
+        return tempPoints;
     }
 
+    /**
+     * get method
+     * @return String -> description
+     */
     public String getDescription() {
         return description;
     }
+
     /* -- logic methods */
 
     /**
      * defines all the check methods depending on the type of card
+     * @param type int
      */
     private void defineStrategy(int type){
         if(type == 2 || type == 6) strategyCheck = new RowsColumnsCard(type);
@@ -141,16 +147,15 @@ public class CommonObjCard implements Serializable {
 
     /**
      * doCheck method controls if the condition for distributes points subsist.
-     * @return true <==> conditions of the commonObjCard subsists for the parameter player
+     * @param player the player
+     * @return the points obtained iff conditions of the commonObjCard subsists for the parameter player
+     * @throws InvalidPointerException if there are no points to be drawn
      */
     public int doCheck(Player player) throws InvalidPointerException {
         if(!this.playersDone.contains(player)){
             boolean isTrue = strategyCheck.check(player.getMyShelf().getShelfGrid());
             if(isTrue){
                 try{
-                    /*player.addPointsByCommonObjCard(numOfPoints, "Common Objective Card " +
-                            this.strategyCheck.type + " goal reach!\n" +
-                            "Obtain +" + numOfPoints + " points!");*/
                     playersDone.add(player);
                     return this.getPoints();
                 } catch (OutOfBoundsException e){
@@ -160,6 +165,23 @@ public class CommonObjCard implements Serializable {
         }
         return -1;
     }
+
+    /**
+     * copyPointsArray copy the points configuration of objPoints array in temp array. the configuration is chosen
+     * by the number of players of the game.
+     * @return int[] -> temp
+     */
+    public int[] copyPointsArray(){
+        int[] temp = new int[4];
+        System.arraycopy(this.objPoints, 0, temp, 0, this.objPoints.length);
+        return temp;
+    }
+
+    /**
+     * get method
+     * @return int -> nextPoints
+     */
+    public int getNextPoints(){return this.nextPoints;}
 
 }
 

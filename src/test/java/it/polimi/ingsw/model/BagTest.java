@@ -10,6 +10,10 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Class BagTest tests Bag class
+ * @see Bag
+ */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class BagTest {
 
@@ -19,6 +23,9 @@ public class BagTest {
     private Item item;
 
 
+    /**
+     * Setup method for all tests
+     */
     @BeforeEach
     public void cleanBag() {
         bag = null;
@@ -35,10 +42,9 @@ public class BagTest {
 
     /**
      * Method to test if an Item is successfully drawn from the bag
-     * @throws Exception
      */
     @Test
-    public void drawItemTest() throws NoElementException {
+    public void drawItemTest() {
         try {
             List<Category> categoryList = Arrays.asList(Category.values());
             Item itemDraw = bag.drawItem();
@@ -81,7 +87,7 @@ public class BagTest {
      */
     @Test
     public void setItemCardsTest(){
-        item = new Item(Category.CAT);
+        item = new Item(Category.CAT,1);
         bag.setItemCards(item);
         assertSame(Category.CAT,bag.getItemCards().get(bag.getItemCards().size()-1).getCategoryType(),
                   "The item added is not a cat");
@@ -99,6 +105,21 @@ public class BagTest {
             assertTrue(0 == bag.getItemCards().size(), "The bag is not empty");
         } catch (Exception e) {
             fail("Game not created successfully");
+        }
+    }
+
+    /**
+     * Tests if the NoElement exception is triggered successfully
+     */
+    @Test
+    public void EmptyDrawBagTest(){
+        Bag bag = new Bag();
+        Item item = new Item(null,0);
+        assertThrows(NoElementException.class,()->{
+            bag.drawItem();}, "NoElementException hasn't been triggered");
+        try{
+            assertSame(bag.drawItem(),item,"NoElementException hasn't been triggered");
+        } catch (NoElementException ignored){
         }
     }
 

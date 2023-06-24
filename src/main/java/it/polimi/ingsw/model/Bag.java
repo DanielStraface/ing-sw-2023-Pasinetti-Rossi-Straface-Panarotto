@@ -10,17 +10,16 @@ import java.util.Random;
 /**
  * This class represent the bag of the game. It has got only one attribute, the list of the item cards, and three
  * methods: a setter, a getter and drawItem that pop an item from the bag list
- * @method setItemCards(Item), getItemCards(), drawItem()
- * @author Matteo Panarotto
  */
 public class Bag implements Serializable {
     /* ATTRIBUTES SECTION */
-    private List<Item> itemCards;
+    private final List<Item> itemCards;
 
     /*METHODS SECTION */
-    /* - constructors -*/
+    /**  constructor
+     */
     public Bag(){
-        this.itemCards = new ArrayList<Item>();
+        this.itemCards = new ArrayList<>();
     }
 
     // setter and getter methods
@@ -40,10 +39,10 @@ public class Bag implements Serializable {
     /*- logic methods -*/
     /** drawItem method picks randomly an Item in the bag and removes it, used
      * to fill the GameBoard, throws a NoElementException if the bag is empty
-     * @return Item item : (cardsList.size() + 1 == \old(cardsList.size())) &&
-     *                      (forall item i; !i.equals(item); cardsList.contains(i) <==> \old(cardsList.contains(i))) &&
+     * @return Item item : (cardsList.size() + 1 == \old(cardsList.size())) and
+     *                      (forall item i; !i.equals(item); cardsList.contains(i) iff \old(cardsList.contains(i))) and
      *                      !cardsList.contains(item) ==> \old(cardsList.contains(item)
-     * @author Matteo Panarotto
+     * @throws NoElementException if the bag is empty
      * */
     public Item drawItem() throws NoElementException {
         if(itemCards.size()>0){
@@ -54,6 +53,6 @@ public class Bag implements Serializable {
         else if(itemCards.size()==0){
             throw new NoElementException("Cannot draw Item,the bag is empty!");
         }
-        return new Item(null);
+        return new Item(null, 0);
     }
 }

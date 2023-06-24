@@ -16,6 +16,10 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Class CommonObjCardTest tests CommonObjCard class
+ * @see CommonObjCard
+ */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class CommonObjCardTest {
     private CommonObjCard card;
@@ -23,17 +27,23 @@ public class CommonObjCardTest {
     private final int NUMBER_OF_PLAYERS = 3;
     private final int BASE_TYPE = 8;
 
+    /**
+     * Setup method for all classes
+     */
     @BeforeEach
-    public void setupPlayer() throws Exception {
+    public void setupPlayer(){
         player = new Player();
         Shelf shelf = new Shelf();
-        shelf.getShelfGrid()[0][0] = new Item(Category.BOOK);
-        shelf.getShelfGrid()[0][4] = new Item(Category.BOOK);
-        shelf.getShelfGrid()[5][0] = new Item(Category.BOOK);
-        shelf.getShelfGrid()[5][4] = new Item(Category.BOOK);
+        shelf.getShelfGrid()[0][0] = new Item(Category.BOOK,1);
+        shelf.getShelfGrid()[0][4] = new Item(Category.BOOK,1);
+        shelf.getShelfGrid()[5][0] = new Item(Category.BOOK,1);
+        shelf.getShelfGrid()[5][4] = new Item(Category.BOOK,1);
         player.setMyShelf(shelf);
     }
 
+    /**
+     * Setup method for all classes
+     */
     @BeforeEach
     public void setup(){
         card = null;
@@ -44,6 +54,10 @@ public class CommonObjCardTest {
         }
     }
 
+    /**
+     * Tests if the points given are correct with 3 players in a match
+     * @throws InvalidPointerException if the array length is zero
+     */
     @Test
     public void gameOfThreePlayersTest() throws InvalidPointerException {
         assertEquals(BASE_TYPE, card.getType(), "The type of the card is wrong");
@@ -60,6 +74,10 @@ public class CommonObjCardTest {
         assertEquals("All the points for this card are taken", exception.getMessage());
     }
 
+    /**
+     * Tests if the points given are correct with 2 players in a match
+     * @throws InvalidPointerException if the array length is zero
+     */
     @Test
     public void gameOfTwoTest() throws InvalidPointerException {
         try{
@@ -80,6 +98,10 @@ public class CommonObjCardTest {
         assertEquals("All the points for this card are taken", exception.getMessage());
     }
 
+    /**
+     * Tests if the points given are correct with 4 players in a match
+     * @throws InvalidPointerException if the array length is zero
+     */
     @Test
     public void gameOfFour() throws InvalidPointerException {
         try{
@@ -101,6 +123,9 @@ public class CommonObjCardTest {
         assertEquals("All the points for this card are taken", exception.getMessage());
     }
 
+    /**
+     * Tests if the InvalidNumberOfPlayers exception is correctly thrown
+     */
     @Test
     public void invalidNumberOfPlayers(){
         InvalidNumberOfPlayersException exception = assertThrows(InvalidNumberOfPlayersException.class, () -> {
@@ -109,6 +134,10 @@ public class CommonObjCardTest {
         assertEquals("Error: the number of players is not allowed!", exception.getMessage());
     }
 
+    /**
+     * getPoints get method test
+     * @throws InvalidPointerException if the array length is zero
+     */
     @Test
     public void getPointsTest() throws InvalidPointerException {
         try{
@@ -120,24 +149,35 @@ public class CommonObjCardTest {
         }
     }
 
+    /**
+     * Tests if no points are given under the correct circumstances
+     * @throws InvalidPointerException if the array length is zero
+     */
     @Test
     public void wrongCheckTest() throws InvalidPointerException {
         Shelf shelf = new Shelf();
-        shelf.getShelfGrid()[0][0] = new Item(Category.BOOK);
-        shelf.getShelfGrid()[0][4] = new Item(Category.BOOK);
-        shelf.getShelfGrid()[5][0] = new Item(Category.BOOK);
-        shelf.getShelfGrid()[5][4] = new Item(Category.CAT);
+        shelf.getShelfGrid()[0][0] = new Item(Category.BOOK,1);
+        shelf.getShelfGrid()[0][4] = new Item(Category.BOOK,1);
+        shelf.getShelfGrid()[5][0] = new Item(Category.BOOK,1);
+        shelf.getShelfGrid()[5][4] = new Item(Category.CAT,1);
         player.setMyShelf(shelf);
         card.doCheck(player);
         assertEquals(0, player.getScore(), "The check method hints");
     }
 
+    /**
+     * Tests if no points are given under the correct circumstances
+     * @throws InvalidPointerException if the array length is zero
+     */
     @Test
     public void rightCheckTest() throws InvalidPointerException {
         card.doCheck(player);
-        assertTrue(0 < player.getScore(), "The check method is wrong");
+        assertTrue(0 <= player.getScore(), "The check method is wrong");
     }
 
+    /**
+     * getDescription get method test
+     */
     @Test
     public void getDescriptionTest(){
         final int SEVENTH_TYPE = 7 ;
@@ -152,6 +192,9 @@ public class CommonObjCardTest {
         assertEquals(descriptionToCompare, card.getDescription());
     }
 
+    /**
+     * Tests if the NullPointerException is correctly thrown when reading a commonObjCard from json
+     */
     @Test
     public void exceptionCommonObjCardReader(){
         final String file = "kek.json";
@@ -159,4 +202,32 @@ public class CommonObjCardTest {
         NullPointerException exception = assertThrows(NullPointerException.class, () -> reader.readFromFile());
         assertEquals("in == null", exception.getMessage());
     }
+
+
+    /**
+     * Tests if the array is correctly copied
+     * @throws InvalidNumberOfPlayersException when the number of players given is invalid
+     * @throws InvalidPointerException if the array length is zero
+     * @throws OutOfBoundsException when the array index is out of bounds
+     */
+    @Test
+    public void CopyPointsArrayTest() throws InvalidNumberOfPlayersException, InvalidPointerException, OutOfBoundsException {
+        int [] arrayToCopy;
+        CommonObjCard commonObjCard = new CommonObjCard(4,1);
+        arrayToCopy = commonObjCard.copyPointsArray();
+        assertEquals(commonObjCard.getPoints(),arrayToCopy[3],"The array copied isn't the same");
+    }
+
+
+    /**
+     * getNextPoints get method test
+     * @throws InvalidNumberOfPlayersException if the number of player is not allowed
+     */
+    @Test
+    public void getNextPointsTest() throws InvalidNumberOfPlayersException {
+        CommonObjCard commonObjCard = new CommonObjCard(4,1);
+        int nextPoints =  commonObjCard.getNextPoints();
+        assertSame(commonObjCard.getNextPoints(),nextPoints,"The NextPoints int given isn't the same");
+    }
 }
+

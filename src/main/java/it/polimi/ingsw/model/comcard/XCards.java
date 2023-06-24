@@ -5,12 +5,16 @@ import it.polimi.ingsw.model.Item;
 
 import java.io.Serializable;
 
+/**
+ * A specific CommonObjCard group type (commonObjCardID 10)
+ */
 class XCards extends StrategyCheck implements Serializable {
     /* ATTRIBUTES SECTION */
-
     /* METHOD SECTION */
 
-    /* -- constructor -- */
+    /** constructor method
+     * @param type int
+      */
     public XCards(int type){
         this.type = type;
     }
@@ -22,7 +26,6 @@ class XCards extends StrategyCheck implements Serializable {
      */
     @Override
     public boolean check(Item[][] grid) {
-        //assert this.type == 12;
         for(int i=1;i<5;i++){
             for(int j=1;j<4;j++){
                 Category scanned = grid[i][j].getCategoryType();

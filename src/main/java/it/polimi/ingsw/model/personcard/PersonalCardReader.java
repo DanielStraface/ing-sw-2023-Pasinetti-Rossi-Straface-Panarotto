@@ -11,26 +11,22 @@ import java.util.List;
  * This class is a representation of a JSON reader. It stored the personalObjCard information. It has got one attribute
  * that represent the resource file name. There is only one method, readFromFile, that reads collect the twelve
  * personal goal cards.
- * @author Matteo Panarotto
  */
 public class PersonalCardReader {
-
     /* ATTRIBUTES SECTIONS */
     private final String file;
-
     /* METHOD SECTION */
 
     /* -- constructors --*/
-    public PersonalCardReader(){this.file = "personalObjectiveCards.json";}
+    public PersonalCardReader(){this.file = "json/personalObjectiveCards.json";}
     public PersonalCardReader(String file){this.file = file;}
 
     /**
      * Method readFromFile reads from a Json file the information about all the personalObjCard and returns that as list
      * Must be the caller to select the card randomly for each player
-     * @return List<PersonalObjCard> LIST <==>  (forall PersonalObjCard P1 contained in JSON file
-     *                                          exists PersonalObjCad P2 contained in LIST) &&
+     * @return List of PersonalObjCard LIST iff  (forall PersonalObjCard P1 contained in JSON file
+     *                                          exists PersonalObjCad P2 contained in LIST) and
      *                                          P1.equals(P2)
-     * @author Matteo Panarotto
      */
     public List<PersonalObjCard> readFromFile() {
         /* Preliminary operations: gson and reader from Json file creation */

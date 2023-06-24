@@ -1,0 +1,737 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+
+<?import java.util.ArrayList?>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="719.0" prefWidth="1420.0" xmlns="http://javafx.com/javafx/15" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.GUI.controllers.MainGameController">
+   <children>
+      <ImageView fitHeight="720.0" fitWidth="796.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../graphics/misc/sfondo_parquet.jpg" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="720.0" fitWidth="700.0" layoutX="720.0" pickOnBounds="true">
+         <image>
+            <Image url="@../graphics/misc/sfondo_parquet.jpg" />
+         </image>
+      </ImageView>
+      <AnchorPane layoutX="5.0" layoutY="5.0" prefHeight="711.0" prefWidth="1405.0">
+         <children>
+            <Pane fx:id="shelfItemPane" layoutX="780.0" layoutY="190.0" opacity="0.7" prefHeight="482.0" prefWidth="438.0">
+               <children>
+                  <ImageView fx:id="slot11" fitHeight="65.0" fitWidth="65.0" layoutX="11.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="slot21" fitHeight="65.0" fitWidth="65.0" layoutX="12.0" layoutY="96.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="slot31" fitHeight="65.0" fitWidth="65.0" layoutX="13.0" layoutY="172.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="slot41" fitHeight="70.0" fitWidth="70.0" layoutX="14.0" layoutY="243.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="slot51" fitHeight="70.0" fitWidth="70.0" layoutX="15.0" layoutY="316.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="slot61" fitHeight="70.0" fitWidth="70.0" layoutX="16.0" layoutY="388.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="slot12" fitHeight="65.0" fitWidth="65.0" layoutX="101.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="slot22" fitHeight="65.0" fitWidth="65.0" layoutX="102.0" layoutY="96.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="slot32" fitHeight="65.0" fitWidth="65.0" layoutX="103.0" layoutY="172.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="slot42" fitHeight="65.0" fitWidth="65.0" layoutX="104.0" layoutY="246.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="slot52" fitHeight="65.0" fitWidth="65.0" layoutX="105.0" layoutY="319.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="slot62" fitHeight="65.0" fitWidth="65.0" layoutX="106.0" layoutY="391.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="slot13" fitHeight="65.0" fitWidth="65.0" layoutX="189.0" layoutY="19.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="slot23" fitHeight="65.0" fitWidth="65.0" layoutX="189.0" layoutY="95.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="slot33" fitHeight="65.0" fitWidth="65.0" layoutX="189.0" layoutY="172.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="slot43" fitHeight="65.0" fitWidth="65.0" layoutX="189.0" layoutY="247.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="slot53" fitHeight="65.0" fitWidth="65.0" layoutX="189.0" layoutY="320.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="slot63" fitHeight="65.0" fitWidth="65.0" layoutX="189.0" layoutY="392.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="slot14" fitHeight="65.0" fitWidth="65.0" layoutX="277.0" layoutY="19.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="slot24" fitHeight="65.0" fitWidth="65.0" layoutX="277.0" layoutY="95.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="slot34" fitHeight="65.0" fitWidth="65.0" layoutX="277.0" layoutY="172.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="slot44" fitHeight="65.0" fitWidth="65.0" layoutX="277.0" layoutY="246.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="slot54" fitHeight="65.0" fitWidth="65.0" layoutX="277.0" layoutY="320.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="slot64" fitHeight="65.0" fitWidth="65.0" layoutX="277.0" layoutY="391.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="slot15" fitHeight="65.0" fitWidth="65.0" layoutX="366.0" layoutY="19.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="slot25" fitHeight="65.0" fitWidth="65.0" layoutX="365.0" layoutY="95.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="slot35" fitHeight="65.0" fitWidth="65.0" layoutX="364.0" layoutY="171.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="slot45" fitHeight="65.0" fitWidth="65.0" layoutX="363.0" layoutY="246.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="slot55" fitHeight="65.0" fitWidth="65.0" layoutX="362.0" layoutY="320.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="slot65" fitHeight="65.0" fitWidth="65.0" layoutX="361.0" layoutY="391.0" pickOnBounds="true" preserveRatio="true" />
+               </children>
+            </Pane>
+            <Label layoutX="1280.0" layoutY="196.0" prefHeight="40.0" prefWidth="95.0" text="YOUR NAME:" />
+            <Button fx:id="objectivesButton" layoutX="1258.0" layoutY="14.0" mnemonicParsing="false" onAction="#objectivesButtonAction" prefHeight="59.0" prefWidth="140.0" text="Objectives" />
+            <Label fx:id="yourNameLabel" layoutX="1248.0" layoutY="240.0" prefHeight="40.0" prefWidth="147.0" visible="false" />
+            <Label layoutX="1280.0" layoutY="310.0" text="YOUR SCORE:" />
+            <Label fx:id="scoreLabel" alignment="CENTER" layoutX="1309.0" layoutY="347.0" prefHeight="18.0" prefWidth="18.0" text="0" />
+            <Label fx:id="player1Label" layoutX="1240.0" layoutY="470.0" prefHeight="25.0" prefWidth="175.0" text="\%DEFAULT%" visible="false" />
+            <Label fx:id="messageBox" layoutX="811.0" layoutY="23.0" prefHeight="118.0" prefWidth="380.0" />
+            <ImageView fx:id="firstPlayerChair" fitHeight="98.0" fitWidth="81.0" layoutX="708.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true" visible="false">
+               <image>
+                  <Image url="@../graphics/misc/firstplayertoken.png" />
+               </image></ImageView>
+            <ImageView fx:id="activeShelf" fitHeight="581.0" fitWidth="552.0" layoutX="725.0" layoutY="168.0" opacity="0.7" pickOnBounds="true" preserveRatio="true" rotate="-0.2">
+               <image>
+                  <Image url="@../graphics/boards/bookshelf.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="1238.0" layoutY="430.0" prefHeight="18.0" prefWidth="160.0" text="PLAYERS" />
+            <Label fx:id="player2Label" layoutX="1240.0" layoutY="510.0" prefHeight="25.0" prefWidth="175.0" text="\%DEFAULT%" visible="false" />
+            <Label fx:id="player3Label" layoutX="1240.0" layoutY="550.0" prefHeight="25.0" prefWidth="175.0" text="\%DEFAULT%" visible="false" />
+            <Label fx:id="player4Label" layoutX="1240.0" layoutY="590.0" prefHeight="25.0" prefWidth="175.0" text="\%DEFAULT%" visible="false" />
+            <Button fx:id="column1Button" contentDisplay="TOP" disable="true" layoutX="780.0" layoutY="642.0" mnemonicParsing="false" onAction="#shelfColumnButtonAction" prefHeight="50.0" prefWidth="82.0" styleClass="itemButton" stylesheets="@../css/MainGame.css" visible="false">
+               <graphic>
+                  <ImageView fitHeight="48.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../graphics/misc/Red_Arrow.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button fx:id="column2Button" contentDisplay="TOP" disable="true" layoutX="872.0" layoutY="642.0" mnemonicParsing="false" onAction="#shelfColumnButtonAction" prefHeight="50.0" prefWidth="82.0" styleClass="itemButton" stylesheets="@../css/MainGame.css" visible="false">
+               <graphic>
+                  <ImageView fitHeight="48.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../graphics/misc/Red_Arrow.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button fx:id="column3Button" contentDisplay="TOP" disable="true" layoutX="960.0" layoutY="642.0" mnemonicParsing="false" onAction="#shelfColumnButtonAction" prefHeight="50.0" prefWidth="82.0" styleClass="itemButton" stylesheets="@../css/MainGame.css" visible="false">
+               <graphic>
+                  <ImageView fitHeight="48.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../graphics/misc/Red_Arrow.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button fx:id="column4Button" contentDisplay="TOP" disable="true" layoutX="1051.0" layoutY="642.0" mnemonicParsing="false" onAction="#shelfColumnButtonAction" prefHeight="50.0" prefWidth="82.0" styleClass="itemButton" stylesheets="@../css/MainGame.css" visible="false">
+               <graphic>
+                  <ImageView fitHeight="48.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../graphics/misc/Red_Arrow.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button fx:id="column5Button" contentDisplay="TOP" disable="true" layoutX="1143.0" layoutY="642.0" mnemonicParsing="false" onAction="#shelfColumnButtonAction" prefHeight="50.0" prefWidth="82.0" styleClass="itemButton" stylesheets="@../css/MainGame.css" visible="false">
+               <graphic>
+                  <ImageView fitHeight="48.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../graphics/misc/Red_Arrow.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button fx:id="playersShelfButton" layoutX="1258.0" layoutY="90.0" mnemonicParsing="false" onAction="#playersShelfButtonAction" prefHeight="59.0" prefWidth="140.0" text="Players' shelf" />
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="gameboardPane" disable="true" prefHeight="200.0" prefWidth="200.0">
+         <children>
+            <ImageView fitHeight="738.0" fitWidth="711.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../graphics/boards/livingroom.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="finalPointToken" fitHeight="78.0" fitWidth="71.0" layoutX="577.0" layoutY="498.0" pickOnBounds="true" preserveRatio="true" rotate="9.0">
+               <image>
+                  <Image url="@../graphics/scoring_tokens/end_game.jpg" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="openedBag" fitHeight="167.0" fitWidth="186.0" layoutX="40.0" layoutY="550.0" pickOnBounds="true" preserveRatio="true" visible="false">
+               <image>
+                  <Image url="@../graphics/misc/Sacchetto_Aperto.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="closedBag" fitHeight="167.0" fitWidth="186.0" layoutX="40.0" layoutY="550.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../graphics/misc/Sacchetto_Chiuso.png" />
+               </image>
+            </ImageView>
+            <Pane layoutX="27.0" layoutY="26.0" prefHeight="654.0" prefWidth="654.0">
+               <children>
+                  <Button fx:id="_1_3_" contentDisplay="TOP" layoutX="216.0" layoutY="74.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#itemClick" prefHeight="75.0" prefWidth="75.0" styleClass="itemButton" stylesheets="@../css/MainGame.css" text="Button">
+                     <graphic>
+                        <BorderPane fx:id="wrapper13">
+                           <center>
+                              <ImageView fx:id="image13" fitHeight="66.4" fitWidth="66.4" pickOnBounds="true" preserveRatio="true" />
+                           </center>
+                        </BorderPane>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="_1_4_" contentDisplay="TOP" layoutX="288.0" layoutY="74.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#itemClick" prefHeight="75.0" prefWidth="75.0" styleClass="itemButton" stylesheets="@../css/MainGame.css" text="Button">
+                     <graphic>
+                        <BorderPane fx:id="wrapper14">
+                           <center>
+                              <ImageView fx:id="image23" fitHeight="66.4" fitWidth="66.4" pickOnBounds="true" preserveRatio="true" />
+                           </center>
+                        </BorderPane>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="_2_3_" contentDisplay="TOP" layoutX="216.0" layoutY="146.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#itemClick" prefHeight="75.0" prefWidth="75.0" styleClass="itemButton" stylesheets="@../css/MainGame.css" text="Button">
+                     <graphic>
+                        <BorderPane fx:id="wrapper23">
+                           <center>
+                              <ImageView fx:id="image14" fitHeight="66.4" fitWidth="66.4" pickOnBounds="true" preserveRatio="true" />
+                           </center>
+                        </BorderPane>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="_2_4_" contentDisplay="TOP" layoutX="288.0" layoutY="146.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#itemClick" prefHeight="75.0" prefWidth="75.0" styleClass="itemButton" stylesheets="@../css/MainGame.css" text="Button">
+                     <graphic>
+                        <BorderPane fx:id="wrapper24">
+                           <center>
+                              <ImageView fx:id="image141" fitHeight="66.4" fitWidth="66.4" pickOnBounds="true" preserveRatio="true" />
+                           </center>
+                        </BorderPane>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="_2_5_" contentDisplay="TOP" layoutX="360.0" layoutY="146.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#itemClick" prefHeight="75.0" prefWidth="75.0" styleClass="itemButton" stylesheets="@../css/MainGame.css" text="Button">
+                     <graphic>
+                        <BorderPane fx:id="wrapper25">
+                           <center>
+                              <ImageView fx:id="image1411" fitHeight="66.4" fitWidth="66.4" pickOnBounds="true" preserveRatio="true" />
+                           </center>
+                        </BorderPane>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="_2_6_" contentDisplay="TOP" layoutX="432.0" layoutY="146.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#itemClick" prefHeight="75.0" prefWidth="75.0" styleClass="itemButton" stylesheets="@../css/MainGame.css" text="Button">
+                     <graphic>
+                        <BorderPane fx:id="wrapper26">
+                           <center>
+                              <ImageView fx:id="image14111" fitHeight="66.4" fitWidth="66.4" pickOnBounds="true" preserveRatio="true" />
+                           </center>
+                        </BorderPane>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="_1_5_" contentDisplay="TOP" layoutX="360.0" layoutY="74.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#itemClick" prefHeight="75.0" prefWidth="75.0" styleClass="itemButton" stylesheets="@../css/MainGame.css" text="Button">
+                     <graphic>
+                        <BorderPane fx:id="wrapper15">
+                           <center>
+                              <ImageView fx:id="image231" fitHeight="66.4" fitWidth="66.4" pickOnBounds="true" preserveRatio="true" />
+                           </center>
+                        </BorderPane>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="_0_3_" contentDisplay="TOP" layoutX="216.0" layoutY="2.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#itemClick" prefHeight="75.0" prefWidth="75.0" styleClass="itemButton" stylesheets="@../css/MainGame.css" text="Button">
+                     <graphic>
+                        <BorderPane fx:id="wrapper03">
+                           <center>
+                              <ImageView fx:id="image131" fitHeight="66.4" fitWidth="66.4" pickOnBounds="true" preserveRatio="true" />
+                           </center>
+                        </BorderPane>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="_0_4_" contentDisplay="TOP" layoutX="288.0" layoutY="2.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#itemClick" prefHeight="75.0" prefWidth="75.0" styleClass="itemButton" stylesheets="@../css/MainGame.css" text="Button">
+                     <graphic>
+                        <BorderPane fx:id="wrapper04">
+                           <center>
+                              <ImageView fx:id="image1311" fitHeight="66.4" fitWidth="66.4" pickOnBounds="true" preserveRatio="true" />
+                           </center>
+                        </BorderPane>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="_2_2_" contentDisplay="TOP" layoutX="144.0" layoutY="146.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#itemClick" prefHeight="75.0" prefWidth="75.0" styleClass="itemButton" stylesheets="@../css/MainGame.css" text="Button">
+                     <graphic>
+                        <BorderPane fx:id="wrapper22">
+                           <center>
+                              <ImageView fx:id="image142" fitHeight="66.4" fitWidth="66.4" pickOnBounds="true" preserveRatio="true" />
+                           </center>
+                        </BorderPane>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="_3_2_" contentDisplay="TOP" layoutX="144.0" layoutY="218.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#itemClick" prefHeight="75.0" prefWidth="75.0" styleClass="itemButton" stylesheets="@../css/MainGame.css" text="Button">
+                     <graphic>
+                        <BorderPane fx:id="wrapper32">
+                           <center>
+                              <ImageView fx:id="image1421" fitHeight="66.4" fitWidth="66.4" pickOnBounds="true" preserveRatio="true" />
+                           </center>
+                        </BorderPane>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="_3_1_" contentDisplay="TOP" layoutX="72.0" layoutY="218.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#itemClick" prefHeight="75.0" prefWidth="75.0" styleClass="itemButton" stylesheets="@../css/MainGame.css" text="Button">
+                     <graphic>
+                        <BorderPane fx:id="wrapper31">
+                           <center>
+                              <ImageView fx:id="image14211" fitHeight="66.4" fitWidth="66.4" pickOnBounds="true" preserveRatio="true" />
+                           </center>
+                        </BorderPane>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="_3_3_" contentDisplay="TOP" layoutX="216.0" layoutY="218.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#itemClick" prefHeight="75.0" prefWidth="75.0" styleClass="itemButton" stylesheets="@../css/MainGame.css" text="Button">
+                     <graphic>
+                        <BorderPane fx:id="wrapper33">
+                           <center>
+                              <ImageView fx:id="image14212" fitHeight="66.4" fitWidth="66.4" pickOnBounds="true" preserveRatio="true" />
+                           </center>
+                        </BorderPane>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="_3_4_" contentDisplay="TOP" layoutX="288.0" layoutY="218.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#itemClick" prefHeight="75.0" prefWidth="75.0" styleClass="itemButton" stylesheets="@../css/MainGame.css" text="Button">
+                     <graphic>
+                        <BorderPane fx:id="wrapper34">
+                           <center>
+                              <ImageView fx:id="image142121" fitHeight="66.4" fitWidth="66.4" pickOnBounds="true" preserveRatio="true" />
+                           </center>
+                        </BorderPane>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="_3_5_" contentDisplay="TOP" layoutX="360.0" layoutY="218.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#itemClick" prefHeight="75.0" prefWidth="75.0" styleClass="itemButton" stylesheets="@../css/MainGame.css" text="Button">
+                     <graphic>
+                        <BorderPane fx:id="wrapper35">
+                           <center>
+                              <ImageView fx:id="image1421211" fitHeight="66.4" fitWidth="66.4" pickOnBounds="true" preserveRatio="true" />
+                           </center>
+                        </BorderPane>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="_3_6_" contentDisplay="TOP" layoutX="432.0" layoutY="218.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#itemClick" prefHeight="75.0" prefWidth="75.0" styleClass="itemButton" stylesheets="@../css/MainGame.css" text="Button">
+                     <graphic>
+                        <BorderPane fx:id="wrapper36">
+                           <center>
+                              <ImageView fx:id="image14212111" fitHeight="66.4" fitWidth="66.4" pickOnBounds="true" preserveRatio="true" />
+                           </center>
+                        </BorderPane>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="_3_7_" contentDisplay="TOP" layoutX="504.0" layoutY="218.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#itemClick" prefHeight="75.0" prefWidth="75.0" styleClass="itemButton" stylesheets="@../css/MainGame.css" text="Button">
+                     <graphic>
+                        <BorderPane fx:id="wrapper37">
+                           <center>
+                              <ImageView fx:id="image142121111" fitHeight="66.4" fitWidth="66.4" pickOnBounds="true" preserveRatio="true" />
+                           </center>
+                        </BorderPane>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="_3_8_" contentDisplay="TOP" layoutX="576.0" layoutY="218.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#itemClick" prefHeight="75.0" prefWidth="75.0" styleClass="itemButton" stylesheets="@../css/MainGame.css" text="Button">
+                     <graphic>
+                        <BorderPane fx:id="wrapper38">
+                           <center>
+                              <ImageView fx:id="image1421211111" fitHeight="66.4" fitWidth="66.4" pickOnBounds="true" preserveRatio="true" />
+                           </center>
+                        </BorderPane>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="_4_0_" contentDisplay="TOP" layoutY="290.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#itemClick" prefHeight="75.0" prefWidth="75.0" styleClass="itemButton" stylesheets="@../css/MainGame.css" text="Button">
+                     <graphic>
+                        <BorderPane fx:id="wrapper40">
+                           <center>
+                              <ImageView fx:id="image142111" fitHeight="66.4" fitWidth="66.4" pickOnBounds="true" preserveRatio="true" />
+                           </center>
+                        </BorderPane>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="_4_1_" contentDisplay="TOP" layoutX="72.0" layoutY="290.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#itemClick" prefHeight="75.0" prefWidth="75.0" styleClass="itemButton" stylesheets="@../css/MainGame.css" text="Button">
+                     <graphic>
+                        <BorderPane fx:id="wrapper41">
+                           <center>
+                              <ImageView fx:id="image1421111" fitHeight="66.4" fitWidth="66.4" pickOnBounds="true" preserveRatio="true" />
+                           </center>
+                        </BorderPane>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="_4_2_" contentDisplay="TOP" layoutX="144.0" layoutY="290.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#itemClick" prefHeight="75.0" prefWidth="75.0" styleClass="itemButton" stylesheets="@../css/MainGame.css" text="Button">
+                     <graphic>
+                        <BorderPane fx:id="wrapper42">
+                           <center>
+                              <ImageView fx:id="image14211111" fitHeight="66.4" fitWidth="66.4" pickOnBounds="true" preserveRatio="true" />
+                           </center>
+                        </BorderPane>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="_4_3_" contentDisplay="TOP" layoutX="216.0" layoutY="290.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#itemClick" prefHeight="75.0" prefWidth="75.0" styleClass="itemButton" stylesheets="@../css/MainGame.css" text="Button">
+                     <graphic>
+                        <BorderPane fx:id="wrapper43">
+                           <center>
+                              <ImageView fx:id="image142111111" fitHeight="66.4" fitWidth="66.4" pickOnBounds="true" preserveRatio="true" />
+                           </center>
+                        </BorderPane>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="_4_4_" contentDisplay="TOP" layoutX="288.0" layoutY="290.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#itemClick" prefHeight="75.0" prefWidth="75.0" styleClass="itemButton" stylesheets="@../css/MainGame.css" text="Button">
+                     <graphic>
+                        <BorderPane fx:id="wrapper44">
+                           <center>
+                              <ImageView fx:id="image1421111111" fitHeight="66.4" fitWidth="66.4" pickOnBounds="true" preserveRatio="true" />
+                           </center>
+                        </BorderPane>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="_4_5_" contentDisplay="TOP" layoutX="360.0" layoutY="290.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#itemClick" prefHeight="75.0" prefWidth="75.0" styleClass="itemButton" stylesheets="@../css/MainGame.css" text="Button">
+                     <graphic>
+                        <BorderPane fx:id="wrapper45">
+                           <center>
+                              <ImageView fx:id="image14211111111" fitHeight="66.4" fitWidth="66.4" pickOnBounds="true" preserveRatio="true" />
+                           </center>
+                        </BorderPane>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="_4_6_" contentDisplay="TOP" layoutX="432.0" layoutY="290.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#itemClick" prefHeight="75.0" prefWidth="75.0" styleClass="itemButton" stylesheets="@../css/MainGame.css" text="Button">
+                     <graphic>
+                        <BorderPane fx:id="wrapper46">
+                           <center>
+                              <ImageView fx:id="image142111111111" fitHeight="66.4" fitWidth="66.4" pickOnBounds="true" preserveRatio="true" />
+                           </center>
+                        </BorderPane>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="_4_7_" contentDisplay="TOP" layoutX="504.0" layoutY="290.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#itemClick" prefHeight="75.0" prefWidth="75.0" styleClass="itemButton" stylesheets="@../css/MainGame.css" text="Button">
+                     <graphic>
+                        <BorderPane fx:id="wrapper47">
+                           <center>
+                              <ImageView fx:id="image1421111111111" fitHeight="66.4" fitWidth="66.4" pickOnBounds="true" preserveRatio="true" />
+                           </center>
+                        </BorderPane>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="_4_8_" contentDisplay="TOP" layoutX="576.0" layoutY="290.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#itemClick" prefHeight="75.0" prefWidth="75.0" styleClass="itemButton" stylesheets="@../css/MainGame.css" text="Button">
+                     <graphic>
+                        <BorderPane fx:id="wrapper48">
+                           <center>
+                              <ImageView fx:id="image14211111111111" fitHeight="66.4" fitWidth="66.4" pickOnBounds="true" preserveRatio="true" />
+                           </center>
+                        </BorderPane>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="_5_0_" contentDisplay="TOP" layoutY="362.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#itemClick" prefHeight="75.0" prefWidth="75.0" styleClass="itemButton" stylesheets="@../css/MainGame.css" text="Button">
+                     <graphic>
+                        <BorderPane fx:id="wrapper50">
+                           <center>
+                              <ImageView fx:id="image1421112" fitHeight="66.4" fitWidth="66.4" pickOnBounds="true" preserveRatio="true" />
+                           </center>
+                        </BorderPane>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="_5_1_" contentDisplay="TOP" layoutX="72.0" layoutY="362.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#itemClick" prefHeight="75.0" prefWidth="75.0" styleClass="itemButton" stylesheets="@../css/MainGame.css" text="Button">
+                     <graphic>
+                        <BorderPane fx:id="wrapper51">
+                           <center>
+                              <ImageView fx:id="image14211121" fitHeight="66.4" fitWidth="66.4" pickOnBounds="true" preserveRatio="true" />
+                           </center>
+                        </BorderPane>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="_5_2_" contentDisplay="TOP" layoutX="144.0" layoutY="362.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#itemClick" prefHeight="75.0" prefWidth="75.0" styleClass="itemButton" stylesheets="@../css/MainGame.css" text="Button">
+                     <graphic>
+                        <BorderPane fx:id="wrapper52">
+                           <center>
+                              <ImageView fx:id="image142111211" fitHeight="66.4" fitWidth="66.4" pickOnBounds="true" preserveRatio="true" />
+                           </center>
+                        </BorderPane>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="_5_3_" contentDisplay="TOP" layoutX="216.0" layoutY="362.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#itemClick" prefHeight="75.0" prefWidth="75.0" styleClass="itemButton" stylesheets="@../css/MainGame.css" text="Button">
+                     <graphic>
+                        <BorderPane fx:id="wrapper53">
+                           <center>
+                              <ImageView fx:id="image1421112111" fitHeight="66.4" fitWidth="66.4" pickOnBounds="true" preserveRatio="true" />
+                           </center>
+                        </BorderPane>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="_5_4_" contentDisplay="TOP" layoutX="288.0" layoutY="362.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#itemClick" prefHeight="75.0" prefWidth="75.0" styleClass="itemButton" stylesheets="@../css/MainGame.css" text="Button">
+                     <graphic>
+                        <BorderPane fx:id="wrapper54">
+                           <center>
+                              <ImageView fx:id="image14211121111" fitHeight="66.4" fitWidth="66.4" pickOnBounds="true" preserveRatio="true" />
+                           </center>
+                        </BorderPane>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="_5_5_" contentDisplay="TOP" layoutX="360.0" layoutY="362.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#itemClick" prefHeight="75.0" prefWidth="75.0" styleClass="itemButton" stylesheets="@../css/MainGame.css" text="Button">
+                     <graphic>
+                        <BorderPane fx:id="wrapper55">
+                           <center>
+                              <ImageView fx:id="image142111211111" fitHeight="66.4" fitWidth="66.4" pickOnBounds="true" preserveRatio="true" />
+                           </center>
+                        </BorderPane>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="_5_6_" contentDisplay="TOP" layoutX="432.0" layoutY="362.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#itemClick" prefHeight="75.0" prefWidth="75.0" styleClass="itemButton" stylesheets="@../css/MainGame.css" text="Button">
+                     <graphic>
+                        <BorderPane fx:id="wrapper56">
+                           <center>
+                              <ImageView fx:id="image1421112111111" fitHeight="66.4" fitWidth="66.4" pickOnBounds="true" preserveRatio="true" />
+                           </center>
+                        </BorderPane>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="_5_7_" contentDisplay="TOP" layoutX="504.0" layoutY="362.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#itemClick" prefHeight="75.0" prefWidth="75.0" styleClass="itemButton" stylesheets="@../css/MainGame.css" text="Button">
+                     <graphic>
+                        <BorderPane fx:id="wrapper57">
+                           <center>
+                              <ImageView fx:id="image14211121111111" fitHeight="66.4" fitWidth="66.4" pickOnBounds="true" preserveRatio="true" />
+                           </center>
+                        </BorderPane>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="_6_2_" contentDisplay="TOP" layoutX="144.0" layoutY="434.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#itemClick" prefHeight="75.0" prefWidth="75.0" styleClass="itemButton" stylesheets="@../css/MainGame.css" text="Button">
+                     <graphic>
+                        <BorderPane fx:id="wrapper62">
+                           <center>
+                              <ImageView fx:id="image1421112112" fitHeight="66.4" fitWidth="66.4" pickOnBounds="true" preserveRatio="true" />
+                           </center>
+                        </BorderPane>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="_6_3_" contentDisplay="TOP" layoutX="216.0" layoutY="434.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#itemClick" prefHeight="75.0" prefWidth="75.0" styleClass="itemButton" stylesheets="@../css/MainGame.css" text="Button">
+                     <graphic>
+                        <BorderPane fx:id="wrapper63">
+                           <center>
+                              <ImageView fx:id="image14211121121" fitHeight="66.4" fitWidth="66.4" pickOnBounds="true" preserveRatio="true" />
+                           </center>
+                        </BorderPane>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="_6_4_" contentDisplay="TOP" layoutX="288.0" layoutY="434.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#itemClick" prefHeight="75.0" prefWidth="75.0" styleClass="itemButton" stylesheets="@../css/MainGame.css" text="Button">
+                     <graphic>
+                        <BorderPane fx:id="wrapper64">
+                           <center>
+                              <ImageView fx:id="image142111211211" fitHeight="66.4" fitWidth="66.4" pickOnBounds="true" preserveRatio="true" />
+                           </center>
+                        </BorderPane>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="_6_5_" contentDisplay="TOP" layoutX="360.0" layoutY="434.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#itemClick" prefHeight="75.0" prefWidth="75.0" styleClass="itemButton" stylesheets="@../css/MainGame.css" text="Button">
+                     <graphic>
+                        <BorderPane fx:id="wrapper65">
+                           <center>
+                              <ImageView fx:id="image1421112112111" fitHeight="66.4" fitWidth="66.4" pickOnBounds="true" preserveRatio="true" />
+                           </center>
+                        </BorderPane>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="_6_6_" contentDisplay="TOP" layoutX="432.0" layoutY="434.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#itemClick" prefHeight="75.0" prefWidth="75.0" styleClass="itemButton" stylesheets="@../css/MainGame.css" text="Button">
+                     <graphic>
+                        <BorderPane fx:id="wrapper66">
+                           <center>
+                              <ImageView fx:id="image14211121121111" fitHeight="66.4" fitWidth="66.4" pickOnBounds="true" preserveRatio="true" />
+                           </center>
+                        </BorderPane>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="_7_3_" contentDisplay="TOP" layoutX="216.0" layoutY="506.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#itemClick" prefHeight="75.0" prefWidth="75.0" styleClass="itemButton" stylesheets="@../css/MainGame.css" text="Button">
+                     <graphic>
+                        <BorderPane fx:id="wrapper73">
+                           <center>
+                              <ImageView fx:id="image142111211212" fitHeight="66.4" fitWidth="66.4" pickOnBounds="true" preserveRatio="true" />
+                           </center>
+                        </BorderPane>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="_7_4_" contentDisplay="TOP" layoutX="288.0" layoutY="506.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#itemClick" prefHeight="75.0" prefWidth="75.0" styleClass="itemButton" stylesheets="@../css/MainGame.css" text="Button">
+                     <graphic>
+                        <BorderPane fx:id="wrapper74">
+                           <center>
+                              <ImageView fx:id="image1421112112121" fitHeight="66.4" fitWidth="66.4" pickOnBounds="true" preserveRatio="true" />
+                           </center>
+                        </BorderPane>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="_7_5_" contentDisplay="TOP" layoutX="360.0" layoutY="506.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#itemClick" prefHeight="75.0" prefWidth="75.0" styleClass="itemButton" stylesheets="@../css/MainGame.css" text="Button">
+                     <graphic>
+                        <BorderPane fx:id="wrapper75">
+                           <center>
+                              <ImageView fx:id="image14211121121211" fitHeight="66.4" fitWidth="66.4" pickOnBounds="true" preserveRatio="true" />
+                           </center>
+                        </BorderPane>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="_8_4_" contentDisplay="TOP" layoutX="288.0" layoutY="578.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#itemClick" prefHeight="75.0" prefWidth="75.0" styleClass="itemButton" stylesheets="@../css/MainGame.css" text="Button">
+                     <graphic>
+                        <BorderPane fx:id="wrapper84">
+                           <center>
+                              <ImageView fx:id="image14211121121212" fitHeight="66.4" fitWidth="66.4" pickOnBounds="true" preserveRatio="true" />
+                           </center>
+                        </BorderPane>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="_8_5_" contentDisplay="TOP" layoutX="360.0" layoutY="578.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#itemClick" prefHeight="75.0" prefWidth="75.0" styleClass="itemButton" stylesheets="@../css/MainGame.css" text="Button">
+                     <graphic>
+                        <BorderPane fx:id="wrapper85">
+                           <center>
+                              <ImageView fx:id="image142111211212121" fitHeight="66.4" fitWidth="66.4" pickOnBounds="true" preserveRatio="true" />
+                           </center>
+                        </BorderPane>
+                     </graphic>
+                  </Button>
+               </children>
+            </Pane>
+            <Button fx:id="confirmSelection" disable="true" layoutX="40.0" layoutY="44.0" mnemonicParsing="false" onAction="#confirmSelectionAction" opacity="0.6" prefHeight="26.0" prefWidth="95.0" text="Confirm" />
+            <Label fx:id="firstItem" layoutX="36.0" layoutY="12.0" text="1" visible="false" />
+            <Label fx:id="secondItem" layoutX="54.0" layoutY="12.0" text="2" visible="false" />
+            <Label fx:id="thirdItem" layoutX="73.0" layoutY="12.0" text="3" visible="false" />
+         </children>
+      </AnchorPane>
+   </children>
+   <fx:define>
+      <ArrayList fx:id="itemsList">
+         <fx:reference source="_0_3_" />
+         <fx:reference source="_0_4_" />
+         <fx:reference source="_1_3_" />
+         <fx:reference source="_1_4_" />
+         <fx:reference source="_1_5_" />
+         <fx:reference source="_2_2_" />
+         <fx:reference source="_2_3_" />
+         <fx:reference source="_2_4_" />
+         <fx:reference source="_2_5_" />
+         <fx:reference source="_2_6_" />
+         <fx:reference source="_3_1_" />
+         <fx:reference source="_3_2_" />
+         <fx:reference source="_3_3_" />
+         <fx:reference source="_3_4_" />
+         <fx:reference source="_3_5_" />
+         <fx:reference source="_3_6_" />
+         <fx:reference source="_3_7_" />
+         <fx:reference source="_3_8_" />
+         <fx:reference source="_4_0_" />
+         <fx:reference source="_4_1_" />
+         <fx:reference source="_4_2_" />
+         <fx:reference source="_4_3_" />
+         <fx:reference source="_4_4_" />
+         <fx:reference source="_4_5_" />
+         <fx:reference source="_4_6_" />
+         <fx:reference source="_4_7_" />
+         <fx:reference source="_4_8_" />
+         <fx:reference source="_5_0_" />
+         <fx:reference source="_5_1_" />
+         <fx:reference source="_5_2_" />
+         <fx:reference source="_5_3_" />
+         <fx:reference source="_5_4_" />
+         <fx:reference source="_5_5_" />
+         <fx:reference source="_5_6_" />
+         <fx:reference source="_5_7_" />
+         <fx:reference source="_6_2_" />
+         <fx:reference source="_6_3_" />
+         <fx:reference source="_6_4_" />
+         <fx:reference source="_6_5_" />
+         <fx:reference source="_6_6_" />
+         <fx:reference source="_7_3_" />
+         <fx:reference source="_7_4_" />
+         <fx:reference source="_7_5_" />
+         <fx:reference source="_8_4_" />
+         <fx:reference source="_8_5_" />
+      </ArrayList>
+   </fx:define>
+   <fx:define>
+      <ArrayList fx:id="imgsList">
+         <fx:reference source="image13" />
+         <fx:reference source="image14" />
+         <fx:reference source="image23" />
+      </ArrayList>
+   </fx:define>
+   <fx:define>
+      <ArrayList fx:id="wrappersList">
+         <fx:reference source="wrapper03" />
+         <fx:reference source="wrapper04" />
+         <fx:reference source="wrapper13" />
+         <fx:reference source="wrapper14" />
+         <fx:reference source="wrapper15" />
+         <fx:reference source="wrapper22" />
+         <fx:reference source="wrapper23" />
+         <fx:reference source="wrapper24" />
+         <fx:reference source="wrapper25" />
+         <fx:reference source="wrapper26" />
+         <fx:reference source="wrapper31" />
+         <fx:reference source="wrapper32" />
+         <fx:reference source="wrapper33" />
+         <fx:reference source="wrapper34" />
+         <fx:reference source="wrapper35" />
+         <fx:reference source="wrapper36" />
+         <fx:reference source="wrapper37" />
+         <fx:reference source="wrapper38" />
+         <fx:reference source="wrapper40" />
+         <fx:reference source="wrapper41" />
+         <fx:reference source="wrapper42" />
+         <fx:reference source="wrapper43" />
+         <fx:reference source="wrapper44" />
+         <fx:reference source="wrapper45" />
+         <fx:reference source="wrapper46" />
+         <fx:reference source="wrapper47" />
+         <fx:reference source="wrapper48" />
+         <fx:reference source="wrapper50" />
+         <fx:reference source="wrapper51" />
+         <fx:reference source="wrapper52" />
+         <fx:reference source="wrapper53" />
+         <fx:reference source="wrapper54" />
+         <fx:reference source="wrapper55" />
+         <fx:reference source="wrapper56" />
+         <fx:reference source="wrapper57" />
+         <fx:reference source="wrapper62" />
+         <fx:reference source="wrapper63" />
+         <fx:reference source="wrapper64" />
+         <fx:reference source="wrapper65" />
+         <fx:reference source="wrapper66" />
+         <fx:reference source="wrapper73" />
+         <fx:reference source="wrapper74" />
+         <fx:reference source="wrapper75" />
+         <fx:reference source="wrapper84" />
+         <fx:reference source="wrapper85" />
+      </ArrayList>
+   </fx:define>
+   <fx:define>
+      <ArrayList fx:id="ordinalSelectionFlag">
+         <fx:reference source="firstItem" />
+         <fx:reference source="secondItem" />
+         <fx:reference source="thirdItem" />
+      </ArrayList>
+   </fx:define>
+   <fx:define>
+      <ArrayList fx:id="shelfColumnButtonList">
+         <fx:reference source="column1Button" />
+         <fx:reference source="column2Button" />
+         <fx:reference source="column3Button" />
+         <fx:reference source="column4Button" />
+         <fx:reference source="column5Button" />
+      </ArrayList>
+   </fx:define>
+   <fx:define>
+      <ArrayList fx:id="shelfColumnOne">
+         <fx:reference source="slot11" />
+         <fx:reference source="slot21" />
+         <fx:reference source="slot31" />
+         <fx:reference source="slot41" />
+         <fx:reference source="slot51" />
+         <fx:reference source="slot61" />
+      </ArrayList>
+   </fx:define>
+   <fx:define>
+      <ArrayList fx:id="shelfColumnTwo">
+         <fx:reference source="slot12" />
+         <fx:reference source="slot22" />
+         <fx:reference source="slot32" />
+         <fx:reference source="slot42" />
+         <fx:reference source="slot52" />
+         <fx:reference source="slot62" />
+      </ArrayList>
+   </fx:define>
+   <fx:define>
+      <ArrayList fx:id="shelfColumnThree">
+         <fx:reference source="slot13" />
+         <fx:reference source="slot23" />
+         <fx:reference source="slot33" />
+         <fx:reference source="slot43" />
+         <fx:reference source="slot53" />
+         <fx:reference source="slot63" />
+      </ArrayList>
+   </fx:define>
+   <fx:define>
+      <ArrayList fx:id="shelfColumnFour">
+         <fx:reference source="slot14" />
+         <fx:reference source="slot24" />
+         <fx:reference source="slot34" />
+         <fx:reference source="slot44" />
+         <fx:reference source="slot54" />
+         <fx:reference source="slot64" />
+      </ArrayList>
+   </fx:define>
+   <fx:define>
+      <ArrayList fx:id="shelfColumnFive">
+         <fx:reference source="slot15" />
+         <fx:reference source="slot25" />
+         <fx:reference source="slot35" />
+         <fx:reference source="slot45" />
+         <fx:reference source="slot55" />
+         <fx:reference source="slot65" />
+      </ArrayList>
+   </fx:define>
+</AnchorPane>

@@ -1,0 +1,19 @@
+.ObjectiveCardPane {
+    -fx-background-color: #c19a6b;
+}
+
+.objectiveImg {
+    -fx-border-color: BLACK;
+    -fx-border-width: 2px;
+}
+
+.loadingPoint {
+    -fx-background-color: c19a6b;
+}
+.descriptions {
+    -fx-font-size: 14px;
+}
+
+.nicknameOtherPlayer {
+    -fx-background-color: #c19a6b;
+}
