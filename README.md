@@ -48,8 +48,8 @@ The project includes:
 
 ## Notes
 * It is recommended to leave the jar file in a folder, since the saved matches (.ser files) are created on the same location as the jar file itself;
-* In order to save a match, one turn MUST have passed, this is true also for matches that have been just resumed.
-* Disconnection notifications may take a while to show up;
+* In order to save a match, one turn MUST have passed, this is true also for matches that have been just resumed;
+* Disconnection notifications may take a while to show up due to client timeout in heartbeat functionality.
 
 
 ## Made by
