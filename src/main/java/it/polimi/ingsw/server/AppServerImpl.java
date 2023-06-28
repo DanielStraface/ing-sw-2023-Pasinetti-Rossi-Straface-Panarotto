@@ -8,6 +8,7 @@ import it.polimi.ingsw.exceptions.*;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.NetworkInterface;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.file.FileSystems;
@@ -453,6 +454,7 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
         if(noMoreHeartbeat.get(client)) throw new NoMoreHeartbeatException();
         if(!loggedNicknames.contains(client)) throw new AnotherClientRMITimeoutException();
         if(!connectedRMIClientFlag.get(client)) throw new ClientRMITimeoutException();
+        connectedRMIClientFlag.replace(client, false);
     }
 
     /**
@@ -527,8 +529,8 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
                         }
                     }
                 }
-            }, (CLIENT_TIMEOUT * 5) / 4, CLIENT_TIMEOUT);
-            Timer disconnectioCheckerTimer = new Timer();
+            }, CLIENT_TIMEOUT *2, CLIENT_TIMEOUT);
+            /*Timer disconnectioCheckerTimer = new Timer();
             disconnectioCheckerTimer.schedule(new TimerTask() {
                 @Override
                 public void run() {
@@ -540,7 +542,7 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
                         connectedRMIClientFlag.replace(nickname, false);
                     }
                 }
-            }, CLIENT_TIMEOUT / 2, CLIENT_TIMEOUT);
+            }, CLIENT_TIMEOUT / 2, CLIENT_TIMEOUT);*/
         }).start();
     }
 
