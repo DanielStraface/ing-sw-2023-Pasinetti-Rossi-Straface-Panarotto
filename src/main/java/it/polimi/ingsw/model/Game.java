@@ -36,6 +36,7 @@ public class Game extends ModelSubject implements Serializable {
     private String gameOverFinalMessage;
     private boolean gameOverPointToken;
     private String gameOverPointPlayerName;
+    private int turnCounter;
 
     /**
      * constructor for Game class
@@ -46,6 +47,7 @@ public class Game extends ModelSubject implements Serializable {
     public Game (int playersNumber) throws InvalidNumberOfPlayersException, RemoteException{
         if(playersNumber <= 1 || playersNumber >= 5) throw new InvalidNumberOfPlayersException();
         this.playersNumber = playersNumber;
+        this.turnCounter = 0;
         this.prevClientID = -1;
         this.players = new ArrayList<>(playersNumber);
         this.bag = new Bag();
@@ -165,6 +167,7 @@ public class Game extends ModelSubject implements Serializable {
         this.currentPlayer = player;
         String fileName = "match" + matchID + ".ser";
         Controller.saveGame(this, fileName);
+        turnCounter++;
         AppServerImpl.addPrevMatchSave(matchID);
         setChangedAndNotifyListeners(this);
     }
@@ -296,6 +299,12 @@ public class Game extends ModelSubject implements Serializable {
      * @return String -> gameOverPointPlayerNickname
      */
     public String getGameOverPointPlayerName(){return this.gameOverPointPlayerName;}
+
+    /**
+     * get method
+     * @return int -> turnCounter
+     */
+    public int getTurnCounter(){return turnCounter;}
 
     /**
      * set method for the game.
