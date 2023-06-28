@@ -7,6 +7,7 @@ The project includes:
 * The associated javadocs;
 * The sequence diagram of the initial connection of RMI or Socket;
 * The sequence diagram of a turn while using RMI or Socket;
+* A document explaining how disconnections are handled;
 * All the written/received peer reviews and all their documentation;
 * The project jar file;
 * The project source code.
@@ -16,10 +17,10 @@ The project includes:
 |:-------------------------|:--------------------------------------------------------------------------------------------------------------------------------------:|
 | Basic rules              |                                                                  [✅]                                                                   |
 | Complete rules           |                                                                  [✅]                                                                   |
-| Socket                   |                                                                  [✅]                                                                   |
-| RMI                      |                                                                  [✅]                                                                   |
-| GUI                      |                                                                  [✅]                                                                   |
 | TUI                      |                                                                  [✅]                                                                   |
+| GUI                      |                                                                  [✅]                                                                   |
+| RMI                      |                                                                  [✅]                                                                   |
+| Socket                   |                                                                  [✅]                                                                   |
 | Multiple games           |                                                                  [✅]                                                                   |
 | Persistence              |                                                                  [✅]                                                                   |
 | Disconnection Resilience |                                                                  [⛔]                                                                   |
@@ -34,7 +35,7 @@ The project includes:
 
 ## Requirements
 * The latest version of Java and Maven;
-* A rule for inbound/outgoing connections on the ports 1099/1234.
+* A firewall rule for inbound/outgoing connections on the ports 1099/1234.
 
 
 ## Instructions
@@ -42,14 +43,17 @@ The project includes:
 
     1 -> to start a Server 
 
-    2 -> to open the CLI client version 
+    2 -> to open the textual user interface (TUI)
   
-    3 -> to open the GUI client version
+    3 -> to open the graphical user interface (GUI)
 
 ## Notes
 * It is recommended to leave the jar file in a folder, since the saved matches (.ser files) are created on the same location as the jar file itself;
-* In order to save a match, one turn MUST have passed, this is true also for matches that have been just resumed;
-* Disconnection notifications may take a while to show up due to client timeout in heartbeat functionality.
+* In order to save a match, one turn MUST have passed, this is true also for matches that have been just resumed (example: in an old match that has been just resumed, if the game is closed before the current player makes a move, the match is lost forever); 
+* Disconnection notifications may take a while to show up due to client timeout in heartbeat functionality and due to the network's performance;
+* Players that lose connection to the network (while using socket technology) have to manually close the game (either by clicking the 'x' in the GUI or Ctrl+c keyboard combination in the CLI);
+* The match instantly finishes if the bag runs out of Item tiles or if 75 seconds pass without changing turns (the game treats it as if the current player has disconnected).
+
 
 
 ## Made by
