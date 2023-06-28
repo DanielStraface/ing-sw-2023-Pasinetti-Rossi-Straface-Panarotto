@@ -204,15 +204,11 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
                             } catch (RemoteException e) {
                                 timer.cancel();
                                 synchronized (instance) {
-                                    if (finalServer != null)
-                                        System.out.println("finalServer := " + finalServer.getMatchId());
                                     System.out.println("THE USER OF " + finalNicknameToLog + " HAS DISCONNECTED!");
                                     try {
                                         if (finalServer != null && !finalServer.getInactiveMatch()) {
                                             List<String> notificationList = Collections.singletonList(finalNicknameToLog);
-                                            System.out.println("Leclerc");
                                             finalServer.update(notificationList);
-                                            System.out.println("Max");
                                             int matchID = (finalServer).getMatchId();
                                             if (waitingQueue.containsKey(matchID)) {
                                                 waitingQueue.remove(matchID);
