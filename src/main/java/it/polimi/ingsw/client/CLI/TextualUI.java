@@ -82,7 +82,7 @@ public class TextualUI implements UI {
     public void run(GameView gameView) throws RemoteException{
         this.displayNewTurn(gameView);
         System.out.println("-----------------------------------------------------------------------------------------");
-        System.out.println("Hey " + this.refClient.getNickname() + ", is your turn!");
+        System.out.println("Hey " + this.refClient.getNickname() + ", it's your turn!");
         this.displayTurnMenu(gameView);
         while(true){
             try{
