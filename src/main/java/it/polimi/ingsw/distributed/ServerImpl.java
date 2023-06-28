@@ -15,8 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 
 /**
@@ -70,6 +69,22 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
                     client.update("Correct number of players reached!" +
                             "\nThe match is starting...Extraction of the first player is running");
                 }
+                Timer timer = new Timer();
+                final int[] prevTurnCounter = {0};
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        if(controller.getGame().getTurnCounter() != prevTurnCounter[0])
+                            prevTurnCounter[0] = controller.getGame().getTurnCounter();
+                        else {
+                            try {
+                                update(Collections.singletonList(controller.getGame().getCurrentPlayer().getNickname()));
+                            } catch (RemoteException e) {
+                                System.err.println("Cannot notify the other clients: " + e.getMessage());
+                            }
+                        }
+                    }
+                }, 60000, 60000);
                 this.controller.chooseFirstPlayer();
             }
         } else {

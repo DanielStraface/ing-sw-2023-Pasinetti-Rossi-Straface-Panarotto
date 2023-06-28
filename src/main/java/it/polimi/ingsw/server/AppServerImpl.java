@@ -200,23 +200,15 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
                         @Override
                         public void run() {
                             try{
-                                System.out.println("ZERO");
                                 finalClientSkeleton.update("%ack%");
                             } catch (RemoteException e) {
                                 timer.cancel();
-                                System.out.println("UNO");
-                                matches.keySet().forEach(k -> System.out.print(k + ", "));
                                 synchronized (instance) {
-                                    if (finalServer != null)
-                                        System.out.println("finalServer := " + finalServer.getMatchId());
-                                    //if(finalServer != null && !matches.containsKey(finalServer.getMatchId())) return;
                                     System.out.println("THE USER OF " + finalNicknameToLog + " HAS DISCONNECTED!");
                                     try {
                                         if (finalServer != null && !finalServer.getInactiveMatch()) {
                                             List<String> notificationList = Collections.singletonList(finalNicknameToLog);
-                                            System.out.println("Leclerc");
                                             finalServer.update(notificationList);
-                                            System.out.println("Max");
                                             int matchID = (finalServer).getMatchId();
                                             if (waitingQueue.containsKey(matchID)) {
                                                 waitingQueue.remove(matchID);
@@ -540,19 +532,6 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
                     }
                 }
             }, CLIENT_TIMEOUT *2, CLIENT_TIMEOUT);
-            /*Timer disconnectioCheckerTimer = new Timer();
-            disconnectioCheckerTimer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    synchronized (connectedRMIClient){
-                        if(!connectedRMIClient.containsValue(nickname)) {
-                            disconnectioCheckerTimer.cancel();
-                            return;
-                        }
-                        connectedRMIClientFlag.replace(nickname, false);
-                    }
-                }
-            }, CLIENT_TIMEOUT / 2, CLIENT_TIMEOUT);*/
         }).start();
     }
 
