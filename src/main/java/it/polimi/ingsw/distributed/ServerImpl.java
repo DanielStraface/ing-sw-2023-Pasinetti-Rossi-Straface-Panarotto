@@ -84,7 +84,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
                             }
                         }
                     }
-                }, 60000, 60000);
+                }, 75000, 75000);
                 this.controller.chooseFirstPlayer();
             }
         } else {
