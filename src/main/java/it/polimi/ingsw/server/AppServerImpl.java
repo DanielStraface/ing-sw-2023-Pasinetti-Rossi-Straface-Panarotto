@@ -202,28 +202,33 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
                             } catch (IOException e) {
                                 System.out.println("UNO");
                                 matches.keySet().forEach(k -> System.out.print(k + ", "));
-                                if(finalServer != null) System.out.println("finalServer := " + finalServer.getMatchId());
-                                //if(finalServer != null && !matches.containsKey(finalServer.getMatchId())) return;
-                                System.out.println("THE USER OF " + finalNicknameToLog + " HAS DISCONNECTED!");
-                                try {
-                                    if(finalServer != null && !finalServer.getInactiveMatch()){
-                                        List<String> notificationList = Collections.singletonList(finalNicknameToLog);
-                                        finalServer.update(notificationList);
-                                        int matchID = (finalServer).getMatchId();
-                                        if(waitingQueue.containsKey(matchID)) {
-                                            waitingQueue.remove(matchID);
-                                            System.out.println("Match # " + matchID +
-                                                    " correctly removed from waiting queue");
-                                        } else if(matches.containsKey(matchID)){
-                                            matches.remove(matchID);
-                                            System.out.println("Match # " + matchID +
-                                                    " correctly removed from matches list");
+                                synchronized (instance) {
+                                    if (finalServer != null)
+                                        System.out.println("finalServer := " + finalServer.getMatchId());
+                                    //if(finalServer != null && !matches.containsKey(finalServer.getMatchId())) return;
+                                    System.out.println("THE USER OF " + finalNicknameToLog + " HAS DISCONNECTED!");
+                                    try {
+                                        if (finalServer != null && !finalServer.getInactiveMatch()) {
+                                            List<String> notificationList = Collections.singletonList(finalNicknameToLog);
+                                            System.out.println("Leclerc");
+                                            finalServer.update(notificationList);
+                                            System.out.println("Max");
+                                            int matchID = (finalServer).getMatchId();
+                                            if (waitingQueue.containsKey(matchID)) {
+                                                waitingQueue.remove(matchID);
+                                                System.out.println("Match # " + matchID +
+                                                        " correctly removed from waiting queue");
+                                            } else if (matches.containsKey(matchID)) {
+                                                matches.remove(matchID);
+                                                System.out.println("Match # " + matchID +
+                                                        " correctly removed from matches list");
+                                            }
                                         }
-                                    }
-                                } catch (RemoteException ex) {
+                                    } catch (RemoteException ex) {
                                     System.err.println("Cannot remove the nickname: " + e.getMessage());
+                                    }
+                                    break;
                                 }
-                                break;
                             }
                         }
                     }).start();
