@@ -192,16 +192,18 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
                     }
                     String finalNicknameToLog = nicknameToLog;
                     ServerImpl finalServer = (ServerImpl) server;
+                    if(finalServer == null) System.out.println("final server is null");
                     new Thread(() -> {
                         while(true){
                             try{
-                                if(socket.getInputStream().read() == -1){
-                                    System.out.println("Disconnection");
-                                }
+                                System.out.println("ZERO");
+                                if(socket.getInputStream().read() == -1)
+                                    throw new IOException();
                             } catch (IOException e) {
+                                System.out.println("UNO");
                                 matches.keySet().forEach(k -> System.out.print(k + ", "));
                                 if(finalServer != null) System.out.println("finalServer := " + finalServer.getMatchId());
-                                if(finalServer != null && !matches.containsKey(finalServer.getMatchId())) return;
+                                //if(finalServer != null && !matches.containsKey(finalServer.getMatchId())) return;
                                 System.out.println("THE USER OF " + finalNicknameToLog + " HAS DISCONNECTED!");
                                 try {
                                     if(finalServer != null && !finalServer.getInactiveMatch()){
