@@ -14,6 +14,7 @@ import java.net.Socket;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -193,13 +194,16 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
                     String finalNicknameToLog = nicknameToLog;
                     ServerImpl finalServer = (ServerImpl) server;
                     if(finalServer == null) System.out.println("final server is null");
-                    new Thread(() -> {
-                        while(true){
+                    ClientSkeleton finalClientSkeleton = clientSkeleton;
+                    Timer timer = new Timer();
+                    timer.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
                             try{
                                 System.out.println("ZERO");
-                                if(socket.getInputStream().read() == -1)
-                                    throw new IOException();
-                            } catch (IOException e) {
+                                finalClientSkeleton.update("%ack%");
+                            } catch (RemoteException e) {
+                                timer.cancel();
                                 System.out.println("UNO");
                                 matches.keySet().forEach(k -> System.out.print(k + ", "));
                                 synchronized (instance) {
@@ -225,13 +229,12 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
                                             }
                                         }
                                     } catch (RemoteException ex) {
-                                    System.err.println("Cannot remove the nickname: " + e.getMessage());
+                                        System.err.println("Cannot remove the nickname: " + e.getMessage());
                                     }
-                                    break;
                                 }
                             }
                         }
-                    }).start();
+                    }, 0, 15000);
                 });
             }
         } catch (IOException e) {
