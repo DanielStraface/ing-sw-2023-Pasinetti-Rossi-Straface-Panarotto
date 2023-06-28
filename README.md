@@ -1,5 +1,11 @@
 # ing-sw-2023-Pasinetti-Rossi-Straface-Panarotto
 
+<img src="https://casualgamerevolution.b-cdn.net/sites/default/files/styles/content/public/field/image/351.png?itok=jmgzZxmE" width=192px height=192 px align="right" />
+
+## MyShelfie
+MyShelfie is a board game made for the **Final Test** of the **Software Engineering** course held by the teacher **Giampaolo Cugola**
+
+
 The project includes:
 * Phases 1 and 2 of the UML, used in the peer reviews;
 * The final UML;
