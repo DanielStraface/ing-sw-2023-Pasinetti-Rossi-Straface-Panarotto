@@ -58,7 +58,8 @@ The project includes:
 * In order to save a match, one turn MUST have passed, this is true also for matches that have been just resumed (example: in an old match that has been just resumed, if the game is closed before the current player makes a move, the match is lost forever); 
 * Disconnection notifications may take a while to show up due to client timeout in heartbeat functionality and due to the network's performance;
 * Players that lose connection to the network (while using socket technology) have to manually close the game (either by clicking the 'x' in the GUI or Ctrl+c keyboard combination in the CLI);
-* The match instantly finishes if the bag runs out of Item tiles or if 75 seconds have passed without changing turns (the game treats it as if the current player has disconnected).
+* Every 75 seconds a check is made to see if a turn has passed (if it's the same turn since the last check). If not, the match istantly finishes (the game treats it as if the current player has disconnected);
+* The match also instantly finishes if the bag runs out of Item tiles.
 
 
 
