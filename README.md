@@ -3,7 +3,7 @@
 <img src="https://casualgamerevolution.b-cdn.net/sites/default/files/styles/content/public/field/image/351.png?itok=jmgzZxmE" width=192px height=192 px align="right" />
 
 ## MyShelfie
-MyShelfie is a board game made for the **Final Test** of the **Software Engineering** course held by the teacher **Giampaolo Cugola**
+MyShelfie is a board game made for the **Final Test** of the **Software Engineering** course held by the teacher **Gianpaolo Cugola**.
 
 
 The project includes:
