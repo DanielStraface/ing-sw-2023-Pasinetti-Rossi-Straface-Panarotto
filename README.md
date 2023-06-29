@@ -45,7 +45,7 @@ The project includes:
 
 
 ## Instructions
-* After downloading the jar file (a download from the releases section is recommended), open the Windows terminal where the jar file is located and type "java -jar MyShelfie-gc48.jar" to execute the program and finally type:
+* After downloading the jar file (a download from the releases section is recommended), open the Windows terminal where the jar file is located and type "java -jar MyShelfie-gc48.jar" to execute the program and finally type and enter:
 
     1 -> to start a Server 
 
