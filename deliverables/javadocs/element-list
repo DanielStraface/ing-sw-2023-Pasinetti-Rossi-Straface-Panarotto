@@ -1,0 +1,16 @@
+it.polimi.ingsw
+it.polimi.ingsw.client
+it.polimi.ingsw.client.CLI
+it.polimi.ingsw.client.CLI.commands
+it.polimi.ingsw.client.GUI
+it.polimi.ingsw.client.GUI.controllers
+it.polimi.ingsw.controller
+it.polimi.ingsw.distributed
+it.polimi.ingsw.distributed.socket.middleware
+it.polimi.ingsw.exceptions
+it.polimi.ingsw.listeners
+it.polimi.ingsw.model
+it.polimi.ingsw.model.comcard
+it.polimi.ingsw.model.personcard
+it.polimi.ingsw.modelview
+it.polimi.ingsw.server
