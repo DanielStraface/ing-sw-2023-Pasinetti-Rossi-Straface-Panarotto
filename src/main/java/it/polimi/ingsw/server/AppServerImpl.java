@@ -558,6 +558,27 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
     }
 
     /**
+     * find the match server by given the firstPlayer nickname of that game model - used if the bag is empty
+     * @param firstPlayerNickname the given firstPlayer nickname of that match
+     */
+    public static int findMatchIDByGivenBag(String firstPlayerNickname){
+        int serverMatchID;
+        List<List<String>> allMatchesNicknames = matches.values().stream()
+                .map(ServerImpl::getMatchNicknames).toList();
+        for(List<String> matchNicknames : allMatchesNicknames){
+            if(matchNicknames.contains(firstPlayerNickname)){
+                serverMatchID = matches.get(
+                        matches.keySet().stream().toList().get(
+                                allMatchesNicknames.indexOf(matchNicknames)
+                        )
+                ).getMatchId();
+                return serverMatchID;
+            }
+        }
+        return -1;
+    }
+
+    /**
      * adds the match ID to the list of previously saved matches
      * @param matchID the ID of match to be saved
      */
