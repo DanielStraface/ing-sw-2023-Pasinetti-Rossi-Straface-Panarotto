@@ -374,7 +374,6 @@ public class MainGameController implements GUIController {
         playSound(ItemSelect);
         if(!gameboardItemMatrix[row][col]){
             if(numOfItems >= 3) return;
-            //da aggiungere
             gameboardItemMatrix[row][col] = true;
             numOfItems++;
             selectedCoords.add(coords);
