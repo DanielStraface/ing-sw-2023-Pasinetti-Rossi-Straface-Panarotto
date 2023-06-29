@@ -19,18 +19,18 @@ The project includes:
 * The project source code.
 
 ## Implemented Functionalities
-| Functionality            |                                                                 Status                                                                 |
-|:-------------------------|:--------------------------------------------------------------------------------------------------------------------------------------:|
-| Basic rules              |                                                                  [✅]                                                                   |
-| Complete rules           |                                                                  [✅]                                                                   |
-| TUI                      |                                                                  [✅]                                                                   |
-| GUI                      |                                                                  [✅]                                                                   |
-| RMI                      |                                                                  [✅]                                                                   |
-| Socket                   |                                                                  [✅]                                                                   |
-| Multiple games           |                                                                  [✅]                                                                   |
-| Persistence              |                                                                  [✅]                                                                   |
-| Disconnection Resilience |                                                                  [⛔]                                                                   |
-| Chat                     |                                                                  [⛔]                                                                   |
+| Functionality            |                                                       Status                                                       |
+|:-------------------------|:------------------------------------------------------------------------------------------------------------------:|
+| Basic rules              |                                                         ✅                                                          |
+| Complete rules           |                                                         ✅                                                          |
+| TUI                      |                                                         ✅                                                          |
+| GUI                      |                                                         ✅                                                          |
+| RMI                      |                                                         ✅                                                          |
+| Socket                   |                                                         ✅                                                          |
+| Multiple games           |                                                         ✅                                                          |
+| Persistence              |                                                         ✅                                                          |
+| Disconnection Resilience |                                                         ⛔                                                          |
+| Chat                     |                                                         ⛔                                                          |
 
 
 <!--
