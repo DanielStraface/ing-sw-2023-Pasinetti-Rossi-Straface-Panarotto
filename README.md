@@ -41,11 +41,11 @@ The project includes:
 
 ## Requirements
 * The latest version of Java and Maven;
-* A firewall rule for inbound/outgoing connections on the ports 1099/1234.
+* A firewall rule to allow inbound/outgoing connections on the ports 1099/1234.
 
 
 ## Instructions
-* After downloading the jar file (a download from the releases section is recommended), open the Windows terminal where the jar file is located and type "java -jar MyShelfie-gc48.jar" to execute the program and finally type and enter:
+* After downloading the jar file (a download from the releases section is recommended), open the terminal where the jar file is located and type "java -jar MyShelfie-gc48.jar" to execute the program and finally type and enter:
 
     1 -> to start a Server 
 
