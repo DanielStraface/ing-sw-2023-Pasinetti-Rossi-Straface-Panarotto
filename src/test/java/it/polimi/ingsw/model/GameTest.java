@@ -299,6 +299,15 @@ public class GameTest {
         String nickname = game.getGameOverPointPlayerName();
         assertSame(game.getGameOverPointPlayerName(),nickname,"The Game class hasn't given the correct game over player nickname");
     }
+
+    /**
+     * getTurnCounter get method test
+     */
+    @Test
+    public void getTurnCounterTest(){
+        int turnCounter = game.getTurnCounter();
+        assertSame(game.getTurnCounter(),turnCounter,"The turnCounter given is not the same");
+    }
 }
 
 

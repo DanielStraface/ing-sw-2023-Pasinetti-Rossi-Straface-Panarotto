@@ -218,7 +218,7 @@ class GroupCards extends StrategyCheck implements Serializable {
                 shelf[i][j].getCategoryType() != category){
             return;
         }
-        visited[i][j] = true;  //
+        visited[i][j] = true;
         // counter is incremented by 1
         groupDimCounter++;
         // calls the same method on the adjacent tiles

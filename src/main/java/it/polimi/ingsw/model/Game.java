@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.controller.Controller;
+import it.polimi.ingsw.distributed.ServerImpl;
 import it.polimi.ingsw.exceptions.InvalidNumberOfPlayersException;
 import it.polimi.ingsw.exceptions.NoElementException;
 import it.polimi.ingsw.listeners.ModelSubject;
@@ -137,6 +138,10 @@ public class Game extends ModelSubject implements Serializable {
                         System.err.println(e.getMessage() + ", client notification and termination of the game");
                         try {
                             this.notifyDisconnection(this, ":Empty Bag", e.getMessage());
+                            AppServerImpl.forceGameRemove(
+                                    AppServerImpl.findMatchIDByGivenBag(this.getPlayers().stream()
+                                            .filter(Player::getIsFirstPlayer).map(Player::getNickname).findFirst().get())
+                            );
                             return;
                         } catch (RemoteException ex) {
                             System.err.println("Cannot notify the empty bag: " + e.getMessage());
