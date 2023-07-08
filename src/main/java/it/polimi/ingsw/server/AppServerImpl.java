@@ -339,7 +339,7 @@ public class AppServerImpl extends UnicastRemoteObject implements AppServer {
      * @throws NotSupportedMatchesException if there is an unsupported number of matches
      */
     @Override
-    public Server connect(typeOfMatch type) throws RemoteException, NotSupportedMatchesException {
+    public synchro Server connect(typeOfMatch type) throws RemoteException, NotSupportedMatchesException {
         ServerImpl match = null;
         switch(type){
             case newTwoPlayersGame, newThreePlayersGame, newFourPlayersGame -> {

@@ -5,6 +5,8 @@
 ## MyShelfie
 MyShelfie is a board game made for the **Final Test** of the **Software Engineering** course held by the teacher **Gianpaolo Cugola**.
 
+Final grade: **30/30**
+
 
 The project includes:
 * Phases 1 and 2 of the UML, used in the peer reviews;
@@ -61,6 +63,14 @@ The project includes:
 * Every 75 seconds a check is made to see if a turn has passed (so if it's the same turn since the last check). If not, the match instantly finishes (the game treats it as if the current player has disconnected);
 * The match also instantly finishes if the bag runs out of Item tiles (this happens very rarely). If so delete the save file associated to the match in order to avoid any further errors in your next matches.
 
+
+## Publishing notes
+NOTA: My Shelfie è un gioco da tavolo sviluppato ed edito da Cranio Creations Srl. 
+I contenuti grafici di questo progetto riconducibili al prodotto editoriale da tavolo sono utilizzati 
+previa approvazione di Cranio Creations Srl a solo scopo didattico.
+È vietata la distribuzione, la copia o la riproduzione dei contenuti e immagini in qualsiasi forma al di fuori del progetto,
+così come la redistribuzione e la pubblicazione dei contenuti e immagini a fini diversi da quello sopracitato.
+È inoltre vietato l'utilizzo commerciale di suddetti contenuti.
 
 
 ## Made by
