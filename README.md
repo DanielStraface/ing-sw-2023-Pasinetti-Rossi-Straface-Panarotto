@@ -5,6 +5,8 @@
 ## MyShelfie
 MyShelfie is a board game made for the **Final Test** of the **Software Engineering** course held by the teacher **Gianpaolo Cugola**.
 
+Final grade: **30/30**
+
 
 The project includes:
 * Phases 1 and 2 of the UML, used in the peer reviews;
